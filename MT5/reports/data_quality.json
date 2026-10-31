@@ -27,7 +27,8 @@
       "report_currency": "USD",
       "initial_deposit": 100000.0,
       "reported_total_net_profit": 679863.5,
-      "reported_profit_factor": 1.498609
+      "reported_profit_factor": 1.498609,
+      "reported_total_trades": 782.0
     },
     "balance_reconciliation": {
       "initial_deposit": 100000.0,
@@ -124,9 +125,21 @@
     "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
     "settings": {
       "report_symbol": "USTEC",
-      "report_period": "M1 (2020.01.01 - 2026.10.31)"
+      "report_period": "M1 (2020.01.01 - 2026.10.31)",
+      "report_currency": "USD",
+      "initial_deposit": 100000.0,
+      "reported_total_net_profit": 262356.67,
+      "reported_profit_factor": 1.320318,
+      "reported_total_trades": 1759.0
     },
-    "balance_reconciliation": null,
+    "balance_reconciliation": {
+      "initial_deposit": 100000.0,
+      "final_balance": 362356.67,
+      "balance_change": 262356.67,
+      "sum_deal_cashflows": 262356.67,
+      "difference": 0.0,
+      "matches_within_5c": true
+    },
     "instruments": [
       "USTEC"
     ],
