@@ -1,0 +1,200 @@
+[
+  {
+    "strategy": "Gold ORB (RBE)",
+    "status": "parsed",
+    "source_file": "NinjaTrader RBE Trades.csv",
+    "parser": "NT8 Strategy Analyzer CSV",
+    "source_rows": 835,
+    "parsed_events": 835,
+    "invalid_or_missing_exit_time_rows": 0,
+    "first_event": "2021-11-01T11:56:00",
+    "last_event": "2026-10-09T11:56:00",
+    "profit_semantics": "Profit is already net of Commission; commission is not deducted again.",
+    "cumulative_net_profit_check": {
+      "export_cumulative_last": 27789.0,
+      "sum_profit_column": 27789.0,
+      "difference": 0.0,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "MGC DEC26"
+    ],
+    "timezone": "As exported by NinjaTrader; no timezone conversion applied."
+  },
+  {
+    "strategy": "Vault Break",
+    "status": "parsed",
+    "source_file": "NinjaTrader VaultBreak Trades.csv",
+    "parser": "NT8 Strategy Analyzer CSV",
+    "source_rows": 1443,
+    "parsed_events": 1443,
+    "invalid_or_missing_exit_time_rows": 0,
+    "first_event": "2020-02-13T15:31:00",
+    "last_event": "2026-10-27T12:49:00",
+    "profit_semantics": "Profit is already net of Commission; commission is not deducted again.",
+    "cumulative_net_profit_check": {
+      "export_cumulative_last": 134530.0,
+      "sum_profit_column": 134530.0,
+      "difference": 0.0,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "NQ DEC26"
+    ],
+    "timezone": "As exported by NinjaTrader; no timezone conversion applied."
+  },
+  {
+    "strategy": "VWAP Pullback",
+    "status": "parsed",
+    "source_file": "NinjaTrader VWAPPullback Trades.csv",
+    "parser": "NT8 Strategy Analyzer CSV",
+    "source_rows": 657,
+    "parsed_events": 657,
+    "invalid_or_missing_exit_time_rows": 0,
+    "first_event": "2020-01-03T15:32:00",
+    "last_event": "2026-10-29T12:34:00",
+    "profit_semantics": "Profit is already net of Commission; commission is not deducted again.",
+    "cumulative_net_profit_check": {
+      "export_cumulative_last": 65920.48,
+      "sum_profit_column": 65920.48,
+      "difference": 0.0,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "NQ DEC26"
+    ],
+    "timezone": "As exported by NinjaTrader; no timezone conversion applied."
+  },
+  {
+    "strategy": "Overnight Bias ORB",
+    "status": "parsed",
+    "source_file": "NinjaTrader OvernightBiasRB Trades.csv",
+    "parser": "NT8 Strategy Analyzer CSV",
+    "source_rows": 673,
+    "parsed_events": 673,
+    "invalid_or_missing_exit_time_rows": 0,
+    "first_event": "2020-02-12T15:31:00",
+    "last_event": "2026-10-30T15:31:00",
+    "profit_semantics": "Profit is already net of Commission; commission is not deducted again.",
+    "cumulative_net_profit_check": {
+      "export_cumulative_last": 267560.72,
+      "sum_profit_column": 267560.72,
+      "difference": 0.0,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "NQ DEC26"
+    ],
+    "timezone": "As exported by NinjaTrader; no timezone conversion applied."
+  },
+  {
+    "strategy": "Open Drive",
+    "status": "parsed",
+    "source_file": "NinjaTrader OpenDrive Trades.csv",
+    "parser": "NT8 Strategy Analyzer CSV",
+    "source_rows": 1760,
+    "parsed_events": 1760,
+    "invalid_or_missing_exit_time_rows": 0,
+    "first_event": "2020-01-02T09:55:00",
+    "last_event": "2026-10-30T10:40:00",
+    "profit_semantics": "Profit is already net of Commission; commission is not deducted again.",
+    "cumulative_net_profit_check": {
+      "export_cumulative_last": 298131.4,
+      "sum_profit_column": 298131.3999999999,
+      "difference": -1.1641532182693481e-10,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "NQ DEC26"
+    ],
+    "timezone": "As exported by NinjaTrader; no timezone conversion applied."
+  },
+  {
+    "strategy": "NQ Precision Bot",
+    "status": "parsed",
+    "source_file": "NinjaTrader NQPrecisionBot Trades.csv",
+    "parser": "NT8 Strategy Analyzer CSV",
+    "source_rows": 688,
+    "parsed_events": 688,
+    "invalid_or_missing_exit_time_rows": 0,
+    "first_event": "2020-01-06T10:01:00",
+    "last_event": "2026-10-30T10:01:00",
+    "profit_semantics": "Profit is already net of Commission; commission is not deducted again.",
+    "cumulative_net_profit_check": {
+      "export_cumulative_last": 7260.32,
+      "sum_profit_column": 7260.319999999998,
+      "difference": -1.8189894035458565e-12,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "NQ DEC26"
+    ],
+    "timezone": "As exported by NinjaTrader; no timezone conversion applied."
+  },
+  {
+    "strategy": "Opening-Shock Continuation",
+    "status": "parsed",
+    "source_file": "NinjaTrader OpeningShockCont Trades.csv",
+    "parser": "NT8 Strategy Analyzer CSV",
+    "source_rows": 482,
+    "parsed_events": 482,
+    "invalid_or_missing_exit_time_rows": 0,
+    "first_event": "2020-01-27T10:08:00",
+    "last_event": "2026-10-23T10:41:00",
+    "profit_semantics": "Profit is already net of Commission; commission is not deducted again.",
+    "cumulative_net_profit_check": {
+      "export_cumulative_last": 55765.0,
+      "sum_profit_column": 55765.0,
+      "difference": 0.0,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "NQ DEC26"
+    ],
+    "timezone": "As exported by NinjaTrader; no timezone conversion applied."
+  },
+  {
+    "strategy": "Sigma ORB",
+    "status": "parsed",
+    "source_file": "NinjaTrader SigmaORB Trades.csv",
+    "parser": "NT8 Strategy Analyzer CSV",
+    "source_rows": 1066,
+    "parsed_events": 1066,
+    "invalid_or_missing_exit_time_rows": 0,
+    "first_event": "2020-01-08T15:45:00",
+    "last_event": "2026-10-30T15:45:00",
+    "profit_semantics": "Profit is already net of Commission; commission is not deducted again.",
+    "cumulative_net_profit_check": {
+      "export_cumulative_last": 422052.24,
+      "sum_profit_column": 422052.24,
+      "difference": 0.0,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "NQ DEC26"
+    ],
+    "timezone": "As exported by NinjaTrader; no timezone conversion applied."
+  },
+  {
+    "strategy": "Flash ORB",
+    "status": "parsed",
+    "source_file": "NinjaTrader FlashORB Trades.csv",
+    "parser": "NT8 Strategy Analyzer CSV",
+    "source_rows": 1207,
+    "parsed_events": 1207,
+    "invalid_or_missing_exit_time_rows": 0,
+    "first_event": "2020-01-02T16:46:00",
+    "last_event": "2026-10-29T12:33:00",
+    "profit_semantics": "Profit is already net of Commission; commission is not deducted again.",
+    "cumulative_net_profit_check": {
+      "export_cumulative_last": 182897.48,
+      "sum_profit_column": 182897.48000000007,
+      "difference": 5.820766091346741e-11,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "NQ DEC26"
+    ],
+    "timezone": "As exported by NinjaTrader; no timezone conversion applied."
+  }
+]

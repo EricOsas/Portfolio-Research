@@ -1,0 +1,10 @@
+strategy,status,source_file,note
+Gold ORB (RBE),parsed,NinjaTrader RBE Trades.csv,Trade export parsed successfully.
+Vault Break,parsed,NinjaTrader VaultBreak Trades.csv,Trade export parsed successfully.
+VWAP Pullback,parsed,NinjaTrader VWAPPullback Trades.csv,Trade export parsed successfully.
+Overnight Bias ORB,parsed,NinjaTrader OvernightBiasRB Trades.csv,Trade export parsed successfully.
+Open Drive,parsed,NinjaTrader OpenDrive Trades.csv,Trade export parsed successfully.
+NQ Precision Bot,parsed,NinjaTrader NQPrecisionBot Trades.csv,Trade export parsed successfully.
+Opening-Shock Continuation,parsed,NinjaTrader OpeningShockCont Trades.csv,Trade export parsed successfully.
+Sigma ORB,parsed,NinjaTrader SigmaORB Trades.csv,Trade export parsed successfully.
+Flash ORB,parsed,NinjaTrader FlashORB Trades.csv,Trade export parsed successfully.

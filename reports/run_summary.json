@@ -1,0 +1,142 @@
+{
+  "generated_utc": "2026-10-31T22:37:48Z",
+  "repository": "EricOsas/Portfolio-Research",
+  "method": "Export-based cumulative net PnL; original exported sizing; no added costs.",
+  "platforms": {
+    "NT8": {
+      "platform": "NT8",
+      "expected_strategies": 9,
+      "parsed_strategies": 9,
+      "pending_or_missing": [],
+      "selected_strategies": [
+        "Overnight Bias ORB",
+        "Sigma ORB",
+        "Gold ORB (RBE)",
+        "Vault Break"
+      ],
+      "all_portfolio_metrics": {
+        "event_count": 8811,
+        "closed_trade_or_exit_deal_count": 8811,
+        "active_days": 1772,
+        "first_date": "2020-01-02",
+        "last_date": "2026-10-30",
+        "calendar_span_days": 2494,
+        "total_net_pnl_usd": 1461906.64,
+        "average_event_net_pnl_usd": 165.9183565997049,
+        "gross_profit_column_sum_usd": 1490293.0,
+        "commission_cashflow_sum_usd": -28386.36,
+        "swap_cashflow_sum_usd": 0.0,
+        "daily_profit_factor": 1.6886991739114718,
+        "daily_sharpe_252": 2.689011365879225,
+        "max_drawdown_usd": 52279.63999999987,
+        "net_profit_to_max_drawdown": 27.96321168240645,
+        "positive_active_month_share": 0.8414634146341463,
+        "positive_active_year_share": 1.0,
+        "positive_days_share": 0.4898419864559819,
+        "best_day_usd": 41610.44,
+        "worst_day_usd": -14034.560000000001,
+        "daily_pnl_std_usd": 4821.411952553511
+      },
+      "recommended_portfolio_metrics": {
+        "event_count": 4017,
+        "closed_trade_or_exit_deal_count": 4017,
+        "active_days": 1531,
+        "first_date": "2020-01-08",
+        "last_date": "2026-10-30",
+        "calendar_span_days": 2488,
+        "total_net_pnl_usd": 851931.96,
+        "average_event_net_pnl_usd": 212.081643017177,
+        "gross_profit_column_sum_usd": 861518.0,
+        "commission_cashflow_sum_usd": -9586.04,
+        "swap_cashflow_sum_usd": 0.0,
+        "daily_profit_factor": 1.642393832623195,
+        "daily_sharpe_252": 2.4596096932085834,
+        "max_drawdown_usd": 32485.87999999999,
+        "net_profit_to_max_drawdown": 26.224684693780812,
+        "positive_active_month_share": 0.8414634146341463,
+        "positive_active_year_share": 1.0,
+        "positive_days_share": 0.5460483344219464,
+        "best_day_usd": 22476.479999999996,
+        "worst_day_usd": -11388.72,
+        "daily_pnl_std_usd": 3083.810212218027
+      }
+    },
+    "MT5": {
+      "platform": "MT5",
+      "expected_strategies": 11,
+      "parsed_strategies": 8,
+      "pending_or_missing": [
+        {
+          "strategy": "Gold X9",
+          "status": "pending_export",
+          "source_file": "",
+          "note": "No trade export in repository."
+        },
+        {
+          "strategy": "Gold ORB (RBE)",
+          "status": "pending_export",
+          "source_file": "",
+          "note": "No trade export in repository."
+        },
+        {
+          "strategy": "NQ Precision Bot",
+          "status": "parse_error",
+          "source_file": "MT5 NQPrecisionBot Trades.xlsx",
+          "note": "Could not locate MT5 Deals header (Time/Deal/Type/Direction/Volume/Price/Profit)."
+        }
+      ],
+      "selected_strategies": [
+        "Overnight Bias ORB",
+        "Tokyo Coil",
+        "Open Drive",
+        "Flash ORB"
+      ],
+      "all_portfolio_metrics": {
+        "event_count": 19916,
+        "closed_trade_or_exit_deal_count": 9958,
+        "active_days": 1768,
+        "first_date": "2020-01-02",
+        "last_date": "2026-10-30",
+        "calendar_span_days": 2494,
+        "total_net_pnl_usd": 1468255.06,
+        "average_event_net_pnl_usd": 73.72238702550713,
+        "gross_profit_column_sum_usd": 1477952.02,
+        "commission_cashflow_sum_usd": 0.0,
+        "swap_cashflow_sum_usd": -9696.96,
+        "daily_profit_factor": 1.565515069600674,
+        "daily_sharpe_252": 2.225588968470265,
+        "max_drawdown_usd": 94916.46000000043,
+        "net_profit_to_max_drawdown": 15.468919300192963,
+        "positive_active_month_share": 0.7926829268292683,
+        "positive_active_year_share": 1.0,
+        "positive_days_share": 0.4411764705882353,
+        "best_day_usd": 41492.92,
+        "worst_day_usd": -14051.449999999999,
+        "daily_pnl_std_usd": 5876.911041994858
+      },
+      "recommended_portfolio_metrics": {
+        "event_count": 9086,
+        "closed_trade_or_exit_deal_count": 4543,
+        "active_days": 1767,
+        "first_date": "2020-01-02",
+        "last_date": "2026-10-30",
+        "calendar_span_days": 2494,
+        "total_net_pnl_usd": 1069692.8399999999,
+        "average_event_net_pnl_usd": 117.72978648470172,
+        "gross_profit_column_sum_usd": 1073995.27,
+        "commission_cashflow_sum_usd": 0.0,
+        "swap_cashflow_sum_usd": -4302.43,
+        "daily_profit_factor": 1.573542347139513,
+        "daily_sharpe_252": 2.0080881904693704,
+        "max_drawdown_usd": 65338.7800000002,
+        "net_profit_to_max_drawdown": 16.371484744588077,
+        "positive_active_month_share": 0.7926829268292683,
+        "positive_active_year_share": 1.0,
+        "positive_days_share": 0.4227504244482173,
+        "best_day_usd": 43940.92,
+        "worst_day_usd": -9182.31,
+        "daily_pnl_std_usd": 4745.356856710523
+      }
+    }
+  }
+}

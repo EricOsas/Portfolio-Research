@@ -1,0 +1,202 @@
+[
+  {
+    "strategy": "Gold X9",
+    "status": "pending_export",
+    "notes": "No source export."
+  },
+  {
+    "strategy": "Gold ORB (RBE)",
+    "status": "pending_export",
+    "notes": "No source export."
+  },
+  {
+    "strategy": "Tokyo Coil",
+    "status": "parsed",
+    "source_file": "MT5 TokyoCoil Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 2660,
+    "parsed_deal_events": 1564,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-10T06:59:40",
+    "last_event": "2026-10-28T08:02:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "Type",
+      "report_period": "",
+      "report_currency": "",
+      "initial_deposit": 0.0
+    },
+    "instruments": [
+      "USDJPY"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
+  },
+  {
+    "strategy": "Vault Break",
+    "status": "parsed",
+    "source_file": "MT5 VaultBreak Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 3157,
+    "parsed_deal_events": 3082,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T18:00:00",
+    "last_event": "2026-10-27T19:48:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "Type",
+      "report_period": "",
+      "report_currency": "",
+      "initial_deposit": 0.0
+    },
+    "instruments": [
+      "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
+  },
+  {
+    "strategy": "Overnight Bias ORB",
+    "status": "parsed",
+    "source_file": "MT5 OvernightBiasRB Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 1519,
+    "parsed_deal_events": 1444,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T21:15:00",
+    "last_event": "2026-10-30T22:30:00",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "Type",
+      "report_period": "",
+      "report_currency": "",
+      "initial_deposit": 0.0
+    },
+    "instruments": [
+      "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
+  },
+  {
+    "strategy": "Open Drive",
+    "status": "parsed",
+    "source_file": "MT5 OpenDrive Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 3627,
+    "parsed_deal_events": 3518,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T16:35:00",
+    "last_event": "2026-10-30T16:58:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "Type",
+      "report_period": "",
+      "report_currency": "",
+      "initial_deposit": 0.0
+    },
+    "instruments": [
+      "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
+  },
+  {
+    "strategy": "NQ Precision Bot",
+    "status": "parse_error",
+    "source_file": "MT5 NQPrecisionBot Trades.xlsx",
+    "error": "Could not locate MT5 Deals header (Time/Deal/Type/Direction/Volume/Price/Profit)."
+  },
+  {
+    "strategy": "Opening-Shock Continuation",
+    "status": "parsed",
+    "source_file": "MT5 OpeningShockContinuation Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 1066,
+    "parsed_deal_events": 990,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T17:00:00",
+    "last_event": "2026-10-23T17:40:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "Type",
+      "report_period": "",
+      "report_currency": "",
+      "initial_deposit": 0.0
+    },
+    "instruments": [
+      "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
+  },
+  {
+    "strategy": "Sigma ORB",
+    "status": "parsed",
+    "source_file": "MT5 SigmaORB Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 4380,
+    "parsed_deal_events": 4298,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T17:00:00",
+    "last_event": "2026-10-30T22:44:00",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "Type",
+      "report_period": "",
+      "report_currency": "",
+      "initial_deposit": 0.0
+    },
+    "instruments": [
+      "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
+  },
+  {
+    "strategy": "Flash ORB",
+    "status": "parsed",
+    "source_file": "MT5 FlashORB Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 2638,
+    "parsed_deal_events": 2560,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T21:15:00",
+    "last_event": "2026-10-29T19:32:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "Type",
+      "report_period": "",
+      "report_currency": "",
+      "initial_deposit": 0.0
+    },
+    "instruments": [
+      "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
+  },
+  {
+    "strategy": "Noise Band Momentum",
+    "status": "parsed",
+    "source_file": "MT5 NoiseBandMomentum Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 2538,
+    "parsed_deal_events": 2460,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T17:00:00",
+    "last_event": "2026-10-26T23:00:00",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "Type",
+      "report_period": "",
+      "report_currency": "",
+      "initial_deposit": 0.0
+    },
+    "instruments": [
+      "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
+  }
+]
