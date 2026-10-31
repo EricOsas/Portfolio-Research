@@ -1,6 +1,6 @@
 # MT5 research pack
 
-<badge>9 of 9 available exports parsed</badge>
+**9 of 9 available exports parsed**
 
 Gold X9 and Gold ORB (RBE) remain pending exports. VWAP Pullback is NT8-specific.
 

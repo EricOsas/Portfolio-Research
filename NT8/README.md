@@ -1,6 +1,6 @@
 # NT8 research pack
 
-<badge>9 of 9 exports parsed</badge>
+**9 of 9 exports parsed**
 
 ## Equity curve dashboard
 

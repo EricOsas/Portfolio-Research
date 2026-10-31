@@ -139,7 +139,7 @@ def norm_header(value: Any) -> str:
     return re.sub(r"[^a-z0-9]+", "_", str(value or "").strip().lower()).strip("_")
 
 def extract_mt5_settings(wb) -> dict[str, Any]:
-    """Read report metadata from the first sheet only; do not confuse table headers with settings."""
+    """Read report metadata without mistaking trade-table headings for settings."""
     settings: dict[str, Any] = {}
     if not wb.worksheets:
         return settings
@@ -151,15 +151,15 @@ def extract_mt5_settings(wb) -> dict[str, Any]:
         "profit_factor": "reported_profit_factor", "win_rate": "reported_win_rate",
         "total_trades": "reported_total_trades",
     }
+    summary_labels = {"starting_balance", "ending_equity", "total_net_profit", "profit_factor", "win_rate", "total_trades"}
     for ridx, row in enumerate(ws.iter_rows(values_only=True), start=1):
-        if ridx > 50:
+        if ridx > 200:
             break
         vals = list(row)
         for i, value in enumerate(vals):
             if value is None:
                 continue
             raw = str(value).strip()
-            # Some custom reports put all metadata in one title cell.
             for pattern, dest, parser in [
                 (r"Symbol:\s*([^|]+)", "report_symbol", str),
                 (r"Period:\s*([^|]+)", "report_period", str),
@@ -169,14 +169,23 @@ def extract_mt5_settings(wb) -> dict[str, Any]:
                 if match:
                     settings[dest] = parser(match.group(1).strip())
             key = norm_header(raw.rstrip(":"))
-            if key in labels:
+            # Standard MT5 labels end in a colon. Custom summary labels are exact
+            # phrases; plain column headings such as "Symbol" are ignored.
+            if key in labels and (raw.endswith(":") or key in summary_labels):
                 next_value = next((vals[j] for j in range(i + 1, len(vals)) if vals[j] is not None and str(vals[j]).strip()), None)
                 if next_value is not None:
                     dest = labels[key]
-                    settings[dest] = (money(str(next_value).replace("%", "")) if dest == "reported_win_rate" else money(next_value)) if dest in {
-                        "initial_deposit", "starting_balance", "ending_equity", "reported_total_net_profit",
-                        "reported_profit_factor", "reported_win_rate", "reported_total_trades"
-                    } else str(next_value).strip()
+                    if dest == "reported_win_rate":
+                        pct_text = str(next_value).strip()
+                        pct = money(pct_text.replace("%", ""))
+                        settings[dest] = pct if "%" in pct_text or pct > 1 else pct * 100
+                    elif dest in {
+                        "initial_deposit", "starting_balance", "ending_equity",
+                        "reported_total_net_profit", "reported_profit_factor", "reported_total_trades"
+                    }:
+                        settings[dest] = money(next_value)
+                    else:
+                        settings[dest] = str(next_value).strip()
     return settings
 
 def parse_mt5(path: Path, strategy: str) -> tuple[pd.DataFrame, dict[str, Any]]:
