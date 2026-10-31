@@ -5,7 +5,7 @@ Tokyo Coil,parsed,MT5 TokyoCoil Trades.xlsx,Trade export parsed successfully.
 Vault Break,parsed,MT5 VaultBreak Trades.xlsx,Trade export parsed successfully.
 Overnight Bias ORB,parsed,MT5 OvernightBiasRB Trades.xlsx,Trade export parsed successfully.
 Open Drive,parsed,MT5 OpenDrive Trades.xlsx,Trade export parsed successfully.
-NQ Precision Bot,parse_error,MT5 NQPrecisionBot Trades.xlsx,Could not locate MT5 Deals header (Time/Deal/Type/Direction/Volume/Price/Profit).
+NQ Precision Bot,parsed,MT5 NQPrecisionBot Trades.xlsx,Trade export parsed successfully.
 Opening-Shock Continuation,parsed,MT5 OpeningShockContinuation Trades.xlsx,Trade export parsed successfully.
 Sigma ORB,parsed,MT5 SigmaORB Trades.xlsx,Trade export parsed successfully.
 Flash ORB,parsed,MT5 FlashORB Trades.xlsx,Trade export parsed successfully.

@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-10-31T22:37:48Z",
+  "generated_utc": "2026-10-31T22:40:13Z",
   "repository": "EricOsas/Portfolio-Research",
   "method": "Export-based cumulative net PnL; original exported sizing; no added costs.",
   "platforms": {
@@ -26,6 +26,7 @@
         "gross_profit_column_sum_usd": 1490293.0,
         "commission_cashflow_sum_usd": -28386.36,
         "swap_cashflow_sum_usd": 0.0,
+        "modeled_cost_adjustment_sum_usd": 0.0,
         "daily_profit_factor": 1.6886991739114718,
         "daily_sharpe_252": 2.689011365879225,
         "max_drawdown_usd": 52279.63999999987,
@@ -49,6 +50,7 @@
         "gross_profit_column_sum_usd": 861518.0,
         "commission_cashflow_sum_usd": -9586.04,
         "swap_cashflow_sum_usd": 0.0,
+        "modeled_cost_adjustment_sum_usd": 0.0,
         "daily_profit_factor": 1.642393832623195,
         "daily_sharpe_252": 2.4596096932085834,
         "max_drawdown_usd": 32485.87999999999,
@@ -64,7 +66,7 @@
     "MT5": {
       "platform": "MT5",
       "expected_strategies": 11,
-      "parsed_strategies": 8,
+      "parsed_strategies": 9,
       "pending_or_missing": [
         {
           "strategy": "Gold X9",
@@ -77,12 +79,6 @@
           "status": "pending_export",
           "source_file": "",
           "note": "No trade export in repository."
-        },
-        {
-          "strategy": "NQ Precision Bot",
-          "status": "parse_error",
-          "source_file": "MT5 NQPrecisionBot Trades.xlsx",
-          "note": "Could not locate MT5 Deals header (Time/Deal/Type/Direction/Volume/Price/Profit)."
         }
       ],
       "selected_strategies": [
@@ -92,27 +88,28 @@
         "Flash ORB"
       ],
       "all_portfolio_metrics": {
-        "event_count": 19916,
-        "closed_trade_or_exit_deal_count": 9958,
+        "event_count": 20712,
+        "closed_trade_or_exit_deal_count": 10754,
         "active_days": 1768,
         "first_date": "2020-01-02",
         "last_date": "2026-10-30",
         "calendar_span_days": 2494,
-        "total_net_pnl_usd": 1468255.06,
-        "average_event_net_pnl_usd": 73.72238702550713,
-        "gross_profit_column_sum_usd": 1477952.02,
+        "total_net_pnl_usd": 1470380.0100000002,
+        "average_event_net_pnl_usd": 70.99169611819237,
+        "gross_profit_column_sum_usd": 1480076.97,
         "commission_cashflow_sum_usd": 0.0,
         "swap_cashflow_sum_usd": -9696.96,
-        "daily_profit_factor": 1.565515069600674,
-        "daily_sharpe_252": 2.225588968470265,
-        "max_drawdown_usd": 94916.46000000043,
-        "net_profit_to_max_drawdown": 15.468919300192963,
+        "modeled_cost_adjustment_sum_usd": 0.0,
+        "daily_profit_factor": 1.5658411565380936,
+        "daily_sharpe_252": 2.2272173021459585,
+        "max_drawdown_usd": 94936.83999999939,
+        "net_profit_to_max_drawdown": 15.48798137793516,
         "positive_active_month_share": 0.7926829268292683,
         "positive_active_year_share": 1.0,
-        "positive_days_share": 0.4411764705882353,
-        "best_day_usd": 41492.92,
-        "worst_day_usd": -14051.449999999999,
-        "daily_pnl_std_usd": 5876.911041994858
+        "positive_days_share": 0.44004524886877827,
+        "best_day_usd": 41528.52,
+        "worst_day_usd": -14151.279999999999,
+        "daily_pnl_std_usd": 5881.11360510415
       },
       "recommended_portfolio_metrics": {
         "event_count": 9086,
@@ -126,6 +123,7 @@
         "gross_profit_column_sum_usd": 1073995.27,
         "commission_cashflow_sum_usd": 0.0,
         "swap_cashflow_sum_usd": -4302.43,
+        "modeled_cost_adjustment_sum_usd": 0.0,
         "daily_profit_factor": 1.573542347139513,
         "daily_sharpe_252": 2.0080881904693704,
         "max_drawdown_usd": 65338.7800000002,
