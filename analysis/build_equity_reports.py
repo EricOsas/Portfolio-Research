@@ -86,7 +86,7 @@ def base_event(**kwargs: Any) -> dict[str, Any]:
     row = {
         "timestamp": None, "entry_timestamp": None, "strategy": "", "platform": "",
         "instrument": "", "side": "", "quantity": 0.0, "net_pnl": 0.0,
-        "gross_pnl": 0.0, "commission": 0.0, "swap": 0.0, "event_type": "",
+        "gross_pnl": 0.0, "commission": 0.0, "swap": 0.0, "cost_adjustment": 0.0, "event_type": "",
         "is_closed_trade": False, "source_file": "", "deal_id": "",
         "exit_reason": "", "mae": np.nan, "mfe": np.nan,
     }
@@ -139,18 +139,44 @@ def norm_header(value: Any) -> str:
     return re.sub(r"[^a-z0-9]+", "_", str(value or "").strip().lower()).strip("_")
 
 def extract_mt5_settings(wb) -> dict[str, Any]:
-    settings = {}
-    labels = {"period": "report_period", "symbol": "report_symbol",
-              "currency": "report_currency", "initial_deposit": "initial_deposit"}
-    for ws in wb.worksheets:
-        for row in ws.iter_rows(values_only=True):
-            vals = list(row)
-            for i, value in enumerate(vals):
-                key = norm_header(value).replace("_", " ")
-                for label, dest in labels.items():
-                    if key.startswith(label.replace("_", " ")) and i + 1 < len(vals):
-                        v = vals[i + 1]
-                        settings[dest] = money(v) if dest == "initial_deposit" else (str(v) if v is not None else "")
+    """Read report metadata from the first sheet only; do not confuse table headers with settings."""
+    settings: dict[str, Any] = {}
+    if not wb.worksheets:
+        return settings
+    ws = wb.worksheets[0]
+    labels = {
+        "period": "report_period", "symbol": "report_symbol", "currency": "report_currency",
+        "initial_deposit": "initial_deposit", "starting_balance": "starting_balance",
+        "ending_equity": "ending_equity", "total_net_profit": "reported_total_net_profit",
+        "profit_factor": "reported_profit_factor", "win_rate": "reported_win_rate",
+        "total_trades": "reported_total_trades",
+    }
+    for ridx, row in enumerate(ws.iter_rows(values_only=True), start=1):
+        if ridx > 100:
+            break
+        vals = list(row)
+        for i, value in enumerate(vals):
+            if value is None:
+                continue
+            raw = str(value).strip()
+            # Some custom reports put all metadata in one title cell.
+            for pattern, dest, parser in [
+                (r"Symbol:\s*([^|]+)", "report_symbol", str),
+                (r"Period:\s*([^|]+)", "report_period", str),
+                (r"Deposit:\s*\$?([\d,]+(?:\.\d+)?)", "initial_deposit", money),
+            ]:
+                match = re.search(pattern, raw, flags=re.IGNORECASE)
+                if match:
+                    settings[dest] = parser(match.group(1).strip())
+            key = norm_header(raw.rstrip(":"))
+            if key in labels:
+                next_value = next((vals[j] for j in range(i + 1, len(vals)) if vals[j] is not None and str(vals[j]).strip()), None)
+                if next_value is not None:
+                    dest = labels[key]
+                    settings[dest] = money(next_value) if dest in {
+                        "initial_deposit", "starting_balance", "ending_equity", "reported_total_net_profit",
+                        "reported_profit_factor", "reported_win_rate", "reported_total_trades"
+                    } else str(next_value).strip()
     return settings
 
 def parse_mt5(path: Path, strategy: str) -> tuple[pd.DataFrame, dict[str, Any]]:
@@ -176,10 +202,86 @@ def parse_mt5(path: Path, strategy: str) -> tuple[pd.DataFrame, dict[str, Any]]:
             if all(k in mapping for k in ("time", "deal", "type", "direction", "volume", "price", "profit")):
                 found = (ws.title, ridx, mapping, ws)
                 break
-        if found: break
+        if found:
+            break
+
+    # The NQ Precision Bot workbook uses a custom completed-trade ledger rather
+    # than the standard MT5 Deals table. Its adjusted PnL is the final cost-aware
+    # value; Broker Net is retained for reconciliation, not added to it.
     if not found:
+        custom_aliases = {
+            "entry_time": {"entry_time"}, "exit_time": {"exit_time"},
+            "direction": {"direction", "side"}, "volume": {"volume", "lots"},
+            "entry_price": {"entry_price"}, "exit_price": {"exit_price"},
+            "broker_net": {"broker_net"}, "adjusted_net": {"adj_net_p_l", "adj_net_pnl", "adjusted_net", "adjusted_net_p_l"},
+            "exit_reason": {"exit", "exit_reason"},
+        }
+        custom = None
+        for ws in wb.worksheets:
+            for ridx, row in enumerate(ws.iter_rows(values_only=True), start=1):
+                headers = [norm_header(v) for v in row]
+                mapping = {}
+                for key, opts in custom_aliases.items():
+                    for idx, h in enumerate(headers):
+                        if h in opts:
+                            mapping[key] = idx
+                            break
+                if all(k in mapping for k in ("entry_time", "exit_time", "direction", "volume",
+                                               "entry_price", "exit_price", "broker_net", "adjusted_net")):
+                    custom = (ws.title, ridx, mapping, ws)
+                    break
+            if custom:
+                break
+        if custom:
+            sheet_name, header_row, col, ws = custom
+            events, ignored = [], 0
+            for row in ws.iter_rows(min_row=header_row + 1, values_only=True):
+                entry = parse_datetime(row[col["entry_time"]] if col["entry_time"] < len(row) else None)
+                exit_ = parse_datetime(row[col["exit_time"]] if col["exit_time"] < len(row) else None)
+                if exit_ is None:
+                    ignored += 1
+                    continue
+                broker_net = money(row[col["broker_net"]] if col["broker_net"] < len(row) else 0)
+                adjusted_net = money(row[col["adjusted_net"]] if col["adjusted_net"] < len(row) else 0)
+                direction = str(row[col["direction"]] if col["direction"] < len(row) else "").strip()
+                exit_reason = str(row[col["exit_reason"]] if "exit_reason" in col and col["exit_reason"] < len(row) else "").strip()
+                events.append(base_event(
+                    timestamp=exit_, entry_timestamp=entry, strategy=strategy, platform="MT5",
+                    instrument=str(settings.get("report_symbol", "USTEC")),
+                    side=direction, quantity=number(row[col["volume"]] if col["volume"] < len(row) else 0),
+                    net_pnl=adjusted_net, gross_pnl=broker_net,
+                    commission=0.0, swap=0.0, cost_adjustment=adjusted_net - broker_net,
+                    event_type="completed_trade", is_closed_trade=True,
+                    source_file=path.name, deal_id=str(len(events) + 1), exit_reason=exit_reason,
+                ))
+            out = pd.DataFrame(events)
+            wb.close()
+            if out.empty:
+                raise ValueError(f"Custom MT5 trade ledger found on {sheet_name} row {header_row}, but no trades parsed.")
+            adjusted_sum = float(out["net_pnl"].sum())
+            broker_sum = float(out["gross_pnl"].sum())
+            reported = money(settings.get("reported_total_net_profit"))
+            info = {
+                "parser": "MT5 custom NQ Precision Bot XLSX completed-trade ledger",
+                "sheet": sheet_name, "header_row_1_based": int(header_row),
+                "parsed_trade_rows": int(len(out)), "ignored_rows_after_header": int(ignored),
+                "first_event": out["timestamp"].min().isoformat(), "last_event": out["timestamp"].max().isoformat(),
+                "profit_semantics": "Adj. Net P&L is used as final net PnL; Broker Net is retained for reconciliation.",
+                "settings": settings,
+                "broker_net_sum_usd": broker_sum, "adjusted_net_sum_usd": adjusted_sum,
+                "modeled_cost_adjustment_sum_usd": adjusted_sum - broker_sum,
+                "reported_total_net_profit_usd": reported,
+                "adjusted_net_reconciliation": {
+                    "difference": adjusted_sum - reported,
+                    "matches_within_5c": abs(adjusted_sum - reported) <= 0.05,
+                } if reported else None,
+                "instruments": [str(settings.get("report_symbol", "USTEC"))],
+                "timezone": "Broker/server timestamps as exported; no timezone conversion applied.",
+            }
+            return out, info
         wb.close()
-        raise ValueError("Could not locate MT5 Deals header (Time/Deal/Type/Direction/Volume/Price/Profit).")
+        raise ValueError("Could not locate standard MT5 Deals table or custom NQ Precision Bot trade ledger.")
+
     sheet_name, header_row, col, ws = found
     events, ignored = [], 0
     for row in ws.iter_rows(min_row=header_row + 1, values_only=True):
@@ -202,7 +304,7 @@ def parse_mt5(path: Path, strategy: str) -> tuple[pd.DataFrame, dict[str, Any]]:
         events.append(base_event(
             timestamp=t, strategy=strategy, platform="MT5", instrument=symbol,
             side=typ, quantity=vol, net_pnl=gross + comm + swap,
-            gross_pnl=gross, commission=comm, swap=swap,
+            gross_pnl=gross, commission=comm, swap=swap, cost_adjustment=0.0,
             event_type="deal_cashflow",
             is_closed_trade=("out" in direction or "inout" in direction or gross != 0),
             source_file=path.name, deal_id=str(deal), balance_after_deal=bal,
@@ -210,14 +312,26 @@ def parse_mt5(path: Path, strategy: str) -> tuple[pd.DataFrame, dict[str, Any]]:
         ))
     wb.close()
     out = pd.DataFrame(events)
-    if out.empty: raise ValueError(f"Deals header found on {sheet_name} row {header_row}, but no trade deals parsed.")
+    if out.empty:
+        raise ValueError(f"Deals header found on {sheet_name} row {header_row}, but no trade deals parsed.")
+    balance_values = out["balance_after_deal"].replace(0, np.nan).dropna() if "balance_after_deal" in out else pd.Series(dtype=float)
+    final_balance = float(balance_values.iloc[-1]) if len(balance_values) else None
+    initial = money(settings.get("initial_deposit"))
+    net_sum = float(out["net_pnl"].sum())
+    balance_check = None
+    if final_balance is not None and initial:
+        delta = final_balance - initial
+        balance_check = {"initial_deposit": initial, "final_balance": final_balance,
+                         "balance_change": delta, "sum_deal_cashflows": net_sum,
+                         "difference": net_sum - delta, "matches_within_5c": abs(net_sum - delta) <= 0.05}
     info = {
         "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
         "sheet": sheet_name, "header_row_1_based": int(header_row),
         "parsed_deal_events": int(len(out)), "ignored_rows_after_header": int(ignored),
         "first_event": out["timestamp"].min().isoformat(), "last_event": out["timestamp"].max().isoformat(),
         "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
-        "settings": settings, "instruments": sorted(out["instrument"].dropna().astype(str).unique().tolist()),
+        "settings": settings, "balance_reconciliation": balance_check,
+        "instruments": sorted(out["instrument"].dropna().astype(str).unique().tolist()),
         "timezone": "Broker/server timestamps as exported; no timezone conversion applied.",
     }
     return out, info
@@ -249,6 +363,7 @@ def curve_metrics(events: pd.DataFrame) -> dict[str, Any]:
         "gross_profit_column_sum_usd": float(events["gross_pnl"].sum()),
         "commission_cashflow_sum_usd": float(events["commission"].sum()),
         "swap_cashflow_sum_usd": float(events["swap"].sum()),
+        "modeled_cost_adjustment_sum_usd": float(events["cost_adjustment"].sum()) if "cost_adjustment" in events else 0.0,
         "daily_profit_factor": pf, "daily_sharpe_252": sharpe, "max_drawdown_usd": maxdd,
         "net_profit_to_max_drawdown": float(net / maxdd) if maxdd > 0 else (float("inf") if net > 0 else 0.0),
         "positive_active_month_share": float((active_months > 0).mean()) if len(active_months) else 0.0,
