@@ -2,31 +2,19 @@
 
 **9 of 9 exports parsed**
 
-## Equity curve dashboard
+## Snapshot
 
-![NT8 strategy dashboard](charts/individual/strategy_dashboard.png)
+| Portfolio | Net PnL | Max drawdown | Daily PF | Daily Sharpe |
+|---|---:|---:|---:|---:|
+| All 9 exports | $1,461,906.64 | $52,279.64 | 1.69 | 2.69 |
+| Core 4 shortlist | $851,931.96 | $32,485.88 | 1.64 | 2.46 |
 
-## Portfolio curves
+## Core shortlist
 
-**All NT8 exports combined**
-
-![All NT8 strategies](charts/portfolios/all_strategies.png)
-
-**Recommended shortlist**
-
-![NT8 recommended strategies](charts/portfolios/recommended_strategies.png)
-
-## Individual strategy curves
-
-- [Gold ORB (RBE)](charts/individual/gold-orb-rbe.png)
-- [Vault Break](charts/individual/vault-break.png)
-- [VWAP Pullback](charts/individual/vwap-pullback.png)
-- [Overnight Bias ORB](charts/individual/overnight-bias-orb.png)
-- [Open Drive](charts/individual/open-drive.png)
-- [NQ Precision Bot](charts/individual/nq-precision-bot.png)
-- [Opening-Shock Continuation](charts/individual/opening-shock-continuation.png)
-- [Sigma ORB](charts/individual/sigma-orb.png)
-- [Flash ORB](charts/individual/flash-orb.png)
+- Overnight Bias ORB
+- Sigma ORB
+- Gold ORB (RBE)
+- Vault Break
 
 ## Reports
 
@@ -41,4 +29,30 @@
 - [Selection rationale](reports/recommendations.md)
 - [Build summary](reports/summary.json)
 
-NT8 source is NinjaTrader Strategy Analyzer CSV. The Profit field is net of exported Commission; do not subtract commission again. All 9 exports' summed Profit values match their final Cum. net profit. Curves use exported contract quantities and USD PnL. Timestamps are retained as exported.
+NT8 source is NinjaTrader Strategy Analyzer CSV. The Profit field is net of exported Commission; do not subtract commission again. All 9 exports' summed Profit values match their final Cum. net profit. Curves use exported contract quantities and USD PnL. RBE uses MGC; the other eight exports use NQ. Timestamps are retained as exported.
+
+## Equity curves
+
+### Individual-strategy dashboard
+
+![NT8 strategy dashboard](charts/individual/strategy_dashboard.png)
+
+### All strategies combined
+
+![All NT8 strategies](charts/portfolios/all_strategies.png)
+
+### Core shortlist
+
+![NT8 recommended strategies](charts/portfolios/recommended_strategies.png)
+
+### Individual curves
+
+- [Gold ORB (RBE)](charts/individual/gold-orb-rbe.png)
+- [Vault Break](charts/individual/vault-break.png)
+- [VWAP Pullback](charts/individual/vwap-pullback.png)
+- [Overnight Bias ORB](charts/individual/overnight-bias-orb.png)
+- [Open Drive](charts/individual/open-drive.png)
+- [NQ Precision Bot](charts/individual/nq-precision-bot.png)
+- [Opening-Shock Continuation](charts/individual/opening-shock-continuation.png)
+- [Sigma ORB](charts/individual/sigma-orb.png)
+- [Flash ORB](charts/individual/flash-orb.png)
