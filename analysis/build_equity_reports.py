@@ -152,7 +152,7 @@ def extract_mt5_settings(wb) -> dict[str, Any]:
         "total_trades": "reported_total_trades",
     }
     for ridx, row in enumerate(ws.iter_rows(values_only=True), start=1):
-        if ridx > 100:
+        if ridx > 50:
             break
         vals = list(row)
         for i, value in enumerate(vals):
@@ -173,7 +173,7 @@ def extract_mt5_settings(wb) -> dict[str, Any]:
                 next_value = next((vals[j] for j in range(i + 1, len(vals)) if vals[j] is not None and str(vals[j]).strip()), None)
                 if next_value is not None:
                     dest = labels[key]
-                    settings[dest] = money(next_value) if dest in {
+                    settings[dest] = (money(str(next_value).replace("%", "")) if dest == "reported_win_rate" else money(next_value)) if dest in {
                         "initial_deposit", "starting_balance", "ending_equity", "reported_total_net_profit",
                         "reported_profit_factor", "reported_win_rate", "reported_total_trades"
                     } else str(next_value).strip()
