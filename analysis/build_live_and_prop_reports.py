@@ -950,12 +950,42 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
                   f'  - Pass rate: {float(challenge[pass_col]):.1%}',
                   f'  - Evaluation hard-breach rate: {float(challenge["evaluation_hard_breach_rate"]):.1%}' if "evaluation_hard_breach_rate" in challenge else "  - Evaluation hard-breach rate: unavailable",
                   f'  - Funded hard-breach rate (conditional on funding): {float(challenge[breach_col]):.1%}']
+        for key,label in [
+            ("effective_risk_after_micro_sizing_usd","Effective risk after minimum-micro sizing"),
+            ("median_days_to_evaluation_pass","Median trading days to eligible evaluation pass"),
+            ("median_days_to_phase1","Median trading days to Phase 1 pass"),
+            ("median_days_to_phase2","Median trading days to Verification pass"),
+            ("median_days_to_first_payout_from_start","Median trading days to first payout"),
+            ("median_days_to_first_reward_from_start","Median trading days to first FTMO reward"),
+            ("expected_first_reward_usd","Expected first FTMO reward across all paths"),
+            ("median_first_reward_usd_conditional","Median FTMO reward on successful paths"),
+        ]:
+            if key in challenge.index and pd.notna(challenge[key]):
+                lines.append(f'  - {label}: {float(challenge[key]):,.1f}' if "days" in key else f'  - {label}: USD {float(challenge[key]):,.2f}')
     lines += ["","## Funded candidate"]
     if funded is not None:
         lines += [f'- **{funded["book"]}** ({funded["strategies"]})',
                   f'  - Conditional first-payout rate: {float(funded[conditional_col]):.1%}' if conditional_col in funded else "  - Conditional first-payout rate: unavailable",
                   f'  - Funded hard-breach rate (conditional on funding): {float(funded[breach_col]):.1%}']
+        for key,label in [
+            ("effective_risk_after_micro_sizing_usd","Effective risk after minimum-micro sizing"),
+            ("survival_90d_conditional_approx","Approximate 90-trading-day funded survival"),
+            ("first_payout_net_usd_median_conditional","Median first net payout on successful paths"),
+            ("first_payout_net_usd_mean","Expected first net payout across all paths"),
+            ("total_net_payout_cash_mean","Expected total net payout cash across all paths"),
+            ("payout_count_mean","Mean payout count over the horizon"),
+            ("median_days_to_first_payout_from_start","Median trading days to first payout"),
+            ("median_days_to_first_reward_from_start","Median trading days to first FTMO reward"),
+        ]:
+            if key in funded.index and pd.notna(funded[key]):
+                if "days" in key:
+                    lines.append(f'  - {label}: {float(funded[key]):,.1f}')
+                elif "survival" in key:
+                    lines.append(f'  - {label}: {float(funded[key]):.1%}')
+                else:
+                    lines.append(f'  - {label}: USD {float(funded[key]):,.2f}')
     lines += ["","## Near-floor recovery",recovery_candidate,
+              "","Recovery outputs are balance-only; the Tradeify $53,000 target does not enforce payout consistency, five $150 winning days or payout processing.",
               "","These are simulated candidates, not live-deployment approvals. Use the full risk ladder and rule assumptions in the CSV/JSON reports."]
     (reports/"book_recommendations.md").write_text("\n".join(lines),encoding="utf-8")
 
