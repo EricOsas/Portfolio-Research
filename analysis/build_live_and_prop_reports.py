@@ -337,7 +337,8 @@ def build_books(rmat, active):
         selected[cat] = chosen
     return df, selected, train_idx, val_idx
 
-def sample_block_paths(values, active, n_sims=N_SIMS, horizon=HORIZON, block=BLOCK, seed=SEED):
+def sample_block_paths(values, active, n_sims=N_SIMS, horizon=HORIZON, block=BLOCK,
+                       seed=SEED, date_index=None):
     values = np.asarray(values, dtype=float)
     active = np.asarray(active, dtype=bool)
     if len(values) == 0:
@@ -345,8 +346,19 @@ def sample_block_paths(values, active, n_sims=N_SIMS, horizon=HORIZON, block=BLO
     rng = np.random.default_rng(seed)
     block = max(1, min(block, len(values)))
     nblocks = int(math.ceil(horizon / block))
-    starts = rng.integers(0, len(values), size=(n_sims, nblocks))
     offsets = np.arange(block)
+    # Sample complete Monday-Friday blocks where dates are available. This
+    # preserves weekly activity and weekday structure rather than starting
+    # each five-day block on an arbitrary weekday.
+    if date_index is not None and block == 5 and len(date_index) == len(values):
+        dates = pd.DatetimeIndex(date_index)
+        candidates = np.flatnonzero((dates.weekday == 0) &
+                                    (np.arange(len(values)) + block <= len(values)))
+    else:
+        candidates = np.arange(max(1, len(values) - block + 1))
+    if len(candidates) == 0:
+        candidates = np.arange(len(values))
+    starts = rng.choice(candidates, size=(n_sims, nblocks), replace=True)
     indices = (starts[:,:,None] + offsets[None,None,:]) % len(values)
     indices = indices.reshape(n_sims, -1)[:,:horizon]
     return values[indices], active[indices]
@@ -661,9 +673,12 @@ def microscalping_stats(trades):
 def weekly_activity_ok(active):
     if len(active) < 5:
         return False
-    weekly = active.astype(int).resample("W-FRI").sum()
-    weekly = weekly[weekly.index <= active.index.max()]
-    return bool(len(weekly) and (weekly > 0).all())
+    # Ignore incomplete first/last calendar weeks in the validation window.
+    flags = active.astype(int)
+    weekly = flags.resample("W-FRI").sum()
+    weekdays = flags.resample("W-FRI").size()
+    full_weeks = weekly[weekdays >= 5]
+    return bool(len(full_weeks) and (full_weeks > 0).all())
 
 def max_concurrent_mini_equiv(trades, combo, sizes):
     events = []
