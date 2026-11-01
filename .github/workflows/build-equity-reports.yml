@@ -15,7 +15,7 @@ permissions:
 
 concurrency:
   group: portfolio-research-build-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -47,7 +47,9 @@ jobs:
           git add NT8 MT5 Normalized-Live Prop-Firms reports
           if ! git diff --cached --quiet; then
             git commit -m "chore: refresh platform equity reports [skip ci]"
-            git push
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
           else
             echo "No report changes to commit."
           fi
