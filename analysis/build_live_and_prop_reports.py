@@ -572,6 +572,7 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
         "funded_first_payout_rate_conditional": float(first_payout[reached_funded].mean()) if reached_funded.any() else 0.0,
         "challenge_to_first_payout_rate": float(first_payout.mean()),
         "funded_hard_breach_rate": float(fail_funded.mean()),
+        "funded_hard_breach_rate_conditional": float(fail_funded[reached_funded].mean()) if reached_funded.any() else 0.0,
         "evaluation_hard_breach_rate": float(fail_eval.mean()),
         "evaluation_soft_dll_hit_days_mean": float(eval_dll_hits.mean()),
         "daily_loss_soft_breach_days_mean": float(dll_hits.mean()),
@@ -717,6 +718,7 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
     conditional_col=("funded_first_payout_rate_conditional" if "funded_first_payout_rate_conditional" in base.columns
                      else "funded_first_reward_rate_conditional")
     ranking=base.sort_values(payout_col,ascending=False).copy()
+    ranking["funded_score"]=ranking[conditional_col].astype(float)*(1.0-ranking[breach_col].astype(float)) if conditional_col in ranking.columns else 0.0
     ranking.to_csv(reports/"book_rankings.csv",index=False)
 
     top_books=ranking["book"].head(3).tolist()
@@ -775,7 +777,7 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
             plt.close(fig)
 
     challenge=ranking.iloc[0] if len(ranking) else None
-    funded=base.sort_values(conditional_col,ascending=False).iloc[0] if len(base) and conditional_col in base.columns else challenge
+    funded=base.assign(funded_score=base[conditional_col].astype(float)*(1.0-base[breach_col].astype(float))).sort_values("funded_score",ascending=False).iloc[0] if len(base) and conditional_col in base.columns else challenge
     recovery_candidate="No active book met the near-floor recovery threshold; preserve the account rather than force trades."
     if not recovery_df.empty:
         near_cushion=100.0 if "FTMO" in title else 200.0
@@ -1002,7 +1004,7 @@ def run_platform(platform):
         tradeify_recovery_df.to_csv(tradeify_dir/"reports"/"recovery_mode.csv",index=False)
         build_prop_outputs(tradeify_dir,tradeify_df,tradeify_recovery_df,
             "requested_risk_per_book_trade_usd",500.0,"evaluation_pass_rate",
-            "challenge_to_first_payout_rate","funded_hard_breach_rate",
+            "challenge_to_first_payout_rate","funded_hard_breach_rate_conditional",
             "Tradeify $50k Growth futures",
             eligibility_cols=["position_limit_compliant","microscalping_eligible","weekly_activity_eligible"],
             stress_filter="evaluation_consistency_variant")
