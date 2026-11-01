@@ -413,7 +413,9 @@ def simulate_ftmo(paths, active, risk):
             fail_daily |= daily_bad
             fail_max |= max_bad
             phase[daily_bad | max_bad] = 4
-            claim = funded_mask & (phase == 3) & (funded_age >= 10) & (eq >= 20.0) & (reward_day < 0)
+            # Count only rewards whose four-business-day processing completes
+            # inside the 252-trading-day simulation horizon.
+            claim = funded_mask & (phase == 3) & (funded_age >= 10) & (eq >= 20.0) & (reward_day < 0) & ((d + 4) < h)
             if claim.any():
                 reward_day[claim] = d + 4
                 reward[claim] = 0.80 * eq[claim]
