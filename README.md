@@ -9,6 +9,7 @@ Research workspace for the NT8 futures and MT5 CFD strategy exports. Raw export 
 - [Normalized live-account research](Normalized-Live/README.md) ([methodology](Normalized-Live/methodology.md))
 - [Prop-firm research](Prop-Firms/README.md) ([methodology](Prop-Firms/methodology.md))
 - [Strategy, per-sleeve roles and book suitability](reports/strategy_suitability.md)
+- [NQ minute archive data audit](reports/nq_minute_data_audit.md)
 - [Latest raw build summary](reports/run_summary.json)
 - [Raw export analysis engine](analysis/build_equity_reports.py)
 - [Normalized and prop-firm engine](analysis/build_live_and_prop_reports.py)
@@ -67,7 +68,7 @@ Tradeify Growth evaluation has no consistency rule. The funded model applies the
 - All 9 standard MT5 Strategy Tester reports reconcile deal Profit + Commission + Swap to final balance minus initial deposit.
 - MT5 NQ Precision Bot uses its custom completed-trade ledger; Adj. Net P&L reconciles to the report's Total Net Profit.
 - The MT5 RBE Deals table has no position ID and contains overlapping positions. Entry/exit legs are paired by symbol/side and exact volume where possible, with FIFO fallback. Cashflows reconcile, but RBE duration and trade-level risk estimates retain pairing uncertainty.
-- Export history spans 2020 through 30 October 2026. These are trade-export analyses, not a new NQ minute-bar backtest.
+- Export history spans 2020 through 30 October 2026. The separate NQ M1 archive has now been decoded and audited, but the normalized/prop reports remain export-based; no independent strategy replay from M1 bars has yet been run. Raw market data and converted bars are not committed to this public repository.
 
 ## Methodology and limits
 
