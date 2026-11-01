@@ -51,7 +51,7 @@ Modeled account rules:
 
 The current dedicated Growth evaluation guide explicitly states no evaluation consistency rule. The 35% consistency rule applies to Growth Sim Funded payout eligibility, not evaluation.
 
-Risk ladder: USD 100, 250, 500 and 750 requested total book risk per trade. The recommendation ranking uses USD 250 as its base comparison because it is the lowest requested level that consistently expresses the minimum executable one-micro-per-sleeve book in the leading eligible pair. Because each active sleeve must use at least one micro, actual risk can exceed or differ from the requested amount. The report shows effective risk after micro sizing and maximum concurrent mini-equivalent exposure. Compare the full risk ladder in the Monte Carlo CSV.
+Risk ladder: USD 100, 250, 500 and 750 requested total book risk per trade. The recommendation ranking uses USD 100 as its minimum requested-risk baseline. Because each active sleeve must use at least one micro, the leading eligible pair's effective risk is approximately USD 237 per book trade even at the USD 100 request; the USD 250 request produces the same minimum micro sizing. Actual risk can exceed or differ from the requested amount. The report shows effective risk after micro sizing and maximum concurrent mini-equivalent exposure. Compare the full risk ladder in the Monte Carlo CSV.
 
 The NT8 MAE report measures one-micro-per-sleeve adverse-excursion stress. Same-entry-day MAEs are stacked conservatively; this is not a synchronized intraday replay. It is intended to flag possible daily-loss pauses, not predict exact breach timing.
 
