@@ -32,7 +32,6 @@ Modeled account objectives:
 - Cash withdrawal pays 80% of reference-period profit. After approval, a new reference period starts with the account reset to initial capital; prior period profits/losses are cleared unless some reward is rolled over. The model assumes cash withdrawal and excludes rollover.
 - First Reward Day: day 14 or later after the first funded trade; the simulation approximates this as 10 elapsed trading days (the 11th sampled business day counting the first-trade day).
 - Four business days approximate review and payment processing. Trading is frozen during that processing interval; trading resumes in the new reference period after approval.
-- The cash-withdrawal scenario pays 80% of reference-period profit and resets the new reference period to initial capital. The rollover option is not simulated; only the first reward is counted, although post-reward drawdown risk continues from the reset balance.
 - The model advances from one evaluation phase to the next on the following simulated trading day; FTMO's review and KYC/activation delays are not included.
 - Minimum closed profit: USD 20 for bank transfer. A four-business-day review/processing delay is applied.
 
@@ -91,6 +90,7 @@ Rules checked on 2026-11-01. These official pages define the modeled account ver
 - [FTMO 2-Step Challenge objectives](https://ftmo.com/en/2-step-challenge/)
 - [FTMO Trading Objectives](https://ftmo.com/en/trading-objectives/)
 - [FTMO reward withdrawal process](https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/)
+- [FTMO Account Terms and Conditions](https://ftmo.com/en/terms-and-conditions/) — Reference Period and Reward reset provisions
 - [FTMO phase review process](https://ftmo.com/faq/i-have-successfully-passed-what-to-do-now/)
 - [Tradeify Growth Evaluation rules](https://help.tradeify.co/en/articles/10495915-growth-evaluation-accounts)
 - [Tradeify Essential Trading Rules](https://help.tradeify.co/en/articles/12268167-essential-trading-rules-overview)
