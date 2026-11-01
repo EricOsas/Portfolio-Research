@@ -156,7 +156,7 @@ Both firms use 5,000 Monte Carlo paths over 252 trading days, with five-day bloc
 
 ### FTMO — USD 10,000 2-Step CFD
 
-Modeled account rules: 10% Phase 1 target, 5% Verification target, USD 500 equity-based daily loss, USD 1,000 static maximum-loss floor, at least four trading days in each phase, 80% reward split, and first reward request after the 14-day waiting period. The model uses 10 elapsed trading days (the 11th sampled business day counting the first-trade day) as the waiting-period approximation and four business days for reward review/payment processing.
+Modeled account rules: 10% Phase 1 target, 5% Verification target, USD 500 equity-based daily loss, USD 1,000 static maximum-loss floor, at least four trading days in each phase, and an 80% reward split. The first Reward Day is approximated as 10 elapsed trading days (the 11th sampled business day counting the first-trade day); four business days are reserved for review/payment with trading frozen. Cash withdrawal resets the next reference period to initial capital; rollover is not modeled and only the first reward is counted.
 
 **Selected book:** Gold ORB (RBE) + Open Drive + Overnight Bias ORB + Tokyo Coil.  
 **Risk:** USD 50 total per book trade, split equally across the four sleeves. Minimum CFD lot sizes are not enforced.
