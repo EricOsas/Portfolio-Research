@@ -27,7 +27,8 @@ Compare strategy sleeves and books on a common, balance-free equity basis for or
 - Curves start at USD 0. No starting balance or account capital is added.
 - Individual sleeves and all one-to-four-sleeve combinations are measured.
 - Portfolio PnL is the sum of the normalized sleeve PnLs. It does not assume that every strategy can always be executed simultaneously.
-- Strategy book selection uses a chronological 60% training / 40% validation split. Each sleeve's R unit is calibrated on the training segment and held fixed for validation.
+- Strategy book selection uses one chronological 60% training / 40% validation split. Each sleeve's R unit is calibrated on the training segment and held fixed for validation.
+- This is a single holdout, not a multi-fold rolling walk-forward test; it is a screening stage, not final robustness certification.
 - In `all_book_combinations.csv`, train/validation R metrics are the average constituent-sleeve R (`sum of sleeve R / number of sleeves`) so books of different sizes can be ranked comparably.
 - Category book rankings are screening candidates; they are not optimized live portfolios.
 
