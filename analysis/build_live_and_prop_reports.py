@@ -828,6 +828,31 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
 
 def run_platform(platform):
     trades, pairing_quality = load_platform_trades(platform)
+    # Freeze the R/$100 sizing proxy using training-period losses only.
+    # Apply that fixed calibration to the later validation period.
+    trades["risk_unit_full_sample"] = trades["risk_unit"]
+    dates = pd.bdate_range(trades["exit_date"].min(), trades["exit_date"].max())
+    cut = max(1, min(len(dates)-1, int(len(dates)*0.60)))
+    train_end = dates[cut-1]
+    for strategy, idx in trades.groupby("strategy").groups.items():
+        train_trades = trades.loc[idx]
+        train_trades = train_trades[train_trades["exit_date"] <= train_end]
+        losses = train_trades["native_pnl"]
+        losing = losses[losses < 0]
+        unit = abs(float(losing.mean())) if len(losing) else float(losses.abs().median())
+        if not np.isfinite(unit) or unit <= 0:
+            unit = float(losses.abs().mean()) if len(losses) else 1.0
+        if not np.isfinite(unit) or unit <= 0:
+            unit = 1.0
+        trades.loc[idx, "risk_unit"] = unit
+        trades.loc[idx, "r_multiple"] = trades.loc[idx, "native_pnl"] / unit
+        trades.loc[idx, "live_pnl"] = (trades.loc[idx, "r_multiple"] * 100.0
+                                         if platform == "MT5" else trades.loc[idx, "native_pnl"])
+        trades.loc[idx, "risk_unit_basis"] = (
+            "training-sample mean absolute losing trade PnL per contract"
+            if platform == "NT8" else
+            "training-sample mean absolute losing trade PnL proxy; $100 = 1R"
+        )
     dates, rmat, livemat, activemat = make_matrices(trades)
     combo_df, selected, train_idx, val_idx = build_books(rmat,activemat)
     out = LIVE_ROOT / platform
@@ -846,7 +871,9 @@ def run_platform(platform):
         strat_rows.append({
             "strategy":strategy,"platform":platform,"instrument":"; ".join(sorted(t["instrument"].dropna().astype(str).unique())),
             "trades":len(t),"first_trade":str(t["entry_timestamp"].min()),"last_trade":str(t["exit_timestamp"].max()),
-            "mean_loss_risk_proxy":float(t["risk_unit"].iloc[0]),"risk_unit_basis":str(t["risk_unit_basis"].iloc[0]),
+            "mean_loss_risk_proxy":float(t["risk_unit"].iloc[0]),
+            "mean_loss_risk_proxy_full_sample":float(t["risk_unit_full_sample"].iloc[0]),
+            "risk_unit_basis":str(t["risk_unit_basis"].iloc[0]),
             "expectancy_R":float(t["r_multiple"].mean()),"win_rate":float((t["native_pnl"]>0).mean()),
             "duration_median_seconds":float(t["duration_seconds"].median()),
             "trade_share_over_10s":ms["trade_share_over_10s"],"profit_share_over_10s":ms["profit_share_over_10s"],
@@ -949,7 +976,8 @@ def run_platform(platform):
                 res=simulate_ftmo(paths,actpaths,risk)
                 ftmo_rows.append({"book":cname,"strategies":" + ".join(combo),"risk_per_book_trade_usd":risk,**res})
         else:
-            t=trades[trades["strategy"].isin(combo)]
+            t=trades[trades["strategy"].isin(combo) &
+                     trades["exit_date"].between(validation_idx.min(), validation_idx.max())]
             micro=microscalping_stats(t)
             week_ok=weekly_activity_ok(active)
             for risk in TRADEIFY_RISKS:
@@ -1095,9 +1123,10 @@ def run_platform(platform):
         "platform":platform,"trade_count":int(len(trades)),"strategies":all_names,
         "source_timezone":"Preserved as exported; no conversion performed.",
         "mt5_pairing_quality":pairing_quality,
-        "risk_unit":"Mean absolute realized losing-trade PnL. NT8 first converted to one-contract PnL; MT5 uses exported position-level PnL. This is a reproducible loss-normalization proxy, not guaranteed to equal the strategy's initial stop risk.",
+        "risk_unit":"Mean absolute realized losing-trade PnL calibrated on the first 60% training period, then held fixed for validation. NT8 is first converted to one-contract PnL; MT5 uses exported position-level PnL. This is a reproducible loss-normalization proxy, not guaranteed to equal the strategy's initial stop risk.",
+        "risk_unit_full_sample":"Also retained in the trade ledger for comparison; not used for validation sizing.",
         "mt5_standard_deals":"No position ID is present in the standard Deals tables. Entry/exit legs are paired by symbol and opposite side, exact volume match first, FIFO fallback; RBE has overlapping positions and residual pairing uncertainty.",
-        "live_sizing":"NT8 = one contract equivalent per strategy. MT5 = $100 per trade at 1R based on mean realized loss.",
+        "live_sizing":"NT8 = one contract equivalent per strategy. MT5 = $100 per trade at 1R based on the training-sample mean realized loss; that sizing is held fixed across the history.",
         "limitations":["Exported closed trades do not contain a complete intratrade equity path.",
                        "FTMO daily/max loss is equity-based; MT5 simulations use closed-PnL paths and are optimistic for floating-loss breaches.",
                        "Tradeify EOD trailing drawdown is modeled from daily closes. The $1,250 soft DLL is approximated by clipping closed daily losses; NT8 MAE is a separate stress diagnostic.",
