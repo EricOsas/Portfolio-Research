@@ -15,7 +15,7 @@
 - The 252-day rates are probabilities within a one-trading-year simulation horizon, not lifetime pass/payout probabilities.
 - The 5,000 paths quantify variability under resampled historical daily returns; they do not prove the future distribution will match history. Monte Carlo sampling error is smaller than this model/data uncertainty. Full calendar-week blocks preserve the weekly activity structure.
 - Common bootstrap block samples are used across each firm's risk ladder for a given book, making position-size comparisons less noisy.
-- Tradeify weekly activity is checked on complete Monday-Friday validation weeks. Bootstrap blocks are aligned to those weeks, so simulated weeks preserve the observed activity pattern. Weekly activity and microscalping are funded payout-eligibility rules, not evaluation pass conditions. Books that breach the four-mini position cap are not treated as executable. Microscalping eligibility is checked on validation trades; missing durations count as not qualifying for the over-10-second rule.
+- Tradeify weekly activity is checked on complete Monday-Friday validation weeks and applies during both evaluation and funded trading. Bootstrap blocks are aligned to those weeks, so simulated weeks preserve the observed activity pattern. Books that fail weekly activity or breach the four-mini position cap are not counted as eligible evaluation passes. Microscalping is a funded payout-eligibility rule; it is checked on validation trades, and missing durations count as not qualifying for the over-10-second rule.
 
 ## FTMO — USD 10,000 Standard 2-Step CFD
 
@@ -29,6 +29,7 @@ Modeled account objectives:
 - Default reward split: 80%.
 - The modeled cash-withdrawal case pays 80% of the requested profit and leaves 20% in the funded account. FTMO's rollover option is not simulated.
 - First reward request: day 14 or later after the first funded trade; the simulation allows 10 elapsed trading days (the 11th sampled business day counting the first-trade day) as an approximation.
+- The model advances from one evaluation phase to the next on the following simulated trading day; FTMO's review and KYC/activation delays are not included.
 - Minimum closed profit: USD 20 for bank transfer. A four-business-day review/processing delay is applied.
 
 Risk ladder: USD 25, 50, 75 and 100 total book risk per trade, divided equally across sleeves. Sizing is continuous; instrument-specific minimum lot sizes are not enforced and must be checked against FTMO symbol specifications.
@@ -40,7 +41,8 @@ The model does not reconstruct intratrade floating losses, news restrictions, ov
 Modeled account rules:
 
 - Evaluation target: USD 3,000.
-- Daily loss limit: USD 1,250, modeled as a soft pause. Closed daily PnL losses are clipped at -$1,250; this is not an intraday replay.
+- Daily loss limit: USD 1,250 initially. Once the funded account reaches USD 53,000 (+6%), the official DLL rises to USD 2,000 from the next trading session.
+- The model clips closed daily PnL at -$1,250 initially and -$2,000 after the threshold. This is not an intraday replay and cannot reconstruct trigger timing or overshoot.
 - End-of-day trailing maximum loss: USD 2,000.
 - Maximum concurrent exposure: four minis / 40 micros; full size is available from day one.
 - At least one micro per active strategy sleeve; sizes are rounded to whole micros.
@@ -83,8 +85,10 @@ Rules checked on 2026-11-01. These official pages define the modeled account ver
 - [FTMO 2-Step Challenge objectives](https://ftmo.com/en/2-step-challenge/)
 - [FTMO Trading Objectives](https://ftmo.com/en/trading-objectives/)
 - [FTMO reward withdrawal process](https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/)
+- [FTMO phase review process](https://ftmo.com/faq/i-have-successfully-passed-what-to-do-now/)
 - [Tradeify Growth Evaluation rules](https://help.tradeify.co/en/articles/10495915-growth-evaluation-accounts)
 - [Tradeify Essential Trading Rules](https://help.tradeify.co/en/articles/12268167-essential-trading-rules-overview)
+- [Tradeify Daily Loss Limit](https://help.tradeify.co/en/articles/10468321-rules-daily-loss-limit)
 - [Tradeify Growth funded payout policy](https://help.tradeify.co/en/articles/11083796-growth-funded-account-payout-policy)
 - [Tradeify consistency rule](https://help.tradeify.co/en/articles/10468320-rules-consistency-rule)
 - [Tradeify trailing drawdown rules](https://help.tradeify.co/en/articles/10495897-rules-trailing-max-drawdowns)
@@ -93,7 +97,9 @@ Rules checked on 2026-11-01. These official pages define the modeled account ver
 
 - Daily PnL is based on completed-trade exits. Intraday floating equity and exact daily-loss pause sequencing are not reconstructed.
 - FTMO 2-Step has a $500 equity-based daily loss and a static $1,000 maximum-loss floor. The model uses closed PnL, so floating-loss breaches remain unobservable.
-- Tradeify's EOD trailing drawdown is modeled from daily closes. The $1,250 soft DLL is approximated by clipping closed daily losses; intraday trigger timing and overshoot are not reconstructed.
+- Tradeify's EOD trailing drawdown is modeled from daily closes. The soft DLL is approximated by clipping closed daily losses at $1,250 initially and $2,000 after the funded balance reaches $53,000; intraday trigger timing and overshoot are not reconstructed.
+- Tradeify payout profitable days and consistency use exit-date daily buckets; export timestamps are not converted to the firm's 6 PM–5 PM ET trading-day boundary, so eligibility can differ from the live platform.
+- FTMO phase review, verification and KYC/activation delays are not simulated; phase transitions occur on the next simulated trading day, so time-to-funded estimates are optimistic.
 - News, hedging/correlated-product restrictions, overnight/session restrictions, broker slippage, margin and exact timezone conversion are not fully tested.
 - MT5 RBE pairing uncertainty is documented in its data-quality report.
 - The risk unit is a training-period realized-loss proxy, not verified initial stop risk. MT5 microscalping eligibility is also checked on the validation sample.
