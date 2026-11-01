@@ -561,7 +561,8 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
     for i in np.where(reached_funded)[0]:
         pass_day = eval_pass_day[i]
         end_day = pass_day + 90
-        survived_90.append(fail_funded_day[i] < 0 or fail_funded_day[i] > end_day)
+        if end_day < h:
+            survived_90.append(fail_funded_day[i] < 0 or fail_funded_day[i] > end_day)
     return {
         "evaluation_pass_rate": float(reached_funded.mean()),
         "funded_first_payout_rate_conditional": float(first_payout[reached_funded].mean()) if reached_funded.any() else 0.0,
@@ -572,10 +573,11 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
         "daily_loss_soft_breach_days_mean": float(dll_hits.mean()),
         "first_payout_net_usd_mean": float(first_payout_cash.mean()),
         "total_net_payout_cash_mean": float(payout_cash.mean()),
-        "first_payout_net_usd_median_conditional": float(np.median(payout_cash[first_payout])) if first_payout.any() else 0.0,
+        "first_payout_net_usd_median_conditional": float(np.median(first_payout_cash[first_payout])) if first_payout.any() else 0.0,
         "any_payout_rate": float((payout_count > 0).mean()),
         "payout_count_mean": float(payout_count.mean()),
-        "survival_90d_conditional_approx": float(np.mean(survived_90)) if survived_90 else 0.0,
+        "survival_90d_conditional_approx": float(np.mean(survived_90)) if survived_90 else np.nan,
+        "survival_90d_observed_sample_count": int(len(survived_90)),
         "microscalping_eligible": bool(microscalp_ok),
         "weekly_activity_eligible": bool(weekly_activity_ok),
         "evaluation_consistency_variant": "35% stress" if eval_consistency else "published Growth base case: no consistency",
@@ -890,7 +892,36 @@ Results are conditional on historical export distributions and the assumptions i
 
     for platform in ["NT8","MT5"]:
         p=LIVE_ROOT/platform
-        (p/"README.md").write_text(f"""# {platform} normalized live research\n\n- [Strategy metrics](reports/strategy_metrics.csv)\n- [All book combinations](reports/all_book_combinations.csv)\n- [Risk-unit correlation](reports/risk_unit_correlation_matrix.csv)\n- [Bootstrap risk of ruin](reports/live_bootstrap_risk_of_ruin.csv)\n\nCharts are collected at the end of this README.\n\n## Equity curves\n\n### Individual sleeves\n\n""" + "\\n".join([f"![{x}]({{}})".format("charts/individual/"+slug(x)+".png") for x in sorted(curves.keys()) if x != "All sleeves"]) + """\n\n### Combined books\n\n![All sleeves](charts/portfolios/all_sleeves.png)\n\n""",encoding="utf-8")
+        metric_path=p/"reports"/"strategy_metrics.csv"
+        strategy_names=pd.read_csv(metric_path)["strategy"].tolist() if metric_path.exists() else []
+        book_path=p/"reports"/"category_book_metrics.csv"
+        books=pd.read_csv(book_path) if book_path.exists() else pd.DataFrame()
+        individual_links="\n".join([f"![{x}](charts/individual/{slug(x)}.png)" for x in strategy_names])
+        combined_links="\n".join([
+            f"![{row.category.title()} book {int(row.rank)}](charts/portfolios/{row.category}_book_{int(row.rank)}.png)"
+            for row in books.itertuples()
+        ])
+        (p/"README.md").write_text(f"""# {platform} normalized live research
+
+- [Strategy metrics](reports/strategy_metrics.csv)
+- [All book combinations](reports/all_book_combinations.csv)
+- [Category book metrics](reports/category_book_metrics.csv)
+- [Risk-unit correlation](reports/risk_unit_correlation_matrix.csv)
+- [Bootstrap risk of ruin](reports/live_bootstrap_risk_of_ruin.csv)
+- [Normalized trade ledger](reports/normalized_trade_ledger.csv)
+
+## Equity curves
+
+### Individual sleeves
+
+{individual_links}
+
+### Combined books
+
+![All sleeves](charts/portfolios/all_sleeves.png)
+
+{combined_links}
+""",encoding="utf-8")
 
     for firm, title, file in [
         ("FTMO-10K-2Step-CFD","FTMO $10,000 2-Step CFD","monte_carlo_challenge_payout.csv"),
