@@ -38,7 +38,7 @@ NT8_FILES = {
 }
 MT5_FILES = {
     "Gold X9": None,
-    "Gold ORB (RBE)": None,
+    "Gold ORB (RBE)": "MT5 RBE Trades.xlsx",
     "Tokyo Coil": "MT5 TokyoCoil Trades.xlsx",
     "Vault Break": "MT5 VaultBreak Trades.xlsx",
     "Overnight Bias ORB": "MT5 OvernightBiasRB Trades.xlsx",
