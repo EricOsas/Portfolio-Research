@@ -116,8 +116,13 @@ def load_platform_trades(platform):
                     max_open = max(max_open, len(opened))
                 elif direction in {"out", "out by", "outby", "close", "exit"}:
                     wanted = "buy" if typ == "sell" else "sell" if typ == "buy" else ""
-                    match_idx = next((i for i, p in enumerate(opened)
-                                      if p["instrument"] == instrument and (not wanted or p["side"] == wanted)), None)
+                    candidates = [i for i, p in enumerate(opened)
+                                  if p["instrument"] == instrument and (not wanted or p["side"] == wanted)]
+                    # Prefer exact volume matches; this helps where two positions overlap.
+                    match_idx = next((i for i in candidates
+                                      if volume and abs(opened[i]["quantity"] - volume) <= 1e-6), None)
+                    if match_idx is None and candidates:
+                        match_idx = candidates[0]
                     if match_idx is None and opened:
                         match_idx = 0
                     if match_idx is None:
@@ -597,31 +602,56 @@ def microscalping_stats(trades):
             "eligible": bool(trade_share > .50 and profit_share > .50)}
 
 def weekly_activity_ok(active):
-    a = active.astype(int)
-    if len(a) < 5: return False
-    weeks = [a.iloc[i:i+5].sum() for i in range(0,len(a)-4,5)]
-    return bool(len(weeks) and min(weeks) >= 1)
+    if len(active) < 5:
+        return False
+    weekly = active.astype(int).resample("W-FRI").sum()
+    weekly = weekly[weekly.index <= active.index.max()]
+    return bool(len(weekly) and (weekly > 0).all())
 
-def max_concurrent_mini_equiv(trades, combo, total_risk):
-    k = len(combo)
-    events = []
+def tradeify_position_weights(trades, combo, requested_total_risk):
+    """One micro minimum, whole-micro sizing, four-mini account cap."""
+    per_sleeve = requested_total_risk / max(1, len(combo))
+    units = {}
+    sizes = {}
     for strategy in combo:
         t = trades[trades["strategy"] == strategy]
-        if t.empty: continue
-        unit = float(t["risk_unit"].iloc[0])
-        per_sleeve_risk = total_risk / k
-        size = per_sleeve_risk / max(unit,1e-9)
-        for _, r in t.iterrows():
-            if pd.isna(r["entry_timestamp"]) or pd.isna(r["exit_timestamp"]): continue
-            events.append((r["entry_timestamp"], 1, size))
-            events.append((r["exit_timestamp"], 0, -size))
-    if not events: return 0.0
-    events.sort(key=lambda x:(x[0],x[1]))
-    exposure=0.0; peak=0.0
-    for _, _, delta in events:
-        exposure += delta
-        peak = max(peak, exposure)
-    return float(peak)
+        unit = float(t["risk_unit"].iloc[0]) if not t.empty else 0.0
+        units[strategy] = max(unit, 1e-9)
+        raw_size = per_sleeve / units[strategy]
+        # Futures micros are 0.1 mini increments. Round down to avoid
+        # exceeding the target risk, but never below one micro.
+        sizes[strategy] = max(0.1, math.floor(raw_size * 10.0 + 1e-9) / 10.0)
+    def exposure_for(size_map):
+        events = []
+        for strategy in combo:
+            t = trades[trades["strategy"] == strategy]
+            for _, r in t.iterrows():
+                if pd.isna(r["entry_timestamp"]) or pd.isna(r["exit_timestamp"]):
+                    continue
+                size = size_map[strategy]
+                events.append((r["entry_timestamp"], 1, size))
+                events.append((r["exit_timestamp"], 0, -size))
+        events.sort(key=lambda x:(x[0],x[1]))
+        current = peak = 0.0
+        for _, _, delta in events:
+            current += delta
+            peak = max(peak, current)
+        return float(peak)
+    exposure = exposure_for(sizes)
+    scale = 1.0
+    if exposure > 4.0:
+        scale = 4.0 / exposure
+        sizes = {s:max(0.1, math.floor(size*scale*10.0+1e-9)/10.0) for s,size in sizes.items()}
+        exposure = exposure_for(sizes)
+    compliant = exposure <= 4.0 + 1e-9
+    weights = {s:sizes[s]*units[s] for s in combo}
+    return weights, sizes, exposure, scale, compliant
+
+def weighted_daily_pnl(rmat, dates, combo, weights):
+    result = pd.Series(0.0, index=dates)
+    for strategy in combo:
+        result = result + rmat.loc[dates, strategy] * weights[strategy]
+    return result
 
 def simulate_recovery(paths, risk, floor, start_cushion, target, daily_limit=None):
     n,h=paths.shape
@@ -754,39 +784,71 @@ def run_platform(platform):
             micro=microscalping_stats(t)
             week_ok=weekly_activity_ok(active)
             for risk in TRADEIFY_RISKS:
-                exposure=max_concurrent_mini_equiv(trades,combo,risk)
-                scale=min(1.0,4.0/exposure) if exposure>0 else 1.0
-                effective=risk*scale
-                res=simulate_tradeify(paths,actpaths,effective,micro["eligible"],week_ok,False)
-                tradeify_rows.append({"book":cname,"strategies":" + ".join(combo),
-                    "requested_risk_per_book_trade_usd":risk,"effective_risk_after_4_mini_cap_usd":effective,
-                    "max_concurrent_mini_equivalent_at_requested_risk":exposure,
-                    "position_limit_scale":scale,**res})
+                weights,sizes,exposure,scale,compliant=tradeify_position_weights(trades,combo,risk)
+                effective=sum(weights.values())
+                book_daily=weighted_daily_pnl(rmat,validation_idx,combo,weights)
+                paths_t,actpaths_t=sample_block_paths(book_daily.values,active.values,seed=SEED+len(tradeify_rows)+300)
+                res=simulate_tradeify(paths_t,actpaths_t,1.0,micro["eligible"],week_ok,False)
+                extra={"book":" + ".join(combo),"strategies":" + ".join(combo),
+                    "requested_risk_per_book_trade_usd":risk,"effective_risk_after_micro_sizing_usd":effective,
+                    "mini_equivalent_per_sleeve":json.dumps(sizes,sort_keys=True),
+                    "max_concurrent_mini_equivalent":exposure,"position_limit_scale":scale,
+                    "position_limit_compliant":compliant}
+                tradeify_rows.append({**extra,**res})
                 # Alternative evaluation-consistency stress case because Tradeify's
                 # pricing reference conflicts with its dedicated Growth rule page.
-                stress=simulate_tradeify(paths,actpaths,effective,micro["eligible"],week_ok,True)
-                tradeify_rows.append({"book":cname,"strategies":" + ".join(combo),
-                    "requested_risk_per_book_trade_usd":risk,"effective_risk_after_4_mini_cap_usd":effective,
-                    "max_concurrent_mini_equivalent_at_requested_risk":exposure,
-                    "position_limit_scale":scale,**stress})
+                stress=simulate_tradeify(paths_t,actpaths_t,1.0,micro["eligible"],week_ok,True)
+                tradeify_rows.append({**extra,**stress})
 
-    # Recovery-mode scenarios use one selected low-volatility book and 25% of its
-    # base risk. A no-trade option is retained as the control.
-    recovery_combo=selected["recovery"][0] if selected["recovery"] else (all_names[0],)
-    recovery_daily=rmat.loc[validation_idx,list(recovery_combo)].sum(axis=1)/len(recovery_combo)
-    recovery_active=activemat.loc[validation_idx,list(recovery_combo)].any(axis=1)
-    rec_paths,rec_act=sample_block_paths(recovery_daily.values,recovery_active.values,
-                                         n_sims=N_SIMS,horizon=HORIZON,seed=SEED+999)
+    # Recovery mode: compare low-complexity one/two-sleeve books with a no-trade
+    # control. Tradeify uses at least one micro per sleeve; FTMO uses $12.50 risk
+    # per book as a conservative recovery setting.
+    rec_candidates = combo_df[combo_df["size"] <= 2].sort_values("recovery_score",ascending=False)
+    recovery_books=[]
+    for _, rr in rec_candidates.iterrows():
+        combo=tuple(rr["strategies"].split(" | "))
+        if rr["train_net_R"] > 0 and combo not in recovery_books:
+            recovery_books.append(combo)
+        if len(recovery_books)==3: break
     if platform=="MT5":
+        for combo in recovery_books:
+            weights={s:12.5/len(combo) for s in combo}
+            recovery_daily=weighted_daily_pnl(rmat,validation_idx,combo,weights)
+            rec_paths,rec_act=sample_block_paths(recovery_daily.values,
+                activemat.loc[validation_idx,list(combo)].any(axis=1).values,
+                n_sims=N_SIMS,horizon=HORIZON,seed=SEED+999+len(recovery_rows))
+            for cushion in [100.0,250.0,500.0,750.0]:
+                res=simulate_recovery(rec_paths,1.0,-1000.0,cushion,0.0,daily_limit=500.0)
+                recovery_rows.append({"firm":"FTMO","book":" + ".join(combo),"risk_usd_per_book_trade":12.5,
+                    "state":"static-floor recovery to initial balance","floor_equity":-1000.0,
+                    "starting_cushion_usd":cushion,"target_equity":0.0,**res})
         for cushion in [100.0,250.0,500.0,750.0]:
-            res=simulate_recovery(rec_paths,12.5,-1000.0,cushion,0.0,daily_limit=500.0)
-            recovery_rows.append({"firm":"FTMO","book":" + ".join(recovery_combo),"risk_usd_per_book_trade":12.5,
-                                  "floor_equity":-1000.0,"starting_cushion_usd":cushion,"target_equity":0.0,**res})
+            recovery_rows.append({"firm":"FTMO","book":"No trade","risk_usd_per_book_trade":0.0,
+                "state":"no-trade control","floor_equity":-1000.0,"starting_cushion_usd":cushion,
+                "target_equity":0.0,"recovery_probability":0.0,"ruin_probability":0.0,
+                "median_days_to_target":np.nan,"mean_terminal_equity":-1000.0+cushion})
     else:
+        for combo in recovery_books:
+            weights={s:0.1*float(trades.loc[trades["strategy"]==s,"risk_unit"].iloc[0]) for s in combo}
+            exposure=max_concurrent_mini_equiv(trades,combo,weights)
+            recovery_daily=weighted_daily_pnl(rmat,validation_idx,combo,weights)
+            rec_paths,rec_act=sample_block_paths(recovery_daily.values,
+                activemat.loc[validation_idx,list(combo)].any(axis=1).values,
+                n_sims=N_SIMS,horizon=HORIZON,seed=SEED+999+len(recovery_rows))
+            for cushion in [200.0,500.0,1000.0,1500.0]:
+                for target in [600.0,3000.0]:
+                    res=simulate_recovery(rec_paths,1.0,100.0,cushion,target,daily_limit=None)
+                    recovery_rows.append({"firm":"Tradeify","book":" + ".join(combo),
+                        "risk_usd_per_book_trade":sum(weights.values()),"state":"post-lock recovery",
+                        "mini_equivalent_exposure":exposure,"floor_equity":100.0,
+                        "starting_cushion_usd":cushion,"target_equity":target,
+                        "target_label":"$500 buffer above locked floor" if target==600.0 else "$53,000 first-payout balance",**res})
         for cushion in [200.0,500.0,1000.0,1500.0]:
-            res=simulate_recovery(rec_paths,25.0,100.0,cushion,3000.0,daily_limit=None)
-            recovery_rows.append({"firm":"Tradeify","book":" + ".join(recovery_combo),"risk_usd_per_book_trade":25.0,
-                                  "floor_equity":100.0,"starting_cushion_usd":cushion,"target_equity":3000.0,**res})
+            recovery_rows.append({"firm":"Tradeify","book":"No trade","risk_usd_per_book_trade":0.0,
+                "state":"no-trade control","floor_equity":100.0,"starting_cushion_usd":cushion,
+                "target_equity":600.0,"target_label":"$500 buffer above locked floor",
+                "recovery_probability":0.0,"ruin_probability":0.0,
+                "median_days_to_target":np.nan,"mean_terminal_equity":100.0+cushion})
 
     if platform=="MT5":
         (ftmo_dir/"reports").mkdir(parents=True,exist_ok=True)
