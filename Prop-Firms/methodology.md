@@ -45,7 +45,7 @@ Modeled account rules:
 
 - Evaluation target: USD 3,000.
 - Daily loss limit: USD 1,250 initially. Once the funded account reaches USD 53,000 (+6%), the official DLL rises to USD 2,000 from the next trading session.
-- The model clips closed daily PnL at -$1,250 initially and -$2,000 after the threshold. This is not an intraday replay and cannot reconstruct trigger timing or overshoot.
+- The model clips closed daily PnL at -$1,250 initially and -$2,000 after the threshold, and assumes the higher DLL remains unlocked after payout withdrawals. This is not an intraday replay and cannot reconstruct trigger timing or overshoot.
 - End-of-day trailing maximum loss: USD 2,000.
 - Maximum concurrent exposure: four minis / 40 micros; full size is available from day one.
 - At least one micro per active strategy sleeve; sizes are rounded to whole micros.
