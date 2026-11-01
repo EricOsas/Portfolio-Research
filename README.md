@@ -11,6 +11,7 @@ Research workspace for the NT8 futures and MT5 CFD strategy exports. Raw export 
 - [Strategy, per-sleeve roles and book suitability](reports/strategy_suitability.md)
 - [NQ minute archive data audit](reports/nq_minute_data_audit.md)
 - [NQ data handoff for the website strategy builder](reports/nq_strategy_builder_handoff.md)
+- [NQ M1 audit artifacts and rebuild scripts](data/NQ-M1/README.md)
 - [Latest raw build summary](reports/run_summary.json)
 - [Raw export analysis engine](analysis/build_equity_reports.py)
 - [Normalized and prop-firm engine](analysis/build_live_and_prop_reports.py)

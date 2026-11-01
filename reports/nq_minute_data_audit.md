@@ -39,15 +39,14 @@ The continuous series uses the first calendar date on which the next contract's 
 - No missing bars were forward-filled or interpolated. The per-file quality CSV records row counts, gaps, volumes and timestamp bounds.
 - Daily file row counts range from 1 to 1,381, with a median of 1,379. Very short files occur on low-activity weekend/holiday dates and should not be treated as full sessions.
 
-## Local outputs
+## Repository artifacts
 
-The decoded continuous series and detailed audit files were generated in the working session:
+- `data/NQ-M1/audit/NQ_1min_data_audit_2021plus.json` — machine-readable coverage, roll schedule and quality summary.
+- `data/NQ-M1/scripts/ncd_minute.py` — NCD minute-file decoder.
+- `data/NQ-M1/scripts/build_nq_m1.py` — rebuild script for the continuous Last series, per-file quality CSV and audit JSON.
+- `data/NQ-M1/README.md` — rebuild instructions and integration cautions.
 
-- `NQ_1min_Last_continuous_2021-2026.csv.gz` — 2,054,636 unadjusted Last bars with UTC-microsecond timestamp, OHLC, volume and contract.
-- `NQ_1min_file_quality_2021plus.csv` — per-file Last stream quality.
-- `NQ_1min_data_audit_2021plus.json` — machine-readable coverage, roll dates and quality summary.
-
-The raw market data and decoded bars are **not committed to this public repository**. The chat provides the processed file separately.
+The continuous gzip bars, per-file quality CSV and original raw archive are not committed. The scripts require access to the original NQminute.7z archive (or an extracted copy) outside this repository. The processed continuous file's size and SHA-256 are recorded in the machine-readable audit JSON.
 
 ## Scope and limitations
 

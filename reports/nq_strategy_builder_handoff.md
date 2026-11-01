@@ -81,7 +81,7 @@ Use the dataset ID above and retain its manifest alongside the data. Record:
 - file checksum and schema version;
 - data-quality warnings and known quote-stream gaps.
 
-Keep the compressed market-data file outside the Git repository unless there is a deliberate storage/licensing decision. The repository currently contains the audit report, not the 26 MB bar file. The website agent must receive the file separately or read it from an explicitly configured local data path.
+Keep the compressed market-data file outside the Git repository unless there is a deliberate storage/licensing decision. The repository now contains the machine-readable audit JSON, NCD decoder, dataset builder and rebuild instructions under [data/NQ-M1](../data/NQ-M1/README.md). The 26 MB continuous bar file and original NQminute.7z archive remain outside GitHub. The agent needs access to the original archive locally to regenerate the bars, or a separately supplied copy of the processed file.
 
 ### 2. Keep bulk history out of the browser
 
@@ -149,4 +149,4 @@ Show warnings when a run uses Last-only bars, unconfirmed timezone/session setti
 
 ## Existing audit
 
-See [NQ 1-minute data audit](nq_minute_data_audit.md) for the archive inventory, decoding details, and original scope limitations. The processed bars and per-file audit artifacts are separate local downloads; they are not committed to this repository.
+See [NQ 1-minute data audit](nq_minute_data_audit.md) for archive inventory, decoding details and scope limitations. The machine-readable audit JSON and decoder/builder scripts are committed under [data/NQ-M1](../data/NQ-M1/README.md). The continuous bars, original archive and per-file quality CSV are not committed.
