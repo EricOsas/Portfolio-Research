@@ -12,6 +12,8 @@
   "funded_drawdown_lock_balance_usd": 52100,
   "funded_locked_floor_usd": 50100,
   "payout_min_balance_usd": 53000,
+  "funded_drawdown_measurement": "End-of-day trailing until floor locks at $50,100",
+  "daily_loss_measurement": "Real-time equity soft pause; closed-PnL simulation does not reproduce intraday sequence",
   "payout_consistency": 0.35,
   "payout_profitable_days": 5,
   "payout_day_profit_minimum_usd": 150,
@@ -31,12 +33,17 @@
   "microscalping": "More than 50% of trades and more than 50% of profit from trades longer than 10 seconds",
   "daily_close": "4:45 PM ET regular days; 12:59 PM ET early-close days",
   "news": "Allowed; slippage risk remains",
+  "official_sources": [
+    "https://help.tradeify.co/en/articles/10495915-growth-evaluation-accounts",
+    "https://help.tradeify.co/en/articles/12268167-essential-trading-rules-overview",
+    "https://help.tradeify.co/en/articles/10468320-rules-consistency-rule"
+  ],
   "model_assumptions": [
     "$100/$250/$500/$750 requested total book risk per trade sensitivity",
     "Minimum 1 micro per active sleeve; whole-micro sizing rounded down above the minimum",
     "Each book divides risk equally across sleeves",
     "Payout processing approximated as 2 trading days; balance must remain at or above $53,000",
-    "Four-mini exposure cap applied as continuous mini-equivalent scaling",
+    "Four-mini exposure cap enforced after whole-micro sizing; any remaining noncompliant sizing is flagged",
     "EOD drawdown updates modeled; real-time floating breaches not fully reconstructable"
   ]
 }

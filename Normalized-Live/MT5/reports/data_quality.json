@@ -98,14 +98,14 @@
     }
   ],
   "risk_unit": "Mean absolute realized losing-trade PnL. NT8 first converted to one-contract PnL; MT5 uses exported position-level PnL. This is a reproducible loss-normalization proxy, not guaranteed to equal the strategy's initial stop risk.",
-  "mt5_standard_deals": "No position ID is present in the standard Deals tables. Entry/exit legs are paired FIFO by symbol and opposite side; quality exceptions are reported.",
+  "mt5_standard_deals": "No position ID is present in the standard Deals tables. Entry/exit legs are paired by symbol and opposite side, exact volume match first, FIFO fallback; RBE has overlapping positions and residual pairing uncertainty.",
   "live_sizing": "NT8 = one contract equivalent per strategy. MT5 = $100 per trade at 1R based on mean realized loss.",
   "limitations": [
     "Exported closed trades do not contain a complete intratrade equity path.",
     "FTMO daily/max loss is equity-based; MT5 simulations use closed-PnL paths and are optimistic for floating-loss breaches.",
-    "Tradeify trailing drawdown is real-time enforced; NT8 MAE is available for descriptive stress but this first pass uses daily close PnL in Monte Carlo.",
+    "Tradeify EOD trailing drawdown is modeled from daily closes. Real-time daily-loss pauses are not reconstructed; NT8 MAE is reported separately as a conservative soft-DLL stress diagnostic.",
     "Tradeify session boundary and FTMO server reset are not timezone-normalized; account rule days use exported dates.",
-    "The 4-mini cap is approximated using continuous mini-equivalent exposure from average realized loss per contract.",
+    "Tradeify position sizes use whole-micro increments, at least one micro per active sleeve, and a four-mini maximum concurrent exposure cap.",
     "This is an export-based portfolio simulation, not an independent tick-level replay or live execution certification."
   ]
 }

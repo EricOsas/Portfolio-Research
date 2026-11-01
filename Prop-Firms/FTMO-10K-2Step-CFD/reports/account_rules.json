@@ -10,6 +10,11 @@
   "funded_reward_split_default": 0.8,
   "first_reward_request": "Day 14 or later after first funded trade",
   "daily_reset": "00:00 CE(S)T; based on current-day 00:00 balance",
+  "official_sources": [
+    "https://ftmo.com/en/trading-objectives/",
+    "https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/",
+    "https://ftmo.com/en/faq/can-i-trade-news/"
+  ],
   "news": "Standard funded account: selected events have a 2-minute pre/post execution restriction; not applicable during evaluation",
   "model_assumptions": [
     "$25/$50/$75/$100 total book risk per trade sensitivity",
