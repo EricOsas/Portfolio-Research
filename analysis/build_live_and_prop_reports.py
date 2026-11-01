@@ -217,14 +217,16 @@ def make_matrices(trades):
     strategies = sorted(trades["strategy"].unique().tolist())
     start, end = trades["exit_date"].min(), trades["exit_date"].max()
     dates = pd.bdate_range(start, end)
-    rmat, livemat, activemat = {}, {}, {}
+    rmat, gross_rmat, livemat, activemat = {}, {}, {}, {}
     for s in strategies:
         t = trades[trades["strategy"] == s]
         rmat[s] = daily_series(t, "r_multiple", dates)
+        gross_rmat[s] = daily_series(t, "gross_r_multiple", dates)
         livemat[s] = daily_series(t, "live_pnl", dates)
         a = t.groupby("entry_date").size()
         activemat[s] = a.reindex(dates, fill_value=0).gt(0)
-    return dates, pd.DataFrame(rmat, index=dates), pd.DataFrame(livemat, index=dates), pd.DataFrame(activemat, index=dates)
+    return (dates, pd.DataFrame(rmat, index=dates), pd.DataFrame(gross_rmat, index=dates),
+            pd.DataFrame(livemat, index=dates), pd.DataFrame(activemat, index=dates))
 
 def plot_equity(s, title, path, subtitle=""):
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -510,8 +512,11 @@ def simulate_ftmo(paths, active, risk):
     }
 
 def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
-                      position_limit_compliant=True):
+                      position_limit_compliant=True, consistency_paths=None):
     n, h = paths.shape
+    consistency_paths = np.asarray(paths if consistency_paths is None else consistency_paths, dtype=float)
+    if consistency_paths.shape != paths.shape:
+        raise ValueError("Consistency paths must align with net-PnL paths.")
     phase = np.zeros(n, dtype=np.int8)  # 0=Evaluation, 1=Funded, 2=Failed
     eval_eq = np.zeros(n); eval_hwm = np.zeros(n); eval_floor = np.full(n,-2000.0)
     funded_eq = np.zeros(n); funded_hwm = np.zeros(n); funded_floor = np.full(n,-2000.0)
@@ -538,6 +543,7 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
     for d in range(h):
         start_phase = phase.copy()
         raw_daily = paths[:,d] * risk
+        consistency_daily = consistency_paths[:,d] * risk
         # Growth DLL is a soft pause. Evaluation starts at $1,250. On funded
         # accounts, it rises to $2,000 from the next session after the balance
         # first reaches $53,000 (+$3,000). Closed-PnL clipping is only an
@@ -576,8 +582,11 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
             funded_eq[fu] += funded_daily[fu]
             funded_age[fu] += 1
             dll_hits[fu & (raw_daily <= -funded_dll_limit)] += 1
-            cycle_profit[fu] += funded_daily[fu]
-            best_cycle_day[fu] = np.maximum(best_cycle_day[fu], funded_daily[fu])
+            # Tradeify's 35% consistency rule excludes commissions. Use the
+            # matched gross daily PnL series for this test; account equity,
+            # DLL, drawdown and winning-day checks remain net of trading costs.
+            cycle_profit[fu] += consistency_daily[fu]
+            best_cycle_day[fu] = np.maximum(best_cycle_day[fu], consistency_daily[fu])
             win_days[fu] += (funded_daily[fu] > 150.0).astype(int)
             # The higher DLL applies from the next simulated trading session.
             funded_dll_limit[fu & (funded_eq >= 3000.0)] = 2000.0
@@ -717,8 +726,13 @@ def max_concurrent_mini_equiv(trades, combo, sizes):
         peak = max(peak, current)
     return float(peak)
 
-def tradeify_position_weights(trades, combo, requested_total_risk):
-    """One micro minimum, whole-micro sizing, four-mini account cap."""
+def tradeify_position_weights(trades, combo, requested_total_risk, exposure_trades=None):
+    """One micro minimum, whole-micro sizing, four-mini account cap.
+
+    Risk units come from the training-calibrated full trade frame; simultaneous
+    exposure is checked only on the validation-period overlap frame.
+    """
+    exposure_source = trades if exposure_trades is None else exposure_trades
     per_sleeve = requested_total_risk / max(1, len(combo))
     units = {}
     sizes = {}
@@ -733,7 +747,7 @@ def tradeify_position_weights(trades, combo, requested_total_risk):
     def exposure_for(size_map):
         events = []
         for strategy in combo:
-            t = trades[trades["strategy"] == strategy]
+            t = exposure_source[exposure_source["strategy"] == strategy]
             for _, r in t.iterrows():
                 if pd.isna(r["entry_timestamp"]) or pd.isna(r["exit_timestamp"]):
                     continue
@@ -1159,6 +1173,7 @@ def run_platform(platform):
             unit = 1.0
         trades.loc[idx, "risk_unit"] = unit
         trades.loc[idx, "r_multiple"] = trades.loc[idx, "native_pnl"] / unit
+        trades.loc[idx, "gross_r_multiple"] = trades.loc[idx, "gross_pnl"] / unit
         trades.loc[idx, "live_pnl"] = (trades.loc[idx, "r_multiple"] * 100.0
                                          if platform == "MT5" else trades.loc[idx, "native_pnl"])
         trades.loc[idx, "risk_unit_basis"] = (
@@ -1166,7 +1181,7 @@ def run_platform(platform):
             if platform == "NT8" else
             "training-sample mean absolute losing trade PnL proxy; $100 = 1R"
         )
-    dates, rmat, livemat, activemat = make_matrices(trades)
+    dates, rmat, gross_rmat, livemat, activemat = make_matrices(trades)
     combo_df, selected, train_idx, val_idx = build_books(rmat,activemat)
     out = LIVE_ROOT / platform
     (out/"charts"/"individual").mkdir(parents=True,exist_ok=True)
@@ -1333,13 +1348,27 @@ def run_platform(platform):
             # Use common bootstrap blocks across the risk ladder for this book.
             # This removes avoidable Monte Carlo noise when comparing sizes.
             candidate_seed=SEED+300+sum(ord(ch) for ch in cname)
+            validation_start = validation_idx.min()
+            validation_end = validation_idx.max() + pd.Timedelta(days=1)
+            validation_exposure_trades = trades[
+                trades["strategy"].isin(combo)
+                & (trades["entry_timestamp"] < validation_end)
+                & (trades["exit_timestamp"] >= validation_start)
+            ]
             for risk in TRADEIFY_RISKS:
-                weights,sizes,exposure,scale,compliant=tradeify_position_weights(trades,combo,risk)
+                weights,sizes,exposure,scale,compliant=tradeify_position_weights(
+                    trades,combo,risk,exposure_trades=validation_exposure_trades)
                 effective=sum(weights.values())
                 book_daily=weighted_daily_pnl(rmat,validation_idx,combo,weights)
-                paths_t,actpaths_t=sample_block_paths(book_daily.values,active.values,seed=candidate_seed,date_index=validation_idx)
+                gross_book_daily=weighted_daily_pnl(gross_rmat,validation_idx,combo,weights)
+                paired_daily=np.column_stack([book_daily.values,gross_book_daily.values])
+                paired_paths,actpaths_t=sample_block_paths(
+                    paired_daily,active.values,seed=candidate_seed,date_index=validation_idx)
+                paths_t=paired_paths[:,:,0]
+                consistency_paths_t=paired_paths[:,:,1]
                 res=simulate_tradeify(paths_t,actpaths_t,1.0,micro["eligible"],week_ok,
-                                      position_limit_compliant=compliant)
+                                      position_limit_compliant=compliant,
+                                      consistency_paths=consistency_paths_t)
                 extra={"book":cname,"strategies":" + ".join(combo),**score_meta,
                     "requested_risk_per_book_trade_usd":risk,"effective_risk_after_micro_sizing_usd":effective,
                     "microscalping_trade_share_over_10s":micro["trade_share_over_10s"],
