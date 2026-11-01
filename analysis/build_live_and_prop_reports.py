@@ -1100,9 +1100,9 @@ def run_platform(platform):
         "live_sizing":"NT8 = one contract equivalent per strategy. MT5 = $100 per trade at 1R based on mean realized loss.",
         "limitations":["Exported closed trades do not contain a complete intratrade equity path.",
                        "FTMO daily/max loss is equity-based; MT5 simulations use closed-PnL paths and are optimistic for floating-loss breaches.",
-                       "Tradeify EOD trailing drawdown is modeled from daily closes. Real-time daily-loss pauses are not reconstructed; NT8 MAE is reported separately as a conservative soft-DLL stress diagnostic.",
+                       "Tradeify EOD trailing drawdown is modeled from daily closes. The $1,250 soft DLL is approximated by clipping closed daily losses; NT8 MAE is a separate stress diagnostic.",
                        "Tradeify session boundary and FTMO server reset are not timezone-normalized; account rule days use exported dates.",
-                       "Tradeify position sizes use whole-micro increments, at least one micro per active sleeve, and a four-mini maximum concurrent exposure cap.",
+                       "Tradeify position sizes use whole-micro increments, at least one micro per active sleeve, and a four-mini maximum concurrent exposure cap. Soft DLL losses are clipped at $1,250/day in Monte Carlo.",
                        "This is an export-based portfolio simulation, not an independent tick-level replay or live execution certification."]
     })
     return {"platform":platform,"strategies":len(all_names),"trades":len(trades),
@@ -1156,6 +1156,8 @@ def write_rule_docs():
                             "Each book divides risk equally across sleeves",
                             "Payout processing approximated as 2 trading days; balance must remain at or above $53,000",
                             "Four-mini exposure cap enforced after whole-micro sizing; any remaining noncompliant sizing is flagged",
+                            "Growth evaluation has no consistency rule; funded payout requires 35% consistency and five days above $150",
+                            "Soft DLL is approximated by clipping closed daily PnL losses at -$1,250; intraday overshoot is unknown",
                             "EOD drawdown updates modeled; real-time floating breaches not fully reconstructable"]
     }
     write_json(PROP_ROOT/"FTMO-10K-2Step-CFD"/"reports"/"account_rules.json",ftmo_rules)
