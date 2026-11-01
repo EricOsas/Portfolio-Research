@@ -910,8 +910,8 @@ def run_platform(platform):
 
     # Per-book account simulations use equal risk allocation across sleeves.
     prop_candidates={s:(s,) for s in all_names}
-    for cat,books in selected.items():
-        for j,combo in enumerate(books,1):
+    for cat in ["challenge","funded","live","recovery"]:
+        for j,combo in enumerate(selected.get(cat,[]),1):
             prop_candidates[f"{cat}_book_{j}"]=combo
     # Add leading two/three-sleeve combinations so prop selection is not
     # restricted to four-sleeve category books and single strategies.
@@ -928,6 +928,15 @@ def run_platform(platform):
             added+=1
             if added==3:
                 break
+    # Deduplicate identical strategy sets; keep the first category label.
+    unique_candidates={}
+    seen_combos=set()
+    for cname,combo in prop_candidates.items():
+        key=tuple(combo)
+        if key not in seen_combos:
+            unique_candidates[cname]=combo
+            seen_combos.add(key)
+    prop_candidates=unique_candidates
     validation_idx=val_idx if len(val_idx)>=60 else dates
     ftmo_rows=[]; tradeify_rows=[]; recovery_rows=[]
     ftmo_dir=PROP_ROOT/"FTMO-10K-2Step-CFD"
@@ -950,7 +959,7 @@ def run_platform(platform):
                 book_daily=weighted_daily_pnl(rmat,validation_idx,combo,weights)
                 paths_t,actpaths_t=sample_block_paths(book_daily.values,active.values,seed=SEED+len(tradeify_rows)+300)
                 res=simulate_tradeify(paths_t,actpaths_t,1.0,micro["eligible"],week_ok,False)
-                extra={"book":" + ".join(combo),"strategies":" + ".join(combo),
+                extra={"book":cname,"strategies":" + ".join(combo),
                     "requested_risk_per_book_trade_usd":risk,"effective_risk_after_micro_sizing_usd":effective,
                     "mini_equivalent_per_sleeve":json.dumps(sizes,sort_keys=True),
                     "max_concurrent_mini_equivalent":exposure,"position_limit_scale":scale,
