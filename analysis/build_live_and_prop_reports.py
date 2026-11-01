@@ -481,7 +481,7 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
             fail_eval |= hit_floor
             phase[hit_floor] = 2
             consistency_ok = (eval_profit > 0) & (eval_best_day <= 0.35 * eval_profit)
-            min_days_ok = eval_active_days >= (3 if eval_consistency else 1)
+            min_days_ok = eval_active_days >= 1
             rule_ok = consistency_ok if eval_consistency else np.ones(n,dtype=bool)
             passed = ev & (phase == 0) & (eval_eq >= 3000.0) & min_days_ok & rule_ok
             if passed.any():
@@ -507,7 +507,7 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
             best_cycle_day[fu] = np.maximum(best_cycle_day[fu], daily[fu])
             win_days[fu] += (daily[fu] > 150.0).astype(int)
 
-            # EOD trailing update, real-time enforcement approximated at daily close.
+            # EOD trailing update from the closed daily equity path.
             funded_hwm[fu] = np.maximum(funded_hwm[fu], funded_eq[fu])
             lock_now = fu & (~locked) & (funded_hwm >= 2100.0)
             locked[lock_now] = True
