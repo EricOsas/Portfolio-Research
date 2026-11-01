@@ -121,7 +121,7 @@ Both firms use 5,000 Monte Carlo paths over 252 trading days, with five-day bloc
 
 ### FTMO — USD 10,000 2-Step CFD
 
-Modeled account rules: 10% Phase 1 target, 5% Verification target, USD 500 equity-based daily loss, USD 1,000 static maximum-loss floor, at least four trading days in each phase, 80% reward split, and first reward request after the 14-day waiting period. The model uses 10 elapsed trading days (the 11th active trading day) as the waiting-period approximation and four business days for reward review/payment processing.
+Modeled account rules: 10% Phase 1 target, 5% Verification target, USD 500 equity-based daily loss, USD 1,000 static maximum-loss floor, at least four trading days in each phase, 80% reward split, and first reward request after the 14-day waiting period. The model uses 10 elapsed trading days (the 11th sampled business day counting the first-trade day) as the waiting-period approximation and four business days for reward review/payment processing.
 
 **Selected book:** Gold ORB (RBE) + Open Drive + Overnight Bias ORB + Tokyo Coil.  
 **Risk:** USD 50 total per book trade, split equally across the four sleeves. Minimum CFD lot sizes are not enforced.
@@ -139,7 +139,7 @@ The high modeled pass rates must be read with the close-only limitation: FTMO's 
 
 ### Tradeify — USD 50,000 Growth futures
 
-Modeled Growth rules: USD 3,000 evaluation target, no evaluation consistency rule, USD 2,000 EOD trailing drawdown with a USD 50,100 locked floor after the USD 52,100 threshold, USD 1,250 initial soft daily-loss limit, and a funded DLL increase to USD 2,000 from the next session after the balance reaches USD 53,000. Funded payout modeling applies 35% consistency, five winning days above USD 150, the USD 53,000 balance threshold, the 90% payout share, payout caps and two trading days for processing. Weekly activity applies in evaluation and funded trading; microscalping eligibility is required for payouts.
+Modeled Growth rules: USD 3,000 evaluation target, no evaluation consistency rule, USD 2,000 EOD trailing drawdown with a USD 50,100 locked floor after the USD 52,100 threshold, USD 1,250 initial soft daily-loss limit, and a funded DLL increase to USD 2,000 from the next session after the balance reaches USD 53,000. Funded payout modeling applies 35% consistency, five winning days above USD 150, the USD 53,000 balance threshold, the 90% payout share, payout caps and two trading days for processing. Weekly activity and microscalping are funded payout-eligibility checks, not evaluation pass conditions. Position-limit compliance is required for executable book sizing.
 
 **Selected book:** Flash ORB + Overnight Bias ORB.
 
@@ -173,7 +173,7 @@ At USD 100 cushion above the USD 9,000 static floor (USD 9,100 equity), the targ
 - Best active candidate by recovery probability: **Tokyo Coil**, 40.56% chance to return to initial balance, but 37.68% modeled breach probability.
 - **No-trade:** 0% modeled breach, but also 0% chance of recovery.
 - No active candidate meets the 5% breach-risk threshold at this near-floor cushion.
-- At a USD 500 cushion, Tokyo Coil's modeled recovery probability rises to 84.66% and breach probability falls to 0.60%. The larger cushion changes the decision materially.
+- At a USD 500 cushion, Gold ORB (RBE) + Tokyo Coil at USD 12.50 total book risk has an 86.66% chance to return to initial balance, with 0% breach observed in 5,000 paths; at USD 750 cushion, recovery rises to 98.08%, with 0% breach observed. This pair inherits the MT5 RBE pairing uncertainty. Tokyo Coil alone avoids RBE and gives 84.66% recovery with 0.60% breach at USD 500 cushion.
 
 ### Tradeify
 
