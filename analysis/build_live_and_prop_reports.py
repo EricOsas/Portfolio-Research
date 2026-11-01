@@ -1209,8 +1209,10 @@ Results are conditional on historical export distributions and the assumptions i
     ]:
         d=PROP_ROOT/firm
         extra_links = "- [Book rankings](reports/book_rankings.csv)\n- [Book recommendations](reports/book_recommendations.md)\n- [Recovery-mode scenarios](reports/recovery_mode.csv)"
+        chart_extra = ""
         if firm=="Tradeify-50K-Growth-Futures":
             extra_links += "\n- [Intraday MAE / soft-DLL stress](reports/mae_soft_dll_stress.csv)"
+            chart_extra = "\n![Intraday MAE / soft-DLL stress](charts/mae_soft_dll_stress.png)\n"
         (d/"README.md").write_text(f"""# {title}
 
 - [Account rules and assumptions](reports/account_rules.json)
@@ -1236,6 +1238,7 @@ The model uses normalized daily R-multiples and a 5-trading-day circular block b
 
 ![Recovery probability](charts/recovery_probability.png)
 
+{chart_extra}
 """,encoding="utf-8")
 
 def main():
