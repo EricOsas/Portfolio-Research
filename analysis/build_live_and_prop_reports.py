@@ -1281,7 +1281,8 @@ def run_platform(platform):
         top_mae=mae_df.sort_values("p95_daily_stacked_mae_usd",ascending=False).head(10)
         fig,ax=plt.subplots(figsize=(11,6))
         ax.barh(top_mae["book"],top_mae["p95_daily_stacked_mae_usd"])
-        ax.axvline(1250,linestyle="--",linewidth=1,label="$1,250 daily loss limit")
+        ax.axvline(1250,linestyle="--",linewidth=1,label="$1,250 initial daily loss limit")
+        ax.axvline(2000,linestyle=":",linewidth=1,label="$2,000 DLL after $53k funded balance")
         ax.set_title("Tradeify | one-micro-per-sleeve p95 stacked MAE",loc="left",fontweight="bold")
         ax.set_xlabel("USD")
         ax.grid(True,axis="x",alpha=.25,linestyle="--")
@@ -1449,13 +1450,13 @@ Results are conditional on historical export distributions and the assumptions i
         chart_extra = ""
         if firm=="Tradeify-50K-Growth-Futures":
             extra_links += "\n- [Intraday MAE / soft-DLL stress](reports/mae_soft_dll_stress.csv)"
-            sizing_note = "Growth evaluation has no consistency rule; funded payouts require 35% consistency and five winning days above $150. Whole-micro sizing uses at least one micro per active sleeve and a four-mini concurrent cap; full size is available from day one. Effective risk after minimum sizing is shown in the results."
-            daily_limit_note = "Tradeify EOD trailing drawdown is modeled from daily closes. The $1,250 soft daily-loss limit is approximated by clipping closed daily losses at -$1,250; intraday trigger timing and overshoot remain unknown. NT8 MAE is a separate diagnostic."
+            sizing_note = "Growth evaluation has no consistency rule. Funded payouts require 35% consistency, five winning days above $150, a $53,000 balance and the microscalping test. At least one trade per Monday-Friday week is required during evaluation and funded trading. Whole-micro sizing uses at least one micro per active sleeve and a four-mini concurrent cap; effective risk after minimum sizing is shown."
+            daily_limit_note = "The initial $1,250 soft daily-loss limit is modeled as a closed-PnL clip; after the funded balance reaches $53,000, the model applies the official $2,000 DLL from the next session. Intraday trigger timing, overshoot and trade sequence remain unknown. The EOD trailing drawdown is modeled from daily closes; NT8 MAE is a separate diagnostic."
             pairing_note = "NT8 MAE is available for the separate soft-DLL stress diagnostic."
-            chart_extra = "\n![Evaluation drawdown breach probability](charts/evaluation_breach_probability.png)\n![Intraday MAE / soft-DLL stress](charts/mae_soft_dll_stress.png)\n"
+            chart_extra = "\n![Evaluation drawdown breach probability](charts/evaluation_breach_probability.png)\n![Intraday MAE / soft-DLL stress](charts/mae_soft_dll_stress.png)\n![Recovery to $53,000 balance (payout eligibility not enforced)](charts/recovery_payout_threshold_probability.png)\n"
         else:
             sizing_note = "Risk ladder is USD 25–100 total book risk per trade, allocated equally across sleeves. Sizing is continuous; instrument-specific minimum lots are not enforced."
-            daily_limit_note = "FTMO equity-based daily and maximum loss limits can be breached by floating losses not visible in closed-trade exports."
+            daily_limit_note = "FTMO equity-based daily and maximum loss limits can be breached by floating losses not visible in closed-trade exports. The model also omits the 1–4 business-day phase review and KYC/activation delays, so time-to-funded estimates may be optimistic."
             pairing_note = "MT5 RBE entry/exit legs use exact-volume matching where possible and FIFO fallback because the Deals export has no position IDs."
         (d/"README.md").write_text(f"""# {title}
 
@@ -1473,6 +1474,7 @@ The model uses normalized daily R-multiples and a 5-trading-day block bootstrap 
 - {pairing_note}
 - Timestamps remain as exported. The firm's timezone/session boundaries are not reconstructed.
 - Strategy execution, native exits and stop behavior are not changed.
+- Recovery curves are balance-only. Tradeify's $53,000 balance target does not enforce payout consistency, five winning days or payout processing.
 - Treat results as historical scenario estimates, not promises.
 
 ## Charts
