@@ -22,7 +22,9 @@ Methodology:
 - All one-to-four-sleeve combinations are screened on the normalized daily series.
 - 5,000 Monte Carlo paths, five-day blocks aligned to Monday-Friday validation weeks, 252-trading-day horizon.
 - Tradeify futures sizing uses whole-micro increments, at least one micro per active sleeve, and a four-mini concurrent exposure cap.
-- Tradeify minimum activity is checked on complete validation weeks; Monte Carlo resamples complete calendar-week blocks. Evaluation pass rates exclude books that fail minimum activity or position-limit eligibility. Tradeify includes a separate NT8 MAE / soft-DLL stress report. It is not an intraday equity replay.
+- Tradeify minimum activity is checked on complete validation weeks and applies to evaluation and funded trading; Monte Carlo resamples complete calendar-week blocks. Evaluation pass rates exclude books that fail minimum activity or position-limit eligibility. Funded payout eligibility additionally requires the microscalping test.
+- Tradeify's funded DLL rises from $1,250 to $2,000 after the $53,000 balance threshold; the model clips closed daily PnL at the applicable limit. The separate NT8 MAE / soft-DLL stress report is not an intraday equity replay.
+- FTMO phase review and KYC/activation delays are not modeled; time-to-funded estimates may be optimistic.
 - Recovery scenarios include no-trade controls and model the probability of reaching a buffer or payout target before breaching the account floor.
 
 ## Scope controls
