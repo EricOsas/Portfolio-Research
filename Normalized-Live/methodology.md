@@ -16,8 +16,10 @@ Compare strategy sleeves and books on a common, balance-free equity basis for or
 ### MT5
 
 - Fixed USD 100 risk proxy per completed trade.
-- One R is the mean absolute realized losing-trade PnL for that strategy.
+- One R is the mean absolute realized losing-trade PnL measured on the first 60% training period.
+- The training-period R unit is held fixed and applied to the later validation period.
 - Each completed trade is scaled as `normalized PnL = trade R × USD 100`.
+- The full-sample loss estimate is retained separately for comparison, not used for validation sizing.
 - The R unit is based on realized losses, not verified initial stop distance. It is a sizing proxy.
 
 ## Equity and book construction
@@ -25,7 +27,8 @@ Compare strategy sleeves and books on a common, balance-free equity basis for or
 - Curves start at USD 0. No starting balance or account capital is added.
 - Individual sleeves and all one-to-four-sleeve combinations are measured.
 - Portfolio PnL is the sum of the normalized sleeve PnLs. It does not assume that every strategy can always be executed simultaneously.
-- Strategy book selection uses a chronological 60% training / 40% validation split. The combination file reports both periods.
+- Strategy book selection uses a chronological 60% training / 40% validation split. Each sleeve's R unit is calibrated on the training segment and held fixed for validation.
+- In `all_book_combinations.csv`, train/validation R metrics are the average constituent-sleeve R (`sum of sleeve R / number of sleeves`) so books of different sizes can be ranked comparably.
 - Category book rankings are screening candidates; they are not optimized live portfolios.
 
 ## Bootstrap risk analysis
@@ -34,7 +37,7 @@ Compare strategy sleeves and books on a common, balance-free equity basis for or
 - 5-trading-day circular block bootstrap.
 - 252-trading-day horizon.
 - The bootstrap resamples validation daily PnL blocks to retain short-run clustering.
-- The live drawdown-risk report measures the probability of maximum drawdown reaching 10R, 20R and 50R barriers. These are balance-free drawdown proxies, not literal account ruin probabilities.
+- The live drawdown-risk report bootstraps the average constituent-sleeve R series for each book and measures the probability of maximum drawdown reaching 10R, 20R and 50R barriers. These are balance-free drawdown proxies, not literal account ruin probabilities.
 
 ## Data handling
 
@@ -47,6 +50,6 @@ Compare strategy sleeves and books on a common, balance-free equity basis for or
 ## Limits
 
 - These are trade-export analyses, not tick-level replay or a new NQ minute-bar backtest.
-- The realized-loss R unit is not the strategy's initial stop risk.
+- The realized-loss R unit is not the strategy's initial stop risk. NT8 one-contract equity curves remain in exported contract dollars; their bootstrap R analysis is separately normalized by each sleeve's training-period loss proxy.
 - Margin, slippage beyond exported costs, broker minimum lot sizes, execution conflicts, and simultaneous exposure are not fully modeled.
 - No strategy entries, exits, stops, targets, or parameters were changed.
