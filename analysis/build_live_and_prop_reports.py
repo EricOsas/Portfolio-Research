@@ -987,12 +987,25 @@ def run_platform(platform):
 
     if platform=="MT5":
         (ftmo_dir/"reports").mkdir(parents=True,exist_ok=True)
-        pd.DataFrame(ftmo_rows).to_csv(ftmo_dir/"reports"/"monte_carlo_challenge_payout.csv",index=False)
-        pd.DataFrame(recovery_rows).to_csv(ftmo_dir/"reports"/"recovery_mode.csv",index=False)
+        ftmo_df=pd.DataFrame(ftmo_rows)
+        ftmo_recovery_df=pd.DataFrame(recovery_rows)
+        ftmo_df.to_csv(ftmo_dir/"reports"/"monte_carlo_challenge_payout.csv",index=False)
+        ftmo_recovery_df.to_csv(ftmo_dir/"reports"/"recovery_mode.csv",index=False)
+        build_prop_outputs(ftmo_dir,ftmo_df,ftmo_recovery_df,
+            "risk_per_book_trade_usd",50.0,"pass_both_phases_rate",
+            "challenge_to_first_reward_rate","fail_max_loss_rate","FTMO $10k 2-Step CFD")
     else:
         (tradeify_dir/"reports").mkdir(parents=True,exist_ok=True)
-        pd.DataFrame(tradeify_rows).to_csv(tradeify_dir/"reports"/"monte_carlo_evaluation_funded_payout.csv",index=False)
-        pd.DataFrame(recovery_rows).to_csv(tradeify_dir/"reports"/"recovery_mode.csv",index=False)
+        tradeify_df=pd.DataFrame(tradeify_rows)
+        tradeify_recovery_df=pd.DataFrame(recovery_rows)
+        tradeify_df.to_csv(tradeify_dir/"reports"/"monte_carlo_evaluation_funded_payout.csv",index=False)
+        tradeify_recovery_df.to_csv(tradeify_dir/"reports"/"recovery_mode.csv",index=False)
+        build_prop_outputs(tradeify_dir,tradeify_df,tradeify_recovery_df,
+            "requested_risk_per_book_trade_usd",500.0,"evaluation_pass_rate",
+            "challenge_to_first_payout_rate","funded_hard_breach_rate",
+            "Tradeify $50k Growth futures",
+            eligibility_cols=["position_limit_compliant","microscalping_eligible","weekly_activity_eligible"],
+            stress_filter="evaluation_consistency_variant")
 
         # Intraday adverse-excursion diagnostic: one micro per sleeve (0.1 mini).
         # Sum of same-entry-day MAEs is a conservative stack, not a synchronized
@@ -1024,7 +1037,19 @@ def run_platform(platform):
                 "active_days_mae_over_1250_share":float((active_mae>1250).mean()) if len(active_mae) else 0.0,
                 "active_days_mae_over_2000_share":float((active_mae>2000).mean()) if len(active_mae) else 0.0,
             })
-        pd.DataFrame(mae_rows).to_csv(tradeify_dir/"reports"/"mae_soft_dll_stress.csv",index=False)
+        mae_df=pd.DataFrame(mae_rows)
+        mae_df.to_csv(tradeify_dir/"reports"/"mae_soft_dll_stress.csv",index=False)
+        top_mae=mae_df.sort_values("p95_daily_stacked_mae_usd",ascending=False).head(10)
+        fig,ax=plt.subplots(figsize=(11,6))
+        ax.barh(top_mae["book"],top_mae["p95_daily_stacked_mae_usd"])
+        ax.axvline(1250,linestyle="--",linewidth=1,label="$1,250 daily loss limit")
+        ax.set_title("Tradeify | one-micro-per-sleeve p95 stacked MAE",loc="left",fontweight="bold")
+        ax.set_xlabel("USD")
+        ax.grid(True,axis="x",alpha=.25,linestyle="--")
+        ax.legend(fontsize=8)
+        fig.tight_layout()
+        fig.savefig(tradeify_dir/"charts"/"mae_soft_dll_stress.png",dpi=160,bbox_inches="tight")
+        plt.close(fig)
 
     # Cross-sleeve correlation on normalized daily R, never raw export dollar size.
     rmat.corr(min_periods=30).to_csv(out/"reports"/"risk_unit_correlation_matrix.csv")
@@ -1159,24 +1184,34 @@ Results are conditional on historical export distributions and the assumptions i
         ("Tradeify-50K-Growth-Futures","Tradeify $50,000 Growth futures","monte_carlo_evaluation_funded_payout.csv"),
     ]:
         d=PROP_ROOT/firm
+        extra_links = "- [Book rankings](reports/book_rankings.csv)\n- [Book recommendations](reports/book_recommendations.md)\n- [Recovery-mode scenarios](reports/recovery_mode.csv)"
+        if firm=="Tradeify-50K-Growth-Futures":
+            extra_links += "\n- [Intraday MAE / soft-DLL stress](reports/mae_soft_dll_stress.csv)"
         (d/"README.md").write_text(f"""# {title}
 
-See [account rules](reports/account_rules.json), Monte Carlo results in [reports/{file}](reports/{file}), and [recovery-mode scenarios](reports/recovery_mode.csv).
+- [Account rules and assumptions](reports/account_rules.json)
+- [Monte Carlo results](reports/{file})
+{extra_links}
 
-The model uses normalized daily R-multiples, equal risk allocation across the sleeves in each book, and a 5-trading-day circular block bootstrap. Each simulation uses {N_SIMS:,} paths over {HORIZON} trading days.
+The model uses normalized daily R-multiples and a 5-trading-day circular block bootstrap. Each simulation uses {N_SIMS:,} paths over {HORIZON} trading days. Tradeify uses at least one micro per sleeve and applies the four-mini cap.
 
 ## Important limits
 
 - The source exports are closed-trade records, not a complete tick-by-tick account equity path.
-- Daily rules are approximated from closed PnL. Floating losses can breach equity limits before a trade closes.
-- MT5 standard Deals exports lack position IDs; entry/exit legs are paired FIFO.
+- Daily rules are approximated from closed PnL. Tradeify MAE stress is a separate diagnostic; it is not an intraday replay.
+- MT5 standard Deals exports lack position IDs; entry/exit legs use exact-volume matching where possible, with FIFO fallback.
 - Timestamps remain as exported. The firm's timezone/session boundaries are not reconstructed.
 - Strategy execution, native exits and stop behavior are not changed.
 - Treat results as historical scenario estimates, not promises.
 
 ## Charts
 
-Charts and book comparisons will be listed here after the simulation build.
+![Challenge-to-payout probability](charts/challenge_to_payout_probability.png)
+
+![Drawdown breach probability](charts/drawdown_breach_probability.png)
+
+![Recovery probability](charts/recovery_probability.png)
+
 """,encoding="utf-8")
 
 def main():
