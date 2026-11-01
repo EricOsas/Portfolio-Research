@@ -1,5 +1,17 @@
-firm,book,risk_usd_per_book_trade,floor_equity,starting_cushion_usd,target_equity,recovery_probability,ruin_probability,median_days_to_target,mean_terminal_equity
-FTMO,Gold ORB (RBE) + Opening-Shock Continuation + Tokyo Coil + Vault Break,12.5,-1000.0,100.0,0.0,0.0002,0.007,246.0,-508.78031782933397
-FTMO,Gold ORB (RBE) + Opening-Shock Continuation + Tokyo Coil + Vault Break,12.5,-1000.0,250.0,0.0,0.009,0.0,235.0,-356.9780684653766
-FTMO,Gold ORB (RBE) + Opening-Shock Continuation + Tokyo Coil + Vault Break,12.5,-1000.0,500.0,0.0,0.2536,0.0,216.0,-123.5767412331223
-FTMO,Gold ORB (RBE) + Opening-Shock Continuation + Tokyo Coil + Vault Break,12.5,-1000.0,750.0,0.0,0.8762,0.0,143.0,-3.5625014396028236
+firm,book,risk_usd_per_book_trade,state,floor_equity,starting_cushion_usd,target_equity,recovery_probability,ruin_probability,median_days_to_target,mean_terminal_equity
+FTMO,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.013,0.0582,234.0,-482.7357487824104
+FTMO,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0682,0.0012,223.0,-317.40365852905353
+FTMO,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.4172,0.0,197.0,-107.5506469297806
+FTMO,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.8884,0.0,123.0,-5.628432984266991
+FTMO,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0208,0.0506,235.0,-452.68656129589687
+FTMO,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.095,0.0014,221.0,-290.0715048047009
+FTMO,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.4772,0.0,194.0,-91.24382384810917
+FTMO,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.91,0.0,118.0,-2.166422177798165
+FTMO,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0608,0.0458,225.5,-383.04331986801486
+FTMO,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.182,0.0008,217.0,-226.80231849871276
+FTMO,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.6256,0.0,182.0,-57.289229445692385
+FTMO,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.945,0.0,104.0,4.0136037789652965
+FTMO,No trade,0.0,no-trade control,-1000.0,100.0,0.0,0.0,0.0,,-900.0
+FTMO,No trade,0.0,no-trade control,-1000.0,250.0,0.0,0.0,0.0,,-750.0
+FTMO,No trade,0.0,no-trade control,-1000.0,500.0,0.0,0.0,0.0,,-500.0
+FTMO,No trade,0.0,no-trade control,-1000.0,750.0,0.0,0.0,0.0,,-250.0
