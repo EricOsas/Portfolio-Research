@@ -1,0 +1,926 @@
+#!/usr/bin/env python3
+"""Build normalized-live and prop-firm portfolio research from exported trades.
+
+This is an analysis layer only. It does not change strategy execution or stops.
+"""
+from __future__ import annotations
+import itertools, json, math, re
+from pathlib import Path
+from datetime import datetime, timezone
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parents[1]
+LIVE_ROOT = ROOT / "Normalized-Live"
+PROP_ROOT = ROOT / "Prop-Firms"
+N_SIMS = 5000
+HORIZON = 252
+BLOCK = 5
+SEED = 20261101
+FTMO_RISKS = [25.0, 50.0, 75.0, 100.0]
+TRADEIFY_RISKS = [100.0, 150.0, 200.0, 250.0]
+
+def slug(s):
+    return re.sub(r"[^a-z0-9]+", "-", str(s).lower()).strip("-")
+
+def as_bool(x):
+    if isinstance(x, bool): return x
+    return str(x).strip().lower() in {"true", "1", "yes"}
+
+def finite(x, default=0.0):
+    try:
+        v = float(x)
+        return v if np.isfinite(v) else default
+    except Exception:
+        return default
+
+def load_platform_trades(platform):
+    path = ROOT / platform / "reports" / "normalized_event_ledger.csv"
+    if not path.exists():
+        raise FileNotFoundError(path)
+    raw = pd.read_csv(path, low_memory=False)
+    raw["timestamp"] = pd.to_datetime(raw["timestamp"], errors="coerce")
+    if "entry_timestamp" in raw:
+        raw["entry_timestamp"] = pd.to_datetime(raw["entry_timestamp"], errors="coerce")
+    raw = raw.dropna(subset=["timestamp"]).copy()
+    trades, quality = [], []
+
+    if platform == "NT8":
+        for _, r in raw[raw["is_closed_trade"].map(as_bool)].iterrows():
+            qty = abs(finite(r.get("quantity"), 1.0))
+            if qty <= 0: qty = 1.0
+            trades.append({
+                "platform": platform, "strategy": str(r["strategy"]),
+                "instrument": str(r.get("instrument", "")), "side": str(r.get("side", "")),
+                "entry_timestamp": r.get("entry_timestamp"), "exit_timestamp": r["timestamp"],
+                "quantity": qty, "native_pnl": finite(r.get("net_pnl")) / qty,
+                "gross_pnl": finite(r.get("gross_pnl")) / qty,
+                "commission": finite(r.get("commission")) / qty,
+                "swap": finite(r.get("swap")) / qty,
+                "mae": abs(finite(r.get("mae"), np.nan)) / qty if pd.notna(r.get("mae")) else np.nan,
+                "mfe": finite(r.get("mfe"), np.nan) / qty if pd.notna(r.get("mfe")) else np.nan,
+                "source_file": str(r.get("source_file", "")),
+                "pairing_warning": "",
+            })
+    else:
+        for strategy, g in raw.groupby("strategy", sort=False):
+            g = g.sort_values("timestamp")
+            custom = g[g.get("event_type", pd.Series(index=g.index, dtype=str)).astype(str).eq("completed_trade")]
+            if not custom.empty:
+                for _, r in custom.iterrows():
+                    entry = r.get("entry_timestamp")
+                    trades.append({
+                        "platform": platform, "strategy": str(strategy),
+                        "instrument": str(r.get("instrument", "")), "side": str(r.get("side", "")),
+                        "entry_timestamp": entry, "exit_timestamp": r["timestamp"],
+                        "quantity": abs(finite(r.get("quantity"))),
+                        "native_pnl": finite(r.get("net_pnl")),
+                        "gross_pnl": finite(r.get("gross_pnl")),
+                        "commission": finite(r.get("commission")),
+                        "swap": finite(r.get("swap")),
+                        "mae": np.nan, "mfe": np.nan,
+                        "source_file": str(r.get("source_file", "")),
+                        "pairing_warning": "",
+                    })
+                continue
+
+            # Standard MT5 Deals exports do not include a position ID. Pair each
+            # entry with the next compatible exit, FIFO. Any concurrent open
+            # positions or unmatched legs are surfaced as data-quality warnings.
+            opened = []
+            max_open = 0
+            unmatched_exits = 0
+            partial_volume_mismatches = 0
+            for _, r in g.iterrows():
+                direction = str(r.get("direction", "")).strip().lower().replace("_", " ")
+                typ = str(r.get("side", "")).strip().lower()
+                instrument = str(r.get("instrument", ""))
+                volume = abs(finite(r.get("quantity")))
+                cash = finite(r.get("net_pnl"))
+                gross = finite(r.get("gross_pnl"))
+                comm = finite(r.get("commission"))
+                swap = finite(r.get("swap"))
+                if direction in {"in", "entry"}:
+                    opened.append({
+                        "platform": platform, "strategy": str(strategy), "instrument": instrument,
+                        "side": typ, "entry_timestamp": r["timestamp"], "exit_timestamp": pd.NaT,
+                        "quantity": volume, "native_pnl": cash, "gross_pnl": gross,
+                        "commission": comm, "swap": swap, "mae": np.nan, "mfe": np.nan,
+                        "source_file": str(r.get("source_file", "")),
+                    })
+                    max_open = max(max_open, len(opened))
+                elif direction in {"out", "out by", "outby", "close", "exit"}:
+                    wanted = "buy" if typ == "sell" else "sell" if typ == "buy" else ""
+                    match_idx = next((i for i, p in enumerate(opened)
+                                      if p["instrument"] == instrument and (not wanted or p["side"] == wanted)), None)
+                    if match_idx is None and opened:
+                        match_idx = 0
+                    if match_idx is None:
+                        unmatched_exits += 1
+                        continue
+                    p = opened.pop(match_idx)
+                    if volume and p["quantity"] and abs(volume - p["quantity"]) > 1e-6:
+                        partial_volume_mismatches += 1
+                    p["native_pnl"] += cash
+                    p["gross_pnl"] += gross
+                    p["commission"] += comm
+                    p["swap"] += swap
+                    p["exit_timestamp"] = r["timestamp"]
+                    p["pairing_warning"] = ""
+                    trades.append(p)
+                else:
+                    # Ignore balance/deposit rows and unsupported deal directions.
+                    continue
+            unclosed = len(opened)
+            quality.append({
+                "platform": platform, "strategy": str(strategy),
+                "pairing_method": "FIFO by symbol and opposite deal side; no position ID in source export",
+                "max_simultaneous_open_positions_seen": max_open,
+                "unmatched_exit_legs": unmatched_exits,
+                "unclosed_entry_legs": unclosed,
+                "entry_exit_volume_mismatches": partial_volume_mismatches,
+            })
+            for p in opened:
+                # Keep unmatched entries out of realized PnL; report them as quality exceptions.
+
+    out = pd.DataFrame(trades)
+    if out.empty:
+        raise ValueError(f"No completed trades parsed for {platform}")
+    out["entry_timestamp"] = pd.to_datetime(out["entry_timestamp"], errors="coerce")
+    out["exit_timestamp"] = pd.to_datetime(out["exit_timestamp"], errors="coerce")
+    out = out.dropna(subset=["exit_timestamp"]).copy()
+    out["duration_seconds"] = (out["exit_timestamp"] - out["entry_timestamp"]).dt.total_seconds()
+    out["entry_date"] = out["entry_timestamp"].dt.normalize()
+    out["exit_date"] = out["exit_timestamp"].dt.normalize()
+    out["risk_unit"] = np.nan
+    out["r_multiple"] = np.nan
+    out["live_pnl"] = np.nan
+    out["risk_unit_basis"] = ""
+    for strategy, idx in out.groupby("strategy").groups.items():
+        loss = out.loc[idx, "native_pnl"]
+        losses = loss[loss < 0]
+        unit = abs(float(losses.mean())) if len(losses) else float(loss.abs().median())
+        if not np.isfinite(unit) or unit <= 0:
+            unit = float(loss.abs().mean()) if len(loss) else 1.0
+        if not np.isfinite(unit) or unit <= 0: unit = 1.0
+        out.loc[idx, "risk_unit"] = unit
+        out.loc[idx, "r_multiple"] = out.loc[idx, "native_pnl"] / unit
+        if platform == "NT8":
+            out.loc[idx, "live_pnl"] = out.loc[idx, "native_pnl"]  # one contract equivalent
+            out.loc[idx, "risk_unit_basis"] = "mean absolute losing trade PnL per contract"
+        else:
+            out.loc[idx, "live_pnl"] = out.loc[idx, "r_multiple"] * 100.0
+            out.loc[idx, "risk_unit_basis"] = "mean absolute losing trade PnL proxy; $100 = 1R"
+    return out.sort_values("exit_timestamp").reset_index(drop=True), quality
+
+def daily_series(trades, value_col, dates=None):
+    if trades.empty: return pd.Series(dtype=float)
+    s = trades.groupby("exit_date")[value_col].sum()
+    idx = dates if dates is not None else pd.bdate_range(s.index.min(), s.index.max())
+    return s.reindex(idx, fill_value=0.0).astype(float)
+
+def series_metrics(s, trades=None):
+    s = s.astype(float).fillna(0.0)
+    eq = s.cumsum()
+    dd = eq.cummax() - eq
+    pos, neg = float(s[s > 0].sum()), abs(float(s[s < 0].sum()))
+    pf = pos / neg if neg > 0 else (float("inf") if pos > 0 else 0.0)
+    sd = float(s.std(ddof=1)) if len(s) > 1 else 0.0
+    sharpe = float(s.mean() / sd * math.sqrt(252)) if sd > 0 else 0.0
+    monthly, yearly = s.resample("ME").sum(), s.resample("YE").sum()
+    active_months, active_years = monthly[monthly != 0], yearly[yearly != 0]
+    positive_total = float(s[s > 0].sum())
+    best = float(s.max()) if len(s) else 0.0
+    return {
+        "net_pnl": float(s.sum()), "annualized_pnl": float(s.mean() * 252),
+        "daily_pf": float(pf), "daily_sharpe": sharpe,
+        "max_drawdown": float(dd.max()) if len(dd) else 0.0,
+        "net_to_maxdd": float(s.sum() / dd.max()) if len(dd) and dd.max() > 0 else 0.0,
+        "positive_month_share": float((active_months > 0).mean()) if len(active_months) else 0.0,
+        "positive_year_share": float((active_years > 0).mean()) if len(active_years) else 0.0,
+        "positive_day_share": float((s[s != 0] > 0).mean()) if (s != 0).any() else 0.0,
+        "best_day": best, "worst_day": float(s.min()) if len(s) else 0.0,
+        "best_day_share": best / positive_total if positive_total > 0 else 0.0,
+        "daily_std": sd, "equity": eq, "drawdown": dd,
+    }
+
+def make_matrices(trades):
+    strategies = sorted(trades["strategy"].unique().tolist())
+    start, end = trades["exit_date"].min(), trades["exit_date"].max()
+    dates = pd.bdate_range(start, end)
+    rmat, livemat, activemat = {}, {}, {}
+    for s in strategies:
+        t = trades[trades["strategy"] == s]
+        rmat[s] = daily_series(t, "r_multiple", dates)
+        livemat[s] = daily_series(t, "live_pnl", dates)
+        a = t.groupby("entry_date").size()
+        activemat[s] = a.reindex(dates, fill_value=0).gt(0)
+    return dates, pd.DataFrame(rmat, index=dates), pd.DataFrame(livemat, index=dates), pd.DataFrame(activemat, index=dates)
+
+def plot_equity(s, title, path, subtitle=""):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    s = s.astype(float).fillna(0.0)
+    eq = s.cumsum()
+    dd = eq.cummax() - eq
+    fig, (ax, axd) = plt.subplots(2, 1, figsize=(12.5, 6.8), sharex=True, gridspec_kw={"height_ratios":[3,1]})
+    fig.patch.set_facecolor("#f7f8fa")
+    for a in (ax, axd):
+        a.set_facecolor("white")
+        a.grid(True, alpha=.22, linestyle="--")
+        a.spines[["top","right"]].set_visible(False)
+    ax.plot(eq.index, eq.values, linewidth=1.8, color="#1769aa")
+    ax.axhline(0, color="#555", linewidth=.8)
+    ax.set_ylabel("Cumulative equity / PnL")
+    ax.set_title(title, loc="left", fontsize=14, fontweight="bold")
+    m = series_metrics(s)
+    label = f"Net {m['net_pnl']:,.1f} | Max DD {m['max_drawdown']:,.1f} | PF {m['daily_pf']:.2f} | Sharpe {m['daily_sharpe']:.2f}"
+    ax.text(.01,.97, (subtitle + "\n" if subtitle else "") + label, transform=ax.transAxes, va="top", fontsize=8)
+    axd.fill_between(dd.index, -dd.values, 0, color="#c0392b", alpha=.25)
+    axd.plot(dd.index, -dd.values, color="#c0392b", linewidth=1)
+    axd.set_ylabel("Drawdown")
+    loc = mdates.AutoDateLocator(minticks=4, maxticks=9)
+    axd.xaxis.set_major_locator(loc)
+    axd.xaxis.set_major_formatter(mdates.ConciseDateFormatter(loc))
+    fig.tight_layout()
+    fig.savefig(path, dpi=160, bbox_inches="tight")
+    plt.close(fig)
+
+def plot_dashboard(curves, title, path):
+    items = list(curves.items())
+    if not items: return
+    cols = 3
+    rows = math.ceil(len(items)/cols)
+    fig, axes = plt.subplots(rows, cols, figsize=(15, 3.6*rows), squeeze=False)
+    fig.suptitle(title, fontsize=16, fontweight="bold", x=.04, ha="left")
+    for ax in axes.flat: ax.set_visible(False)
+    for ax, (name, s) in zip(axes.flat, items):
+        ax.set_visible(True)
+        eq = s.cumsum()
+        ax.plot(eq.index, eq.values, linewidth=1.25)
+        ax.axhline(0, color="#666", linewidth=.6)
+        ax.grid(True, alpha=.2, linestyle="--")
+        ax.set_title(name, fontsize=9, loc="left")
+        ax.tick_params(labelsize=7)
+    fig.tight_layout(rect=[0,0,1,.96])
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path, dpi=150, bbox_inches="tight")
+    plt.close(fig)
+
+def book_metrics(rmat, active, combo, idx):
+    k = len(combo)
+    s = rmat.loc[idx, list(combo)].sum(axis=1) / k
+    a = active.loc[idx, list(combo)].any(axis=1)
+    m = series_metrics(s)
+    m["active_days"] = int(a.sum())
+    m["strategies"] = " + ".join(combo)
+    m["size"] = k
+    return m, s, a
+
+def rank_pct(df, col, ascending=True):
+    x = df[col].replace([np.inf,-np.inf], np.nan)
+    return x.rank(pct=True, ascending=ascending).fillna(0.0)
+
+def build_books(rmat, active):
+    names = list(rmat.columns)
+    idx = rmat.index
+    cut = max(1, min(len(idx)-1, int(len(idx)*0.60)))
+    train_idx, val_idx = idx[:cut], idx[cut:]
+    rows = []
+    for k in range(1, min(4, len(names))+1):
+        for combo in itertools.combinations(names, k):
+            tr, _, _ = book_metrics(rmat, active, combo, train_idx)
+            va, _, _ = book_metrics(rmat, active, combo, val_idx)
+            rows.append({
+                "book": " + ".join(combo), "strategies": " | ".join(combo), "size": k,
+                "train_net_R": tr["net_pnl"], "train_sharpe": tr["daily_sharpe"],
+                "train_pf": tr["daily_pf"], "train_maxdd_R": tr["max_drawdown"],
+                "train_positive_month_share": tr["positive_month_share"],
+                "train_worst_day_R": tr["worst_day"], "train_best_day_share": tr["best_day_share"],
+                "train_active_days": tr["active_days"],
+                "validation_net_R": va["net_pnl"], "validation_sharpe": va["daily_sharpe"],
+                "validation_pf": va["daily_pf"], "validation_maxdd_R": va["max_drawdown"],
+                "validation_positive_month_share": va["positive_month_share"],
+                "validation_worst_day_R": va["worst_day"], "validation_best_day_share": va["best_day_share"],
+                "validation_active_days": va["active_days"],
+            })
+    df = pd.DataFrame(rows)
+    # Ranking is based only on the earlier training segment. Validation is held aside.
+    df["live_score"] = (.35*rank_pct(df,"train_sharpe") + .25*rank_pct(df,"train_pf") +
+                        .20*rank_pct(df,"train_positive_month_share") + .20*rank_pct(df,"train_maxdd_R",ascending=False))
+    df["challenge_score"] = (.35*rank_pct(df,"train_net_R") + .30*rank_pct(df,"train_sharpe") +
+                             .20*rank_pct(df,"train_net_R") + .15*rank_pct(df,"train_active_days"))
+    df["funded_score"] = (.30*rank_pct(df,"train_sharpe") + .25*rank_pct(df,"train_positive_month_share") +
+                          .20*rank_pct(df,"train_worst_day_R") + .15*rank_pct(df,"train_best_day_share",ascending=False) +
+                          .10*rank_pct(df,"train_pf"))
+    df["recovery_score"] = (.35*rank_pct(df,"train_sharpe") + .25*rank_pct(df,"train_maxdd_R",ascending=False) +
+                            .25*rank_pct(df,"train_worst_day_R") + .15*rank_pct(df,"train_net_R"))
+    selected = {}
+    for cat in ["live","challenge","funded","recovery"]:
+        ranked = df.sort_values(f"{cat}_score", ascending=False)
+        chosen = []
+        for _, row in ranked.iterrows():
+            combo = tuple(row["strategies"].split(" | "))
+            if row["train_net_R"] <= 0 or row["train_active_days"] < 30:
+                continue
+            if combo not in chosen:
+                chosen.append(combo)
+            if len(chosen) == 3: break
+        selected[cat] = chosen
+    return df, selected, train_idx, val_idx
+
+def sample_block_paths(values, active, n_sims=N_SIMS, horizon=HORIZON, block=BLOCK, seed=SEED):
+    values = np.asarray(values, dtype=float)
+    active = np.asarray(active, dtype=bool)
+    if len(values) == 0:
+        raise ValueError("No daily observations for bootstrap.")
+    rng = np.random.default_rng(seed)
+    block = max(1, min(block, len(values)))
+    nblocks = int(math.ceil(horizon / block))
+    starts = rng.integers(0, len(values), size=(n_sims, nblocks))
+    offsets = np.arange(block)
+    indices = (starts[:,:,None] + offsets[None,None,:]) % len(values)
+    indices = indices.reshape(n_sims, -1)[:,:horizon]
+    return values[indices], active[indices]
+
+def live_bootstrap_summary(paths):
+    eq = np.cumsum(paths, axis=1)
+    peak = np.maximum.accumulate(np.concatenate([np.zeros((len(eq),1)), eq], axis=1), axis=1)[:,1:]
+    dd = peak - eq
+    maxdd = dd.max(axis=1)
+    terminal = eq[:,-1]
+    return {
+        "simulations": int(len(paths)), "horizon_trading_days": int(paths.shape[1]), "block_length_days": BLOCK,
+        "terminal_R_mean": float(terminal.mean()), "terminal_R_p05": float(np.quantile(terminal,.05)),
+        "terminal_R_median": float(np.median(terminal)), "terminal_R_p95": float(np.quantile(terminal,.95)),
+        "maxdd_R_p50": float(np.median(maxdd)), "maxdd_R_p95": float(np.quantile(maxdd,.95)),
+        "ruin_10R": float((maxdd >= 10).mean()), "ruin_20R": float((maxdd >= 20).mean()),
+        "ruin_50R": float((maxdd >= 50).mean()),
+    }
+
+def simulate_ftmo(paths, active, risk):
+    n, h = paths.shape
+    phase = np.ones(n, dtype=np.int8)  # 1=Challenge, 2=Verification, 3=Funded, 4=Failed
+    eq = np.zeros(n)
+    active_days = np.zeros(n, dtype=int)
+    p1_day = np.full(n, -1, dtype=int)
+    p2_day = np.full(n, -1, dtype=int)
+    funded_age = np.zeros(n, dtype=int)
+    reward_day = np.full(n, -1, dtype=int)
+    reward = np.zeros(n)
+    fail_daily = np.zeros(n, dtype=bool)
+    fail_max = np.zeros(n, dtype=bool)
+    for d in range(h):
+        start_phase = phase.copy()
+        daily = paths[:,d] * risk
+        act = active[:,d]
+        eval_mask = (start_phase == 1) | (start_phase == 2)
+        if eval_mask.any():
+            eq[eval_mask] += daily[eval_mask]
+            active_days[eval_mask] += act[eval_mask].astype(int)
+            daily_bad = eval_mask & (daily < -500.0)
+            max_bad = eval_mask & (eq <= -1000.0)
+            fail_daily |= daily_bad
+            fail_max |= max_bad
+            phase[daily_bad | max_bad] = 4
+            p1 = (start_phase == 1) & (phase != 4) & (eq >= 1000.0) & (active_days >= 4)
+            if p1.any():
+                p1_day[p1] = d
+                phase[p1] = 2
+                eq[p1] = 0.0
+                active_days[p1] = 0
+            p2 = (start_phase == 2) & (phase != 4) & (eq >= 500.0) & (active_days >= 4)
+            if p2.any():
+                p2_day[p2] = d
+                phase[p2] = 3
+                eq[p2] = 0.0
+                active_days[p2] = 0
+                funded_age[p2] = 0
+        funded_mask = (start_phase == 3) & (phase == 3)
+        if funded_mask.any():
+            eq[funded_mask] += daily[funded_mask]
+            funded_age[funded_mask] += 1
+            daily_bad = funded_mask & (daily < -500.0)
+            max_bad = funded_mask & (eq <= -1000.0)
+            fail_daily |= daily_bad
+            fail_max |= max_bad
+            phase[daily_bad | max_bad] = 4
+            claim = funded_mask & (phase == 3) & (funded_age >= 10) & (eq > 0) & (reward_day < 0)
+            if claim.any():
+                reward_day[claim] = d
+                reward[claim] = 0.80 * eq[claim]
+    reached_funded = p2_day >= 0
+    first_payout = reward_day >= 0
+    return {
+        "pass_phase1_rate": float((p1_day >= 0).mean()),
+        "pass_verification_conditional_rate": float(first_payout.sum() * 0 + ((p2_day >= 0).sum() / max(1,(p1_day >= 0).sum()))),
+        "pass_both_phases_rate": float(reached_funded.mean()),
+        "funded_first_reward_rate_conditional": float(first_payout[reached_funded].mean()) if reached_funded.any() else 0.0,
+        "challenge_to_first_reward_rate": float(first_payout.mean()),
+        "fail_daily_loss_rate": float(fail_daily.mean()),
+        "fail_max_loss_rate": float(fail_max.mean()),
+        "median_days_to_phase1": float(np.median(p1_day[p1_day>=0])+1) if (p1_day>=0).any() else np.nan,
+        "median_days_to_phase2": float(np.median(p2_day[p2_day>=0])+1) if reached_funded.any() else np.nan,
+        "median_days_to_first_reward_from_start": float(np.median(reward_day[first_payout])+1) if first_payout.any() else np.nan,
+        "expected_first_reward_usd": float(reward.mean()),
+        "median_first_reward_usd_conditional": float(np.median(reward[first_payout])) if first_payout.any() else 0.0,
+        "simulations": int(n), "horizon_trading_days": int(h),
+        "note": "Daily closed-PnL model; FTMO limits are equity-based, so intratrade floating losses are not fully observable in these exports.",
+    }
+
+def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, eval_consistency=False):
+    n, h = paths.shape
+    phase = np.zeros(n, dtype=np.int8)  # 0=Evaluation, 1=Funded, 2=Failed
+    eval_eq = np.zeros(n); eval_hwm = np.zeros(n); eval_floor = np.full(n,-2000.0)
+    funded_eq = np.zeros(n); funded_hwm = np.zeros(n); funded_floor = np.full(n,-2000.0)
+    locked = np.zeros(n, dtype=bool)
+    dll = np.full(n,1250.0)
+    eval_active_days = np.zeros(n,dtype=int)
+    eval_best_day = np.zeros(n)
+    eval_profit = np.zeros(n)
+    eval_pass_day = np.full(n,-1,dtype=int)
+    fail_eval = np.zeros(n,dtype=bool)
+    fail_funded = np.zeros(n,dtype=bool)
+    dll_hits = np.zeros(n,dtype=int)
+    funded_age = np.zeros(n,dtype=int)
+    win_days = np.zeros(n,dtype=int)
+    cycle_profit = np.zeros(n)
+    best_cycle_day = np.zeros(n)
+    payout_count = np.zeros(n,dtype=int)
+    payout_cash = np.zeros(n)
+    first_payout_day = np.full(n,-1,dtype=int)
+    pending_amount = np.zeros(n)
+    pending_days = np.zeros(n,dtype=int)
+    cycle_best_day = np.zeros(n)
+    for d in range(h):
+        start_phase = phase.copy()
+        daily = paths[:,d] * risk
+        act = active[:,d]
+
+        ev = start_phase == 0
+        if ev.any():
+            eval_eq[ev] += daily[ev]
+            eval_active_days[ev] += act[ev].astype(int)
+            eval_profit[ev] += daily[ev]
+            eval_best_day[ev] = np.maximum(eval_best_day[ev], daily[ev])
+            eval_hwm[ev] = np.maximum(eval_hwm[ev], eval_eq[ev])
+            eval_floor[ev] = np.maximum(eval_floor[ev], eval_hwm[ev] - 2000.0)
+            hit_floor = ev & (eval_eq <= eval_floor)
+            fail_eval |= hit_floor
+            phase[hit_floor] = 2
+            consistency_ok = (eval_profit > 0) & (eval_best_day <= 0.35 * eval_profit)
+            min_days_ok = eval_active_days >= (3 if eval_consistency else 1)
+            rule_ok = consistency_ok if eval_consistency else np.ones(n,dtype=bool)
+            passed = ev & (phase == 0) & (eval_eq >= 3000.0) & min_days_ok & rule_ok
+            if passed.any():
+                eval_pass_day[passed] = d
+                phase[passed] = 1
+                funded_eq[passed] = 0.0
+                funded_hwm[passed] = 0.0
+                funded_floor[passed] = -2000.0
+                locked[passed] = False
+                funded_age[passed] = 0
+                dll[passed] = 1250.0
+                win_days[passed] = 0
+                cycle_profit[passed] = 0.0
+                best_cycle_day[passed] = 0.0
+                payout_count[passed] = 0
+
+        fu = (start_phase == 1) & (phase == 1)
+        if fu.any():
+            funded_eq[fu] += daily[fu]
+            funded_age[fu] += 1
+            dll_hits[fu & (daily < -dll)] += 1
+            cycle_profit[fu] += daily[fu]
+            best_cycle_day[fu] = np.maximum(best_cycle_day[fu], daily[fu])
+            win_days[fu] += (daily[fu] > 150.0).astype(int)
+
+            # EOD trailing update, real-time enforcement approximated at daily close.
+            funded_hwm[fu] = np.maximum(funded_hwm[fu], funded_eq[fu])
+            lock_now = fu & (~locked) & (funded_hwm >= 2100.0)
+            locked[lock_now] = True
+            funded_floor[fu & locked] = 100.0
+            funded_floor[fu & (~locked)] = np.maximum(funded_floor[fu & (~locked)], funded_hwm[fu & (~locked)] - 2000.0)
+
+            hit_floor = fu & (funded_eq <= funded_floor)
+            fail_funded |= hit_floor
+            phase[hit_floor] = 2
+
+            # The DLL rises to $2,000 from the next session after the +$3,000 threshold.
+            dll[fu & (funded_eq >= 3000.0)] = 2000.0
+
+            # A payout request is subject to 2-day processing. Balance must stay
+            # at or above +$3,000 until approval. The model assumes requests are
+            # submitted at EOD and trading continues during processing.
+            pending = fu & (pending_days > 0) & (phase == 1)
+            if pending.any():
+                denied = pending & (funded_eq < 3000.0)
+                pending_days[denied] = 0
+                pending_amount[denied] = 0.0
+                approve = pending & (~denied) & (pending_days <= 1)
+                if approve.any():
+                    payout_cash[approve] += 0.90 * pending_amount[approve]
+                    funded_eq[approve] -= pending_amount[approve]
+                    first_payout_day[approve & (first_payout_day < 0)] = d
+                    payout_count[approve] += 1
+                    cycle_profit[approve] = 0.0
+                    best_cycle_day[approve] = 0.0
+                    win_days[approve] = 0
+                    pending_days[approve] = 0
+                    pending_amount[approve] = 0.0
+                pending_days[pending & (~denied) & (~approve)] -= 1
+
+            no_pending = fu & (pending_days == 0) & (phase == 1)
+            consistency_ok = (cycle_profit > 0) & (best_cycle_day <= 0.35 * cycle_profit)
+            payout_ok = (funded_eq >= 3000.0) & (win_days >= 5) & consistency_ok
+            if not microscalp_ok or not weekly_activity_ok:
+                payout_ok[:] = False
+            cap_idx = np.minimum(payout_count,3)
+            caps = np.array([1500.0,2000.0,2500.0,3000.0])
+            cap = caps[cap_idx]
+            available = np.maximum(0.0, funded_eq - funded_floor)
+            amount = np.minimum(cap, available)
+            request = no_pending & payout_ok & (amount >= 500.0)
+            pending_amount[request] = amount[request]
+            pending_days[request] = 2
+
+    reached_funded = eval_pass_day >= 0
+    first_payout = first_payout_day >= 0
+    survived_90 = []
+    for i in np.where(reached_funded)[0]:
+        # Days after evaluation pass; count hard-breach-free funded days.
+        pass_day = eval_pass_day[i]
+        end_day = min(h-1, pass_day+90)
+        survived_90.append(phase[i] != 2 or (first_payout_day[i] >= 0 and first_payout_day[i] > end_day))
+    return {
+        "evaluation_pass_rate": float(reached_funded.mean()),
+        "funded_first_payout_rate_conditional": float(first_payout[reached_funded].mean()) if reached_funded.any() else 0.0,
+        "challenge_to_first_payout_rate": float(first_payout.mean()),
+        "funded_hard_breach_rate": float(fail_funded.mean()),
+        "evaluation_hard_breach_rate": float(fail_eval.mean()),
+        "daily_loss_soft_breach_days_mean": float(dll_hits.mean()),
+        "first_payout_net_usd_mean": float(payout_cash.mean()),
+        "first_payout_net_usd_median_conditional": float(np.median(payout_cash[first_payout])) if first_payout.any() else 0.0,
+        "any_payout_rate": float((payout_count > 0).mean()),
+        "payout_count_mean": float(payout_count.mean()),
+        "survival_90d_conditional_approx": float(np.mean(survived_90)) if survived_90 else 0.0,
+        "microscalping_eligible": bool(microscalp_ok),
+        "weekly_activity_eligible": bool(weekly_activity_ok),
+        "evaluation_consistency_variant": "35% stress" if eval_consistency else "published Growth base case: no consistency",
+        "simulations": int(n), "horizon_trading_days": int(h),
+        "note": "EOD trailing updates and closed-PnL checks are modeled. Real-time floating equity, intraday DLL pause sequencing and broker slippage are not fully reconstructable from closed-trade exports.",
+    }
+
+def microscalping_stats(trades):
+    t = trades.dropna(subset=["duration_seconds"]).copy()
+    if t.empty:
+        return {"trade_share_over_10s": np.nan, "profit_share_over_10s": np.nan, "eligible": False}
+    long = t["duration_seconds"] > 10.0
+    trade_share = float(long.mean())
+    pos_total = float(t.loc[t["native_pnl"] > 0, "native_pnl"].sum())
+    pos_long = float(t.loc[long & (t["native_pnl"] > 0), "native_pnl"].sum())
+    profit_share = pos_long / pos_total if pos_total > 0 else 0.0
+    return {"trade_share_over_10s": trade_share, "profit_share_over_10s": profit_share,
+            "eligible": bool(trade_share > .50 and profit_share > .50)}
+
+def weekly_activity_ok(active):
+    a = active.astype(int)
+    if len(a) < 5: return False
+    weeks = [a.iloc[i:i+5].sum() for i in range(0,len(a)-4,5)]
+    return bool(len(weeks) and min(weeks) >= 1)
+
+def max_concurrent_mini_equiv(trades, combo, total_risk):
+    k = len(combo)
+    events = []
+    for strategy in combo:
+        t = trades[trades["strategy"] == strategy]
+        if t.empty: continue
+        unit = float(t["risk_unit"].iloc[0])
+        per_sleeve_risk = total_risk / k
+        size = per_sleeve_risk / max(unit,1e-9)
+        for _, r in t.iterrows():
+            if pd.isna(r["entry_timestamp"]) or pd.isna(r["exit_timestamp"]): continue
+            events.append((r["entry_timestamp"], 1, size))
+            events.append((r["exit_timestamp"], 0, -size))
+    if not events: return 0.0
+    events.sort(key=lambda x:(x[0],x[1]))
+    exposure=0.0; peak=0.0
+    for _, _, delta in events:
+        exposure += delta
+        peak = max(peak, exposure)
+    return float(peak)
+
+def simulate_recovery(paths, risk, floor, start_cushion, target, daily_limit=None):
+    n,h=paths.shape
+    eq=np.full(n, floor+start_cushion, dtype=float)
+    recovered=np.zeros(n,dtype=bool)
+    ruined=np.zeros(n,dtype=bool)
+    day=np.full(n,-1,dtype=int)
+    for d in range(h):
+        daily=paths[:,d]*risk
+        active=~recovered & ~ruined
+        if daily_limit is not None:
+            bad_day=active & (daily < -daily_limit)
+        else:
+            bad_day=np.zeros(n,dtype=bool)
+        eq[active] += daily[active]
+        ruined |= active & ((eq <= floor) | bad_day)
+        hit=active & (~ruined) & (eq >= target)
+        recovered[hit]=True
+        day[hit]=d
+    return {
+        "recovery_probability": float(recovered.mean()),
+        "ruin_probability": float(ruined.mean()),
+        "median_days_to_target": float(np.median(day[recovered])+1) if recovered.any() else np.nan,
+        "mean_terminal_equity": float(eq.mean()),
+    }
+
+def write_json(path, obj):
+    path.parent.mkdir(parents=True,exist_ok=True)
+    path.write_text(json.dumps(obj,indent=2,default=str),encoding="utf-8")
+
+def run_platform(platform):
+    trades, pairing_quality = load_platform_trades(platform)
+    dates, rmat, livemat, activemat = make_matrices(trades)
+    combo_df, selected, train_idx, val_idx = build_books(rmat,activemat)
+    out = LIVE_ROOT / platform
+    (out/"charts"/"individual").mkdir(parents=True,exist_ok=True)
+    (out/"charts"/"portfolios").mkdir(parents=True,exist_ok=True)
+    (out/"reports").mkdir(parents=True,exist_ok=True)
+
+    strat_rows=[]
+    curves={}
+    for strategy in sorted(trades["strategy"].unique()):
+        t=trades[trades["strategy"]==strategy]
+        s=livemat[strategy]
+        m=series_metrics(s)
+        r=series_metrics(rmat[strategy])
+        ms=microscalping_stats(t)
+        strat_rows.append({
+            "strategy":strategy,"platform":platform,"instrument":"; ".join(sorted(t["instrument"].dropna().astype(str).unique())),
+            "trades":len(t),"first_trade":str(t["entry_timestamp"].min()),"last_trade":str(t["exit_timestamp"].max()),
+            "mean_loss_risk_proxy":float(t["risk_unit"].iloc[0]),"risk_unit_basis":str(t["risk_unit_basis"].iloc[0]),
+            "expectancy_R":float(t["r_multiple"].mean()),"win_rate":float((t["native_pnl"]>0).mean()),
+            "duration_median_seconds":float(t["duration_seconds"].median()),
+            "trade_share_over_10s":ms["trade_share_over_10s"],"profit_share_over_10s":ms["profit_share_over_10s"],
+            "live_net_pnl":m["net_pnl"],"live_annualized_pnl":m["annualized_pnl"],"live_max_drawdown":m["max_drawdown"],
+            "live_daily_pf":m["daily_pf"],"live_daily_sharpe":m["daily_sharpe"],
+            "risk_unit_net_R":r["net_pnl"],"risk_unit_maxdd_R":r["max_drawdown"],
+            "positive_month_share":m["positive_month_share"],"positive_year_share":m["positive_year_share"],
+            "worst_day_live":m["worst_day"],"best_day_share":m["best_day_share"],
+        })
+        plot_equity(s,f"{platform} | {strategy} | Normalized live",out/"charts"/"individual"/f"{slug(strategy)}.png",
+                    "NT8: one contract equivalent. MT5: $100 per trade using mean-loss 1R proxy.")
+        curves[strategy]=s
+
+    pd.DataFrame(strat_rows).to_csv(out/"reports"/"strategy_metrics.csv",index=False)
+    combo_df.to_csv(out/"reports"/"all_book_combinations.csv",index=False)
+
+    # Live books use the requested operating units: 1 contract per NT8 sleeve,
+    # $100 risk per MT5 sleeve. This is deliberately not equal-total-risk sizing.
+    book_rows=[]
+    all_names=list(rmat.columns)
+    live_daily = livemat[all_names].sum(axis=1)
+    plot_equity(live_daily,f"{platform} | All sleeves | Normalized live",out/"charts"/"portfolios"/"all_sleeves.png",
+                "Unscaled sum: one NT8 contract per sleeve / $100 MT5 risk per sleeve.")
+    curves["All sleeves"]=live_daily
+    for cat, books in selected.items():
+        for j,combo in enumerate(books,1):
+            s=livemat[list(combo)].sum(axis=1)
+            m=series_metrics(s)
+            name=f"{cat.title()} book {j}: " + " + ".join(combo)
+            book_rows.append({"category":cat,"rank":j,"book":" + ".join(combo),"size":len(combo),
+                              "live_net_pnl":m["net_pnl"],"live_max_drawdown":m["max_drawdown"],
+                              "live_daily_pf":m["daily_pf"],"live_daily_sharpe":m["daily_sharpe"],
+                              "positive_month_share":m["positive_month_share"],"worst_day":m["worst_day"]})
+            plot_equity(s,f"{platform} | {cat.title()} book {j}",out/"charts"/"portfolios"/f"{cat}_book_{j}.png",
+                        "Live unit sizing; category selection is based on earlier training data.")
+            curves[name]=s
+    pd.DataFrame(book_rows).to_csv(out/"reports"/"category_book_metrics.csv",index=False)
+    plot_dashboard(curves,f"{platform} | Normalized live equity curves",out/"charts"/"individual"/"strategy_dashboard.png")
+
+    # Trade-level normalized ledger for audit/reproducibility.
+    ledger=trades.copy()
+    for c in ["entry_timestamp","exit_timestamp","entry_date","exit_date"]:
+        ledger[c]=pd.to_datetime(ledger[c],errors="coerce").astype(str)
+    ledger.to_csv(out/"reports"/"normalized_trade_ledger.csv",index=False)
+
+    # Live block-bootstrap risk of ruin, expressed in R rather than a fictitious balance.
+    mc_candidates={s:(s,) for s in all_names}
+    for cat, books in selected.items():
+        for j,combo in enumerate(books,1):
+            mc_candidates[f"{cat}_book_{j}"]=combo
+    mc_rows=[]
+    val = val_idx if len(val_idx)>=60 else dates
+    for name,combo in mc_candidates.items():
+        series=rmat.loc[val,list(combo)].sum(axis=1)/len(combo)
+        act=activemat.loc[val,list(combo)].any(axis=1)
+        paths, actpaths=sample_block_paths(series.values,act.values,seed=SEED+len(mc_rows))
+        mc_rows.append({"book":name,"strategies":" + ".join(combo),**live_bootstrap_summary(paths)})
+    pd.DataFrame(mc_rows).to_csv(out/"reports"/"live_bootstrap_risk_of_ruin.csv",index=False)
+
+    # Per-book account simulations use equal risk allocation across sleeves.
+    prop_candidates={s:(s,) for s in all_names}
+    for cat,books in selected.items():
+        for j,combo in enumerate(books,1):
+            prop_candidates[f"{cat}_book_{j}"]=combo
+    validation_idx=val_idx if len(val_idx)>=60 else dates
+    ftmo_rows=[]; tradeify_rows=[]; recovery_rows=[]
+    ftmo_dir=PROP_ROOT/"FTMO-10K-2Step-CFD"
+    tradeify_dir=PROP_ROOT/"Tradeify-50K-Growth-Futures"
+    for cname,combo in prop_candidates.items():
+        daily_r=rmat.loc[validation_idx,list(combo)].sum(axis=1)/len(combo)
+        active=activemat.loc[validation_idx,list(combo)].any(axis=1)
+        paths, actpaths=sample_block_paths(daily_r.values,active.values,seed=SEED+len(ftmo_rows)+100)
+        if platform=="MT5":
+            for risk in FTMO_RISKS:
+                res=simulate_ftmo(paths,actpaths,risk)
+                ftmo_rows.append({"book":cname,"strategies":" + ".join(combo),"risk_per_book_trade_usd":risk,**res})
+        else:
+            t=trades[trades["strategy"].isin(combo)]
+            micro=microscalping_stats(t)
+            week_ok=weekly_activity_ok(active)
+            for risk in TRADEIFY_RISKS:
+                exposure=max_concurrent_mini_equiv(trades,combo,risk)
+                scale=min(1.0,4.0/exposure) if exposure>0 else 1.0
+                effective=risk*scale
+                res=simulate_tradeify(paths,actpaths,effective,micro["eligible"],week_ok,False)
+                tradeify_rows.append({"book":cname,"strategies":" + ".join(combo),
+                    "requested_risk_per_book_trade_usd":risk,"effective_risk_after_4_mini_cap_usd":effective,
+                    "max_concurrent_mini_equivalent_at_requested_risk":exposure,
+                    "position_limit_scale":scale,**res})
+                # Alternative evaluation-consistency stress case because Tradeify's
+                # pricing reference conflicts with its dedicated Growth rule page.
+                stress=simulate_tradeify(paths,actpaths,effective,micro["eligible"],week_ok,True)
+                tradeify_rows.append({"book":cname,"strategies":" + ".join(combo),
+                    "requested_risk_per_book_trade_usd":risk,"effective_risk_after_4_mini_cap_usd":effective,
+                    "max_concurrent_mini_equivalent_at_requested_risk":exposure,
+                    "position_limit_scale":scale,**stress})
+
+    # Recovery-mode scenarios use one selected low-volatility book and 25% of its
+    # base risk. A no-trade option is retained as the control.
+    recovery_combo=selected["recovery"][0] if selected["recovery"] else (all_names[0],)
+    recovery_daily=rmat.loc[validation_idx,list(recovery_combo)].sum(axis=1)/len(recovery_combo)
+    recovery_active=activemat.loc[validation_idx,list(recovery_combo)].any(axis=1)
+    rec_paths,rec_act=sample_block_paths(recovery_daily.values,recovery_active.values,
+                                         n_sims=N_SIMS,horizon=HORIZON,seed=SEED+999)
+    if platform=="MT5":
+        for cushion in [100.0,250.0,500.0,750.0]:
+            res=simulate_recovery(rec_paths,12.5,-1000.0,cushion,0.0,daily_limit=500.0)
+            recovery_rows.append({"firm":"FTMO","book":" + ".join(recovery_combo),"risk_usd_per_book_trade":12.5,
+                                  "floor_equity":-1000.0,"starting_cushion_usd":cushion,"target_equity":0.0,**res})
+    else:
+        for cushion in [200.0,500.0,1000.0,1500.0]:
+            res=simulate_recovery(rec_paths,25.0,100.0,cushion,3000.0,daily_limit=None)
+            recovery_rows.append({"firm":"Tradeify","book":" + ".join(recovery_combo),"risk_usd_per_book_trade":25.0,
+                                  "floor_equity":100.0,"starting_cushion_usd":cushion,"target_equity":3000.0,**res})
+
+    if platform=="MT5":
+        (ftmo_dir/"reports").mkdir(parents=True,exist_ok=True)
+        pd.DataFrame(ftmo_rows).to_csv(ftmo_dir/"reports"/"monte_carlo_challenge_payout.csv",index=False)
+        pd.DataFrame(recovery_rows).to_csv(ftmo_dir/"reports"/"recovery_mode.csv",index=False)
+    else:
+        (tradeify_dir/"reports").mkdir(parents=True,exist_ok=True)
+        pd.DataFrame(tradeify_rows).to_csv(tradeify_dir/"reports"/"monte_carlo_evaluation_funded_payout.csv",index=False)
+        pd.DataFrame(recovery_rows).to_csv(tradeify_dir/"reports"/"recovery_mode.csv",index=False)
+
+    # Cross-sleeve correlation on normalized daily R, never raw export dollar size.
+    rmat.corr(min_periods=30).to_csv(out/"reports"/"risk_unit_correlation_matrix.csv")
+    write_json(out/"reports"/"data_quality.json",{
+        "platform":platform,"trade_count":int(len(trades)),"strategies":all_names,
+        "source_timezone":"Preserved as exported; no conversion performed.",
+        "mt5_pairing_quality":pairing_quality,
+        "risk_unit":"Mean absolute realized losing-trade PnL. NT8 first converted to one-contract PnL; MT5 uses exported position-level PnL. This is a reproducible loss-normalization proxy, not guaranteed to equal the strategy's initial stop risk.",
+        "mt5_standard_deals":"No position ID is present in the standard Deals tables. Entry/exit legs are paired FIFO by symbol and opposite side; quality exceptions are reported.",
+        "live_sizing":"NT8 = one contract equivalent per strategy. MT5 = $100 per trade at 1R based on mean realized loss.",
+        "limitations":["Exported closed trades do not contain a complete intratrade equity path.",
+                       "FTMO daily/max loss is equity-based; MT5 simulations use closed-PnL paths and are optimistic for floating-loss breaches.",
+                       "Tradeify trailing drawdown is real-time enforced; NT8 MAE is available for descriptive stress but this first pass uses daily close PnL in Monte Carlo.",
+                       "Tradeify session boundary and FTMO server reset are not timezone-normalized; account rule days use exported dates.",
+                       "The 4-mini cap is approximated using continuous mini-equivalent exposure from average realized loss per contract.",
+                       "This is an export-based portfolio simulation, not an independent tick-level replay or live execution certification."]
+    })
+    return {"platform":platform,"strategies":len(all_names),"trades":len(trades),
+            "selected_books":{k:[" + ".join(x) for x in v] for k,v in selected.items()},
+            "validation_start":str(validation_idx.min().date()),"validation_end":str(validation_idx.max().date())}
+
+def write_rule_docs():
+    ftmo_rules={
+        "account":"FTMO $10,000 2-Step CFD; Standard assumed",
+        "phase_1_profit_target_usd":1000,"verification_profit_target_usd":500,
+        "max_daily_loss_usd":500,"max_loss_static_usd":1000,
+        "min_trading_days_each_phase":4,"time_limit":"Unlimited",
+        "consistency_rule":"None for 2-Step",
+        "funded_reward_split_default":0.80,"first_reward_request":"Day 14 or later after first funded trade",
+        "daily_reset":"00:00 CE(S)T; based on current-day 00:00 balance",
+        "news":"Standard funded account: selected events have a 2-minute pre/post execution restriction; not applicable during evaluation",
+        "model_assumptions":["$25/$50/$75/$100 total book risk per trade sensitivity",
+                            "Each book divides risk equally across sleeves",
+                            "10 business days used as an approximation for 14 calendar days to first reward",
+                            "No intraday floating PnL in MT5 exports; close-only rule model is optimistic"]
+    }
+    tradeify_rules={
+        "account":"Tradeify $50,000 Growth futures",
+        "evaluation_profit_target_usd":3000,"evaluation_daily_loss_limit_usd":1250,
+        "evaluation_trailing_drawdown_usd":2000,"evaluation_min_trading_days":1,
+        "evaluation_consistency_base_case":"None (dedicated Growth account guide)",
+        "evaluation_consistency_stress_case":"35% (pricing-reference conflict sensitivity)",
+        "funded_daily_loss_limit_initial_usd":1250,"funded_daily_loss_limit_after_6pct_usd":2000,
+        "funded_trailing_drawdown_usd":2000,"funded_drawdown_lock_balance_usd":52100,
+        "funded_locked_floor_usd":50100,"payout_min_balance_usd":53000,
+        "payout_consistency":0.35,"payout_profitable_days":5,"payout_day_profit_minimum_usd":150,
+        "profit_split":0.90,"payout_caps_usd":[1500,2000,2500,3000],
+        "max_position_size":"4 minis / 40 micros","minimum_activity":"At least 1 trade per week",
+        "microscalping":"More than 50% of trades and more than 50% of profit from trades longer than 10 seconds",
+        "daily_close":"4:45 PM ET regular days; 12:59 PM ET early-close days",
+        "news":"Allowed; slippage risk remains",
+        "model_assumptions":["$100/$150/$200/$250 total book risk per trade sensitivity",
+                            "Each book divides risk equally across sleeves",
+                            "Payout processing approximated as 2 trading days; balance must remain at or above $53,000",
+                            "Four-mini exposure cap applied as continuous mini-equivalent scaling",
+                            "EOD drawdown updates modeled; real-time floating breaches not fully reconstructable"]
+    }
+    write_json(PROP_ROOT/"FTMO-10K-2Step-CFD"/"reports"/"account_rules.json",ftmo_rules)
+    write_json(PROP_ROOT/"Tradeify-50K-Growth-Futures"/"reports"/"account_rules.json",tradeify_rules)
+
+def write_readmes(summaries):
+    LIVE_ROOT.mkdir(exist_ok=True)
+    (LIVE_ROOT/"README.md").write_text("""# Normalized live-account research
+
+This directory removes the exported starting balances and normalizes strategy exposure.
+
+- NT8: one contract equivalent per strategy. Trade PnL is divided by exported quantity.
+- MT5: fixed $100 risk per trade. 1R is proxied by each strategy's mean absolute realized losing-trade PnL. The export does not provide a complete per-trade initial-stop risk series, so this is explicitly a realized-loss proxy.
+- Equity starts at $0. No account balance is added.
+- The strategy's native exits and stop behavior are preserved. No protective stops or strategy redesign are introduced.
+
+Each platform has individual strategy curves, all-sleeve curves, category-book curves, normalized trade ledgers, risk-unit correlations, and bootstrap drawdown/ruin estimates. The live book categories are screening candidates, not deployment approval.
+
+## Platform reports
+
+- [NT8 normalized live](NT8/README.md)
+- [MT5 normalized live](MT5/README.md)
+
+## Charts
+
+See the platform READMEs for the equity curves at the end of each report.
+""",encoding="utf-8")
+
+    (PROP_ROOT/"README.md").write_text("""# Prop-firm portfolio simulations
+
+Separate account-rule simulations using normalized strategy R-multiples and block-bootstrap Monte Carlo.
+
+- [FTMO $10,000 2-Step CFD](FTMO-10K-2Step-CFD/README.md)
+- [Tradeify $50,000 Growth futures](Tradeify-50K-Growth-Futures/README.md)
+
+Results are conditional on historical export distributions and the assumptions in each account folder. They are not guarantees of passing, funding, payout or survival.
+""",encoding="utf-8")
+
+    for firm, title, file in [
+        ("FTMO-10K-2Step-CFD","FTMO $10,000 2-Step CFD","monte_carlo_challenge_payout.csv"),
+        ("Tradeify-50K-Growth-Futures","Tradeify $50,000 Growth futures","monte_carlo_evaluation_funded_payout.csv"),
+    ]:
+        d=PROP_ROOT/firm
+        (d/"README.md").write_text(f"""# {title}
+
+See [account rules](reports/account_rules.json), Monte Carlo results in [reports/{file}](reports/{file}), and [recovery-mode scenarios](reports/recovery_mode.csv).
+
+The model uses normalized daily R-multiples, equal risk allocation across the sleeves in each book, and a 5-trading-day circular block bootstrap. Each simulation uses {N_SIMS:,} paths over {HORIZON} trading days.
+
+## Important limits
+
+- The source exports are closed-trade records, not a complete tick-by-tick account equity path.
+- Daily rules are approximated from closed PnL. Floating losses can breach equity limits before a trade closes.
+- MT5 standard Deals exports lack position IDs; entry/exit legs are paired FIFO.
+- Timestamps remain as exported. The firm's timezone/session boundaries are not reconstructed.
+- Strategy execution, native exits and stop behavior are not changed.
+- Treat results as historical scenario estimates, not promises.
+
+## Charts
+
+Charts and book comparisons will be listed here after the simulation build.
+""",encoding="utf-8")
+
+def main():
+    summaries=[]
+    for platform in ["NT8","MT5"]:
+        summaries.append(run_platform(platform))
+    write_rule_docs()
+    write_readmes(summaries)
+    write_json(PROP_ROOT/"reports"/"build_summary.json",{
+        "generated_utc":datetime.now(timezone.utc).isoformat(),
+        "monte_carlo_simulations_per_candidate":N_SIMS,
+        "horizon_trading_days":HORIZON,"block_length_days":BLOCK,
+        "platforms":summaries,
+        "global_limitations":["No tick-level replay was run.","MT5 RBE is now included; Gold X9 remains missing.",
+                             "Risk units use mean realized loss, not necessarily the initial stop risk.",
+                             "Prop firm rule boundaries are approximated from exported timestamps."]
+    })
+    print(json.dumps(summaries,indent=2))
+
+if __name__=="__main__":
+    main()
