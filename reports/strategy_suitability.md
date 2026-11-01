@@ -271,7 +271,7 @@ No weekly-eligible active candidate meets the 5% near-floor breach-risk threshol
 - Tradeify weekly activity is treated as a strict evaluation/funded eligibility screen; the official idle-time warning/grace process is not modeled.
 - The Tradeify soft DLL is clipped at USD 1,250 initially and USD 2,000 after the USD 53,000 threshold. The model assumes the higher limit remains after payouts.
 - The MT5 RBE Deals export has no position IDs; FIFO matching leaves residual uncertainty in reconstructed entry times and durations, though cash flows reconcile.
-- No independent tick-level replay, margin simulation, broker-specific spread/slippage model, or live execution certification was performed.
+- No independent minute-bar strategy replay, tick-level replay, margin simulation, broker-specific spread/slippage model, or live execution certification was performed. The uploaded NQ M1 archive has since been decoded locally into an unadjusted continuous Last series, but it has not yet been used to validate exported trades.
 - NT8 live curves use one contract per strategy; one GC and one NQ contract are not equal-risk. MT5 live curves use a USD 100 realized-loss risk proxy per trade and do not enforce broker minimum lots.
 - MT5 Gold X9 remains missing.
 - These are historical scenario estimates, not guarantees or live-deployment approvals.
@@ -288,4 +288,5 @@ No weekly-eligible active candidate meets the 5% near-floor breach-risk threshol
 - [Tradeify Monte Carlo results](../Prop-Firms/Tradeify-50K-Growth-Futures/reports/monte_carlo_evaluation_funded_payout.csv)
 - [FTMO recovery scenarios](../Prop-Firms/FTMO-10K-2Step-CFD/reports/recovery_mode.csv)
 - [Tradeify recovery scenarios](../Prop-Firms/Tradeify-50K-Growth-Futures/reports/recovery_mode.csv)
+- [NQ minute archive data audit](nq_minute_data_audit.md)
 - [Prop-firm methodology and official rule sources](../Prop-Firms/methodology.md)
