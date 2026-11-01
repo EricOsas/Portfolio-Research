@@ -105,7 +105,7 @@ Rules checked on 2026-11-01. These official pages define the modeled account ver
 - Daily PnL is based on completed-trade exits. Intraday floating equity and exact daily-loss pause sequencing are not reconstructed.
 - FTMO 2-Step has a $500 equity-based daily loss and a static $1,000 maximum-loss floor. The model uses closed PnL, so floating-loss breaches remain unobservable.
 - Tradeify's EOD trailing drawdown is modeled from daily closes. The soft DLL is approximated by clipping closed daily losses at $1,250 initially and $2,000 after the funded balance reaches $53,000; intraday trigger timing and overshoot are not reconstructed.
-- Tradeify payout profitable days and consistency use exit-date daily buckets; export timestamps are not converted to the firm's 6 PM–5 PM ET trading-day boundary, so eligibility can differ from the live platform.
+- Tradeify's five $150 winning-day test uses net closed daily PnL; the 35% consistency test uses gross daily PnL before commissions, matching the published rule. Both use exit-date calendar buckets; export timestamps are not converted to the firm's 6 PM–5 PM ET trading-day boundary, so eligibility can differ from the live platform.
 - Tradeify recovery candidates are restricted to weekly-activity-eligible books. The $53,000 recovery chart also requires microscalping eligibility, but it still does not enforce 35% consistency, five winning days above $150 or payout processing.
 - FTMO phase review, verification and KYC/activation delays are not simulated; phase transitions occur on the next simulated trading day, so time-to-funded estimates are optimistic.
 - News, hedging/correlated-product restrictions, overnight/session restrictions, broker slippage, margin and exact timezone conversion are not fully tested.
