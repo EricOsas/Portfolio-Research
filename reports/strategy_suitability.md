@@ -17,7 +17,7 @@ These are generic portfolio-screening categories. They are not fixed labels atta
 - **FTMO $10k 2-Step:** Gold ORB (RBE) + Open Drive + Overnight Bias ORB + Tokyo Coil at USD 50 total risk per book trade.
 - **Tradeify $50k Growth:** Flash ORB + Overnight Bias ORB. USD 100 requested risk still requires USD 237.23 effective risk after the minimum one-micro-per-sleeve rule. A USD 250 request produces the same position size.
 
-**Near-floor recovery:** no active book passes the 5% modeled breach-risk screen at the tested near-floor cushions. No-trade is the control. The best active Tradeify recovery candidate still has substantial modeled breach risk, and the apparent higher-recovery alternatives fail the weekly-activity rule.
+**Near-floor recovery:** at the strict starting cushions ($100 FTMO; $200 Tradeify), no active book achieves both at least 50% recovery probability and at most 5% breach probability. Tradeify's best eligible active recovery book still has about 41% modeled breach risk; the lowest-exposure single sleeve is only marginally safer. FTMO becomes materially more recoverable as the remaining cushion grows.
 
 ## What the four categories mean
 
@@ -163,12 +163,14 @@ Modeled account rules: 10% Phase 1 target, 5% Verification target, USD 500 equit
 
 | Requested risk/book trade | Pass Phase 1 | Pass both phases | Evaluation breach | Funded breach, conditional | Challenge-to-first-reward | Expected first reward across all paths | Median reward if paid | Median days to first reward |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| $25 | 92.46% | 67.82% | 0.00% | 0.00% | 57.54% | $53.99 | $69.29 | 199 |
-| $50 | 98.92% | 96.46% | 0.54% | 0.35% | 94.06% | $164.02 | $125.78 | 127 |
-| $75 | 98.12% | 96.26% | 3.26% | 1.79% | 94.42% | $243.56 | $185.80 | 93 |
-| $100 | 95.38% | 92.20% | 7.74% | 5.36% | 88.94% | $312.96 | $249.54 | 74 |
+| $25 | 92.46% | 67.82% | 0.00% | 0.00% | 59.08% | $56.16 | $71.62 | 197 |
+| $50 | 98.92% | 96.46% | 0.54% | 0.31% | 94.64% | $167.70 | $128.53 | 124 |
+| $75 | 98.12% | 96.26% | 3.26% | 1.81% | 94.94% | $250.27 | $195.07 | 90 |
+| $100 | 95.38% | 92.20% | 7.74% | 5.40% | 89.72% | $324.51 | $267.04 | 70 |
 
-At USD 50, the model gives the best balanced result: 96.46% pass-both probability and 94.06% challenge-to-first-reward probability, with a 0.54% modeled evaluation breach rate and 0.35% funded breach rate conditional on funding. USD 75 reaches the first reward sooner and has a slightly higher challenge-to-reward rate, but breach probability rises. USD 100 is materially more aggressive.
+At USD 50, the model gives the best balance for a funded account: 96.46% pass-both probability and 94.64% challenge-to-first-reward probability, with 0.54% modeled evaluation breach and 0.31% funded breach conditional on funding. USD 75 is the faster challenge setting: median first reward falls to 90 trading days and challenge-to-reward rises slightly to 94.94%, but evaluation breach rises to 3.26% and funded breach to 1.81%. USD 100 is materially more aggressive. The book composition is unchanged; the category distinction is primarily the risk budget and survival objective.
+
+**RBE-excluded sensitivity:** Flash ORB + Open Drive + Tokyo Coil at USD 50 risk reaches a first reward in 89.12% of paths, with 3.88% evaluation breach and 2.20% funded breach. This is a useful alternative if the MT5 RBE pairing uncertainty is considered unacceptable, but it is weaker than the primary RBE-inclusive book.
 
 The high modeled pass rates must be read with the close-only limitation: FTMO's loss rules are equity-based, while these exports do not contain complete floating equity. Phase review/KYC delays are also omitted, so time-to-funded estimates are optimistic.
 
@@ -203,26 +205,27 @@ Recovery starts from a defined cushion above the account's breach floor. It asks
 
 ### FTMO
 
-At USD 100 cushion above the USD 9,000 static floor (USD 9,100 equity), the target is return to the USD 10,000 initial balance. Recovery sizing is USD 12.50 total risk per book trade.
+At a USD 100 cushion above the USD 9,000 static floor (USD 9,100 equity), the target is return to the USD 10,000 initial balance.
 
-- Best active candidate by recovery probability: **Tokyo Coil**, 40.56% chance to return to initial balance, but 37.68% modeled breach probability.
-- **No-trade:** 0% modeled breach, but also 0% chance of recovery.
-- No active candidate meets the 5% breach-risk threshold at this near-floor cushion.
-- At a USD 500 cushion, Gold ORB (RBE) + Tokyo Coil at USD 12.50 total book risk has an 86.66% chance to return to initial balance, with 0% breach observed in 5,000 paths; at USD 750 cushion, recovery rises to 98.08%, with 0% breach observed. This pair inherits the MT5 RBE pairing uncertainty. Tokyo Coil alone avoids RBE and gives 84.66% recovery with 0.60% breach at USD 500 cushion.
+- Highest recovery probability: **Gold ORB (RBE) + Tokyo Coil**, USD 25 total risk; 66.74% chance to return to USD 10,000, with 29.34% modeled breach.
+- RBE-excluded alternative: **Overnight Bias ORB + Tokyo Coil**, USD 25 risk; 60.78% recovery and 28.02% breach.
+- Lowest-exposure active candidate: **Tokyo Coil** at USD 5 risk; only 0.36% recovery and 8.94% breach. It is low exposure, but not a practical recovery engine.
+- At a USD 250 cushion, **Gold ORB (RBE) + Overnight Bias ORB** at USD 25 risk reaches initial equity in 84.06% of paths with 0.96% breach; the RBE-excluded **Overnight Bias ORB + Tokyo Coil** gives 84.36% recovery and 4.68% breach.
+- At a USD 500 cushion, **Gold ORB (RBE) + Tokyo Coil** at USD 12.50 risk gives 86.20% recovery with no breach observed in 5,000 paths. The RBE-excluded **Tokyo Coil** at USD 12.50 risk gives 84.66% recovery and 0.60% breach. At a USD 750 cushion, Tokyo Coil alone at USD 5 risk gives 75.52% recovery with no breach observed.
+
+No active book meets both the 50% recovery / 5% breach screen at the $100 cushion. No-trade preserves the account but cannot recover it. Zero observed breaches in 5,000 paths is not proof of zero risk; the approximate one-sided 95% upper bound is 0.06%. RBE-inclusive recovery candidates inherit MT5 pairing uncertainty.
 
 ### Tradeify
 
 The near-floor scenario starts USD 200 above the USD 50,100 locked floor (USD 50,300 account balance), with one micro per active sleeve.
 
-Only books that pass the weekly-activity screen are treated as executable recovery candidates. The $53,000 chart additionally requires microscalping eligibility, but payout consistency, five winning days and payout processing are not enforced in the balance-recovery simulation.
+- To rebuild a USD 500 buffer, **Open Drive + VWAP Pullback** gives 59.30% recovery and 40.70% breach at USD 158.36 effective risk per book trade.
+- The lower-exposure single-sleeve option, **Open Drive alone**, gives 58.20% recovery and 41.80% breach at USD 98.82 effective risk. The small recovery-probability difference does not justify the extra pair exposure if minimizing size is the priority.
+- To reach the USD 53,000 balance threshold, the leading eligible book is **Flash ORB + Overnight Bias ORB**: 38.26% recovery and 61.66% breach at USD 237.23 effective risk.
 
-For the weekly-eligible **Flash ORB + Overnight Bias ORB** pair:
+For the USD 53,000 balance target, the same Flash ORB + Overnight Bias ORB book gives 61.28% recovery / 38.60% breach from a USD 500 cushion, 81.96% / 17.90% from USD 1,000, and 91.86% / 8.06% from USD 1,500. These are balance-recovery probabilities only, not approved payouts; funded consistency, five $150 winning days and payout processing are not enforced in this recovery simulation.
 
-- Chance to rebuild a USD 500 buffer above the locked floor: **56.62%**; modeled breach probability: **43.38%**.
-- Chance to reach the USD 53,000 balance target: **39.78%**; modeled breach probability: **60.12%**.
-- With USD 1,500 cushion instead of USD 200, chance to reach USD 53,000 rises to **91.02%**, but breach probability remains **8.86%**.
-
-Some apparently stronger recovery candidates, including Overnight Bias ORB alone and Opening-Shock Continuation + Overnight Bias ORB, fail the weekly-activity screen and are not valid Tradeify recovery choices. No weekly-eligible active candidate meets the 5% near-floor breach-risk threshold. **No-trade is the mathematical drawdown control, not a compliant long-term Tradeify operating mode:** the minimum-activity rule still requires at least one trade per Monday-Friday week. The model does not simulate Tradeify's idle-time warning/grace process.
+No weekly-eligible active candidate meets the 5% near-floor breach-risk threshold. **No-trade is the mathematical drawdown control, not a compliant long-term Tradeify operating mode:** the minimum-activity rule still requires at least one trade per Monday-Friday week. The model does not simulate Tradeify's idle-time warning/grace process.
 
 ## How to use the results
 
