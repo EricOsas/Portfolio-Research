@@ -187,7 +187,7 @@ For the weekly-eligible **Flash ORB + Overnight Bias ORB** pair:
 - Chance to reach the USD 53,000 balance target: **39.78%**; modeled breach probability: **60.12%**.
 - With USD 1,500 cushion instead of USD 200, chance to reach USD 53,000 rises to **91.02%**, but breach probability remains **8.86%**.
 
-Some apparently stronger recovery candidates, including Overnight Bias ORB alone and Opening-Shock Continuation + Overnight Bias ORB, fail the weekly-activity screen and are not valid Tradeify recovery choices. No weekly-eligible active candidate meets the 5% near-floor breach-risk threshold. **No-trade is the safest near-floor control.**
+Some apparently stronger recovery candidates, including Overnight Bias ORB alone and Opening-Shock Continuation + Overnight Bias ORB, fail the weekly-activity screen and are not valid Tradeify recovery choices. No weekly-eligible active candidate meets the 5% near-floor breach-risk threshold. **No-trade is the mathematical drawdown control, not a compliant long-term Tradeify operating mode:** the minimum-activity rule still requires at least one trade per Monday-Friday week. The model does not simulate Tradeify's idle-time warning/grace process.
 
 ## How to use the results
 
@@ -205,6 +205,7 @@ Some apparently stronger recovery candidates, including Overnight Bias ORB alone
 - FTMO phase review/verification/KYC delays are omitted; phase transitions occur on the next simulated trading day.
 - FTMO and Tradeify daily loss rules are equity-based/soft-pause rules. Closed-PnL simulations cannot see intraday floating losses or exact trigger sequences.
 - Tradeify profitable days and 35% consistency use exit-date calendar buckets. Export timestamps are not converted to the firm's 6 PM–5 PM ET trading-day boundary.
+- Tradeify weekly activity is treated as a strict evaluation/funded eligibility screen; the official idle-time warning/grace process is not modeled.
 - The Tradeify soft DLL is clipped at USD 1,250 initially and USD 2,000 after the USD 53,000 threshold. The model assumes the higher limit remains after payouts.
 - The MT5 RBE Deals export has no position IDs; FIFO matching leaves residual uncertainty in reconstructed entry times and durations, though cash flows reconcile.
 - No independent tick-level replay, margin simulation, broker-specific spread/slippage model, or live execution certification was performed.
