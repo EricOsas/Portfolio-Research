@@ -1058,13 +1058,13 @@ def run_platform(platform):
         "source_timezone":"Preserved as exported; no conversion performed.",
         "mt5_pairing_quality":pairing_quality,
         "risk_unit":"Mean absolute realized losing-trade PnL. NT8 first converted to one-contract PnL; MT5 uses exported position-level PnL. This is a reproducible loss-normalization proxy, not guaranteed to equal the strategy's initial stop risk.",
-        "mt5_standard_deals":"No position ID is present in the standard Deals tables. Entry/exit legs are paired FIFO by symbol and opposite side; quality exceptions are reported.",
+        "mt5_standard_deals":"No position ID is present in the standard Deals tables. Entry/exit legs are paired by symbol and opposite side, exact volume match first, FIFO fallback; RBE has overlapping positions and residual pairing uncertainty.",
         "live_sizing":"NT8 = one contract equivalent per strategy. MT5 = $100 per trade at 1R based on mean realized loss.",
         "limitations":["Exported closed trades do not contain a complete intratrade equity path.",
                        "FTMO daily/max loss is equity-based; MT5 simulations use closed-PnL paths and are optimistic for floating-loss breaches.",
-                       "Tradeify trailing drawdown is real-time enforced; NT8 MAE is available for descriptive stress but this first pass uses daily close PnL in Monte Carlo.",
+                       "Tradeify EOD trailing drawdown is modeled from daily closes. Real-time daily-loss pauses are not reconstructed; NT8 MAE is reported separately as a conservative soft-DLL stress diagnostic.",
                        "Tradeify session boundary and FTMO server reset are not timezone-normalized; account rule days use exported dates.",
-                       "The 4-mini cap is approximated using continuous mini-equivalent exposure from average realized loss per contract.",
+                       "Tradeify position sizes use whole-micro increments, at least one micro per active sleeve, and a four-mini maximum concurrent exposure cap.",
                        "This is an export-based portfolio simulation, not an independent tick-level replay or live execution certification."]
     })
     return {"platform":platform,"strategies":len(all_names),"trades":len(trades),
@@ -1080,6 +1080,7 @@ def write_rule_docs():
         "consistency_rule":"None for 2-Step",
         "funded_reward_split_default":0.80,"first_reward_request":"Day 14 or later after first funded trade",
         "daily_reset":"00:00 CE(S)T; based on current-day 00:00 balance",
+        "official_sources":["https://ftmo.com/en/trading-objectives/","https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/","https://ftmo.com/en/faq/can-i-trade-news/"],
         "news":"Standard funded account: selected events have a 2-minute pre/post execution restriction; not applicable during evaluation",
         "model_assumptions":["$25/$50/$75/$100 total book risk per trade sensitivity",
                             "Each book divides risk equally across sleeves",
@@ -1095,6 +1096,8 @@ def write_rule_docs():
         "funded_daily_loss_limit_initial_usd":1250,"funded_daily_loss_limit_after_6pct_usd":2000,
         "funded_trailing_drawdown_usd":2000,"funded_drawdown_lock_balance_usd":52100,
         "funded_locked_floor_usd":50100,"payout_min_balance_usd":53000,
+        "funded_drawdown_measurement":"End-of-day trailing until floor locks at $50,100",
+        "daily_loss_measurement":"Real-time equity soft pause; closed-PnL simulation does not reproduce intraday sequence",
         "payout_consistency":0.35,"payout_profitable_days":5,"payout_day_profit_minimum_usd":150,
         "profit_split":0.90,"payout_minimum_usd":500,"payout_caps_usd":[1500,2000,2500,3000],
         "payout_processing_model_trading_days":2,
@@ -1103,11 +1106,12 @@ def write_rule_docs():
         "microscalping":"More than 50% of trades and more than 50% of profit from trades longer than 10 seconds",
         "daily_close":"4:45 PM ET regular days; 12:59 PM ET early-close days",
         "news":"Allowed; slippage risk remains",
+        "official_sources":["https://help.tradeify.co/en/articles/10495915-growth-evaluation-accounts","https://help.tradeify.co/en/articles/12268167-essential-trading-rules-overview","https://help.tradeify.co/en/articles/10468320-rules-consistency-rule"],
         "model_assumptions":["$100/$250/$500/$750 requested total book risk per trade sensitivity",
                             "Minimum 1 micro per active sleeve; whole-micro sizing rounded down above the minimum",
                             "Each book divides risk equally across sleeves",
                             "Payout processing approximated as 2 trading days; balance must remain at or above $53,000",
-                            "Four-mini exposure cap applied as continuous mini-equivalent scaling",
+                            "Four-mini exposure cap enforced after whole-micro sizing; any remaining noncompliant sizing is flagged",
                             "EOD drawdown updates modeled; real-time floating breaches not fully reconstructable"]
     }
     write_json(PROP_ROOT/"FTMO-10K-2Step-CFD"/"reports"/"account_rules.json",ftmo_rules)
