@@ -267,7 +267,7 @@ No weekly-eligible active candidate meets the 5% near-floor breach-risk threshol
 - Live drawdown barriers of 10R/20R/50R are balance-free R-based diagnostics, not literal account ruin.
 - FTMO phase review/verification/KYC delays are omitted; phase transitions occur on the next simulated trading day.
 - FTMO and Tradeify daily loss rules are equity-based/soft-pause rules. Closed-PnL simulations cannot see intraday floating losses or exact trigger sequences.
-- Tradeify profitable days and 35% consistency use exit-date calendar buckets. Export timestamps are not converted to the firm's 6 PM–5 PM ET trading-day boundary.
+- Tradeify's five $150 winning-day test uses net closed daily PnL; the 35% consistency test uses gross daily PnL before commissions. Both use exit-date calendar buckets. Export timestamps are not converted to the firm's 6 PM–5 PM ET trading-day boundary.
 - Tradeify weekly activity is treated as a strict evaluation/funded eligibility screen; the official idle-time warning/grace process is not modeled.
 - The Tradeify soft DLL is clipped at USD 1,250 initially and USD 2,000 after the USD 53,000 threshold. The model assumes the higher limit remains after payouts.
 - The MT5 RBE Deals export has no position IDs; FIFO matching leaves residual uncertainty in reconstructed entry times and durations, though cash flows reconcile.
