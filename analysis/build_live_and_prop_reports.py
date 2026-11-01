@@ -1335,9 +1335,10 @@ def run_platform(platform):
         "live_sizing":"NT8 = one contract equivalent per strategy. MT5 = $100 per trade at 1R based on the training-sample mean realized loss; that sizing is held fixed across the history.",
         "limitations":["Exported closed trades do not contain a complete intratrade equity path.",
                        "FTMO daily/max loss is equity-based; MT5 simulations use closed-PnL paths and are optimistic for floating-loss breaches.",
-                       "Tradeify EOD trailing drawdown is modeled from daily closes. The $1,250 soft DLL is approximated by clipping closed daily losses; NT8 MAE is a separate stress diagnostic.",
+                       "Tradeify EOD trailing drawdown is modeled from daily closes. The funded DLL is modeled at $1,250 initially and $2,000 from the next session after the $53,000 balance threshold; closed-PnL clipping is an approximation.",
                        "Tradeify session boundary and FTMO server reset are not timezone-normalized; account rule days use exported dates.",
-                       "Tradeify position sizes use whole-micro increments, at least one micro per active sleeve, and a four-mini maximum concurrent exposure cap. Soft DLL losses are clipped at $1,250/day in Monte Carlo.",
+                       "Tradeify weekly activity applies during evaluation and funded trading; microscalping is an additional funded payout-eligibility screen.",
+                       "Tradeify position sizes use whole-micro increments, at least one micro per active sleeve, and a four-mini maximum concurrent exposure cap. Intraday soft-DLL trigger timing and overshoot remain unknown.",
                        "This is an export-based portfolio simulation, not an independent tick-level replay or live execution certification."]
     })
     return {"platform":platform,"strategies":len(all_names),"trades":len(trades),
@@ -1485,12 +1486,14 @@ Results are conditional on historical export distributions and the assumptions i
             extra_links += "\n- [Intraday MAE / soft-DLL stress](reports/mae_soft_dll_stress.csv)"
             sizing_note = "Growth evaluation has no consistency rule. Funded payouts require 35% consistency, five winning days above $150, a $53,000 balance, at least one trade per complete Monday-Friday week and the microscalping test. Weekly activity and microscalping are funded payout-eligibility rules, not evaluation pass conditions. Whole-micro sizing uses at least one micro per active sleeve and a four-mini concurrent cap; effective risk after minimum sizing is shown."
             daily_limit_note = "The initial $1,250 soft daily-loss limit is modeled as a closed-PnL clip; after the funded balance reaches $53,000, the model applies the official $2,000 DLL from the next session. Intraday trigger timing, overshoot and trade sequence remain unknown. The EOD trailing drawdown is modeled from daily closes; NT8 MAE is a separate diagnostic."
-            pairing_note = "NT8 MAE is available for the separate soft-DLL stress diagnostic."
+            pairing_note = "NT8 MAE stacks same-entry-day adverse excursions across active sleeves; it is not a synchronized intraday equity replay."
+            recovery_note = "Recovery curves are balance-only. The $53,000 target does not enforce payout consistency, five $150 winning days or payout processing."
             chart_extra = "\n![Evaluation drawdown breach probability](charts/evaluation_breach_probability.png)\n![Intraday MAE / soft-DLL stress](charts/mae_soft_dll_stress.png)\n![Recovery to $53,000 balance (payout eligibility not enforced)](charts/recovery_payout_threshold_probability.png)\n"
         else:
             sizing_note = "Risk ladder is USD 25–100 total book risk per trade, allocated equally across sleeves. Sizing is continuous; instrument-specific minimum lots are not enforced."
             daily_limit_note = "FTMO equity-based daily and maximum loss limits can be breached by floating losses not visible in closed-trade exports. The model also omits the 1–4 business-day phase review and KYC/activation delays, so time-to-funded estimates may be optimistic."
             pairing_note = "MT5 RBE entry/exit legs use exact-volume matching where possible and FIFO fallback because the Deals export has no position IDs."
+            recovery_note = "Recovery curves are balance-only; FTMO recovery measures return to initial equity before the static loss floor, not reward-withdrawal eligibility."
         (d/"README.md").write_text(f"""# {title}
 
 - [Account rules and assumptions](reports/account_rules.json)
@@ -1507,7 +1510,7 @@ The model uses normalized daily R-multiples and a 5-trading-day block bootstrap 
 - {pairing_note}
 - Timestamps remain as exported. The firm's timezone/session boundaries are not reconstructed.
 - Strategy execution, native exits and stop behavior are not changed.
-- Recovery curves are balance-only. Tradeify's $53,000 balance target does not enforce payout consistency, five winning days or payout processing.
+- {recovery_note}
 - Treat results as historical scenario estimates, not promises.
 
 ## Charts
