@@ -982,6 +982,8 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
                     lines.append(f'  - {label}: {float(funded[key]):,.1f}')
                 elif "survival" in key:
                     lines.append(f'  - {label}: {float(funded[key]):.1%}')
+                elif "payout_count" in key:
+                    lines.append(f'  - {label}: {float(funded[key]):.2f}')
                 else:
                     lines.append(f'  - {label}: USD {float(funded[key]):,.2f}')
     lines += ["","## Near-floor recovery",recovery_candidate,
