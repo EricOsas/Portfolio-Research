@@ -8,8 +8,9 @@
 - Book candidates are selected using the earlier 60% training sample. This is one chronological holdout, not a multi-fold rolling walk-forward test.
 - Each sleeve's realized-loss R unit is calibrated on that training sample, then held fixed for the validation sample and all prop position sizing.
 - FTMO book PnL uses the average constituent-sleeve R multiplied by total book risk; Tradeify uses sleeve-specific training R units and whole-micro weights.
-- All one-to-four-sleeve combinations are screened on training/validation metrics. Firm-specific Monte Carlo covers every single sleeve, the three selected category finalists per category, and the leading two-/three-sleeve candidates; identical books are deduplicated.
-- FTMO also receives leading RBE-excluded pair/triple candidates as a sensitivity because the MT5 Gold ORB (RBE) export lacks position IDs and requires fallback trade pairing.
+- Every one-to-four-sleeve combination is evaluated by firm-specific Monte Carlo across the full risk ladder: all 385 MT5 books for FTMO and all 255 NT8 books for Tradeify, each with 5,000 paths over 252 trading days. Identical strategy sets are deduplicated.
+- Primary challenge and funded recommendations are selected using training-only challenge/funded scores, then evaluated on the later validation sample. The best validation-only row is reported as a diagnostic and is not used to choose the winner; this reduces holdout selection bias.
+- RBE-excluded FTMO candidates are included in the full combination universe and separately surfaced as a sensitivity because the MT5 Gold ORB (RBE) export lacks position IDs and requires fallback trade pairing.
 - Challenge pass, evaluation hard breach, funded hard breach conditional on funding, funded survival, payout eligibility, payout amounts and recovery scenarios are reported separately.
 - Near-floor recovery scenarios test all positive-training single-sleeve and pair candidates with at least 30 active training days. Tradeify recovery candidates are further screened for weekly activity and microscalping eligibility.
 - The model is based on completed-trade exports, not an intraday account-equity replay. Tradeify reports both raw evaluation target-hit rate and eligible evaluation pass rate; the latter also requires minimum weekly activity and position-limit compliance.
