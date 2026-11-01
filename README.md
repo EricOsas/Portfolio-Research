@@ -48,7 +48,7 @@ Daily PF and daily Sharpe use daily aggregated net PnL, not individual-trade PF/
 - All one-to-four-sleeve combinations are screened. Individual sleeves and selected books receive block-bootstrap drawdown analysis.
 - Live risk-of-ruin figures are R-multiple drawdown barriers, not literal account ruin probabilities because no account balance was specified.
 
-One GC contract and one NQ contract are not equal-risk exposures. MT5's USD 100 sizing uses a realized-loss risk-unit proxy, not the strategy's initial stop risk.
+One GC contract and one NQ contract are not equal-risk exposures. MT5's USD 100 sizing uses each sleeve's training-period mean realized loss as its R proxy, not the strategy's initial stop risk. That calibration is held fixed in validation.
 
 ## Prop-firm research
 
@@ -74,7 +74,7 @@ Tradeify Growth evaluation has no consistency rule. The funded model applies the
 - NT8 Profit is used as exported; it is already net of Commission, so commission is not subtracted again.
 - MT5 standard reports use deal Profit + Commission + Swap. The NQ Precision Bot custom ledger uses Adj. Net P&L.
 - Raw curves use original exported quantities/lots. They do not model margin, simultaneous exposure, execution conflicts, prop-firm rules or capital allocation.
-- Normalized MT5 risk units use mean absolute realized losing-trade PnL. This is a sizing proxy, not verified initial stop risk.
+- Normalized MT5 risk units use mean absolute realized losing-trade PnL from the first 60% training period, held fixed in validation. This is a sizing proxy, not verified initial stop risk.
 - Strategy PnL is timestamped at exit for completed-trade curves. Activity is timestamped by entry date. Timestamps remain as exported; no timezone conversion is assumed.
 - Prop simulations use a chronological 60/40 train/validation split. Book selection is performed on the first 60%; Monte Carlo evaluation uses the later validation sample.
 - Tradeify's $2,000 EOD trailing drawdown and $50,100 locked floor are modeled. Its $1,250 soft DLL is approximated by clipping daily closed-PnL losses; intraday pause timing and overshoot are unknown. NT8 MAE is a separate stress diagnostic.
