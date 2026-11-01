@@ -954,10 +954,24 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
             best=viable.sort_values("recovery_probability",ascending=False).iloc[0]
             recovery_candidate=f'{best["book"]} at USD {float(best["risk_usd_per_book_trade"]):,.2f} risk per book trade: recovery probability {best["recovery_probability"]:.1%}, breach probability {best["ruin_probability"]:.1%}.'
         else:
-            if "Tradeify" in title:
-                recovery_candidate="No-trade is the mathematical drawdown control, but it is not a compliant long-term Tradeify mode because minimum weekly activity applies; none of the weekly-eligible active candidates stayed within a 5% modeled breach probability."
+            active_target=target_rows[target_rows["book"]!="No trade"].copy()
+            if len(active_target):
+                best_recovery=active_target.sort_values(
+                    ["recovery_probability","ruin_probability"],ascending=[False,True]).iloc[0]
+                best_survival=active_target.sort_values(
+                    ["ruin_probability","recovery_probability"],ascending=[True,False]).iloc[0]
+                detail=(f'Best recovery chance: {best_recovery["book"]} at USD {float(best_recovery["risk_usd_per_book_trade"]):,.2f} risk '
+                        f'({float(best_recovery["recovery_probability"]):.1%} recovery; {float(best_recovery["ruin_probability"]):.1%} breach). '
+                        f'Lowest-breach active choice: {best_survival["book"]} at USD {float(best_survival["risk_usd_per_book_trade"]):,.2f} risk '
+                        f'({float(best_survival["recovery_probability"]):.1%} recovery; {float(best_survival["ruin_probability"]):.1%} breach).')
             else:
-                recovery_candidate="No-trade is the safest near-floor control; none of the active candidates across the USD 5/10/12.50/25 recovery risk ladder stayed within a 5% modeled breach probability."
+                detail="No active candidate passed the eligibility screen."
+            if "Tradeify" in title:
+                recovery_candidate=("No weekly-eligible active candidate achieves both at least 50% recovery probability and at most 5% modeled breach probability at the $200 cushion. "
+                                    "No-trade preserves the floor but is not a compliant long-term mode because weekly activity is required. "+detail)
+            else:
+                recovery_candidate=("No active candidate achieves both at least 50% recovery probability and at most 5% modeled breach probability at the $100 cushion. "
+                                    "No-trade preserves the account but cannot recover it to initial balance. "+detail)
 
     lines=[f"# {title} — book ranking",
            "",
@@ -1208,16 +1222,17 @@ def run_platform(platform):
     singles = combo_df[combo_df["size"] == 1].sort_values("recovery_score",ascending=False)
     pairs = combo_df[combo_df["size"] == 2].sort_values("recovery_score",ascending=False)
     recovery_books=[]
-    for source, limit in [(singles,3),(pairs,3)]:
-        added=0
+    # Recovery is a separate account state. Screen every positive-training
+    # single sleeve and pair, not only the top generic recovery-score finalists.
+    # This matters for Tradeify: a lower-risk single sleeve may satisfy weekly
+    # activity even when the highest-scoring generic live sleeves do not.
+    for source in [singles,pairs]:
         for _, rr in source.iterrows():
             combo=tuple(rr["strategies"].split(" | "))
-            if rr["train_net_R"] > 0 and combo not in recovery_books:
+            if (rr["train_net_R"] > 0 and rr["train_active_days"] >= 30
+                    and combo not in recovery_books):
                 recovery_books.append(combo)
-                added += 1
-            if added==limit: break
-    # Include the leading prop challenge/funded pairs in recovery analysis so
-    # payout-eligible books can be compared with lower-risk balance-recovery sleeves.
+    # Retain leading prop challenge/funded pairs as a cross-check.
     for cname, combo in prop_candidates.items():
         if len(combo)==2 and cname.startswith(("challenge_score","funded_score")) and combo not in recovery_books:
             recovery_books.append(combo)
