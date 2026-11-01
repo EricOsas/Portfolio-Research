@@ -14,6 +14,7 @@
 - The model is based on completed-trade exports, not an intraday account-equity replay.
 - The 252-day rates are probabilities within a one-trading-year simulation horizon, not lifetime pass/payout probabilities.
 - The 5,000 paths quantify variability under resampled historical daily returns; they do not prove the future distribution will match history. Monte Carlo sampling error is smaller than this model/data uncertainty.
+- Common bootstrap block samples are used across each firm's risk ladder for a given book, making position-size comparisons less noisy.
 - Tradeify weekly activity and microscalping eligibility are checked on validation trades. Trades with missing duration data count as not qualifying for the over-10-second rule; duration coverage is reported.
 
 ## FTMO — USD 10,000 Standard 2-Step CFD
