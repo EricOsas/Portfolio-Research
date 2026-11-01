@@ -9,6 +9,7 @@
 - Each sleeve's realized-loss R unit is calibrated on that training sample, then held fixed for the validation sample and all prop position sizing.
 - FTMO book PnL uses the average constituent-sleeve R multiplied by total book risk; Tradeify uses sleeve-specific training R units and whole-micro weights.
 - All one-to-four-sleeve combinations are screened on training/validation metrics. Firm-specific Monte Carlo covers every single sleeve, the three selected category finalists per category, and the leading two-/three-sleeve candidates; identical books are deduplicated.
+- FTMO also receives leading RBE-excluded pair/triple candidates as a sensitivity because the MT5 Gold ORB (RBE) export lacks position IDs and requires fallback trade pairing.
 - Challenge pass, drawdown breach, funded survival, payout eligibility, payout amounts and recovery scenarios are reported separately.
 - The model is based on completed-trade exports, not an intraday account-equity replay.
 - The 252-day rates are probabilities within a one-trading-year simulation horizon, not lifetime pass/payout probabilities.
