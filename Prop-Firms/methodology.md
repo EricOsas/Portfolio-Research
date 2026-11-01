@@ -11,11 +11,11 @@
 - All one-to-four-sleeve combinations are screened on training/validation metrics. Firm-specific Monte Carlo covers every single sleeve, the three selected category finalists per category, and the leading two-/three-sleeve candidates; identical books are deduplicated.
 - FTMO also receives leading RBE-excluded pair/triple candidates as a sensitivity because the MT5 Gold ORB (RBE) export lacks position IDs and requires fallback trade pairing.
 - Challenge pass, evaluation hard breach, funded hard breach conditional on funding, funded survival, payout eligibility, payout amounts and recovery scenarios are reported separately.
-- The model is based on completed-trade exports, not an intraday account-equity replay.
+- The model is based on completed-trade exports, not an intraday account-equity replay. Tradeify reports both raw evaluation target-hit rate and eligible evaluation pass rate; the latter also requires minimum weekly activity and position-limit compliance.
 - The 252-day rates are probabilities within a one-trading-year simulation horizon, not lifetime pass/payout probabilities.
 - The 5,000 paths quantify variability under resampled historical daily returns; they do not prove the future distribution will match history. Monte Carlo sampling error is smaller than this model/data uncertainty. Full calendar-week blocks preserve the weekly activity structure.
 - Common bootstrap block samples are used across each firm's risk ladder for a given book, making position-size comparisons less noisy.
-- Tradeify weekly activity is checked on complete Monday-Friday validation weeks. Bootstrap blocks are aligned to those weeks, so simulated weeks preserve the observed activity pattern. Microscalping eligibility is checked on validation trades; missing durations count as not qualifying for the over-10-second rule.
+- Tradeify weekly activity is checked on complete Monday-Friday validation weeks. Bootstrap blocks are aligned to those weeks, so simulated weeks preserve the observed activity pattern. Books that fail weekly activity or the four-mini position cap are not counted as eligible evaluation passes. Microscalping eligibility is checked on validation trades; missing durations count as not qualifying for the over-10-second rule.
 
 ## FTMO — USD 10,000 Standard 2-Step CFD
 
