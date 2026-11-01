@@ -8,7 +8,7 @@ Research workspace for the NT8 futures and MT5 CFD strategy exports. Raw export 
 - [Raw MT5 research pack](MT5/README.md)
 - [Normalized live-account research](Normalized-Live/README.md) ([methodology](Normalized-Live/methodology.md))
 - [Prop-firm research](Prop-Firms/README.md) ([methodology](Prop-Firms/methodology.md))
-- [Strategy and book suitability](reports/strategy_suitability.md)
+- [Strategy, per-sleeve roles and book suitability](reports/strategy_suitability.md)
 - [Latest raw build summary](reports/run_summary.json)
 - [Raw export analysis engine](analysis/build_equity_reports.py)
 - [Normalized and prop-firm engine](analysis/build_live_and_prop_reports.py)
@@ -57,7 +57,7 @@ One GC contract and one NQ contract are not equal-risk exposures. MT5's USD 100 
 - [FTMO $10,000 2-Step CFD](Prop-Firms/FTMO-10K-2Step-CFD/README.md)
 - [Tradeify $50,000 Growth futures](Prop-Firms/Tradeify-50K-Growth-Futures/README.md)
 
-The prop simulations use 5,000 Monte Carlo paths, five-day blocks aligned to complete Monday-Friday weeks, and a 252-trading-day horizon. Tradeify evaluation pass rates require weekly activity and position-limit compliance. Microscalping is an additional funded payout-eligibility check. FTMO uses a total book-risk ladder of $25–$100. Tradeify uses $100–$750 requested total book risk, whole-micro sizing, at least one micro per active sleeve, and a four-mini concurrent exposure cap. Actual risk can exceed the requested amount because of the minimum micro size.
+The prop simulations use 5,000 Monte Carlo paths, five-day blocks aligned to complete Monday-Friday weeks, and a 252-trading-day horizon. Near-floor recovery separately screens positive-training single sleeves and pairs. Tradeify evaluation pass rates require weekly activity and position-limit compliance. Microscalping is an additional funded payout-eligibility check. FTMO uses a total book-risk ladder of $25–$100. Tradeify uses $100–$750 requested total book risk, whole-micro sizing, at least one micro per active sleeve, and a four-mini concurrent exposure cap. Actual risk can exceed the requested amount because of the minimum micro size.
 
 Tradeify Growth evaluation has no consistency rule. The funded model applies the official 35% payout consistency rule, five profitable days above $150, the $53,000 minimum payout balance and current payout caps. The initial $1,250 soft daily-loss limit is approximated with closed-PnL clipping; after funded balance reaches $53,000, the model applies the $2,000 limit from the next session and assumes it remains unlocked after payouts. Intraday trigger timing and overshoot remain unknown.
 
@@ -78,7 +78,7 @@ Tradeify Growth evaluation has no consistency rule. The funded model applies the
 - Strategy PnL is timestamped at exit for completed-trade curves. Activity is timestamped by entry date. Timestamps remain as exported; no timezone conversion is assumed.
 - Prop simulations use a chronological 60/40 train/validation split. Book selection is performed on the first 60%; Monte Carlo evaluation uses the later validation sample.
 - Tradeify's $2,000 EOD trailing drawdown and $50,100 locked floor are modeled. Its soft DLL is approximated by clipping daily closed-PnL losses at $1,250 initially and $2,000 from the next session after the funded balance reaches $53,000; the model assumes the higher DLL remains after payouts. Intraday pause timing and overshoot are unknown. NT8 MAE is a separate stress diagnostic.
-- FTMO equity-based daily/max-loss breaches can occur from floating losses. MT5 exports do not contain intratrade MAE, so FTMO results use closed-PnL paths. FTMO phase review and KYC/activation delays are not modeled, so time-to-funded estimates may be optimistic.
+- FTMO equity-based daily/max-loss breaches can occur from floating losses. MT5 exports do not contain intratrade MAE, so FTMO results use closed-PnL paths. Phase review and KYC/activation delays are not modeled. The first Reward Day is approximated as 10 elapsed trading days after the first funded trade; four business days are reserved for review/payment with trading frozen. Cash withdrawal pays 80% of reference-period profit and resets the next reference period to initial capital; rollover is not modeled.
 - News restrictions, correlated-product hedging, broker margin, instrument-specific minimum lot sizes, slippage beyond exported costs, and exact timezone/session conversion are not fully modeled.
 - No strategy logic, native exits, stops, or parameters were redesigned or optimized.
 
