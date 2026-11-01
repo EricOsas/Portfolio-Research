@@ -1,5 +1,7 @@
 # Normalized live-account research
 
+[Methodology and limitations](methodology.md) · [Cross-account strategy suitability](../reports/strategy_suitability.md)
+
 This directory removes the exported starting balances and normalizes strategy exposure.
 
 - NT8: one contract equivalent per strategy. Trade PnL is divided by exported quantity.
