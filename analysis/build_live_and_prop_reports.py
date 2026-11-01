@@ -297,7 +297,7 @@ def build_books(rmat, active):
             va, _, _ = book_metrics(rmat, active, combo, val_idx)
             rows.append({
                 "book": " + ".join(combo), "strategies": " | ".join(combo), "size": k,
-                "train_net_R": tr["net_pnl"], "train_sharpe": tr["daily_sharpe"],
+                "train_net_R": tr["net_pnl"], "train_net_to_maxdd_R": tr["net_to_maxdd"], "train_sharpe": tr["daily_sharpe"],
                 "train_pf": tr["daily_pf"], "train_maxdd_R": tr["max_drawdown"],
                 "train_positive_month_share": tr["positive_month_share"],
                 "train_worst_day_R": tr["worst_day"], "train_best_day_share": tr["best_day_share"],
@@ -312,7 +312,7 @@ def build_books(rmat, active):
     # Ranking is based only on the earlier training segment. Validation is held aside.
     df["live_score"] = (.35*rank_pct(df,"train_sharpe") + .25*rank_pct(df,"train_pf") +
                         .20*rank_pct(df,"train_positive_month_share") + .20*rank_pct(df,"train_maxdd_R",ascending=False))
-    df["challenge_score"] = (.35*rank_pct(df,"train_net_R") + .30*rank_pct(df,"train_sharpe") +
+    df["challenge_score"] = (.35*rank_pct(df,"train_net_to_maxdd_R") + .30*rank_pct(df,"train_sharpe") +
                              .20*rank_pct(df,"train_net_R") + .15*rank_pct(df,"train_active_days"))
     df["funded_score"] = (.30*rank_pct(df,"train_sharpe") + .25*rank_pct(df,"train_positive_month_share") +
                           .20*rank_pct(df,"train_worst_day_R") + .15*rank_pct(df,"train_best_day_share",ascending=False) +
@@ -445,6 +445,8 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
     eval_pass_day = np.full(n,-1,dtype=int)
     fail_eval = np.zeros(n,dtype=bool)
     fail_funded = np.zeros(n,dtype=bool)
+    fail_funded_day = np.full(n,-1,dtype=int)
+    eval_dll_hits = np.zeros(n,dtype=int)
     dll_hits = np.zeros(n,dtype=int)
     funded_age = np.zeros(n,dtype=int)
     win_days = np.zeros(n,dtype=int)
@@ -452,6 +454,7 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
     best_cycle_day = np.zeros(n)
     payout_count = np.zeros(n,dtype=int)
     payout_cash = np.zeros(n)
+    first_payout_cash = np.zeros(n)
     first_payout_day = np.full(n,-1,dtype=int)
     pending_amount = np.zeros(n)
     pending_days = np.zeros(n,dtype=int)
@@ -464,6 +467,7 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
         ev = start_phase == 0
         if ev.any():
             eval_eq[ev] += daily[ev]
+            eval_dll_hits[ev & (daily < -1250.0)] += 1
             eval_active_days[ev] += act[ev].astype(int)
             eval_profit[ev] += daily[ev]
             eval_best_day[ev] = np.maximum(eval_best_day[ev], daily[ev])
@@ -508,6 +512,7 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
 
             hit_floor = fu & (funded_eq <= funded_floor)
             fail_funded |= hit_floor
+            fail_funded_day[hit_floor] = d
             phase[hit_floor] = 2
 
             # The DLL rises to $2,000 from the next session after the +$3,000 threshold.
@@ -524,8 +529,10 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
                 approve = pending & (~denied) & (pending_days <= 1)
                 if approve.any():
                     payout_cash[approve] += 0.90 * pending_amount[approve]
+                    first_new = approve & (first_payout_day < 0)
+                    first_payout_cash[first_new] = 0.90 * pending_amount[first_new]
+                    first_payout_day[first_new] = d
                     funded_eq[approve] -= pending_amount[approve]
-                    first_payout_day[approve & (first_payout_day < 0)] = d
                     payout_count[approve] += 1
                     cycle_profit[approve] = 0.0
                     best_cycle_day[approve] = 0.0
@@ -552,18 +559,19 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
     first_payout = first_payout_day >= 0
     survived_90 = []
     for i in np.where(reached_funded)[0]:
-        # Days after evaluation pass; count hard-breach-free funded days.
         pass_day = eval_pass_day[i]
-        end_day = min(h-1, pass_day+90)
-        survived_90.append(phase[i] != 2 or (first_payout_day[i] >= 0 and first_payout_day[i] > end_day))
+        end_day = pass_day + 90
+        survived_90.append(fail_funded_day[i] < 0 or fail_funded_day[i] > end_day)
     return {
         "evaluation_pass_rate": float(reached_funded.mean()),
         "funded_first_payout_rate_conditional": float(first_payout[reached_funded].mean()) if reached_funded.any() else 0.0,
         "challenge_to_first_payout_rate": float(first_payout.mean()),
         "funded_hard_breach_rate": float(fail_funded.mean()),
         "evaluation_hard_breach_rate": float(fail_eval.mean()),
+        "evaluation_soft_dll_hit_days_mean": float(eval_dll_hits.mean()),
         "daily_loss_soft_breach_days_mean": float(dll_hits.mean()),
-        "first_payout_net_usd_mean": float(payout_cash.mean()),
+        "first_payout_net_usd_mean": float(first_payout_cash.mean()),
+        "total_net_payout_cash_mean": float(payout_cash.mean()),
         "first_payout_net_usd_median_conditional": float(np.median(payout_cash[first_payout])) if first_payout.any() else 0.0,
         "any_payout_rate": float((payout_count > 0).mean()),
         "payout_count_mean": float(payout_count.mean()),
@@ -879,6 +887,10 @@ Separate account-rule simulations using normalized strategy R-multiples and bloc
 
 Results are conditional on historical export distributions and the assumptions in each account folder. They are not guarantees of passing, funding, payout or survival.
 """,encoding="utf-8")
+
+    for platform in ["NT8","MT5"]:
+        p=LIVE_ROOT/platform
+        (p/"README.md").write_text(f"""# {platform} normalized live research\n\n- [Strategy metrics](reports/strategy_metrics.csv)\n- [All book combinations](reports/all_book_combinations.csv)\n- [Risk-unit correlation](reports/risk_unit_correlation_matrix.csv)\n- [Bootstrap risk of ruin](reports/live_bootstrap_risk_of_ruin.csv)\n\nCharts are collected at the end of this README.\n\n## Equity curves\n\n### Individual sleeves\n\n""" + "\\n".join([f"![{x}]({{}})".format("charts/individual/"+slug(x)+".png") for x in sorted(curves.keys()) if x != "All sleeves"]) + """\n\n### Combined books\n\n![All sleeves](charts/portfolios/all_sleeves.png)\n\n""",encoding="utf-8")
 
     for firm, title, file in [
         ("FTMO-10K-2Step-CFD","FTMO $10,000 2-Step CFD","monte_carlo_challenge_payout.csv"),
