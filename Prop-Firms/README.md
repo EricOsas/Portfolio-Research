@@ -1,5 +1,7 @@
 # Prop-firm portfolio simulations
 
+[Model methodology and limitations](methodology.md) · [Strategy and book suitability](../reports/strategy_suitability.md)
+
 Separate account-rule simulations using normalized strategy R-multiples and block-bootstrap Monte Carlo.
 
 - [FTMO $10,000 2-Step CFD](FTMO-10K-2Step-CFD/README.md)
