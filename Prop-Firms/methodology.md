@@ -63,6 +63,12 @@ Recovery simulations include no-trade controls.
 - Tradeify recovery uses one micro per sleeve.
 - If no active book meets both the selected recovery-probability and breach-probability thresholds near the floor, no-trade is the safest modeled control.
 
+## Time interpretation
+
+- Monte Carlo horizon is 252 simulated trading days (approximately one trading year).
+- Time-to-phase, time-to-reward and time-to-recovery fields count trading days, not calendar days.
+- Tradeify's `survival_90d_conditional_approx` field means 90 trading days after funding. Its observed sample count excludes paths funded too late in the 252-day horizon to observe a full 90 trading days.
+
 ## Official rule references
 
 Rules checked on 2026-11-01. These official pages define the modeled account versions:
