@@ -822,13 +822,17 @@ def run_platform(platform):
     # Recovery mode: compare low-complexity one/two-sleeve books with a no-trade
     # control. Tradeify uses at least one micro per sleeve; FTMO uses $12.50 risk
     # per book as a conservative recovery setting.
-    rec_candidates = combo_df[combo_df["size"] <= 2].sort_values("recovery_score",ascending=False)
+    singles = combo_df[combo_df["size"] == 1].sort_values("recovery_score",ascending=False)
+    pairs = combo_df[combo_df["size"] == 2].sort_values("recovery_score",ascending=False)
     recovery_books=[]
-    for _, rr in rec_candidates.iterrows():
-        combo=tuple(rr["strategies"].split(" | "))
-        if rr["train_net_R"] > 0 and combo not in recovery_books:
-            recovery_books.append(combo)
-        if len(recovery_books)==3: break
+    for source, limit in [(singles,3),(pairs,3)]:
+        added=0
+        for _, rr in source.iterrows():
+            combo=tuple(rr["strategies"].split(" | "))
+            if rr["train_net_R"] > 0 and combo not in recovery_books:
+                recovery_books.append(combo)
+                added += 1
+            if added==limit: break
     if platform=="MT5":
         for combo in recovery_books:
             weights={s:12.5/len(combo) for s in combo}
@@ -863,11 +867,14 @@ def run_platform(platform):
                         "starting_cushion_usd":cushion,"target_equity":target,
                         "target_label":"$500 buffer above locked floor" if target==600.0 else "$53,000 first-payout balance",**res})
         for cushion in [200.0,500.0,1000.0,1500.0]:
-            recovery_rows.append({"firm":"Tradeify","book":"No trade","risk_usd_per_book_trade":0.0,
-                "state":"no-trade control","floor_equity":100.0,"starting_cushion_usd":cushion,
-                "target_equity":600.0,"target_label":"$500 buffer above locked floor",
-                "recovery_probability":0.0,"ruin_probability":0.0,
-                "median_days_to_target":np.nan,"mean_terminal_equity":100.0+cushion})
+            for target in [600.0,3000.0]:
+                recovery_rows.append({"firm":"Tradeify","book":"No trade","risk_usd_per_book_trade":0.0,
+                    "state":"no-trade control","floor_equity":100.0,"starting_cushion_usd":cushion,
+                    "target_equity":target,
+                    "target_label":"$500 buffer above locked floor" if target==600.0 else "$53,000 first-payout balance",
+                    "recovery_probability":float(100.0+cushion >= target),"ruin_probability":0.0,
+                    "median_days_to_target":0.0 if 100.0+cushion >= target else np.nan,
+                    "mean_terminal_equity":100.0+cushion})
 
     if platform=="MT5":
         (ftmo_dir/"reports").mkdir(parents=True,exist_ok=True)
