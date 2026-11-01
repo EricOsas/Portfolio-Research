@@ -374,6 +374,7 @@ def simulate_ftmo(paths, active, risk):
     p1_day = np.full(n, -1, dtype=int)
     p2_day = np.full(n, -1, dtype=int)
     funded_age = np.zeros(n, dtype=int)
+    first_funded_trade_day = np.full(n, -1, dtype=int)
     reward_day = np.full(n, -1, dtype=int)
     reward = np.zeros(n)
     fail_daily = np.zeros(n, dtype=bool)
@@ -404,10 +405,14 @@ def simulate_ftmo(paths, active, risk):
                 eq[p2] = 0.0
                 active_days[p2] = 0
                 funded_age[p2] = 0
+                first_funded_trade_day[p2] = -1
         funded_mask = (start_phase == 3) & (phase == 3)
         if funded_mask.any():
             eq[funded_mask] += daily[funded_mask]
-            funded_age[funded_mask] += 1
+            first_trade = funded_mask & act & (first_funded_trade_day < 0)
+            first_funded_trade_day[first_trade] = d
+            has_first_trade = funded_mask & (first_funded_trade_day >= 0)
+            funded_age[has_first_trade] = d - first_funded_trade_day[has_first_trade] + 1
             daily_bad = funded_mask & (daily < -500.0)
             max_bad = funded_mask & (eq <= -1000.0)
             fail_daily |= daily_bad
