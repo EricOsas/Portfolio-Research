@@ -806,8 +806,8 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
         for col in eligibility_cols:
             if col in base.columns:
                 base=base[base[col].astype(str).str.lower().eq("true")]
-    if base.empty:
-        base=df[df[risk_col].astype(float).eq(float(base_risk))].copy()
+    # Do not silently fall back to ineligible books when no candidate passes
+    # the firm's minimum activity, microscalping or position-limit screens.
     conditional_col=("funded_first_payout_rate_conditional" if "funded_first_payout_rate_conditional" in base.columns
                      else "funded_first_reward_rate_conditional")
     ranking=base.sort_values(payout_col,ascending=False).copy()
@@ -851,15 +851,26 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
 
     if not recovery_df.empty:
         target_col="target_label" if "target_label" in recovery_df.columns else "state"
-        rec=recovery_df[recovery_df["book"]!="No trade"].copy()
-        if not rec.empty:
-            chosen=rec.sort_values("recovery_probability",ascending=False).iloc[0]["book"]
-            g=rec[rec["book"]==chosen]
+        rec=recovery_df.copy()
+        near_cushion=100.0 if "FTMO" in title else 200.0
+        near=rec[rec["starting_cushion_usd"].astype(float).eq(near_cushion)]
+        if target_col=="target_label":
+            near=near[near[target_col].astype(str).str.contains("buffer",case=False,regex=True)]
+            buffer_rows=rec[rec[target_col].astype(str).str.contains("buffer",case=False,regex=True)]
+        else:
+            buffer_rows=rec
+        active_near=near[near["book"]!="No trade"]
+        if not active_near.empty:
+            chosen=active_near.sort_values(
+                ["recovery_probability","ruin_probability"],ascending=[False,True]
+            ).iloc[0]["book"]
+            g=buffer_rows[buffer_rows["book"].isin([chosen,"No trade"])]
             fig,ax=plt.subplots(figsize=(10.5,5.8))
-            for label,part in g.groupby(target_col):
+            for book,part in g.groupby("book"):
                 part=part.sort_values("starting_cushion_usd")
-                ax.plot(part["starting_cushion_usd"],part["recovery_probability"],marker="o",label=str(label))
-            ax.set_title(f"{title}: recovery probability | {chosen}",loc="left",fontweight="bold")
+                ax.plot(part["starting_cushion_usd"],part["recovery_probability"],
+                        marker="o",label=str(book))
+            ax.set_title(f"{title}: near-floor recovery | {chosen} vs no-trade",loc="left",fontweight="bold")
             ax.set_xlabel("Starting cushion above breach floor (USD)")
             ax.set_ylabel("Probability of reaching target")
             ax.set_ylim(0,1)
@@ -868,6 +879,32 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
             fig.tight_layout()
             fig.savefig(charts/"recovery_probability.png",dpi=160,bbox_inches="tight")
             plt.close(fig)
+
+        # Tradeify's $53k balance target is separate from the $500 floor buffer
+        # and is not a payout-eligibility simulation.
+        if target_col=="target_label":
+            payout_rows=rec[rec[target_col].astype(str).str.contains("53,000",case=False,regex=True)]
+            payout_near=payout_rows[payout_rows["starting_cushion_usd"].astype(float).eq(near_cushion)]
+            payout_active=payout_near[payout_near["book"]!="No trade"]
+            if not payout_active.empty:
+                payout_chosen=payout_active.sort_values(
+                    ["recovery_probability","ruin_probability"],ascending=[False,True]
+                ).iloc[0]["book"]
+                g=payout_rows[payout_rows["book"].isin([payout_chosen,"No trade"])]
+                fig,ax=plt.subplots(figsize=(10.5,5.8))
+                for book,part in g.groupby("book"):
+                    part=part.sort_values("starting_cushion_usd")
+                    ax.plot(part["starting_cushion_usd"],part["recovery_probability"],
+                            marker="o",label=str(book))
+                ax.set_title(f"{title}: $53k balance recovery | {payout_chosen} vs no-trade",loc="left",fontweight="bold")
+                ax.set_xlabel("Starting cushion above locked floor (USD)")
+                ax.set_ylabel("Probability of reaching $53,000 balance")
+                ax.set_ylim(0,1)
+                ax.grid(True,alpha=.25,linestyle="--")
+                ax.legend(fontsize=7,loc="best")
+                fig.tight_layout()
+                fig.savefig(charts/"recovery_payout_threshold_probability.png",dpi=160,bbox_inches="tight")
+                plt.close(fig)
 
     if "evaluation_hard_breach_rate" in df.columns:
         fig,ax=plt.subplots(figsize=(10.5,5.8))
