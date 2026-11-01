@@ -183,40 +183,41 @@ The full risk ladder for the training-selected book is in [FTMO book recommendat
 
 ### Tradeify — USD 50,000 Growth futures
 
-Modeled Growth rules: USD 3,000 evaluation target, no evaluation consistency rule, USD 2,000 EOD trailing drawdown with a USD 50,100 funded locked floor after the USD 52,100 threshold, USD 1,250 initial soft daily-loss limit, and a funded DLL increase to USD 2,000 from the next session after the balance reaches USD 53,000. This assumes current non-legacy rules for accounts purchased on or after September 12, 2025; older accounts have different DLL and payout thresholds. Funded payout modeling applies 35% consistency, five winning days above USD 150, the USD 53,000 balance threshold, the 90% payout share, payout caps and two trading days for processing. Weekly activity and microscalping are eligibility screens; position-limit compliance is required for executable sizing.
+Modeled Growth rules: USD 3,000 evaluation target, no evaluation consistency rule, USD 2,000 EOD trailing drawdown with a USD 50,100 funded locked floor after the USD 52,100 threshold, USD 1,250 initial soft daily-loss limit, and a funded DLL increase to USD 2,000 from the next session after the balance reaches USD 53,000. This assumes current non-legacy rules for accounts purchased on or after September 12, 2025; older accounts have different DLL and payout thresholds. Funded payout modeling applies 35% consistency, five winning days above USD 150, the USD 53,000 balance threshold, the 90% payout share, payout caps and two trading days for processing. **The 35% consistency test uses gross daily PnL before commissions; account balance, drawdown, DLL and the $150 winning-day test use net closed PnL.** Weekly activity and microscalping are eligibility screens; position-limit compliance is required for executable sizing.
 
 **Overall training-score challenge candidate:** challenge_book_1 — Flash ORB + Gold ORB (RBE) + Sigma ORB + Vault Break.
 
 - USD 100 requested risk; **USD 457.35 effective risk** after one micro per active sleeve.
 - Eligible evaluation pass: **71.06%**; evaluation hard-breach: **28.94%**.
-- Challenge-to-first-payout: **51.92%**.
-- Funded hard-breach, conditional on funding: **39.54%**.
-- Approximate 90-trading-day funded survival: **66.51%**.
-- Median evaluation pass: **24 trading days**; median first payout: **63 trading days**.
-- Expected first net payout across all paths: **USD 700.92**; expected total net payout cash: **USD 4,523.67**.
+- Challenge-to-first-payout: **51.94%**.
+- Funded hard-breach, conditional on funding: **39.83%**.
+- Approximate 90-trading-day funded survival: **66.39%**.
+- Median evaluation pass: **24 trading days**; median first payout: **62 trading days**.
+- Expected first net payout across all paths: **USD 701.19**; expected total net payout cash: **USD 4,569.84**.
 
 **Overall training-score funded candidate:** funded_book_1 — Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB.
 
 - USD 100 requested risk; **USD 472.83 effective risk** after one micro per active sleeve.
 - Eligible evaluation pass: **70.52%**; evaluation hard-breach: **29.48%**.
-- Challenge-to-first-payout: **52.30%**.
-- Funded hard-breach, conditional on funding: **37.49%**.
-- Approximate 90-trading-day funded survival: **68.15%**.
+- Challenge-to-first-payout: **52.26%**.
+- Conditional first-payout rate after funding: **74.11%**.
+- Funded hard-breach, conditional on funding: **37.95%**.
+- Approximate 90-trading-day funded survival: **68.07%**.
 - Median evaluation pass: **28 trading days**; median first payout: **68 trading days**.
-- Expected first net payout across all paths: **USD 706.05**; expected total net payout cash: **USD 4,200.03**.
+- Expected first net payout across all paths: **USD 705.51**; expected total net payout cash: **USD 4,272.30**.
 
 **Lower-risk two-sleeve alternative:** Flash ORB + Overnight Bias ORB. This is the top training-funded-score candidate within the eligible two-sleeve subset, not the overall training-score winner.
 
 | Requested risk/book trade | Effective risk | Evaluation pass | Evaluation breach | Challenge-to-first-payout | Funded breach, conditional | 90-day funded survival | Expected first net payout | Median days to first payout |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| USD 100 | USD 237.23 | 84.30% | 15.10% | 61.56% | 21.21% | 89.31% | USD 831.06 | 163 |
-| USD 250 | USD 237.23 | 84.30% | 15.10% | 61.56% | 21.21% | 89.31% | USD 831.06 | 163 |
-| USD 500 | USD 474.45 | 64.16% | 35.84% | 40.50% | 46.01% | 59.88% | USD 546.75 | — |
-| USD 750 | USD 711.68 | 58.74% | 41.26% | 31.66% | 53.76% | 48.69% | USD 427.41 | — |
+| USD 100 | USD 237.23 | 84.30% | 15.10% | 61.56% | 21.30% | 89.31% | USD 831.06 | 163 |
+| USD 250 | USD 237.23 | 84.30% | 15.10% | 61.56% | 21.30% | 89.31% | USD 831.06 | 163 |
+| USD 500 | USD 474.45 | 64.20% | 35.80% | 40.50% | 46.20% | 59.80% | USD 547.29 | 75 |
+| USD 750 | USD 711.68 | 58.70% | 41.30% | 31.60% | 53.80% | 48.80% | USD 426.33 | 51 |
 
 The USD 100 and USD 250 requests produce identical sizing because both sleeves are already at the minimum one micro. At USD 100 requested risk, the pair's effective risk is USD 237.23, not USD 100. It is slower than the four-sleeve score leaders (76 trading days median to evaluation pass and 163 days to first payout), but the validation sample shows lower funded breach and higher 90-day survival. It was included based on its training-funded score within the two-sleeve subset; do not treat its stronger holdout result as proof that it is superior.
 
-For the USD 100/250 case, expected total net payout cash across all paths during the 252-day horizon is **USD 2,000.40**, with a mean of **1.20 payouts**. Weekly activity, position-limit and microscalping screens all pass for this pair.
+For the USD 100/250 case, expected total net payout cash across all paths during the 252-day horizon is **USD 2,009.39**, with a mean of **1.20 payouts**. Weekly activity, position-limit and microscalping screens all pass for this pair.
 
 The full risk ladders for the challenge and funded score leaders, plus the two-sleeve alternative, are in [Tradeify book recommendations](../Prop-Firms/Tradeify-50K-Growth-Futures/reports/book_recommendations.md) and [the Monte Carlo CSV](../Prop-Firms/Tradeify-50K-Growth-Futures/reports/monte_carlo_evaluation_funded_payout.csv).
 
