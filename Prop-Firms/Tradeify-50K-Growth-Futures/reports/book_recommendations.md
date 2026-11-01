@@ -1,16 +1,16 @@
 # Tradeify $50k Growth futures — book ranking
 
-Base comparison risk: USD 250 requested total risk per book trade.
+Base comparison risk: USD 100 requested total risk per book trade.
 
 ## Challenge candidate
 - **funded_score_2sleeve_candidate_1** (Flash ORB + Overnight Bias ORB)
-  - Challenge-to-payout: 62.4%
-  - Pass rate: 84.2%
+  - Challenge-to-payout: 61.7%
+  - Pass rate: 84.6%
   - Breach rate: 20.2%
 
 ## Funded candidate
 - **funded_score_2sleeve_candidate_1** (Flash ORB + Overnight Bias ORB)
-  - Conditional first-payout rate: 74.1%
+  - Conditional first-payout rate: 72.9%
   - Breach rate: 20.2%
 
 ## Near-floor recovery
