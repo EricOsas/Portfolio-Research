@@ -1238,7 +1238,7 @@ Results are conditional on historical export distributions and the assumptions i
         chart_extra = ""
         if firm=="Tradeify-50K-Growth-Futures":
             extra_links += "\n- [Intraday MAE / soft-DLL stress](reports/mae_soft_dll_stress.csv)"
-            sizing_note = "Whole-micro sizing is used, with at least one micro per active sleeve and a four-mini concurrent cap. Effective risk after minimum sizing is shown in the results."
+            sizing_note = "Growth evaluation has no consistency rule; funded payouts require 35% consistency and five winning days above $150. Whole-micro sizing uses at least one micro per active sleeve and a four-mini concurrent cap; full size is available from day one. Effective risk after minimum sizing is shown in the results."
             daily_limit_note = "Tradeify EOD trailing drawdown is modeled from daily closes. The $1,250 soft daily-loss limit is approximated by clipping closed daily losses at -$1,250; intraday trigger timing and overshoot remain unknown. NT8 MAE is a separate diagnostic."
             pairing_note = "NT8 MAE is available for the separate soft-DLL stress diagnostic."
             chart_extra = "\n![Evaluation drawdown breach probability](charts/evaluation_breach_probability.png)\n![Intraday MAE / soft-DLL stress](charts/mae_soft_dll_stress.png)\n"
