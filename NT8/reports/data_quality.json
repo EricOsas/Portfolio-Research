@@ -4,20 +4,20 @@
     "status": "parsed",
     "source_file": "NinjaTrader RBE Trades.csv",
     "parser": "NT8 Strategy Analyzer CSV",
-    "source_rows": 835,
-    "parsed_events": 835,
+    "source_rows": 1216,
+    "parsed_events": 1216,
     "invalid_or_missing_exit_time_rows": 0,
-    "first_event": "2021-11-01T11:56:00",
-    "last_event": "2026-10-09T11:56:00",
+    "first_event": "2020-01-03T11:56:00",
+    "last_event": "2026-10-30T10:41:00",
     "profit_semantics": "Profit is already net of Commission; commission is not deducted again.",
     "cumulative_net_profit_check": {
-      "export_cumulative_last": 27789.0,
-      "sum_profit_column": 27789.0,
-      "difference": 0.0,
+      "export_cumulative_last": 309603.2,
+      "sum_profit_column": 309603.19999999995,
+      "difference": -5.820766091346741e-11,
       "matches_within_5c": true
     },
     "instruments": [
-      "MGC DEC26"
+      "GC DEC26"
     ],
     "timezone": "As exported by NinjaTrader; no timezone conversion applied."
   },

@@ -6,8 +6,8 @@ Screening is a transparent evidence filter, not parameter optimization. Eligible
 
 - **Overnight Bias ORB** — included in the provisional portfolio.
 - **Sigma ORB** — included in the provisional portfolio.
-- **Gold ORB (RBE)** — included in the provisional portfolio.
 - **Vault Break** — included in the provisional portfolio.
+- **Gold ORB (RBE)** — included in the provisional portfolio.
 
 ## Eligible candidates (ranked)
 
@@ -15,13 +15,13 @@ Screening is a transparent evidence filter, not parameter optimization. Eligible
 |:---------------------------|---------------:|--------------------:|----------------------:|-------------------:|-------------------:|-----------------------------:|------------------------------:|--------------:|
 | Overnight Bias ORB         |       0.911111 |           267561    |               1.71229 |           1.88099  |           14851.6  |                    18.0157   |                      0.703704 |           606 |
 | Sigma ORB                  |       0.888889 |           422052    |               1.528   |           1.79811  |           34422.5  |                    12.2609   |                      0.743902 |          1040 |
-| Gold ORB (RBE)             |       0.666667 |            27789    |               1.48313 |           1.55498  |            3572.6  |                     7.77837  |                      0.655172 |           628 |
-| Vault Break                |       0.622222 |           134530    |               1.43369 |           1.45083  |           11275    |                    11.9317   |                      0.604938 |           683 |
+| Vault Break                |       0.677778 |           134530    |               1.43369 |           1.45083  |           11275    |                    11.9317   |                      0.604938 |           683 |
+| Gold ORB (RBE)             |       0.644444 |           309603    |               1.41856 |           1.38273  |           35135.2  |                     8.81177  |                      0.666667 |           901 |
 | Flash ORB                  |       0.577778 |           182897    |               1.27318 |           1.35518  |           15468    |                    11.8243   |                      0.695122 |          1207 |
 | Open Drive                 |       0.455556 |           298131    |               1.27438 |           1.14133  |           45561.7  |                     6.54347  |                      0.609756 |          1760 |
-| VWAP Pullback              |       0.427778 |            65920.5  |               1.29912 |           0.962463 |            9701.44 |                     6.79492  |                      0.621951 |           657 |
-| Opening-Shock Continuation |       0.255556 |            55765    |               1.24054 |           0.798403 |           25000    |                     2.2306   |                      0.658537 |           481 |
-| NQ Precision Bot           |       0.194444 |             7260.32 |               1.12676 |           0.318917 |           12627.6  |                     0.574955 |                      0.621951 |           688 |
+| VWAP Pullback              |       0.416667 |            65920.5  |               1.29912 |           0.962463 |            9701.44 |                     6.79492  |                      0.621951 |           657 |
+| Opening-Shock Continuation |       0.244444 |            55765    |               1.24054 |           0.798403 |           25000    |                     2.2306   |                      0.658537 |           481 |
+| NQ Precision Bot           |       0.183333 |             7260.32 |               1.12676 |           0.318917 |           12627.6  |                     0.574955 |                      0.621951 |           688 |
 
 ## Interpretation limits
 
