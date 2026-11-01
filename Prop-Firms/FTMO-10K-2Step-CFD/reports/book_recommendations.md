@@ -4,14 +4,14 @@ Base comparison risk: USD 50 requested total risk per book trade.
 
 ## Challenge candidate
 - **challenge_book_3** (Gold ORB (RBE) + Open Drive + Overnight Bias ORB + Tokyo Coil)
-  - Challenge-to-payout: 94.3%
+  - Challenge-to-payout: 93.6%
   - Pass rate: 96.2%
   - Evaluation hard-breach rate: 0.5%
   - Funded hard-breach rate (conditional on funding): 0.1%
 
 ## Funded candidate
 - **challenge_book_3** (Gold ORB (RBE) + Open Drive + Overnight Bias ORB + Tokyo Coil)
-  - Conditional first-payout rate: 98.0%
+  - Conditional first-payout rate: 97.3%
   - Funded hard-breach rate (conditional on funding): 0.1%
 
 ## Near-floor recovery

@@ -10,6 +10,8 @@
   "time_limit": "Unlimited",
   "consistency_rule": "None for 2-Step; FTMO Best Day Rule applies to 1-Step only",
   "funded_reward_split_default": 0.8,
+  "reward_rollover_option": true,
+  "modeled_reward_mode": "Cash withdrawal; 80% paid and 20% of requested profit remains in account",
   "first_reward_request": "Day 14 or later after first funded trade; model uses 10 trading days",
   "minimum_closed_profit_usd_bank_transfer": 20,
   "minimum_closed_profit_usd_crypto": 50,
