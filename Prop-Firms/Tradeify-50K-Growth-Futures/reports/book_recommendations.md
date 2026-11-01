@@ -3,15 +3,15 @@
 Base comparison risk: USD 500 requested total risk per book trade.
 
 ## Challenge candidate
-- **Gold ORB (RBE) + Opening-Shock Continuation + Overnight Bias ORB + Sigma ORB** (Gold ORB (RBE) + Opening-Shock Continuation + Overnight Bias ORB + Sigma ORB)
-  - Challenge-to-payout: 57.2%
-  - Pass rate: 74.3%
-  - Breach rate: 27.3%
+- **funded_score_2sleeve_candidate_2** (Flash ORB + Overnight Bias ORB)
+  - Challenge-to-payout: 62.7%
+  - Pass rate: 84.6%
+  - Breach rate: 20.3%
 
 ## Funded candidate
-- **Gold ORB (RBE) + Opening-Shock Continuation + Overnight Bias ORB + Sigma ORB** (Gold ORB (RBE) + Opening-Shock Continuation + Overnight Bias ORB + Sigma ORB)
-  - Conditional first-payout rate: 76.9%
-  - Breach rate: 27.3%
+- **funded_score_2sleeve_candidate_2** (Flash ORB + Overnight Bias ORB)
+  - Conditional first-payout rate: 74.1%
+  - Breach rate: 20.3%
 
 ## Near-floor recovery
 No-trade is the safest near-floor control; none of the active candidates stayed within a 5% modeled breach probability.
