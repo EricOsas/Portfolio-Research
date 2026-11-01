@@ -200,7 +200,7 @@ Some apparently stronger recovery candidates, including Overnight Bias ORB alone
 ## Method and limitations
 
 - One chronological 60/40 train/validation split; this is not multi-fold walk-forward certification.
-- Monte Carlo uses 5,000 paths, a 252-trading-day horizon and five-day Monday-Friday block bootstrap. These are one-year scenario probabilities, not lifetime pass or payout probabilities.
+- Monte Carlo uses 5,000 paths, a 252-trading-day horizon and five-day Monday-Friday block bootstrap. These are one-year scenario probabilities, not lifetime pass or payout probabilities. Paths that have not completed a phase or payout by day 252 count as non-passes/no payout, not necessarily hard breaches. Conditional funded breach and payout rates cover only the remaining horizon after funding, not a full 252 days post-funding. Tradeify's separate 90-day survival statistic uses only paths funded early enough to observe 90 further trading days.
 - Live drawdown barriers of 10R/20R/50R are balance-free R-based diagnostics, not literal account ruin.
 - FTMO phase review/verification/KYC delays are omitted; phase transitions occur on the next simulated trading day.
 - FTMO and Tradeify daily loss rules are equity-based/soft-pause rules. Closed-PnL simulations cannot see intraday floating losses or exact trigger sequences.
