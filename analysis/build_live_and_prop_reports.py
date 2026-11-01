@@ -443,8 +443,6 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok):
     funded_eq = np.zeros(n); funded_hwm = np.zeros(n); funded_floor = np.full(n,-2000.0)
     locked = np.zeros(n, dtype=bool)
     eval_active_days = np.zeros(n,dtype=int)
-    eval_best_day = np.zeros(n)
-    eval_profit = np.zeros(n)
     eval_pass_day = np.full(n,-1,dtype=int)
     fail_eval = np.zeros(n,dtype=bool)
     fail_funded = np.zeros(n,dtype=bool)
@@ -476,8 +474,6 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok):
             eval_eq[ev] += daily[ev]
             eval_dll_hits[ev & (raw_daily <= -1250.0)] += 1
             eval_active_days[ev] += act[ev].astype(int)
-            eval_profit[ev] += daily[ev]
-            eval_best_day[ev] = np.maximum(eval_best_day[ev], daily[ev])
             eval_hwm[ev] = np.maximum(eval_hwm[ev], eval_eq[ev])
             eval_floor[ev] = np.maximum(eval_floor[ev], eval_hwm[ev] - 2000.0)
             hit_floor = ev & (eval_eq <= eval_floor)
@@ -674,6 +670,7 @@ def simulate_recovery(paths, risk, floor, start_cushion, target, daily_limit=Non
     recovered=eq >= target
     ruined=eq <= floor
     day=np.where(recovered,0,-1).astype(int)
+    soft_pause_days=np.zeros(n,dtype=int)
     for d in range(h):
         raw_daily=paths[:,d]*risk
         active=~recovered & ~ruined
@@ -682,6 +679,7 @@ def simulate_recovery(paths, risk, floor, start_cushion, target, daily_limit=Non
         if daily_limit is not None and daily_limit_mode=="hard":
             bad_day=active & (raw_daily < -daily_limit)
         elif daily_limit is not None and daily_limit_mode=="soft":
+            soft_pause_days[active & (raw_daily <= -daily_limit)] += 1
             daily=np.maximum(raw_daily, -daily_limit)
         eq[active] += daily[active]
         ruined |= active & ((eq <= floor) | bad_day)
@@ -691,6 +689,7 @@ def simulate_recovery(paths, risk, floor, start_cushion, target, daily_limit=Non
     return {
         "recovery_probability": float(recovered.mean()),
         "ruin_probability": float(ruined.mean()),
+        "soft_dll_pause_days_mean": float(soft_pause_days.mean()),
         "median_days_to_target": float(np.median(day[recovered])+1) if recovered.any() else np.nan,
         "mean_terminal_equity": float(eq.mean()),
     }
@@ -1044,7 +1043,7 @@ def run_platform(platform):
             "challenge_to_first_payout_rate","funded_hard_breach_rate_conditional",
             "Tradeify $50k Growth futures",
             eligibility_cols=["position_limit_compliant","microscalping_eligible","weekly_activity_eligible"],
-            stress_filter="evaluation_consistency_variant")
+            )
 
         # Intraday adverse-excursion diagnostic: one micro per sleeve (0.1 mini).
         # Sum of same-entry-day MAEs is a conservative stack, not a synchronized
@@ -1128,7 +1127,7 @@ def write_rule_docs():
         "news":"Standard funded account: selected events have a 2-minute pre/post execution restriction; not applicable during evaluation",
         "model_assumptions":["$25/$50/$75/$100 total book risk per trade sensitivity",
                             "Each book divides risk equally across sleeves",
-                            "10 business days used as an approximation for 14 calendar days to first reward",
+                            "10 trading days used as an approximation for the 14-calendar-day first reward request date",
                             "No intraday floating PnL in MT5 exports; close-only rule model is optimistic"]
     }
     tradeify_rules={
