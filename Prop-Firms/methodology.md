@@ -6,7 +6,8 @@
 - 252 trading-day horizon.
 - 5-trading-day circular block bootstrap using the later 40% chronological validation sample.
 - Book candidates are selected using the earlier 60% training sample.
-- PnL is normalized to realized-loss R units before firm-specific position sizing.
+- Each sleeve's realized-loss R unit is calibrated on that training sample, then held fixed for the validation sample and all prop position sizing.
+- FTMO book PnL uses the average constituent-sleeve R multiplied by total book risk; Tradeify uses sleeve-specific training R units and whole-micro weights.
 - Challenge pass, drawdown breach, funded survival, payout eligibility, payout amounts and recovery scenarios are reported separately.
 - The model is based on completed-trade exports, not an intraday account-equity replay.
 
@@ -80,5 +81,5 @@ Rules checked on 2026-11-01. These official pages define the modeled account ver
 - Tradeify's EOD trailing drawdown is modeled from daily closes. The $1,250 soft DLL is approximated by clipping closed daily losses; intraday trigger timing and overshoot are not reconstructed.
 - News, hedging/correlated-product restrictions, overnight/session restrictions, broker slippage, margin and exact timezone conversion are not fully tested.
 - MT5 RBE pairing uncertainty is documented in its data-quality report.
-- The risk unit is a realized-loss proxy, not verified initial stop risk.
+- The risk unit is a training-period realized-loss proxy, not verified initial stop risk. MT5 microscalping eligibility is also checked on the validation sample.
 - These estimates are conditional on historical behavior and current modeled rules. They are not guarantees or live-deployment approval.
