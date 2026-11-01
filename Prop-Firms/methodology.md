@@ -5,7 +5,7 @@
 - 5,000 Monte Carlo paths per scenario.
 - 252 trading-day horizon.
 - 5-trading-day circular block bootstrap using the later 40% chronological validation sample.
-- Book candidates are selected using the earlier 60% training sample.
+- Book candidates are selected using the earlier 60% training sample. This is one chronological holdout, not a multi-fold rolling walk-forward test.
 - Each sleeve's realized-loss R unit is calibrated on that training sample, then held fixed for the validation sample and all prop position sizing.
 - FTMO book PnL uses the average constituent-sleeve R multiplied by total book risk; Tradeify uses sleeve-specific training R units and whole-micro weights.
 - All one-to-four-sleeve combinations are screened on training/validation metrics. Firm-specific Monte Carlo covers every single sleeve, the three selected category finalists per category, and the leading two-/three-sleeve candidates; identical books are deduplicated.
