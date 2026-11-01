@@ -12,7 +12,8 @@ The model uses normalized daily R-multiples and a 5-trading-day block bootstrap 
 ## Important limits
 
 - The source exports are closed-trade records, not a complete tick-by-tick account equity path.
-- FTMO equity-based daily and maximum loss limits can be breached by floating losses not visible in closed-trade exports. The model also omits the 1–4 business-day phase review and KYC/activation delays, so time-to-funded estimates may be optimistic.
+- FTMO equity-based daily and maximum loss limits can be breached by floating losses not visible in closed-trade exports. The model omits the 1–4 business-day phase review and KYC/activation delays, so time-to-funded estimates may be optimistic.
+- The first Reward Day is approximated as 10 elapsed trading days after the first funded trade. Four business days are reserved for review/payment, with trading frozen during that interval. Cash withdrawal pays 80% of reference-period profit and starts a new reference period at initial capital; rollover is not modeled.
 - MT5 RBE entry/exit legs use exact-volume matching where possible and FIFO fallback because the Deals export has no position IDs.
 - Timestamps remain as exported. The firm's timezone/session boundaries are not reconstructed.
 - Strategy execution, native exits and stop behavior are not changed.
