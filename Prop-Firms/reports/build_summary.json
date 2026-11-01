@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-11-01T18:45:21.447543+00:00",
+  "generated_utc": "2026-11-01T18:49:54.199695+00:00",
   "monte_carlo_simulations_per_candidate": 5000,
   "horizon_trading_days": 252,
   "block_length_days": 5,
@@ -11,22 +11,22 @@
       "selected_books": {
         "live": [
           "Opening-Shock Continuation + Overnight Bias ORB + Sigma ORB + Vault Break",
-          "Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB + Vault Break",
-          "Gold ORB (RBE) + Opening-Shock Continuation + Overnight Bias ORB + Sigma ORB"
+          "Gold ORB (RBE) + Opening-Shock Continuation + Overnight Bias ORB + Sigma ORB",
+          "NQ Precision Bot + Opening-Shock Continuation + Overnight Bias ORB + Sigma ORB"
         ],
         "challenge": [
           "Flash ORB + Gold ORB (RBE) + Sigma ORB + Vault Break",
-          "Flash ORB + Overnight Bias ORB + Sigma ORB + Vault Break",
-          "Flash ORB + Gold ORB (RBE) + Overnight Bias ORB + Sigma ORB"
+          "Flash ORB + Gold ORB (RBE) + Overnight Bias ORB + Sigma ORB",
+          "Flash ORB + Overnight Bias ORB + Sigma ORB + Vault Break"
         ],
         "funded": [
-          "Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB + Vault Break",
           "Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB",
-          "Flash ORB + Gold ORB (RBE) + NQ Precision Bot + Sigma ORB"
+          "NQ Precision Bot + Opening-Shock Continuation + Sigma ORB + Vault Break",
+          "Flash ORB + Gold ORB (RBE) + Overnight Bias ORB + Sigma ORB"
         ],
         "recovery": [
           "Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB",
-          "Gold ORB (RBE) + Opening-Shock Continuation + Overnight Bias ORB + Sigma ORB",
+          "Gold ORB (RBE) + NQ Precision Bot + Sigma ORB + Vault Break",
           "Flash ORB + Gold ORB (RBE) + NQ Precision Bot + Sigma ORB"
         ]
       },
@@ -39,8 +39,8 @@
       "trades": 11918,
       "selected_books": {
         "live": [
-          "Flash ORB + Gold ORB (RBE) + Tokyo Coil + Vault Break",
           "Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Overnight Bias ORB",
+          "Flash ORB + Gold ORB (RBE) + Tokyo Coil + Vault Break",
           "Gold ORB (RBE) + Opening-Shock Continuation + Tokyo Coil + Vault Break"
         ],
         "challenge": [
@@ -50,13 +50,13 @@
         ],
         "funded": [
           "Flash ORB + Gold ORB (RBE) + Open Drive + Tokyo Coil",
-          "Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Tokyo Coil",
-          "Gold ORB (RBE) + Noise Band Momentum + Open Drive + Tokyo Coil"
+          "Gold ORB (RBE) + Noise Band Momentum + Overnight Bias ORB + Tokyo Coil",
+          "Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Tokyo Coil"
         ],
         "recovery": [
           "Gold ORB (RBE) + Opening-Shock Continuation + Tokyo Coil + Vault Break",
           "Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Overnight Bias ORB",
-          "Flash ORB + Gold ORB (RBE) + Open Drive + Tokyo Coil"
+          "Flash ORB + Gold ORB (RBE) + Noise Band Momentum + Overnight Bias ORB"
         ]
       },
       "validation_start": "2024-02-07",

@@ -1,52 +1,52 @@
 firm,book,risk_usd_per_book_trade,state,mini_equivalent_exposure,floor_equity,starting_cushion_usd,target_equity,target_label,recovery_probability,ruin_probability,soft_dll_pause_days_mean,median_days_to_target,mean_terminal_equity
-Tradeify,Sigma ORB,182.12684821428573,post-lock recovery,0.1,100.0,200.0,600.0,$500 buffer above locked floor,0.5314,0.4686,0.0,4.0,396.92705680000006
-Tradeify,Sigma ORB,182.12684821428573,post-lock recovery,0.1,100.0,200.0,3000.0,"$53,000 first-payout balance",0.305,0.6946,0.0,48.0,941.3410351999999
-Tradeify,Sigma ORB,182.12684821428573,post-lock recovery,0.1,100.0,500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,600.0
-Tradeify,Sigma ORB,182.12684821428573,post-lock recovery,0.1,100.0,500.0,3000.0,"$53,000 first-payout balance",0.4782,0.521,0.0,46.0,1543.0966008
-Tradeify,Sigma ORB,182.12684821428573,post-lock recovery,0.1,100.0,1000.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1100.0
-Tradeify,Sigma ORB,182.12684821428573,post-lock recovery,0.1,100.0,1000.0,3000.0,"$53,000 first-payout balance",0.693,0.3052,0.0,42.0,2274.0956631999998
-Tradeify,Sigma ORB,182.12684821428573,post-lock recovery,0.1,100.0,1500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1600.0
-Tradeify,Sigma ORB,182.12684821428573,post-lock recovery,0.1,100.0,1500.0,3000.0,"$53,000 first-payout balance",0.8222,0.1768,0.0,34.0,2686.0541408
-Tradeify,Overnight Bias ORB,139.12112110726648,post-lock recovery,0.1,100.0,200.0,600.0,$500 buffer above locked floor,0.5692,0.4308,0.0,8.0,451.656792
-Tradeify,Overnight Bias ORB,139.12112110726648,post-lock recovery,0.1,100.0,200.0,3000.0,"$53,000 first-payout balance",0.45,0.5356,0.0,92.0,1467.0601432
-Tradeify,Overnight Bias ORB,139.12112110726648,post-lock recovery,0.1,100.0,500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,600.0
-Tradeify,Overnight Bias ORB,139.12112110726648,post-lock recovery,0.1,100.0,500.0,3000.0,"$53,000 first-payout balance",0.6984,0.2788,0.0,86.0,2278.9752328
-Tradeify,Overnight Bias ORB,139.12112110726648,post-lock recovery,0.1,100.0,1000.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1100.0
-Tradeify,Overnight Bias ORB,139.12112110726648,post-lock recovery,0.1,100.0,1000.0,3000.0,"$53,000 first-payout balance",0.8876,0.0912,0.0,74.0,2882.9181855999996
-Tradeify,Overnight Bias ORB,139.12112110726648,post-lock recovery,0.1,100.0,1500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1600.0
-Tradeify,Overnight Bias ORB,139.12112110726648,post-lock recovery,0.1,100.0,1500.0,3000.0,"$53,000 first-payout balance",0.959,0.0294,0.0,56.0,3096.2614503999994
-Tradeify,Vault Break,98.90449438202248,post-lock recovery,0.1,100.0,200.0,600.0,$500 buffer above locked floor,0.5582,0.4418,0.0,12.0,394.4848
-Tradeify,Vault Break,98.90449438202248,post-lock recovery,0.1,100.0,200.0,3000.0,"$53,000 first-payout balance",0.1928,0.6026,0.0,173.0,989.7039
-Tradeify,Vault Break,98.90449438202248,post-lock recovery,0.1,100.0,500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,600.0
-Tradeify,Vault Break,98.90449438202248,post-lock recovery,0.1,100.0,500.0,3000.0,"$53,000 first-payout balance",0.351,0.3392,0.0,168.0,1657.3642
-Tradeify,Vault Break,98.90449438202248,post-lock recovery,0.1,100.0,1000.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1100.0
-Tradeify,Vault Break,98.90449438202248,post-lock recovery,0.1,100.0,1000.0,3000.0,"$53,000 first-payout balance",0.543,0.125,0.0,149.0,2295.13
-Tradeify,Vault Break,98.90449438202248,post-lock recovery,0.1,100.0,1500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1600.0
-Tradeify,Vault Break,98.90449438202248,post-lock recovery,0.1,100.0,1500.0,3000.0,"$53,000 first-payout balance",0.7092,0.039,0.0,119.0,2663.6804
-Tradeify,Opening-Shock Continuation + Overnight Bias ORB,268.6378808838028,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,0.5836,0.4164,0.0,5.0,438.5285672
-Tradeify,Opening-Shock Continuation + Overnight Bias ORB,268.6378808838028,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 first-payout balance",0.435,0.5608,0.0,72.0,1382.1423392
-Tradeify,Opening-Shock Continuation + Overnight Bias ORB,268.6378808838028,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,600.0
-Tradeify,Opening-Shock Continuation + Overnight Bias ORB,268.6378808838028,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 first-payout balance",0.6616,0.3322,0.0,69.0,2107.0227871999996
-Tradeify,Opening-Shock Continuation + Overnight Bias ORB,268.6378808838028,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1100.0
-Tradeify,Opening-Shock Continuation + Overnight Bias ORB,268.6378808838028,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 first-payout balance",0.8664,0.127,0.0,59.0,2757.440552
-Tradeify,Opening-Shock Continuation + Overnight Bias ORB,268.6378808838028,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1600.0
-Tradeify,Opening-Shock Continuation + Overnight Bias ORB,268.6378808838028,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 first-payout balance",0.95,0.0452,0.0,46.0,3026.6587247999996
-Tradeify,Gold ORB (RBE) + Sigma ORB,316.15789926533677,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,0.5264,0.4736,0.0018,2.0,429.1781848
-Tradeify,Gold ORB (RBE) + Sigma ORB,316.15789926533677,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 first-payout balance",0.3194,0.6806,0.014,23.0,1002.7629215999998
-Tradeify,Gold ORB (RBE) + Sigma ORB,316.15789926533677,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,600.0
-Tradeify,Gold ORB (RBE) + Sigma ORB,316.15789926533677,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 first-payout balance",0.4896,0.5104,0.0184,22.0,1601.9280391999998
-Tradeify,Gold ORB (RBE) + Sigma ORB,316.15789926533677,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1100.0
-Tradeify,Gold ORB (RBE) + Sigma ORB,316.15789926533677,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 first-payout balance",0.7126,0.2874,0.023,20.0,2365.834144
-Tradeify,Gold ORB (RBE) + Sigma ORB,316.15789926533677,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1600.0
-Tradeify,Gold ORB (RBE) + Sigma ORB,316.15789926533677,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 first-payout balance",0.8404,0.1596,0.0196,16.0,2798.4833608
-Tradeify,Flash ORB + Gold ORB (RBE),261.074261677237,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,0.5486,0.4514,0.0,2.0,424.93799759999996
-Tradeify,Flash ORB + Gold ORB (RBE),261.074261677237,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 first-payout balance",0.3254,0.6746,0.0,29.0,1006.5873320000001
-Tradeify,Flash ORB + Gold ORB (RBE),261.074261677237,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,600.0
-Tradeify,Flash ORB + Gold ORB (RBE),261.074261677237,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 first-payout balance",0.5062,0.4938,0.0,29.0,1606.1005936000001
-Tradeify,Flash ORB + Gold ORB (RBE),261.074261677237,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1100.0
-Tradeify,Flash ORB + Gold ORB (RBE),261.074261677237,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 first-payout balance",0.7076,0.2924,0.0,25.0,2278.2214895999996
-Tradeify,Flash ORB + Gold ORB (RBE),261.074261677237,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1600.0
-Tradeify,Flash ORB + Gold ORB (RBE),261.074261677237,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 first-payout balance",0.8388,0.1612,0.0,20.0,2720.6281903999998
+Tradeify,Sigma ORB,166.61416091954027,post-lock recovery,0.1,100.0,200.0,600.0,$500 buffer above locked floor,0.5314,0.4686,0.0,4.0,396.9270568
+Tradeify,Sigma ORB,166.61416091954027,post-lock recovery,0.1,100.0,200.0,3000.0,"$53,000 first-payout balance",0.305,0.6946,0.0,48.0,941.3410352
+Tradeify,Sigma ORB,166.61416091954027,post-lock recovery,0.1,100.0,500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,600.0
+Tradeify,Sigma ORB,166.61416091954027,post-lock recovery,0.1,100.0,500.0,3000.0,"$53,000 first-payout balance",0.4782,0.521,0.0,46.0,1543.0966008
+Tradeify,Sigma ORB,166.61416091954027,post-lock recovery,0.1,100.0,1000.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Sigma ORB,166.61416091954027,post-lock recovery,0.1,100.0,1000.0,3000.0,"$53,000 first-payout balance",0.693,0.3052,0.0,42.0,2274.0956631999998
+Tradeify,Sigma ORB,166.61416091954027,post-lock recovery,0.1,100.0,1500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Sigma ORB,166.61416091954027,post-lock recovery,0.1,100.0,1500.0,3000.0,"$53,000 first-payout balance",0.8222,0.1768,0.0,34.0,2686.0541408
+Tradeify,Overnight Bias ORB,121.86041860465119,post-lock recovery,0.1,100.0,200.0,600.0,$500 buffer above locked floor,0.5692,0.4308,0.0,8.0,451.656792
+Tradeify,Overnight Bias ORB,121.86041860465119,post-lock recovery,0.1,100.0,200.0,3000.0,"$53,000 first-payout balance",0.45,0.5356,0.0,92.0,1467.0601431999996
+Tradeify,Overnight Bias ORB,121.86041860465119,post-lock recovery,0.1,100.0,500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,600.0
+Tradeify,Overnight Bias ORB,121.86041860465119,post-lock recovery,0.1,100.0,500.0,3000.0,"$53,000 first-payout balance",0.6984,0.2788,0.0,86.0,2278.9752328
+Tradeify,Overnight Bias ORB,121.86041860465119,post-lock recovery,0.1,100.0,1000.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Overnight Bias ORB,121.86041860465119,post-lock recovery,0.1,100.0,1000.0,3000.0,"$53,000 first-payout balance",0.8876,0.0912,0.0,74.0,2882.9181856
+Tradeify,Overnight Bias ORB,121.86041860465119,post-lock recovery,0.1,100.0,1500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Overnight Bias ORB,121.86041860465119,post-lock recovery,0.1,100.0,1500.0,3000.0,"$53,000 first-payout balance",0.959,0.0294,0.0,56.0,3096.2614503999994
+Tradeify,Vault Break,94.69256756756756,post-lock recovery,0.1,100.0,200.0,600.0,$500 buffer above locked floor,0.5582,0.4418,0.0,12.0,394.4848
+Tradeify,Vault Break,94.69256756756756,post-lock recovery,0.1,100.0,200.0,3000.0,"$53,000 first-payout balance",0.1928,0.6026,0.0,173.0,989.7039
+Tradeify,Vault Break,94.69256756756756,post-lock recovery,0.1,100.0,500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,600.0
+Tradeify,Vault Break,94.69256756756756,post-lock recovery,0.1,100.0,500.0,3000.0,"$53,000 first-payout balance",0.351,0.3392,0.0,168.0,1657.3642
+Tradeify,Vault Break,94.69256756756756,post-lock recovery,0.1,100.0,1000.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Vault Break,94.69256756756756,post-lock recovery,0.1,100.0,1000.0,3000.0,"$53,000 first-payout balance",0.543,0.125,0.0,149.0,2295.13
+Tradeify,Vault Break,94.69256756756756,post-lock recovery,0.1,100.0,1500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Vault Break,94.69256756756756,post-lock recovery,0.1,100.0,1500.0,3000.0,"$53,000 first-payout balance",0.7092,0.039,0.0,119.0,2663.6804
+Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,0.5836,0.4164,0.0,5.0,438.5285672
+Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 first-payout balance",0.435,0.5608,0.0,72.0,1382.1423392
+Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,600.0
+Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 first-payout balance",0.6616,0.3322,0.0,69.0,2107.0227871999996
+Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 first-payout balance",0.8664,0.127,0.0,59.0,2757.440552
+Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 first-payout balance",0.95,0.0452,0.0,46.0,3026.6587247999996
+Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,0.5466,0.4534,0.0,7.0,386.444
+Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 first-payout balance",0.289,0.6526,0.0,128.0,1014.9298
+Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,600.0
+Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 first-payout balance",0.4946,0.4184,0.0,126.0,1701.4991
+Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 first-payout balance",0.7008,0.1908,0.0,110.0,2376.9321
+Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 first-payout balance",0.8312,0.0814,0.0,84.0,2745.8409
+Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,0.5262,0.4738,0.0,3.0,381.2425432
+Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 first-payout balance",0.2988,0.701,0.0,39.0,936.9131408000002
+Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,600.0
+Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 first-payout balance",0.496,0.5038,0.0,37.0,1590.457376
+Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 first-payout balance",0.7032,0.2966,0.0,32.0,2286.7521432000003
+Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 first-payout balance",0.8286,0.1714,0.0,25.0,2695.9783328000003
 Tradeify,No trade,0.0,no-trade control,,100.0,200.0,600.0,$500 buffer above locked floor,0.0,0.0,,,300.0
 Tradeify,No trade,0.0,no-trade control,,100.0,200.0,3000.0,"$53,000 first-payout balance",0.0,0.0,,,300.0
 Tradeify,No trade,0.0,no-trade control,,100.0,500.0,600.0,$500 buffer above locked floor,1.0,0.0,,0.0,600.0
