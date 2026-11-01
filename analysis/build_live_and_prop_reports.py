@@ -1009,7 +1009,7 @@ def run_platform(platform):
     for name,combo in mc_candidates.items():
         series=rmat.loc[val,list(combo)].sum(axis=1)/len(combo)
         act=activemat.loc[val,list(combo)].any(axis=1)
-        paths, actpaths=sample_block_paths(series.values,act.values,seed=SEED+len(mc_rows))
+        paths, actpaths=sample_block_paths(series.values,act.values,seed=SEED+len(mc_rows),date_index=val)
         mc_rows.append({"book":name,"strategies":" + ".join(combo),**live_bootstrap_summary(paths)})
     pd.DataFrame(mc_rows).to_csv(out/"reports"/"live_bootstrap_risk_of_ruin.csv",index=False)
 
@@ -1065,7 +1065,7 @@ def run_platform(platform):
     for cname,combo in prop_candidates.items():
         daily_r=rmat.loc[validation_idx,list(combo)].sum(axis=1)/len(combo)
         active=activemat.loc[validation_idx,list(combo)].any(axis=1)
-        paths, actpaths=sample_block_paths(daily_r.values,active.values,seed=SEED+len(ftmo_rows)+100)
+        paths, actpaths=sample_block_paths(daily_r.values,active.values,seed=SEED+len(ftmo_rows)+100,date_index=validation_idx)
         if platform=="MT5":
             for risk in FTMO_RISKS:
                 res=simulate_ftmo(paths,actpaths,risk)
@@ -1082,7 +1082,7 @@ def run_platform(platform):
                 weights,sizes,exposure,scale,compliant=tradeify_position_weights(trades,combo,risk)
                 effective=sum(weights.values())
                 book_daily=weighted_daily_pnl(rmat,validation_idx,combo,weights)
-                paths_t,actpaths_t=sample_block_paths(book_daily.values,active.values,seed=candidate_seed)
+                paths_t,actpaths_t=sample_block_paths(book_daily.values,active.values,seed=candidate_seed,date_index=validation_idx)
                 res=simulate_tradeify(paths_t,actpaths_t,1.0,micro["eligible"],week_ok)
                 extra={"book":cname,"strategies":" + ".join(combo),
                     "requested_risk_per_book_trade_usd":risk,"effective_risk_after_micro_sizing_usd":effective,
@@ -1120,7 +1120,8 @@ def run_platform(platform):
             recovery_daily=weighted_daily_pnl(rmat,validation_idx,combo,weights)
             rec_paths,rec_act=sample_block_paths(recovery_daily.values,
                 activemat.loc[validation_idx,list(combo)].any(axis=1).values,
-                n_sims=N_SIMS,horizon=HORIZON,seed=SEED+999+len(recovery_rows))
+                n_sims=N_SIMS,horizon=HORIZON,seed=SEED+999+len(recovery_rows),
+                date_index=validation_idx)
             for cushion in [100.0,250.0,500.0,750.0]:
                 res=simulate_recovery(rec_paths,1.0,-1000.0,cushion,0.0,daily_limit=500.0)
                 recovery_rows.append({"firm":"FTMO","book":" + ".join(combo),"risk_usd_per_book_trade":12.5,
@@ -1138,7 +1139,8 @@ def run_platform(platform):
             recovery_daily=weighted_daily_pnl(rmat,validation_idx,combo,weights)
             rec_paths,rec_act=sample_block_paths(recovery_daily.values,
                 activemat.loc[validation_idx,list(combo)].any(axis=1).values,
-                n_sims=N_SIMS,horizon=HORIZON,seed=SEED+999+len(recovery_rows))
+                n_sims=N_SIMS,horizon=HORIZON,seed=SEED+999+len(recovery_rows),
+                date_index=validation_idx)
             rec_trades=trades[trades["strategy"].isin(combo) &
                               trades["exit_date"].between(validation_idx.min(),validation_idx.max())]
             rec_micro=microscalping_stats(rec_trades)
