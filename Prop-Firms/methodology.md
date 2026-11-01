@@ -15,7 +15,7 @@
 - The 252-day rates are probabilities within a one-trading-year simulation horizon, not lifetime pass/payout probabilities.
 - The 5,000 paths quantify variability under resampled historical daily returns; they do not prove the future distribution will match history. Monte Carlo sampling error is smaller than this model/data uncertainty. Full calendar-week blocks preserve the weekly activity structure.
 - Common bootstrap block samples are used across each firm's risk ladder for a given book, making position-size comparisons less noisy.
-- Tradeify weekly activity is checked on complete Monday-Friday validation weeks. Bootstrap blocks are aligned to those weeks, so simulated weeks preserve the observed activity pattern. Books that fail weekly activity or the four-mini position cap are not counted as eligible evaluation passes. Microscalping eligibility is checked on validation trades; missing durations count as not qualifying for the over-10-second rule.
+- Tradeify weekly activity is checked on complete Monday-Friday validation weeks. Bootstrap blocks are aligned to those weeks, so simulated weeks preserve the observed activity pattern. Weekly activity and microscalping are funded payout-eligibility rules, not evaluation pass conditions. Books that breach the four-mini position cap are not treated as executable. Microscalping eligibility is checked on validation trades; missing durations count as not qualifying for the over-10-second rule.
 
 ## FTMO — USD 10,000 Standard 2-Step CFD
 
