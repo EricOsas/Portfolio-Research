@@ -1060,11 +1060,14 @@ def run_platform(platform):
                      trades["exit_date"].between(validation_idx.min(), validation_idx.max())]
             micro=microscalping_stats(t)
             week_ok=weekly_activity_ok(active)
+            # Use common bootstrap blocks across the risk ladder for this book.
+            # This removes avoidable Monte Carlo noise when comparing sizes.
+            candidate_seed=SEED+300+sum(ord(ch) for ch in cname)
             for risk in TRADEIFY_RISKS:
                 weights,sizes,exposure,scale,compliant=tradeify_position_weights(trades,combo,risk)
                 effective=sum(weights.values())
                 book_daily=weighted_daily_pnl(rmat,validation_idx,combo,weights)
-                paths_t,actpaths_t=sample_block_paths(book_daily.values,active.values,seed=SEED+len(tradeify_rows)+300)
+                paths_t,actpaths_t=sample_block_paths(book_daily.values,active.values,seed=candidate_seed)
                 res=simulate_tradeify(paths_t,actpaths_t,1.0,micro["eligible"],week_ok)
                 extra={"book":cname,"strategies":" + ".join(combo),
                     "requested_risk_per_book_trade_usd":risk,"effective_risk_after_micro_sizing_usd":effective,
