@@ -139,7 +139,7 @@ The high modeled pass rates must be read with the close-only limitation: FTMO's 
 
 ### Tradeify — USD 50,000 Growth futures
 
-Modeled Growth rules: USD 3,000 evaluation target, no evaluation consistency rule, USD 2,000 EOD trailing drawdown with a USD 50,100 locked floor after the USD 52,100 threshold, USD 1,250 initial soft daily-loss limit, and a funded DLL increase to USD 2,000 from the next session after the balance reaches USD 53,000. Funded payout modeling applies 35% consistency, five winning days above USD 150, the USD 53,000 balance threshold, the 90% payout share, payout caps and two trading days for processing. Weekly activity and microscalping are funded payout-eligibility checks, not evaluation pass conditions. Position-limit compliance is required for executable book sizing.
+Modeled Growth rules: USD 3,000 evaluation target, no evaluation consistency rule, USD 2,000 EOD trailing drawdown with a USD 50,100 locked floor after the USD 52,100 threshold, USD 1,250 initial soft daily-loss limit, and a funded DLL increase to USD 2,000 from the next session after the balance reaches USD 53,000. This assumes the current non-legacy rules for accounts purchased on or after September 12, 2025; older accounts have different DLL and payout thresholds. Funded payout modeling applies 35% consistency, five winning days above USD 150, the USD 53,000 balance threshold, the 90% payout share, payout caps and two trading days for processing. Weekly activity and microscalping are funded payout-eligibility checks, not evaluation pass conditions. Position-limit compliance is required for executable book sizing.
 
 **Selected book:** Flash ORB + Overnight Bias ORB.
 
