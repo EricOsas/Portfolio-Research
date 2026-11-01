@@ -9,7 +9,7 @@
 |---|---|---|
 | Standard live | Opening-Shock Continuation + Overnight Bias ORB + Sigma ORB + Vault Break | Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Overnight Bias ORB |
 | Generic challenge | Flash ORB + Gold ORB (RBE) + Sigma ORB + Vault Break | Flash ORB + Gold ORB (RBE) + Open Drive + Tokyo Coil |
-| Generic funded | Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB | Gold ORB (RBE) + Noise Band Momentum + Overnight Bias ORB + Tokyo Coil |
+| Generic funded | Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB | Flash ORB + Gold ORB (RBE) + Open Drive + Tokyo Coil |
 | Generic recovery score | Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB | Gold ORB (RBE) + Opening-Shock Continuation + Tokyo Coil + Vault Break |
 
 These are generic portfolio-screening categories. They are not fixed labels attached to a strategy. The firm-specific simulations produce separate recommendations:
