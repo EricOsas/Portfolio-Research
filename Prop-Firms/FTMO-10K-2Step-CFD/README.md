@@ -12,10 +12,11 @@ The model uses normalized daily R-multiples and a 5-trading-day block bootstrap 
 ## Important limits
 
 - The source exports are closed-trade records, not a complete tick-by-tick account equity path.
-- FTMO equity-based daily and maximum loss limits can be breached by floating losses not visible in closed-trade exports.
+- FTMO equity-based daily and maximum loss limits can be breached by floating losses not visible in closed-trade exports. The model also omits the 1–4 business-day phase review and KYC/activation delays, so time-to-funded estimates may be optimistic.
 - MT5 RBE entry/exit legs use exact-volume matching where possible and FIFO fallback because the Deals export has no position IDs.
 - Timestamps remain as exported. The firm's timezone/session boundaries are not reconstructed.
 - Strategy execution, native exits and stop behavior are not changed.
+- Recovery curves are balance-only. Tradeify's $53,000 balance target does not enforce payout consistency, five winning days or payout processing.
 - Treat results as historical scenario estimates, not promises.
 
 ## Charts

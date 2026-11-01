@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-11-01T19:10:15.743291+00:00",
+  "generated_utc": "2026-11-01T19:15:23.048148+00:00",
   "monte_carlo_simulations_per_candidate": 5000,
   "horizon_trading_days": 252,
   "block_length_days": 5,

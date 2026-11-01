@@ -12,7 +12,7 @@
   "funded_reward_split_default": 0.8,
   "reward_rollover_option": true,
   "modeled_reward_mode": "Cash withdrawal; 80% paid and 20% of requested profit remains in account",
-  "first_reward_request": "Day 14 or later after first funded trade; model uses 10 trading days",
+  "first_reward_request": "Day 14 or later after first funded trade; model allows 10 elapsed trading days (11th active trading day)",
   "minimum_closed_profit_usd_bank_transfer": 20,
   "minimum_closed_profit_usd_crypto": 50,
   "reward_processing_model_business_days": 4,
@@ -21,6 +21,7 @@
     "https://ftmo.com/en/trading-objectives/",
     "https://ftmo.com/en/2-step-challenge/",
     "https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/",
+    "https://ftmo.com/faq/i-have-successfully-passed-what-to-do-now/",
     "https://ftmo.com/en/faq/can-i-trade-news/",
     "https://ftmo.com/en/faq/do-i-have-to-close-my-positions-overnight-or-before-the-weekend/"
   ],
@@ -29,7 +30,9 @@
   "model_assumptions": [
     "$25/$50/$75/$100 total book risk per trade sensitivity",
     "Each book divides risk equally across sleeves",
-    "10 trading days used as an approximation for the 14-calendar-day first reward request date",
+    "10 elapsed trading days (11th active trading day) approximate the 14-calendar-day first reward request date",
+    "Phase review, verification and KYC delays are not modeled; phase transitions occur on the next simulated trading day",
+    "Four business days approximate reward review plus payment processing",
     "No intraday floating PnL in MT5 exports; close-only rule model is optimistic"
   ]
 }
