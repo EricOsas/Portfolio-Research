@@ -6,8 +6,9 @@ Research workspace for the NT8 futures and MT5 CFD strategy exports. Raw export 
 
 - [Raw NT8 research pack](NT8/README.md)
 - [Raw MT5 research pack](MT5/README.md)
-- [Normalized live-account research](Normalized-Live/README.md)
-- [Prop-firm research](Prop-Firms/README.md)
+- [Normalized live-account research](Normalized-Live/README.md) ([methodology](Normalized-Live/methodology.md))
+- [Prop-firm research](Prop-Firms/README.md) ([methodology](Prop-Firms/methodology.md))
+- [Strategy and book suitability](reports/strategy_suitability.md)
 - [Latest raw build summary](reports/run_summary.json)
 - [Raw export analysis engine](analysis/build_equity_reports.py)
 - [Normalized and prop-firm engine](analysis/build_live_and_prop_reports.py)
