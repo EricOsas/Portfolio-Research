@@ -57,7 +57,7 @@ One GC contract and one NQ contract are not equal-risk exposures. MT5's USD 100 
 - [FTMO $10,000 2-Step CFD](Prop-Firms/FTMO-10K-2Step-CFD/README.md)
 - [Tradeify $50,000 Growth futures](Prop-Firms/Tradeify-50K-Growth-Futures/README.md)
 
-The prop simulations use 5,000 Monte Carlo paths, a five-trading-day circular block bootstrap, and a 252-trading-day horizon. FTMO uses a total book-risk ladder of $25–$100. Tradeify uses $100–$750 requested total book risk, whole-micro sizing, at least one micro per active sleeve, and a four-mini concurrent exposure cap. Actual risk can exceed the requested amount because of the minimum micro size.
+The prop simulations use 5,000 Monte Carlo paths, a five-trading-day block bootstrap aligned to complete Monday-Friday weeks, and a 252-trading-day horizon. FTMO uses a total book-risk ladder of $25–$100. Tradeify uses $100–$750 requested total book risk, whole-micro sizing, at least one micro per active sleeve, and a four-mini concurrent exposure cap. Actual risk can exceed the requested amount because of the minimum micro size.
 
 Tradeify Growth evaluation has no consistency rule. The funded model applies the official 35% payout consistency rule, five profitable days above $150, the $53,000 minimum payout balance and current payout caps. The $1,250 daily loss limit is a soft pause, approximated by clipping closed daily losses at -$1,250.
 
