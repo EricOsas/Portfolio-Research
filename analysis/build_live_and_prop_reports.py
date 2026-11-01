@@ -608,6 +608,23 @@ def weekly_activity_ok(active):
     weekly = weekly[weekly.index <= active.index.max()]
     return bool(len(weekly) and (weekly > 0).all())
 
+def max_concurrent_mini_equiv(trades, combo, sizes):
+    events = []
+    for strategy in combo:
+        t = trades[trades["strategy"] == strategy]
+        size = sizes[strategy]
+        for _, r in t.iterrows():
+            if pd.isna(r["entry_timestamp"]) or pd.isna(r["exit_timestamp"]):
+                continue
+            events.append((r["entry_timestamp"], 1, size))
+            events.append((r["exit_timestamp"], 0, -size))
+    events.sort(key=lambda x:(x[0],x[1]))
+    current = peak = 0.0
+    for _, _, delta in events:
+        current += delta
+        peak = max(peak, current)
+    return float(peak)
+
 def tradeify_position_weights(trades, combo, requested_total_risk):
     """One micro minimum, whole-micro sizing, four-mini account cap."""
     per_sleeve = requested_total_risk / max(1, len(combo))
@@ -830,7 +847,7 @@ def run_platform(platform):
     else:
         for combo in recovery_books:
             weights={s:0.1*float(trades.loc[trades["strategy"]==s,"risk_unit"].iloc[0]) for s in combo}
-            exposure=max_concurrent_mini_equiv(trades,combo,weights)
+            exposure=max_concurrent_mini_equiv(trades,combo,{s:0.1 for s in combo})
             recovery_daily=weighted_daily_pnl(rmat,validation_idx,combo,weights)
             rec_paths,rec_act=sample_block_paths(recovery_daily.values,
                 activemat.loc[validation_idx,list(combo)].any(axis=1).values,
