@@ -699,6 +699,115 @@ def write_json(path, obj):
     path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text(json.dumps(obj,indent=2,default=str),encoding="utf-8")
 
+def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
+                       pass_col, payout_col, breach_col, title,
+                       eligibility_cols=None, stress_filter=None):
+    charts=firm_dir/"charts"
+    reports=firm_dir/"reports"
+    charts.mkdir(parents=True,exist_ok=True)
+    base=df[df[risk_col].astype(float).eq(float(base_risk))].copy()
+    if stress_filter and stress_filter in base.columns:
+        base=base[base[stress_filter].astype(str).str.contains("base case|no consistency",case=False,regex=True)]
+    if eligibility_cols:
+        for col in eligibility_cols:
+            if col in base.columns:
+                base=base[base[col].astype(str).str.lower().eq("true")]
+    if base.empty:
+        base=df[df[risk_col].astype(float).eq(float(base_risk))].copy()
+    conditional_col=("funded_first_payout_rate_conditional" if "funded_first_payout_rate_conditional" in base.columns
+                     else "funded_first_reward_rate_conditional")
+    ranking=base.sort_values(payout_col,ascending=False).copy()
+    ranking.to_csv(reports/"book_rankings.csv",index=False)
+
+    top_books=ranking["book"].head(3).tolist()
+    fig,ax=plt.subplots(figsize=(10.5,5.8))
+    for book in top_books:
+        g=df[df["book"]==book].copy()
+        if stress_filter and stress_filter in g.columns:
+            g=g[g[stress_filter].astype(str).str.contains("base case|no consistency",case=False,regex=True)]
+        g=g.sort_values(risk_col)
+        ax.plot(g[risk_col].astype(float),g[payout_col].astype(float),marker="o",linewidth=1.7,label=book)
+    ax.set_title(f"{title}: challenge-to-payout probability",loc="left",fontweight="bold")
+    ax.set_xlabel("Requested total book risk per trade (USD)")
+    ax.set_ylabel("Probability")
+    ax.set_ylim(0,1)
+    ax.grid(True,alpha=.25,linestyle="--")
+    ax.legend(fontsize=7,loc="best")
+    fig.tight_layout()
+    fig.savefig(charts/"challenge_to_payout_probability.png",dpi=160,bbox_inches="tight")
+    plt.close(fig)
+
+    fig,ax=plt.subplots(figsize=(10.5,5.8))
+    for book in top_books:
+        g=df[df["book"]==book].copy()
+        if stress_filter and stress_filter in g.columns:
+            g=g[g[stress_filter].astype(str).str.contains("base case|no consistency",case=False,regex=True)]
+        g=g.sort_values(risk_col)
+        ax.plot(g[risk_col].astype(float),g[breach_col].astype(float),marker="o",linewidth=1.7,label=book)
+    ax.set_title(f"{title}: drawdown breach probability",loc="left",fontweight="bold")
+    ax.set_xlabel("Requested total book risk per trade (USD)")
+    ax.set_ylabel("Probability")
+    ax.set_ylim(0,1)
+    ax.grid(True,alpha=.25,linestyle="--")
+    ax.legend(fontsize=7,loc="best")
+    fig.tight_layout()
+    fig.savefig(charts/"drawdown_breach_probability.png",dpi=160,bbox_inches="tight")
+    plt.close(fig)
+
+    if not recovery_df.empty:
+        target_col="target_label" if "target_label" in recovery_df.columns else "state"
+        rec=recovery_df[recovery_df["book"]!="No trade"].copy()
+        if not rec.empty:
+            chosen=rec.sort_values("recovery_probability",ascending=False).iloc[0]["book"]
+            g=rec[rec["book"]==chosen]
+            fig,ax=plt.subplots(figsize=(10.5,5.8))
+            for label,part in g.groupby(target_col):
+                part=part.sort_values("starting_cushion_usd")
+                ax.plot(part["starting_cushion_usd"],part["recovery_probability"],marker="o",label=str(label))
+            ax.set_title(f"{title}: recovery probability | {chosen}",loc="left",fontweight="bold")
+            ax.set_xlabel("Starting cushion above breach floor (USD)")
+            ax.set_ylabel("Probability of reaching target")
+            ax.set_ylim(0,1)
+            ax.grid(True,alpha=.25,linestyle="--")
+            ax.legend(fontsize=7,loc="best")
+            fig.tight_layout()
+            fig.savefig(charts/"recovery_probability.png",dpi=160,bbox_inches="tight")
+            plt.close(fig)
+
+    challenge=ranking.iloc[0] if len(ranking) else None
+    funded=base.sort_values(conditional_col,ascending=False).iloc[0] if len(base) and conditional_col in base.columns else challenge
+    recovery_candidate="No active book met the near-floor recovery threshold; preserve the account rather than force trades."
+    if not recovery_df.empty:
+        near_cushion=100.0 if "FTMO" in title else 200.0
+        target_rows=recovery_df[recovery_df["starting_cushion_usd"].astype(float).eq(near_cushion)]
+        if "target_label" in target_rows.columns:
+            target_rows=target_rows[target_rows["target_label"].astype(str).str.contains("break-even|buffer",case=False,regex=True)]
+        viable=target_rows[(target_rows["book"]!="No trade") & (target_rows["ruin_probability"].astype(float)<=0.05)]
+        if len(viable):
+            best=viable.sort_values("recovery_probability",ascending=False).iloc[0]
+            recovery_candidate=f'{best["book"]}: recovery probability {best["recovery_probability"]:.1%}, breach probability {best["ruin_probability"]:.1%}.'
+        else:
+            recovery_candidate="No-trade is the safest near-floor control; none of the active candidates stayed within a 5% modeled breach probability."
+
+    lines=[f"# {title} — book ranking",
+           "",
+           f"Base comparison risk: USD {base_risk:,.0f} requested total risk per book trade.",
+           "",
+           "## Challenge candidate"]
+    if challenge is not None:
+        lines += [f'- **{challenge["book"]}** ({challenge["strategies"]})',
+                  f'  - Challenge-to-payout: {float(challenge[payout_col]):.1%}',
+                  f'  - Pass rate: {float(challenge[pass_col]):.1%}',
+                  f'  - Breach rate: {float(challenge[breach_col]):.1%}']
+    lines += ["","## Funded candidate"]
+    if funded is not None:
+        lines += [f'- **{funded["book"]}** ({funded["strategies"]})',
+                  f'  - Conditional first-payout rate: {float(funded[conditional_col]):.1%}' if conditional_col in funded else "  - Conditional first-payout rate: unavailable",
+                  f'  - Breach rate: {float(funded[breach_col]):.1%}']
+    lines += ["","## Near-floor recovery",recovery_candidate,
+              "","These are simulated candidates, not live-deployment approvals. Use the full risk ladder and rule assumptions in the CSV/JSON reports."]
+    (reports/"book_recommendations.md").write_text("\n".join(lines),encoding="utf-8")
+
 def run_platform(platform):
     trades, pairing_quality = load_platform_trades(platform)
     dates, rmat, livemat, activemat = make_matrices(trades)
