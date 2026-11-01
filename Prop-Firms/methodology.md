@@ -60,6 +60,19 @@ Recovery simulations include no-trade controls.
 - Tradeify recovery uses one micro per sleeve.
 - If no active book meets both the selected recovery-probability and breach-probability thresholds near the floor, no-trade is the safest modeled control.
 
+## Official rule references
+
+Rules checked on 2026-11-01. These official pages define the modeled account versions:
+
+- [FTMO 2-Step Challenge objectives](https://ftmo.com/en/2-step-challenge/)
+- [FTMO Trading Objectives](https://ftmo.com/en/trading-objectives/)
+- [FTMO reward withdrawal process](https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/)
+- [Tradeify Growth Evaluation rules](https://help.tradeify.co/en/articles/10495915-growth-evaluation-accounts)
+- [Tradeify Essential Trading Rules](https://help.tradeify.co/en/articles/12268167-essential-trading-rules-overview)
+- [Tradeify Growth funded payout policy](https://help.tradeify.co/en/articles/11083796-growth-funded-account-payout-policy)
+- [Tradeify consistency rule](https://help.tradeify.co/en/articles/10468320-rules-consistency-rule)
+- [Tradeify trailing drawdown rules](https://help.tradeify.co/en/articles/10495897-rules-trailing-max-drawdowns)
+
 ## Important limitations
 
 - Daily PnL is based on completed-trade exits. Intraday floating equity and exact daily-loss pause sequencing are not reconstructed.
