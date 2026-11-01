@@ -437,7 +437,9 @@ def simulate_ftmo(paths, active, risk):
                 funded_age[p2] = 0
                 first_funded_trade_day[p2] = -1
 
-        funded_mask = (start_phase == 3) & (phase == 3)
+        # Reward Day ends the current reference period. Freeze trading while
+        # FTMO reviews/processes the claim; the next cycle starts after approval.
+        funded_mask = (start_phase == 3) & (phase == 3) & (reward_request_day < 0)
         if funded_mask.any():
             eq[funded_mask] += daily[funded_mask]
             first_trade = funded_mask & act & (first_funded_trade_day < 0)
@@ -462,21 +464,22 @@ def simulate_ftmo(paths, active, risk):
                 reward_request_day[claim] = d
                 reward_request_amount[claim] = 0.80 * eq[claim]
 
-        # Reward is approved only if the funded account remains active through
-        # the modeled four-business-day processing period.
+        # The FTMO 2-Step cash-withdrawal cycle pays 80% of the period profit.
+        # After approval, a new reference period starts at initial capital;
+        # profits/losses from the prior period are cleared unless rolled over.
+        # This model assumes cash withdrawal, no rollover, and freezes trading
+        # during the four-business-day review/payment approximation.
         pending_reward = ((reward_request_day >= 0) & (reward_day < 0) &
                           (d >= reward_request_day + 4))
-        approved = pending_reward & (phase == 3) & (eq >= reward_request_amount)
-        denied = pending_reward & (phase == 3) & (eq < reward_request_amount)
+        approved = pending_reward & (phase == 3)
         if approved.any():
             reward_day[approved] = d
             reward[approved] = reward_request_amount[approved]
-            # Cash withdrawal pays 80% and leaves the remaining 20% of the
-            # requested profit in the account. Rollover is a separate option.
-            eq[approved] -= reward_request_amount[approved]
-        if denied.any():
-            reward_request_day[denied] = -1
-            reward_request_amount[denied] = 0.0
+            eq[approved] = 0.0
+            funded_age[approved] = 0
+            first_funded_trade_day[approved] = -1
+            reward_request_day[approved] = -1
+            reward_request_amount[approved] = 0.0
 
     reached_funded = p2_day >= 0
     first_payout = reward_day >= 0
@@ -503,7 +506,7 @@ def simulate_ftmo(paths, active, risk):
         "expected_first_reward_usd": float(reward.mean()),
         "median_first_reward_usd_conditional": float(np.median(reward[first_payout])) if first_payout.any() else 0.0,
         "simulations": int(n), "horizon_trading_days": int(h),
-        "note": "Daily closed-PnL model; $20 minimum closed profit assumed for bank transfer; four-business-day review/processing approximation; reward is counted only if the account remains funded through approval; floating-loss breaches are not visible in exports.",
+        "note": "Daily closed-PnL model; $20 minimum closed profit assumed for bank transfer; first Reward Day approximated as 10 elapsed trading days after first funded trade; four-business-day review/payment approximation with trading frozen during processing; cash withdrawal pays 80% and resets the new reference period to initial capital (no rollover); only first reward is counted; floating-loss breaches are not visible in exports.",
     }
 
 def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
