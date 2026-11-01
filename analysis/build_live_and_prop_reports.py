@@ -1111,7 +1111,7 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
         append_risk_ladder("Funded candidate risk ladder", funded)
 
     if "Tradeify" in title and "train_funded_score" in base.columns:
-        pair_rows = base[base["strategies"].astype(str).str.count(r"\\+") == 1].copy()
+        pair_rows = base[base["strategies"].astype(str).str.count(r"\+") == 1].copy()
         if not pair_rows.empty:
             pair = pair_rows.sort_values("train_funded_score", ascending=False).iloc[0]
             lines += ["", "## Lower-risk two-sleeve alternative",
