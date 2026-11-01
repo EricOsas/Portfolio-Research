@@ -477,6 +477,7 @@ def simulate_ftmo(paths, active, risk):
         "funded_daily_loss_breach_rate_conditional": float(fail_daily_funded[reached_funded].mean()) if reached_funded.any() else 0.0,
         "funded_max_loss_breach_rate_conditional": float(fail_max_funded[reached_funded].mean()) if reached_funded.any() else 0.0,
         "funded_hard_breach_rate_conditional": float(funded_hard_breach[reached_funded].mean()) if reached_funded.any() else 0.0,
+        "evaluation_hard_breach_rate": float((fail_daily_challenge | fail_max_challenge | fail_daily_verification | fail_max_verification).mean()),
         "median_days_to_phase1": float(np.median(p1_day[p1_day >= 0]) + 1) if (p1_day >= 0).any() else np.nan,
         "median_days_to_phase2": float(np.median(p2_day[p2_day >= 0]) + 1) if reached_funded.any() else np.nan,
         "median_days_to_first_reward_from_start": float(np.median(reward_day[first_payout]) + 1) if first_payout.any() else np.nan,
@@ -871,12 +872,13 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
         lines += [f'- **{challenge["book"]}** ({challenge["strategies"]})',
                   f'  - Challenge-to-payout: {float(challenge[payout_col]):.1%}',
                   f'  - Pass rate: {float(challenge[pass_col]):.1%}',
-                  f'  - Breach rate: {float(challenge[breach_col]):.1%}']
+                  f'  - Evaluation hard-breach rate: {float(challenge["evaluation_hard_breach_rate"]):.1%}' if "evaluation_hard_breach_rate" in challenge else "  - Evaluation hard-breach rate: unavailable",
+                  f'  - Funded hard-breach rate (conditional on funding): {float(challenge[breach_col]):.1%}']
     lines += ["","## Funded candidate"]
     if funded is not None:
         lines += [f'- **{funded["book"]}** ({funded["strategies"]})',
                   f'  - Conditional first-payout rate: {float(funded[conditional_col]):.1%}' if conditional_col in funded else "  - Conditional first-payout rate: unavailable",
-                  f'  - Breach rate: {float(funded[breach_col]):.1%}']
+                  f'  - Funded hard-breach rate (conditional on funding): {float(funded[breach_col]):.1%}']
     lines += ["","## Near-floor recovery",recovery_candidate,
               "","These are simulated candidates, not live-deployment approvals. Use the full risk ladder and rule assumptions in the CSV/JSON reports."]
     (reports/"book_recommendations.md").write_text("\n".join(lines),encoding="utf-8")
