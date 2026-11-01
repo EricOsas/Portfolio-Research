@@ -21,11 +21,11 @@ Base comparison risk: USD 100 requested total risk per book trade.
   - Median first net payout on successful paths: USD 1,350.00
   - Expected first net payout across all paths: USD 831.06
   - Expected total net payout cash across all paths: USD 2,000.40
-  - Mean payout count over the horizon: USD 1.20
+  - Mean payout count over the horizon: 1.20
   - Median trading days to first payout: 163.0
 
 ## Near-floor recovery
-No-trade is the safest near-floor control; none of the active candidates stayed within a 5% modeled breach probability.
+No-trade is the safest near-floor control; none of the weekly-eligible active candidates stayed within a 5% modeled breach probability.
 
 Recovery outputs are balance-only; the Tradeify $53,000 target does not enforce payout consistency, five $150 winning days or payout processing.
 

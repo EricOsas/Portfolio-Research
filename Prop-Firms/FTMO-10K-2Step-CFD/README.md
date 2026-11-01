@@ -16,7 +16,7 @@ The model uses normalized daily R-multiples and a 5-trading-day block bootstrap 
 - MT5 RBE entry/exit legs use exact-volume matching where possible and FIFO fallback because the Deals export has no position IDs.
 - Timestamps remain as exported. The firm's timezone/session boundaries are not reconstructed.
 - Strategy execution, native exits and stop behavior are not changed.
-- Recovery curves are balance-only. Tradeify's $53,000 balance target does not enforce payout consistency, five winning days or payout processing.
+- Recovery curves are balance-only; FTMO recovery measures return to initial equity before the static loss floor, not reward-withdrawal eligibility.
 - Treat results as historical scenario estimates, not promises.
 
 ## Charts
