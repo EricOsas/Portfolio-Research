@@ -512,6 +512,7 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
     phase = np.zeros(n, dtype=np.int8)  # 0=Evaluation, 1=Funded, 2=Failed
     eval_eq = np.zeros(n); eval_hwm = np.zeros(n); eval_floor = np.full(n,-2000.0)
     funded_eq = np.zeros(n); funded_hwm = np.zeros(n); funded_floor = np.full(n,-2000.0)
+    funded_dll_limit = np.full(n,1250.0)
     locked = np.zeros(n, dtype=bool)
     eval_active_days = np.zeros(n,dtype=int)
     eval_pass_day = np.full(n,-1,dtype=int)
@@ -534,15 +535,17 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
     for d in range(h):
         start_phase = phase.copy()
         raw_daily = paths[:,d] * risk
-        # Growth DLL is a soft stop, not a hard account failure. With only
-        # completed-trade daily PnL available, approximate the stop by clipping
-        # the day's closed loss at the $1,250 DLL. Intraday overshoot is unknown.
-        daily = np.maximum(raw_daily, -1250.0)
+        # Growth DLL is a soft pause. Evaluation starts at $1,250. On funded
+        # accounts, it rises to $2,000 from the next session after the balance
+        # first reaches $53,000 (+$3,000). Closed-PnL clipping is only an
+        # approximation; intraday trigger timing and overshoot are unavailable.
+        eval_daily = np.maximum(raw_daily, -1250.0)
+        funded_daily = np.maximum(raw_daily, -funded_dll_limit)
         act = active[:,d]
 
         ev = start_phase == 0
         if ev.any():
-            eval_eq[ev] += daily[ev]
+            eval_eq[ev] += eval_daily[ev]
             eval_dll_hits[ev & (raw_daily <= -1250.0)] += 1
             eval_active_days[ev] += act[ev].astype(int)
             eval_hwm[ev] = np.maximum(eval_hwm[ev], eval_eq[ev])
@@ -567,12 +570,14 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
 
         fu = (start_phase == 1) & (phase == 1)
         if fu.any():
-            funded_eq[fu] += daily[fu]
+            funded_eq[fu] += funded_daily[fu]
             funded_age[fu] += 1
-            dll_hits[fu & (raw_daily <= -1250.0)] += 1
-            cycle_profit[fu] += daily[fu]
-            best_cycle_day[fu] = np.maximum(best_cycle_day[fu], daily[fu])
-            win_days[fu] += (daily[fu] > 150.0).astype(int)
+            dll_hits[fu & (raw_daily <= -funded_dll_limit)] += 1
+            cycle_profit[fu] += funded_daily[fu]
+            best_cycle_day[fu] = np.maximum(best_cycle_day[fu], funded_daily[fu])
+            win_days[fu] += (funded_daily[fu] > 150.0).astype(int)
+            # The higher DLL applies from the next simulated trading session.
+            funded_dll_limit[fu & (funded_eq >= 3000.0)] = 2000.0
 
             # EOD trailing update from the closed daily equity path.
             funded_hwm[fu] = np.maximum(funded_hwm[fu], funded_eq[fu])
@@ -624,12 +629,11 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
             pending_days[request] = 2
 
     target_reached = eval_pass_day >= 0
-    # Position-limit compliance is required to execute the modeled book at all.
-    # Weekly activity and microscalping are funded payout-eligibility rules,
-    # not evaluation pass conditions.
-    execution_eligible = bool(position_limit_compliant)
-    payout_activity_eligible = bool(weekly_activity_ok and microscalp_ok)
-    reached_funded = target_reached & execution_eligible
+    # Weekly activity applies during evaluation and funded trading. The
+    # microscalping test applies to funded payout eligibility only.
+    evaluation_account_eligible = bool(weekly_activity_ok and position_limit_compliant)
+    payout_account_eligible = bool(weekly_activity_ok and microscalp_ok and position_limit_compliant)
+    reached_funded = target_reached & evaluation_account_eligible
     first_payout = first_payout_day >= 0
     survived_90 = []
     for i in np.where(reached_funded)[0]:
@@ -640,15 +644,18 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
     return {
         "evaluation_target_hit_rate": float(target_reached.mean()),
         "evaluation_pass_rate": float(reached_funded.mean()),
-        "evaluation_execution_eligible": execution_eligible,
-        "funded_payout_activity_eligible": payout_activity_eligible,
-        "funded_first_payout_rate_conditional": float(first_payout[reached_funded].mean()) if reached_funded.any() else 0.0,
+        "evaluation_account_eligible": evaluation_account_eligible,
+        "funded_payout_eligible": payout_account_eligible,
+        "funded_first_payout_rate_conditional": float(first_payout[reached_funded].mean()) if reached_funded.any() else np.nan,
         "challenge_to_first_payout_rate": float(first_payout.mean()),
         "funded_hard_breach_rate": float(fail_funded.mean()),
-        "funded_hard_breach_rate_conditional": float(fail_funded[reached_funded].mean()) if reached_funded.any() else 0.0,
+        "funded_hard_breach_rate_conditional": float(fail_funded[reached_funded].mean()) if reached_funded.any() else np.nan,
         "evaluation_hard_breach_rate": float(fail_eval.mean()),
         "evaluation_soft_dll_hit_days_mean": float(eval_dll_hits.mean()),
         "daily_loss_soft_breach_days_mean": float(dll_hits.mean()),
+        "median_days_to_evaluation_pass": float(np.median(eval_pass_day[reached_funded]) + 1) if reached_funded.any() else np.nan,
+        "median_days_to_first_payout_from_start": float(np.median(first_payout_day[first_payout]) + 1) if first_payout.any() else np.nan,
+        "median_funded_days_to_first_payout": float(np.median(first_payout_day[first_payout] - eval_pass_day[first_payout]) + 1) if first_payout.any() else np.nan,
         "first_payout_net_usd_mean": float(first_payout_cash.mean()),
         "total_net_payout_cash_mean": float(payout_cash.mean()),
         "first_payout_net_usd_median_conditional": float(np.median(first_payout_cash[first_payout])) if first_payout.any() else 0.0,
@@ -660,7 +667,7 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
         "weekly_activity_eligible": bool(weekly_activity_ok),
         "evaluation_consistency_variant": "official Growth rules: no evaluation consistency",
         "simulations": int(n), "horizon_trading_days": int(h),
-        "note": "EOD trailing updates are modeled. Growth soft DLL is approximated by clipping each closed-PnL daily loss at -$1,250; intraday trigger timing, overshoot, floating equity and slippage are not reconstructable from closed-trade exports.",
+        "note": "EOD trailing updates are modeled. Closed daily losses are clipped at -$1,250 initially and -$2,000 from the next session after +$3,000 funded profit; intraday DLL trigger timing, overshoot, floating equity and slippage are not reconstructable from closed-trade exports.",
     }
 
 def microscalping_stats(trades):
