@@ -28,8 +28,9 @@ Modeled account objectives:
 - Maximum loss: USD 1,000 static floor, 10% of initial capital.
 - Minimum four trading days in each phase.
 - Default reward split: 80%.
-- The modeled cash-withdrawal case pays 80% of the requested profit and leaves 20% in the funded account. FTMO's rollover option is not simulated.
-- First reward request: day 14 or later after the first funded trade; the simulation allows 10 elapsed trading days (the 11th sampled business day counting the first-trade day) as an approximation.
+- Cash withdrawal pays 80% of reference-period profit. After approval, a new reference period starts with the account reset to initial capital; prior period profits/losses are cleared unless some reward is rolled over. The model assumes cash withdrawal and excludes rollover.
+- First Reward Day: day 14 or later after the first funded trade; the simulation approximates this as 10 elapsed trading days (the 11th sampled business day counting the first-trade day).
+- Four business days approximate review and payment processing. Trading is frozen during that processing interval; trading resumes in the new reference period after approval.
 - The model advances from one evaluation phase to the next on the following simulated trading day; FTMO's review and KYC/activation delays are not included.
 - Minimum closed profit: USD 20 for bank transfer. A four-business-day review/processing delay is applied.
 
