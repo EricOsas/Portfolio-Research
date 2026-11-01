@@ -26,3 +26,6 @@ The model uses normalized daily R-multiples and a 5-trading-day circular block b
 
 ![Recovery probability](charts/recovery_probability.png)
 
+
+![Intraday MAE / soft-DLL stress](charts/mae_soft_dll_stress.png)
+
