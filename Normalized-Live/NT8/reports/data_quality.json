@@ -20,9 +20,9 @@
   "limitations": [
     "Exported closed trades do not contain a complete intratrade equity path.",
     "FTMO daily/max loss is equity-based; MT5 simulations use closed-PnL paths and are optimistic for floating-loss breaches.",
-    "Tradeify EOD trailing drawdown is modeled from daily closes. Real-time daily-loss pauses are not reconstructed; NT8 MAE is reported separately as a conservative soft-DLL stress diagnostic.",
+    "Tradeify EOD trailing drawdown is modeled from daily closes. The $1,250 soft DLL is approximated by clipping closed daily losses; NT8 MAE is a separate stress diagnostic.",
     "Tradeify session boundary and FTMO server reset are not timezone-normalized; account rule days use exported dates.",
-    "Tradeify position sizes use whole-micro increments, at least one micro per active sleeve, and a four-mini maximum concurrent exposure cap.",
+    "Tradeify position sizes use whole-micro increments, at least one micro per active sleeve, and a four-mini maximum concurrent exposure cap. Soft DLL losses are clipped at $1,250/day in Monte Carlo.",
     "This is an export-based portfolio simulation, not an independent tick-level replay or live execution certification."
   ]
 }

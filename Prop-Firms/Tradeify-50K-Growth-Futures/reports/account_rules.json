@@ -5,15 +5,13 @@
   "evaluation_trailing_drawdown_usd": 2000,
   "evaluation_min_trading_days": 1,
   "evaluation_consistency_base_case": "None (dedicated Growth account guide)",
-  "evaluation_consistency_stress_case": "35% (pricing-reference conflict sensitivity)",
-  "funded_daily_loss_limit_initial_usd": 1250,
-  "funded_daily_loss_limit_after_6pct_usd": 2000,
+  "funded_daily_loss_limit_usd": 1250,
   "funded_trailing_drawdown_usd": 2000,
   "funded_drawdown_lock_balance_usd": 52100,
   "funded_locked_floor_usd": 50100,
   "payout_min_balance_usd": 53000,
   "funded_drawdown_measurement": "End-of-day trailing until floor locks at $50,100",
-  "daily_loss_measurement": "Real-time equity soft pause; closed-PnL simulation does not reproduce intraday sequence",
+  "daily_loss_measurement": "Real-time equity soft pause; simulation clips closed daily PnL at -$1,250 as an approximation. Intraday overshoot is unknown.",
   "payout_consistency": 0.35,
   "payout_profitable_days": 5,
   "payout_day_profit_minimum_usd": 150,
@@ -27,7 +25,8 @@
   ],
   "payout_processing_model_trading_days": 2,
   "max_position_size": "4 minis / 40 micros",
-  "minimum_activity": "At least 1 trade per week",
+  "position_scaling": "No scaling restrictions; full maximum position size available from day one",
+  "minimum_activity": "At least 1 trade per week (Monday-Friday)",
   "no_hedging_correlated_products": true,
   "overnight_positions": "Must be flat by daily cutoff",
   "microscalping": "More than 50% of trades and more than 50% of profit from trades longer than 10 seconds",
@@ -36,14 +35,19 @@
   "official_sources": [
     "https://help.tradeify.co/en/articles/10495915-growth-evaluation-accounts",
     "https://help.tradeify.co/en/articles/12268167-essential-trading-rules-overview",
-    "https://help.tradeify.co/en/articles/10468320-rules-consistency-rule"
+    "https://help.tradeify.co/en/articles/10468320-rules-consistency-rule",
+    "https://help.tradeify.co/en/articles/11083796-growth-funded-account-payout-policy",
+    "https://help.tradeify.co/en/articles/10495897-rules-trailing-max-drawdowns"
   ],
+  "rules_checked_date": "2026-11-01",
   "model_assumptions": [
     "$100/$250/$500/$750 requested total book risk per trade sensitivity",
     "Minimum 1 micro per active sleeve; whole-micro sizing rounded down above the minimum",
     "Each book divides risk equally across sleeves",
     "Payout processing approximated as 2 trading days; balance must remain at or above $53,000",
     "Four-mini exposure cap enforced after whole-micro sizing; any remaining noncompliant sizing is flagged",
+    "Growth evaluation has no consistency rule; funded payout requires 35% consistency and five days above $150",
+    "Soft DLL is approximated by clipping closed daily PnL losses at -$1,250; intraday overshoot is unknown",
     "EOD drawdown updates modeled; real-time floating breaches not fully reconstructable"
   ]
 }

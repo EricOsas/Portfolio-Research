@@ -4,9 +4,11 @@
   "verification_profit_target_usd": 500,
   "max_daily_loss_usd": 500,
   "max_loss_static_usd": 1000,
+  "daily_loss_basis": "Equity-based; daily limit resets at 00:00 CE(S)T from that day's starting balance",
+  "maximum_loss_basis": "Static 10% of initial simulated capital",
   "min_trading_days_each_phase": 4,
   "time_limit": "Unlimited",
-  "consistency_rule": "None for 2-Step",
+  "consistency_rule": "None for 2-Step; FTMO Best Day Rule applies to 1-Step only",
   "funded_reward_split_default": 0.8,
   "first_reward_request": "Day 14 or later after first funded trade; model uses 10 trading days",
   "minimum_closed_profit_usd_bank_transfer": 20,
@@ -15,14 +17,17 @@
   "daily_reset": "00:00 CE(S)T; based on current-day 00:00 balance",
   "official_sources": [
     "https://ftmo.com/en/trading-objectives/",
+    "https://ftmo.com/en/2-step-challenge/",
     "https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/",
-    "https://ftmo.com/en/faq/can-i-trade-news/"
+    "https://ftmo.com/en/faq/can-i-trade-news/",
+    "https://ftmo.com/en/faq/do-i-have-to-close-my-positions-overnight-or-before-the-weekend/"
   ],
+  "rules_checked_date": "2026-11-01",
   "news": "Standard funded account: selected events have a 2-minute pre/post execution restriction; not applicable during evaluation",
   "model_assumptions": [
     "$25/$50/$75/$100 total book risk per trade sensitivity",
     "Each book divides risk equally across sleeves",
-    "10 business days used as an approximation for 14 calendar days to first reward",
+    "10 trading days used as an approximation for the 14-calendar-day first reward request date",
     "No intraday floating PnL in MT5 exports; close-only rule model is optimistic"
   ]
 }
