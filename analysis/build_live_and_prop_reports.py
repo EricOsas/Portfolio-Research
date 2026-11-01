@@ -869,10 +869,14 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
             ).iloc[0]["book"]
             g=buffer_rows[buffer_rows["book"].isin([chosen,"No trade"])]
             fig,ax=plt.subplots(figsize=(10.5,5.8))
-            for book,part in g.groupby("book"):
+            g["series_label"]=g.apply(
+                lambda row: "No trade (zero-risk control)" if row["book"]=="No trade" else
+                f'{row["book"]} | USD {float(row["risk_usd_per_book_trade"]):,.2f}/trade',
+                axis=1)
+            for label,part in g.groupby("series_label"):
                 part=part.sort_values("starting_cushion_usd")
                 ax.plot(part["starting_cushion_usd"],part["recovery_probability"],
-                        marker="o",label=str(book))
+                        marker="o",label=str(label))
             ax.set_title(f"{title}: near-floor recovery | {chosen} vs no-trade",loc="left",fontweight="bold")
             ax.set_xlabel("Starting cushion above breach floor (USD)")
             ax.set_ylabel("Probability of reaching target")
@@ -899,10 +903,14 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
                 ).iloc[0]["book"]
                 g=payout_rows[payout_rows["book"].isin([payout_chosen,"No trade"])]
                 fig,ax=plt.subplots(figsize=(10.5,5.8))
-                for book,part in g.groupby("book"):
+                g["series_label"]=g.apply(
+                    lambda row: "No trade (zero-risk control)" if row["book"]=="No trade" else
+                    f'{row["book"]} | USD {float(row["risk_usd_per_book_trade"]):,.2f}/trade',
+                    axis=1)
+                for label,part in g.groupby("series_label"):
                     part=part.sort_values("starting_cushion_usd")
                     ax.plot(part["starting_cushion_usd"],part["recovery_probability"],
-                            marker="o",label=str(book))
+                            marker="o",label=str(label))
                 ax.set_title(f"{title}: $53k balance recovery | {payout_chosen} vs no-trade",loc="left",fontweight="bold")
                 ax.set_xlabel("Starting cushion above locked floor (USD)")
                 ax.set_ylabel("Probability of reaching $53,000 balance")
@@ -944,9 +952,12 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
         viable=target_rows[(target_rows["book"]!="No trade") & (target_rows["ruin_probability"].astype(float)<=0.05) & (target_rows["recovery_probability"].astype(float)>=0.50)]
         if len(viable):
             best=viable.sort_values("recovery_probability",ascending=False).iloc[0]
-            recovery_candidate=f'{best["book"]}: recovery probability {best["recovery_probability"]:.1%}, breach probability {best["ruin_probability"]:.1%}.'
+            recovery_candidate=f'{best["book"]} at USD {float(best["risk_usd_per_book_trade"]):,.2f} risk per book trade: recovery probability {best["recovery_probability"]:.1%}, breach probability {best["ruin_probability"]:.1%}.'
         else:
-            recovery_candidate="No-trade is the safest near-floor control; none of the weekly-eligible active candidates stayed within a 5% modeled breach probability."
+            if "Tradeify" in title:
+                recovery_candidate="No-trade is the mathematical drawdown control, but it is not a compliant long-term Tradeify mode because minimum weekly activity applies; none of the weekly-eligible active candidates stayed within a 5% modeled breach probability."
+            else:
+                recovery_candidate="No-trade is the safest near-floor control; none of the active candidates across the USD 5/10/12.50/25 recovery risk ladder stayed within a 5% modeled breach probability."
 
     lines=[f"# {title} — book ranking",
            "",
@@ -1192,8 +1203,8 @@ def run_platform(platform):
                 tradeify_rows.append({**extra,**res})
 
     # Recovery mode: compare low-complexity one/two-sleeve books with a no-trade
-    # control. Tradeify uses at least one micro per sleeve; FTMO uses $12.50 risk
-    # per book as a conservative recovery setting.
+    # control. Tradeify uses at least one micro per sleeve. FTMO tests a small
+    # continuous risk ladder because minimum CFD lot sizes are not enforced.
     singles = combo_df[combo_df["size"] == 1].sort_values("recovery_score",ascending=False)
     pairs = combo_df[combo_df["size"] == 2].sort_values("recovery_score",ascending=False)
     recovery_books=[]
@@ -1212,17 +1223,18 @@ def run_platform(platform):
             recovery_books.append(combo)
     if platform=="MT5":
         for combo in recovery_books:
-            weights={s:12.5/len(combo) for s in combo}
+            weights={s:1.0/len(combo) for s in combo}
             recovery_daily=weighted_daily_pnl(rmat,validation_idx,combo,weights)
             rec_paths,rec_act=sample_block_paths(recovery_daily.values,
                 activemat.loc[validation_idx,list(combo)].any(axis=1).values,
                 n_sims=N_SIMS,horizon=HORIZON,seed=SEED+999+len(recovery_rows),
                 date_index=validation_idx)
-            for cushion in [100.0,250.0,500.0,750.0]:
-                res=simulate_recovery(rec_paths,1.0,-1000.0,cushion,0.0,daily_limit=500.0)
-                recovery_rows.append({"firm":"FTMO","book":" + ".join(combo),"risk_usd_per_book_trade":12.5,
-                    "state":"static-floor recovery to initial balance","floor_equity":-1000.0,
-                    "starting_cushion_usd":cushion,"target_equity":0.0,**res})
+            for risk in [5.0,10.0,12.5,25.0]:
+                for cushion in [100.0,250.0,500.0,750.0]:
+                    res=simulate_recovery(rec_paths,risk,-1000.0,cushion,0.0,daily_limit=500.0)
+                    recovery_rows.append({"firm":"FTMO","book":" + ".join(combo),"risk_usd_per_book_trade":risk,
+                        "state":"static-floor recovery to initial balance","floor_equity":-1000.0,
+                        "starting_cushion_usd":cushion,"target_equity":0.0,**res})
         for cushion in [100.0,250.0,500.0,750.0]:
             recovery_rows.append({"firm":"FTMO","book":"No trade","risk_usd_per_book_trade":0.0,
                 "state":"no-trade control","floor_equity":-1000.0,"starting_cushion_usd":cushion,
