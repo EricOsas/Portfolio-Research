@@ -584,15 +584,20 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok):
     }
 
 def microscalping_stats(trades):
-    t = trades.dropna(subset=["duration_seconds"]).copy()
-    if t.empty:
-        return {"trade_share_over_10s": np.nan, "profit_share_over_10s": np.nan, "eligible": False}
-    long = t["duration_seconds"] > 10.0
-    trade_share = float(long.mean())
-    pos_total = float(t.loc[t["native_pnl"] > 0, "native_pnl"].sum())
-    pos_long = float(t.loc[long & (t["native_pnl"] > 0), "native_pnl"].sum())
+    if trades.empty:
+        return {"trade_share_over_10s": np.nan, "profit_share_over_10s": np.nan,
+                "duration_coverage": 0.0, "eligible": False}
+    known = trades.dropna(subset=["duration_seconds"]).copy()
+    coverage = len(known) / len(trades)
+    long = known["duration_seconds"] > 10.0
+    # Missing durations count as not-over-10s; use all trades and all positive
+    # profit as denominators so incomplete timestamps cannot create eligibility.
+    trade_share = float(long.sum() / len(trades))
+    pos_total = float(trades.loc[trades["native_pnl"] > 0, "native_pnl"].sum())
+    pos_long = float(known.loc[long & (known["native_pnl"] > 0), "native_pnl"].sum())
     profit_share = pos_long / pos_total if pos_total > 0 else 0.0
     return {"trade_share_over_10s": trade_share, "profit_share_over_10s": profit_share,
+            "duration_coverage": float(coverage),
             "eligible": bool(trade_share > .50 and profit_share > .50)}
 
 def weekly_activity_ok(active):
@@ -876,6 +881,7 @@ def run_platform(platform):
             "risk_unit_basis":str(t["risk_unit_basis"].iloc[0]),
             "expectancy_R":float(t["r_multiple"].mean()),"win_rate":float((t["native_pnl"]>0).mean()),
             "duration_median_seconds":float(t["duration_seconds"].median()),
+            "duration_coverage":ms["duration_coverage"],
             "trade_share_over_10s":ms["trade_share_over_10s"],"profit_share_over_10s":ms["profit_share_over_10s"],
             "live_net_pnl":m["net_pnl"],"live_annualized_pnl":m["annualized_pnl"],"live_max_drawdown":m["max_drawdown"],
             "live_daily_pf":m["daily_pf"],"live_daily_sharpe":m["daily_sharpe"],
@@ -988,6 +994,9 @@ def run_platform(platform):
                 res=simulate_tradeify(paths_t,actpaths_t,1.0,micro["eligible"],week_ok)
                 extra={"book":cname,"strategies":" + ".join(combo),
                     "requested_risk_per_book_trade_usd":risk,"effective_risk_after_micro_sizing_usd":effective,
+                    "microscalping_trade_share_over_10s":micro["trade_share_over_10s"],
+                    "microscalping_profit_share_over_10s":micro["profit_share_over_10s"],
+                    "microscalping_duration_coverage":micro["duration_coverage"],
                     "mini_equivalent_per_sleeve":json.dumps(sizes,sort_keys=True),
                     "max_concurrent_mini_equivalent":exposure,"position_limit_scale":scale,
                     "position_limit_compliant":compliant}
