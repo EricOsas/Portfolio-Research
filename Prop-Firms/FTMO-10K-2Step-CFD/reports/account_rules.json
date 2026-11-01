@@ -11,11 +11,13 @@
   "consistency_rule": "None for 2-Step; FTMO Best Day Rule applies to 1-Step only",
   "funded_reward_split_default": 0.8,
   "reward_rollover_option": true,
-  "modeled_reward_mode": "Cash withdrawal; 80% paid and 20% of requested profit remains in account",
-  "first_reward_request": "Day 14 or later after first funded trade; model allows 10 elapsed trading days (11th active trading day)",
+  "modeled_reward_mode": "Cash withdrawal; 80% of reference-period profit paid; new reference period resets to initial capital; rollover excluded",
+  "first_reward_request": "Day 14 or later after first funded trade; model approximates this as 10 elapsed trading days (11th sampled business day counting the first-trade day)",
   "minimum_closed_profit_usd_bank_transfer": 20,
   "minimum_closed_profit_usd_crypto": 50,
   "reward_processing_model_business_days": 4,
+  "cash_withdrawal_cycle_reset": "After reward approval, new reference period resets to initial capital; prior period profits/losses are cleared unless reward is rolled over",
+  "trading_during_reward_processing": "Frozen in model after Reward Day until new reference period begins",
   "daily_reset": "00:00 CE(S)T; based on current-day 00:00 balance",
   "official_sources": [
     "https://ftmo.com/en/trading-objectives/",
@@ -32,7 +34,8 @@
     "Each book divides risk equally across sleeves",
     "10 elapsed trading days (11th sampled business day counting the first-trade day) approximate the 14-calendar-day first reward request date",
     "Phase review, verification and KYC delays are not modeled; phase transitions occur on the next simulated trading day",
-    "Four business days approximate reward review plus payment processing",
+    "Four business days approximate review/payment processing; trading is frozen during this period",
+    "Cash withdrawal starts a new reference period at initial capital; no rollover is modeled",
     "No intraday floating PnL in MT5 exports; close-only rule model is optimistic"
   ]
 }
