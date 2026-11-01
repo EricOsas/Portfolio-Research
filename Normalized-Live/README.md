@@ -9,6 +9,10 @@ This directory removes the exported starting balances and normalizes strategy ex
 
 Each platform has individual strategy curves, all-sleeve curves, category-book curves, normalized trade ledgers, risk-unit correlations, and bootstrap drawdown/ruin estimates. The live book categories are screening candidates, not deployment approval.
 
+## Methodology
+
+- [Normalization, book scoring and bootstrap methodology](methodology.md)
+
 ## Platform reports
 
 - [NT8 normalized live](NT8/README.md)
