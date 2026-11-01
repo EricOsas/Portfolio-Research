@@ -31,6 +31,17 @@ Compare strategy sleeves and books on a common, balance-free equity basis for or
 - In `all_book_combinations.csv`, train/validation R metrics are the average constituent-sleeve R (`sum of sleeve R / number of sleeves`) so books of different sizes can be ranked comparably.
 - Category book rankings are screening candidates; they are not optimized live portfolios.
 
+## Category book selection
+
+All one-to-four-sleeve combinations are scored using the training segment only. The top three combinations in each category are retained if training net R is positive and the book has at least 30 active days.
+
+- **Live:** 35% training Sharpe, 25% daily profit factor, 20% positive-month share, 20% lower maximum drawdown.
+- **Challenge:** 35% net-R-to-drawdown, 30% Sharpe, 20% net R, 15% active days.
+- **Funded:** 30% Sharpe, 25% positive-month share, 20% less severe worst day, 15% lower best-day concentration, 10% profit factor.
+- **Recovery:** 35% Sharpe, 25% lower maximum drawdown, 25% less severe worst day, 15% net R.
+
+These are generic screening scores. They do not replace the FTMO- or Tradeify-specific pass, payout, consistency, and breach simulations.
+
 ## Bootstrap risk analysis
 
 - 5,000 paths.
