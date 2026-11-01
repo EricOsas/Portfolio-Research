@@ -14,8 +14,8 @@
 
 These are generic portfolio-screening categories. They are not fixed labels attached to a strategy. The firm-specific simulations produce separate recommendations:
 
-- **FTMO $10k 2-Step:** Gold ORB (RBE) + Open Drive + Overnight Bias ORB + Tokyo Coil at USD 50 total risk per book trade.
-- **Tradeify $50k Growth:** Flash ORB + Overnight Bias ORB. USD 100 requested risk still requires USD 237.23 effective risk after the minimum one-micro-per-sleeve rule. A USD 250 request produces the same position size.
+- **FTMO $10k 2-Step:** training-selected challenge_book_1 — Flash ORB + Gold ORB (RBE) + Open Drive + Tokyo Coil, at USD 50 total risk. It passes both phases in 95.12% of paths and reaches a first reward in 92.88%. The validation-best challenge_book_3 is diagnostic only, not the selected book.
+- **Tradeify $50k Growth:** overall training-score leaders are challenge_book_1 (Flash ORB + Gold ORB (RBE) + Sigma ORB + Vault Break) and funded_book_1 (Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB). Their USD 100 requests require USD 457.35 and USD 472.83 effective risk after minimum-micro sizing. A lower-risk, two-sleeve alternative is Flash ORB + Overnight Bias ORB at USD 237.23 effective risk; it is slower but has stronger validation survival.
 
 **Near-floor recovery:** at the strict starting cushions ($100 FTMO; $200 Tradeify), no active book achieves both at least 50% recovery probability and at most 5% breach probability. Tradeify's best eligible active recovery book still has about 41% modeled breach risk; the lowest-exposure single sleeve is only marginally safer. FTMO becomes materially more recoverable as the remaining cushion grows.
 
@@ -156,48 +156,71 @@ Both firms use 5,000 Monte Carlo paths over 252 trading days, with five-day bloc
 
 ### FTMO — USD 10,000 2-Step CFD
 
-Modeled account rules: 10% Phase 1 target, 5% Verification target, USD 500 equity-based daily loss, USD 1,000 static maximum-loss floor, at least four trading days in each phase, and an 80% reward split. The first Reward Day is approximated as 10 elapsed trading days (the 11th sampled business day counting the first-trade day); four business days are reserved for review/payment with trading frozen. Cash withdrawal resets the next reference period to initial capital; rollover is not modeled and only the first reward is counted.
+Modeled account rules: 10% Phase 1 target, 5% Verification target, USD 500 equity-based daily loss, USD 1,000 static maximum-loss floor, at least four trading days in each phase, and an 80% default reward split. The first Reward Day is modeled after approximately 10 elapsed trading days (the 11th sampled business day counting the first-trade day); four business days are reserved for review/payment with trading frozen. Cash withdrawal resets the next reference period to initial capital; rollover is not modeled and only the first reward is counted.
 
-**Selected book:** Gold ORB (RBE) + Open Drive + Overnight Bias ORB + Tokyo Coil.  
-**Risk:** USD 50 total per book trade, split equally across the four sleeves. Minimum CFD lot sizes are not enforced.
+**Training-selected challenge/funded book:** challenge_book_1 — Flash ORB + Gold ORB (RBE) + Open Drive + Tokyo Coil.  
+**Risk:** USD 50 total per book trade, split equally across four sleeves. Minimum CFD lot sizes are not enforced.
 
-| Requested risk/book trade | Pass Phase 1 | Pass both phases | Evaluation breach | Funded breach, conditional | Challenge-to-first-reward | Expected first reward across all paths | Median reward if paid | Median days to first reward |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| $25 | 92.46% | 67.82% | 0.00% | 0.00% | 59.08% | $56.16 | $71.62 | 197 |
-| $50 | 98.92% | 96.46% | 0.54% | 0.31% | 94.64% | $167.70 | $128.53 | 124 |
-| $75 | 98.12% | 96.26% | 3.26% | 1.81% | 94.94% | $250.27 | $195.07 | 90 |
-| $100 | 95.38% | 92.20% | 7.74% | 5.40% | 89.72% | $324.51 | $267.04 | 70 |
+| Metric | Holdout result |
+|---|---:|
+| Phase 1 pass rate | 98.50% |
+| Verification pass rate, conditional on Phase 1 | 96.57% |
+| Pass both phases | 95.12% |
+| Challenge-to-first-reward probability | 92.88% |
+| Evaluation hard-breach probability | 0.88% |
+| Funded hard-breach probability, conditional on funding | 0.55% |
+| Median trading days to Phase 1 pass | 68 |
+| Median trading days to Verification pass | 109 |
+| Median trading days to first reward | 127 |
+| Expected first reward across all paths | USD 165.11 |
+| Median first reward on successful paths | USD 127.52 |
 
-At USD 50, the model gives the best balance for a funded account: 96.46% pass-both probability and 94.64% challenge-to-first-reward probability, with 0.54% modeled evaluation breach and 0.31% funded breach conditional on funding. USD 75 is the faster challenge setting: median first reward falls to 90 trading days and challenge-to-reward rises slightly to 94.94%, but evaluation breach rises to 3.26% and funded breach to 1.81%. USD 100 is materially more aggressive. The book composition is unchanged; the category distinction is primarily the risk budget and survival objective.
+**Holdout validation leader — diagnostic only:** challenge_book_3 — Gold ORB (RBE) + Open Drive + Overnight Bias ORB + Tokyo Coil. It records 96.46% pass-both, 94.64% challenge-to-first-reward, 0.54% evaluation breach and 0.31% funded breach at USD 50 risk. It is not the primary selection because it was identified as the validation leader after the training-only selection; promoting it would use the holdout to choose the book.
 
-**RBE-excluded sensitivity:** Flash ORB + Open Drive + Tokyo Coil at USD 50 risk reaches a first reward in 89.12% of paths, with 3.88% evaluation breach and 2.20% funded breach. This is a useful alternative if the MT5 RBE pairing uncertainty is considered unacceptable, but it is weaker than the primary RBE-inclusive book.
+**RBE-excluded sensitivity:** Flash ORB + Open Drive + Overnight Bias ORB + Tokyo Coil at USD 50 risk reaches a first reward in 90.56% of paths, with 93.82% pass-both, 0.90% evaluation breach and 0.34% funded breach. Use this alternative if the MT5 RBE pairing uncertainty is unacceptable.
 
-The high modeled pass rates must be read with the close-only limitation: FTMO's loss rules are equity-based, while these exports do not contain complete floating equity. Phase review/KYC delays are also omitted, so time-to-funded estimates are optimistic.
+The full risk ladder for the training-selected book is in [FTMO book recommendations](../Prop-Firms/FTMO-10K-2Step-CFD/reports/book_recommendations.md) and [the Monte Carlo CSV](../Prop-Firms/FTMO-10K-2Step-CFD/reports/monte_carlo_challenge_payout.csv). The simulation is close-only: FTMO's equity-based loss rules can be breached by floating losses that are absent from the MT5 exports. Phase review/KYC delays are also omitted, so time-to-funded estimates are optimistic.
 
 ### Tradeify — USD 50,000 Growth futures
 
-Modeled Growth rules: USD 3,000 evaluation target, no evaluation consistency rule, USD 2,000 EOD trailing drawdown with a USD 50,100 locked floor after the USD 52,100 threshold, USD 1,250 initial soft daily-loss limit, and a funded DLL increase to USD 2,000 from the next session after the balance reaches USD 53,000. This assumes the current non-legacy rules for accounts purchased on or after September 12, 2025; older accounts have different DLL and payout thresholds. Funded payout modeling applies 35% consistency, five winning days above USD 150, the USD 53,000 balance threshold, the 90% payout share, payout caps and two trading days for processing. Weekly activity and microscalping are funded payout-eligibility checks, not evaluation pass conditions. Position-limit compliance is required for executable book sizing.
+Modeled Growth rules: USD 3,000 evaluation target, no evaluation consistency rule, USD 2,000 EOD trailing drawdown with a USD 50,100 funded locked floor after the USD 52,100 threshold, USD 1,250 initial soft daily-loss limit, and a funded DLL increase to USD 2,000 from the next session after the balance reaches USD 53,000. This assumes current non-legacy rules for accounts purchased on or after September 12, 2025; older accounts have different DLL and payout thresholds. Funded payout modeling applies 35% consistency, five winning days above USD 150, the USD 53,000 balance threshold, the 90% payout share, payout caps and two trading days for processing. Weekly activity and microscalping are eligibility screens; position-limit compliance is required for executable sizing.
 
-**Selected book:** Flash ORB + Overnight Bias ORB.
+**Overall training-score challenge candidate:** challenge_book_1 — Flash ORB + Gold ORB (RBE) + Sigma ORB + Vault Break.
 
-| Requested risk/book trade | Effective risk after micro minimums | Evaluation pass | Evaluation breach | Challenge-to-first-payout | Funded first payout, conditional | Funded breach, conditional | 90-day funded survival | Expected first net payout across all paths | Median first payout if paid | Median days to first payout |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| $100 | $237.23 | 84.30% | 15.10% | 61.56% | 73.02% | 21.21% | 89.31% | $831.06 | $1,350 | 163 |
-| $250 | $237.23 | 84.30% | 15.10% | 61.56% | 73.02% | 21.21% | 89.31% | $831.06 | $1,350 | 163 |
-| $500 | $474.45 | 64.16% | 35.84% | 40.50% | 63.12% | 46.01% | 59.88% | $546.75 | $1,350 | — |
-| $750 | $711.68 | 58.74% | 41.26% | 31.66% | 53.90% | 53.76% | 48.69% | $427.41 | $1,350 | — |
+- USD 100 requested risk; **USD 457.35 effective risk** after one micro per active sleeve.
+- Eligible evaluation pass: **71.06%**; evaluation hard-breach: **28.94%**.
+- Challenge-to-first-payout: **51.92%**.
+- Funded hard-breach, conditional on funding: **39.54%**.
+- Approximate 90-trading-day funded survival: **66.51%**.
+- Median evaluation pass: **24 trading days**; median first payout: **63 trading days**.
+- Expected first net payout across all paths: **USD 700.92**; expected total net payout cash: **USD 4,523.67**.
 
-The USD 100 and USD 250 requests produce identical sizing because both sleeves are already at the minimum one micro. The effective risk proxy is USD 237.23, not USD 100. Increasing the request to USD 500 or USD 750 increases actual exposure sharply and worsens pass probability, funded breach probability and 90-day survival.
+**Overall training-score funded candidate:** funded_book_1 — Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB.
 
-For the USD 100/250 case:
+- USD 100 requested risk; **USD 472.83 effective risk** after one micro per active sleeve.
+- Eligible evaluation pass: **70.52%**; evaluation hard-breach: **29.48%**.
+- Challenge-to-first-payout: **52.30%**.
+- Funded hard-breach, conditional on funding: **37.49%**.
+- Approximate 90-trading-day funded survival: **68.15%**.
+- Median evaluation pass: **28 trading days**; median first payout: **68 trading days**.
+- Expected first net payout across all paths: **USD 706.05**; expected total net payout cash: **USD 4,200.03**.
 
-- Median time to eligible evaluation pass: **76 trading days**.
-- Median time from funding to first payout: **81 trading days**.
-- Expected total net payout cash across all paths during the 252-day horizon: **USD 2,000.40**.
-- Mean payout count: **1.20**.
-- Weekly activity, position limit and microscalping screens all pass for this pair.
+**Lower-risk two-sleeve alternative:** Flash ORB + Overnight Bias ORB. This is the top training-funded-score candidate within the eligible two-sleeve subset, not the overall training-score winner.
 
-The USD 2,000 DLL step-up is modeled as persistent once unlocked. Daily loss clipping is still only an approximation: intraday trigger timing, trade order, floating equity, slippage and overshoot are not reconstructable from the closed-trade exports.
+| Requested risk/book trade | Effective risk | Evaluation pass | Evaluation breach | Challenge-to-first-payout | Funded breach, conditional | 90-day funded survival | Expected first net payout | Median days to first payout |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| USD 100 | USD 237.23 | 84.30% | 15.10% | 61.56% | 21.21% | 89.31% | USD 831.06 | 163 |
+| USD 250 | USD 237.23 | 84.30% | 15.10% | 61.56% | 21.21% | 89.31% | USD 831.06 | 163 |
+| USD 500 | USD 474.45 | 64.16% | 35.84% | 40.50% | 46.01% | 59.88% | USD 546.75 | — |
+| USD 750 | USD 711.68 | 58.74% | 41.26% | 31.66% | 53.76% | 48.69% | USD 427.41 | — |
+
+The USD 100 and USD 250 requests produce identical sizing because both sleeves are already at the minimum one micro. At USD 100 requested risk, the pair's effective risk is USD 237.23, not USD 100. It is slower than the four-sleeve score leaders (76 trading days median to evaluation pass and 163 days to first payout), but the validation sample shows lower funded breach and higher 90-day survival. It was included based on its training-funded score within the two-sleeve subset; do not treat its stronger holdout result as proof that it is superior.
+
+For the USD 100/250 case, expected total net payout cash across all paths during the 252-day horizon is **USD 2,000.40**, with a mean of **1.20 payouts**. Weekly activity, position-limit and microscalping screens all pass for this pair.
+
+The full risk ladders for the challenge and funded score leaders, plus the two-sleeve alternative, are in [Tradeify book recommendations](../Prop-Firms/Tradeify-50K-Growth-Futures/reports/book_recommendations.md) and [the Monte Carlo CSV](../Prop-Firms/Tradeify-50K-Growth-Futures/reports/monte_carlo_evaluation_funded_payout.csv).
+
+The USD 2,000 DLL step-up is modeled as persistent once unlocked. Daily loss clipping is an approximation: intraday trigger timing, trade order, floating equity, slippage and overshoot are not reconstructable from closed-trade exports. Same-entry-day MAEs are stacked conservatively in the separate MAE report; this is not a synchronized intraday replay.
 
 ## Near-floor recovery
 
