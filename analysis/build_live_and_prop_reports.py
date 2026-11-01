@@ -1413,7 +1413,7 @@ Results are conditional on historical export distributions and the assumptions i
 - [Methodology](../methodology.md)
 {extra_links}
 
-The model uses normalized daily R-multiples and a 5-trading-day circular block bootstrap. Each simulation uses {N_SIMS:,} paths over {HORIZON} trading days. {sizing_note}
+The model uses normalized daily R-multiples and a 5-trading-day block bootstrap aligned to complete Monday-Friday weeks. Each simulation uses {N_SIMS:,} paths over {HORIZON} trading days. {sizing_note}
 
 ## Important limits
 
