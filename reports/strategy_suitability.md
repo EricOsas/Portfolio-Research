@@ -91,6 +91,41 @@ The Tradeify payout rule requires more than 50% of trades and more than 50% of p
 
 The other NT8 sleeves in this dataset pass the historical duration/profit screen. The recommended Flash ORB + Overnight Bias ORB pair has 100% duration coverage, 100% of trades over 10 seconds, and 100% of positive profit from those trades. This is a historical validation check, not a guarantee that future executions remain eligible.
 
+## Per-sleeve role assessment
+
+These roles describe what each sleeve contributes inside a book. They are not instructions to run every sleeve alone. Tradeify's weekly-activity rule makes the distinction especially important: **Open Drive is the only NT8 single sleeve that passes the historical weekly screen**. Flash ORB and Overnight Bias ORB become eligible when combined.
+
+### NT8 futures sleeves
+
+| Sleeve | Best-supported role | Evidence and constraint |
+|---|---|---|
+| Overnight Bias ORB | Live anchor; Tradeify book stabilizer | Strongest NT8 single-sleeve daily PF/Sharpe (1.712 / 1.865), $14.9k max DD. Solo it fails Tradeify weekly activity; paired with Flash ORB it forms the leading eligible book. |
+| Flash ORB | Portfolio complement; Tradeify frequency partner | Positive expectancy (0.131R) and PF 1.271. Solo it fails weekly activity, but Flash + Overnight Bias passes weekly and microscalping screens. |
+| Vault Break | Live diversifier / lower-drawdown contributor | PF 1.434, Sharpe 1.437, $11.3k max DD. Useful as a smoother sleeve; weak as a standalone challenge engine. |
+| Sigma ORB | Return enhancer, not a near-floor sleeve | Expectancy 0.238R and Sharpe 1.779, but bootstrap probability of a 10R drawdown is 78.44% and of 20R is 15.70%. |
+| Gold ORB (RBE) | High-return sleeve; size carefully | 0.316R expectancy and $309.6k at one GC contract, but $35.1k max DD and 100% simulated chance of a 10R drawdown. One GC contract is not comparable to one NQ contract. |
+| Open Drive | Growth/challenge accelerator; only weekly-eligible single | 0.171R expectancy and high net PnL, but $45.6k max DD and 99.8% simulated chance of a 10R drawdown. Tradeify solo funded hard-breach estimate is 41.15% conditional on funding. |
+| VWAP Pullback | Secondary diversifier; recovery partner for Open Drive | PF 1.299 and $9.7k max DD. Open Drive + VWAP is the best Tradeify near-floor buffer-recovery pair by probability, but still has about 40.7% modeled breach risk at a $200 cushion. |
+| Opening-Shock Continuation | Low-frequency diversifier | 482 trades, PF 1.241 and Sharpe 0.793. It can contribute diversification inside a book, but is weak as a standalone prop sleeve. |
+| NQ Precision Bot | Low-priority research sleeve | 88.95% win rate masks only 0.017R expectancy and 0.319 daily Sharpe. It fails Tradeify microscalping: only 23.4% of trades and 17.0% of positive profit come from trades over 10 seconds. |
+
+### MT5 CFD sleeves
+
+| Sleeve | Best-supported role | Evidence and constraint |
+|---|---|---|
+| Gold ORB (RBE) | FTMO challenge/funded contributor; live return sleeve | At $50 book risk alone: 84.80% challenge-to-first-reward, 2.22% evaluation breach and 0.77% funded breach. Live PF/Sharpe are 1.554 / 1.825. MT5 Deals have no position IDs, so entry/exit pairing remains a data-quality caveat. |
+| Overnight Bias ORB | Live anchor / FTMO stabilizer | Live PF/Sharpe 1.582 / 1.705 with $1.22k max DD. FTMO single-sleeve evaluation and funded breach were 0% in 5,000 paths, but first-reward rate was only 41.46%; it is a stabilizer, not a fast challenge engine. |
+| Tokyo Coil | High-expectancy challenge contributor | 0.391R expectancy and FTMO first-reward rate 73.78% at $50 risk. Its single-sleeve evaluation breach was 15.60% and funded breach 8.71%; combine with lower-risk sleeves rather than treating it as safe alone. |
+| Open Drive | Aggressive challenge accelerator, weak funded anchor | 0.267R expectancy, but FTMO evaluation breach 41.90% and funded breach 29.91% at $50 risk. It raises growth potential and account risk together. |
+| Noise Band Momentum | Secondary challenge contributor | FTMO first-reward rate 62.60%, but evaluation breach 18.00% and funded breach 7.85%. Live max DD is $3.49k. |
+| Flash ORB | Portfolio complement | Lower standalone FTMO first-reward rate (34.82%) but only 5.96% evaluation breach and 1.38% funded breach at $50 risk. Useful for combining return streams, not a standalone pass engine. |
+| Vault Break | Conservative/slow stabilizer | FTMO first-reward rate 16.80%, evaluation breach 4.56% and funded breach 0.95% at $50 risk. Lower breach does not make it a fast challenge choice. |
+| Sigma ORB | Secondary/high-drawdown sleeve | Weak live PF/Sharpe (1.103 / 0.545); FTMO evaluation breach 33.34% and funded breach 12.40% at $50 risk. |
+| Opening-Shock Continuation | Low-frequency diversifier | Standalone FTMO first-reward rate was 0.06% within one year. It may diversify a multi-sleeve book but should not be relied on as a solo pass engine. |
+| NQ Precision Bot | Low-priority research sleeve | 0.034R expectancy and 0.567 daily Sharpe; standalone FTMO first-reward rate was 0.04% within one year. |
+
+**Key distinction:** a low-breach sleeve can still be a poor challenge sleeve because it may not reach the target in time. A high-expectancy sleeve can be a poor funded sleeve because its drawdown tail threatens the payout account. The book-level Monte Carlo, not the sleeve's win rate alone, determines the category fit.
+
 ## Generic live, challenge, funded and recovery books
 
 Book selection uses the training segment only. The table shows full-sample one-contract / USD 100-per-trade equity metrics alongside later validation metrics. Validation net R, Sharpe and drawdown are based on the average constituent-sleeve R series, allowing books of different sizes to be compared. The bootstrap column is the probability that validation max drawdown reaches 10 average-sleeve R within 252 simulated trading days; it is **not literal account ruin**.
