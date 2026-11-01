@@ -813,8 +813,18 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
     # the firm's minimum activity, microscalping or position-limit screens.
     conditional_col=("funded_first_payout_rate_conditional" if "funded_first_payout_rate_conditional" in base.columns
                      else "funded_first_reward_rate_conditional")
-    ranking=base.sort_values(payout_col,ascending=False).copy()
-    ranking["funded_score"]=ranking[conditional_col].astype(float)*(1.0-ranking[breach_col].astype(float)) if conditional_col in ranking.columns else 0.0
+    ranking=base.copy()
+    ranking["validation_funded_score"]=(ranking[conditional_col].astype(float)*
+                                         (1.0-ranking[breach_col].astype(float))) if conditional_col in ranking.columns else 0.0
+    ranking["validation_payout_rank"]=ranking[payout_col].rank(ascending=False,method="min").astype(int)
+    ranking["validation_funded_rank"]=ranking["validation_funded_score"].rank(ascending=False,method="min").astype(int)
+    # Candidate selection is frozen on the training segment. Validation Monte
+    # Carlo estimates are reported as holdout outcomes, not used to choose the
+    # winner after looking at the holdout.
+    if "train_challenge_score" in ranking.columns:
+        ranking=ranking.sort_values(["train_challenge_score","train_funded_score"],ascending=False)
+    else:
+        ranking=ranking.sort_values(payout_col,ascending=False)
     ranking.to_csv(reports/"book_rankings.csv",index=False)
 
     top_books=ranking["book"].head(3).tolist()
@@ -943,7 +953,10 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
         plt.close(fig)
 
     challenge=ranking.iloc[0] if len(ranking) else None
-    funded=base.assign(funded_score=base[conditional_col].astype(float)*(1.0-base[breach_col].astype(float))).sort_values("funded_score",ascending=False).iloc[0] if len(base) and conditional_col in base.columns else challenge
+    if len(base) and "train_funded_score" in base.columns:
+        funded=base.sort_values("train_funded_score",ascending=False).iloc[0]
+    else:
+        funded=base.assign(validation_funded_score=base[conditional_col].astype(float)*(1.0-base[breach_col].astype(float))).sort_values("validation_funded_score",ascending=False).iloc[0] if len(base) and conditional_col in base.columns else challenge
     recovery_candidate="No active book met the near-floor recovery threshold; preserve the account rather than force trades."
     if not recovery_df.empty:
         near_cushion=100.0 if "FTMO" in title else 200.0
@@ -993,6 +1006,8 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
            "",
            f"Base comparison risk: USD {base_risk:,.0f} requested total risk per book trade.",
            "",
+           "Book selection uses training-only challenge/funded scores. All one-to-four-sleeve combinations are evaluated on the later validation sample; the validation-best row is shown separately as a diagnostic, not selected as the winner.",
+           "",
            "## Challenge candidate"]
     if challenge is not None:
         lines += [f'- **{challenge["book"]}** ({challenge["strategies"]})',
@@ -1012,6 +1027,23 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
         ]:
             if key in challenge.index and pd.notna(challenge[key]):
                 lines.append(f'  - {label}: {float(challenge[key]):,.1f}' if "days" in key else f'  - {label}: USD {float(challenge[key]):,.2f}')
+    if "FTMO" in title and "train_challenge_score" in base.columns:
+        no_rbe=base[~base["strategies"].astype(str).str.contains("Gold ORB (RBE)",regex=False)]
+        if len(no_rbe):
+            nr=no_rbe.sort_values("train_challenge_score",ascending=False).iloc[0]
+            lines += ["","## RBE-excluded challenge sensitivity",
+                      f'- **{nr["book"]}** ({nr["strategies"]})',
+                      f'  - Challenge-to-first-reward: {float(nr[payout_col]):.1%}',
+                      f'  - Pass both phases: {float(nr[pass_col]):.1%}',
+                      f'  - Evaluation hard-breach rate: {float(nr["evaluation_hard_breach_rate"]):.1%}',
+                      f'  - Funded hard-breach rate (conditional on funding): {float(nr[breach_col]):.1%}']
+    validation_best=base.sort_values(payout_col,ascending=False).iloc[0] if len(base) else None
+    if validation_best is not None and challenge is not None and validation_best["book"]!=challenge["book"]:
+        lines += ["","## Holdout validation leader (diagnostic only)",
+                  f'- **{validation_best["book"]}** ({validation_best["strategies"]})',
+                  f'  - Challenge-to-payout: {float(validation_best[payout_col]):.1%}',
+                  f'  - Pass rate: {float(validation_best[pass_col]):.1%}',
+                  f'  - Evaluation hard-breach rate: {float(validation_best["evaluation_hard_breach_rate"]):.1%}' if "evaluation_hard_breach_rate" in validation_best else "  - Evaluation hard-breach rate: unavailable"]
     lines += ["","## Funded candidate"]
     if funded is not None:
         lines += [f'- **{funded["book"]}** ({funded["strategies"]})',
@@ -1189,6 +1221,17 @@ def run_platform(platform):
                         prop_candidates[f"{score_col}_{size}sleeve_no_rbe"]=combo
                         existing.add(combo)
                         break
+    # Add every screened one-to-four-sleeve combination. This gives each
+    # possible book a full firm-specific Monte Carlo risk ladder, not just the
+    # shortlisted candidates.
+    for _, rr in combo_df.iterrows():
+        combo=tuple(rr["strategies"].split(" | "))
+        if combo not in existing:
+            label=str(rr["book"])
+            if label in prop_candidates:
+                label=f"all_combo_{len(prop_candidates)+1:04d}"
+            prop_candidates[label]=combo
+            existing.add(combo)
     # Deduplicate identical strategy sets; keep the first category label.
     unique_candidates={}
     seen_combos=set()
@@ -1198,18 +1241,28 @@ def run_platform(platform):
             unique_candidates[cname]=combo
             seen_combos.add(key)
     prop_candidates=unique_candidates
+    train_score_map={}
+    for _, rr in combo_df.iterrows():
+        combo=tuple(rr["strategies"].split(" | "))
+        train_score_map[combo]={
+            "train_live_score":float(rr["live_score"]),
+            "train_challenge_score":float(rr["challenge_score"]),
+            "train_funded_score":float(rr["funded_score"]),
+            "train_recovery_score":float(rr["recovery_score"]),
+        }
     validation_idx=val_idx if len(val_idx)>=60 else dates
     ftmo_rows=[]; tradeify_rows=[]; recovery_rows=[]
     ftmo_dir=PROP_ROOT/"FTMO-10K-2Step-CFD"
     tradeify_dir=PROP_ROOT/"Tradeify-50K-Growth-Futures"
     for cname,combo in prop_candidates.items():
+        score_meta=train_score_map[tuple(combo)]
         daily_r=rmat.loc[validation_idx,list(combo)].sum(axis=1)/len(combo)
         active=activemat.loc[validation_idx,list(combo)].any(axis=1)
         paths, actpaths=sample_block_paths(daily_r.values,active.values,seed=SEED+len(ftmo_rows)+100,date_index=validation_idx)
         if platform=="MT5":
             for risk in FTMO_RISKS:
                 res=simulate_ftmo(paths,actpaths,risk)
-                ftmo_rows.append({"book":cname,"strategies":" + ".join(combo),"risk_per_book_trade_usd":risk,**res})
+                ftmo_rows.append({"book":cname,"strategies":" + ".join(combo),"risk_per_book_trade_usd":risk,**score_meta,**res})
         else:
             t=trades[trades["strategy"].isin(combo) &
                      trades["exit_date"].between(validation_idx.min(), validation_idx.max())]
@@ -1225,7 +1278,7 @@ def run_platform(platform):
                 paths_t,actpaths_t=sample_block_paths(book_daily.values,active.values,seed=candidate_seed,date_index=validation_idx)
                 res=simulate_tradeify(paths_t,actpaths_t,1.0,micro["eligible"],week_ok,
                                       position_limit_compliant=compliant)
-                extra={"book":cname,"strategies":" + ".join(combo),
+                extra={"book":cname,"strategies":" + ".join(combo),**score_meta,
                     "requested_risk_per_book_trade_usd":risk,"effective_risk_after_micro_sizing_usd":effective,
                     "microscalping_trade_share_over_10s":micro["trade_share_over_10s"],
                     "microscalping_profit_share_over_10s":micro["profit_share_over_10s"],
