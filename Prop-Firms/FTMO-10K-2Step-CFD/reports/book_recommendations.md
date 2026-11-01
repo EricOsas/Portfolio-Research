@@ -21,7 +21,7 @@ Base comparison risk: USD 50 requested total risk per book trade.
   - Median trading days to first FTMO reward: 127.0
 
 ## Near-floor recovery
-No-trade is the safest near-floor control; none of the active candidates across the USD 5/10/12.50/25 recovery risk ladder stayed within a 5% modeled breach probability.
+No active candidate achieves both at least 50% recovery probability and at most 5% modeled breach probability at the $100 cushion. No-trade preserves the account but cannot recover it to initial balance. Best recovery chance: Gold ORB (RBE) + Tokyo Coil at USD 25.00 risk (66.7% recovery; 29.3% breach). Lowest-breach active choice: Gold ORB (RBE) + Overnight Bias ORB at USD 5.00 risk (0.0% recovery; 0.0% breach).
 
 Recovery outputs are balance-only; the Tradeify $53,000 target does not enforce payout consistency, five $150 winning days or payout processing.
 

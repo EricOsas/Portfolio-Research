@@ -23,54 +23,342 @@ Tradeify,Vault Break,94.69256756756756,post-lock recovery,0.1,100.0,1000.0,600.0
 Tradeify,Vault Break,94.69256756756756,post-lock recovery,0.1,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.5412,0.1438,0.0,147.0,2259.2554
 Tradeify,Vault Break,94.69256756756756,post-lock recovery,0.1,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
 Tradeify,Vault Break,94.69256756756756,post-lock recovery,0.1,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.708,0.0506,0.0,116.0,2635.47
-Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5844,0.4156,0.0,4.0,441.0926223999999
-Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.4334,0.5632,0.0,73.0,1378.1444471999998
+Tradeify,Flash ORB,115.36501234567902,post-lock recovery,0.1,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5584,0.4416,0.0,6.0,387.1710344
+Tradeify,Flash ORB,115.36501234567902,post-lock recovery,0.1,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.237,0.7066,0.0,128.0,838.9915904
+Tradeify,Flash ORB,115.36501234567902,post-lock recovery,0.1,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Flash ORB,115.36501234567902,post-lock recovery,0.1,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.4202,0.4874,0.0,124.0,1462.1521623999997
+Tradeify,Flash ORB,115.36501234567902,post-lock recovery,0.1,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Flash ORB,115.36501234567902,post-lock recovery,0.1,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.6394,0.2632,0.0,108.0,2147.7414016
+Tradeify,Flash ORB,115.36501234567902,post-lock recovery,0.1,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Flash ORB,115.36501234567902,post-lock recovery,0.1,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.7908,0.1292,0.0,82.0,2581.7699495999987
+Tradeify,Opening-Shock Continuation,110.1782178217822,post-lock recovery,0.1,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.521,0.479,0.0,16.0,351.0968
+Tradeify,Opening-Shock Continuation,110.1782178217822,post-lock recovery,0.1,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.074,0.6806,0.0,199.5,641.2022
+Tradeify,Opening-Shock Continuation,110.1782178217822,post-lock recovery,0.1,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Opening-Shock Continuation,110.1782178217822,post-lock recovery,0.1,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.1494,0.417,0.0,193.0,1190.9292
+Tradeify,Opening-Shock Continuation,110.1782178217822,post-lock recovery,0.1,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Opening-Shock Continuation,110.1782178217822,post-lock recovery,0.1,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.2942,0.169,0.0,171.0,1840.2507
+Tradeify,Opening-Shock Continuation,110.1782178217822,post-lock recovery,0.1,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Opening-Shock Continuation,110.1782178217822,post-lock recovery,0.1,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.4846,0.06,0.0,141.0,2316.8472
+Tradeify,Open Drive,98.82385834738618,post-lock recovery,0.1,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.582,0.418,0.0,4.0,406.8143928
+Tradeify,Open Drive,98.82385834738618,post-lock recovery,0.1,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.352,0.648,0.0318,43.0,1073.3430984
+Tradeify,Open Drive,98.82385834738618,post-lock recovery,0.1,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Open Drive,98.82385834738618,post-lock recovery,0.1,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.5232,0.4768,0.0426,40.0,1642.2661743999997
+Tradeify,Open Drive,98.82385834738618,post-lock recovery,0.1,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Open Drive,98.82385834738618,post-lock recovery,0.1,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.7192,0.2808,0.0408,34.0,2317.8760416
+Tradeify,Open Drive,98.82385834738618,post-lock recovery,0.1,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Open Drive,98.82385834738618,post-lock recovery,0.1,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8544,0.1454,0.0358,26.0,2759.9664159999998
+Tradeify,NQ Precision Bot,63.58716279069769,post-lock recovery,0.1,100.0,200.0,600.0,$500 buffer above locked floor,False,False,1.0,False,0.538,0.365,0.0,109.0,381.03460400000046
+Tradeify,NQ Precision Bot,63.58716279069769,post-lock recovery,0.1,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,False,1.0,False,0.0,0.387,0.0,,434.9119207999998
+Tradeify,NQ Precision Bot,63.58716279069769,post-lock recovery,0.1,100.0,500.0,600.0,$500 buffer above locked floor,False,False,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,NQ Precision Bot,63.58716279069769,post-lock recovery,0.1,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,False,1.0,False,0.0,0.0946,0.0,,782.4457295999986
+Tradeify,NQ Precision Bot,63.58716279069769,post-lock recovery,0.1,100.0,1000.0,600.0,$500 buffer above locked floor,False,False,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,NQ Precision Bot,63.58716279069769,post-lock recovery,0.1,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,False,1.0,False,0.0,0.0026,0.0,,1293.6671968000055
+Tradeify,NQ Precision Bot,63.58716279069769,post-lock recovery,0.1,100.0,1500.0,600.0,$500 buffer above locked floor,False,False,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,NQ Precision Bot,63.58716279069769,post-lock recovery,0.1,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,False,1.0,False,0.0,0.0,0.0,,1794.0484224000058
+Tradeify,Gold ORB (RBE),80.67578313253011,post-lock recovery,0.1,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5318,0.4682,0.0,3.0,415.47079999999994
+Tradeify,Gold ORB (RBE),80.67578313253011,post-lock recovery,0.1,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.3196,0.68,0.0,33.0,1009.9916639999997
+Tradeify,Gold ORB (RBE),80.67578313253011,post-lock recovery,0.1,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Gold ORB (RBE),80.67578313253011,post-lock recovery,0.1,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.5048,0.4948,0.0,33.0,1619.6539359999995
+Tradeify,Gold ORB (RBE),80.67578313253011,post-lock recovery,0.1,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Gold ORB (RBE),80.67578313253011,post-lock recovery,0.1,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.702,0.298,0.0,29.0,2270.2382479999997
+Tradeify,Gold ORB (RBE),80.67578313253011,post-lock recovery,0.1,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Gold ORB (RBE),80.67578313253011,post-lock recovery,0.1,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8122,0.1876,0.0,23.0,2646.1176559999994
+Tradeify,VWAP Pullback,59.5339381443299,post-lock recovery,0.1,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5796,0.4204,0.0,21.0,412.9118584
+Tradeify,VWAP Pullback,59.5339381443299,post-lock recovery,0.1,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.1806,0.5138,0.0,167.0,1133.6347776
+Tradeify,VWAP Pullback,59.5339381443299,post-lock recovery,0.1,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,VWAP Pullback,59.5339381443299,post-lock recovery,0.1,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.3072,0.2288,0.0,165.5,1814.4798263999999
+Tradeify,VWAP Pullback,59.5339381443299,post-lock recovery,0.1,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,VWAP Pullback,59.5339381443299,post-lock recovery,0.1,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.4704,0.0484,0.0,150.0,2402.4708280000004
+Tradeify,VWAP Pullback,59.5339381443299,post-lock recovery,0.1,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,VWAP Pullback,59.5339381443299,post-lock recovery,0.1,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.6268,0.0112,0.0,132.0,2738.9434359999996
+Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5672,0.4328,0.0,4.0,424.0386544
+Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.419,0.5776,0.0,74.0,1323.1234783999998
 Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
-Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.6802,0.314,0.0,72.0,2164.588092
+Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.6626,0.3326,0.0,71.0,2107.0374903999996
 Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
-Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8768,0.1172,0.0,61.0,2796.7307728
+Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8608,0.1338,0.0,60.5,2744.6381032
 Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
-Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.9514,0.0446,0.0,45.0,3023.3592919999996
-Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5798,0.4202,0.0,7.0,410.179
-Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.296,0.6454,0.0,126.0,1035.9821
+Tradeify,Opening-Shock Continuation + Overnight Bias ORB,232.03863642643338,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.9454,0.0502,0.0,45.0,3009.634277599999
+Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5694,0.4306,0.0,7.0,401.9798
+Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.3074,0.635,0.0,126.0,1068.3468
 Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
-Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.4922,0.4206,0.0,123.0,1691.5582
+Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.5022,0.4106,0.0,121.0,1724.0835
 Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
-Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.6992,0.1926,0.0,106.0,2361.4711
+Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.7002,0.206,0.0,105.0,2345.5767
 Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
-Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8292,0.0826,0.0,81.0,2734.0864
-Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.5732,0.4268,0.0,3.0,428.85937600000005
-Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.3136,0.6864,0.0,38.0,997.3093272
+Tradeify,Opening-Shock Continuation + Vault Break,204.87078538934975,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8282,0.0916,0.0,80.0,2715.1918
+Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.5724,0.4276,0.0,3.0,429.5733344000001
+Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.3156,0.6842,0.0,37.0,998.672172
 Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
-Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.5124,0.4876,0.0,37.0,1655.5995232
+Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.5212,0.4788,0.0,35.0,1684.3633783999999
 Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
-Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.6982,0.3018,0.0,31.0,2269.8091096000003
+Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.709,0.291,0.0,31.0,2301.1666024000006
 Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
-Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8204,0.1796,0.0,24.0,2635.9855288
-Tradeify,Sigma ORB + Vault Break,261.3067284871078,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5732,0.4268,0.0,3.0,454.21906319999994
-Tradeify,Sigma ORB + Vault Break,261.3067284871078,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.3326,0.6674,0.0,38.0,1055.2289168
+Tradeify,Flash ORB + Sigma ORB,281.9791732652193,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8194,0.1806,0.0,24.0,2644.829588
+Tradeify,Sigma ORB + Vault Break,261.3067284871078,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5792,0.4208,0.0,3.0,461.91943599999996
+Tradeify,Sigma ORB + Vault Break,261.3067284871078,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.3324,0.6676,0.0,39.0,1057.0385504
 Tradeify,Sigma ORB + Vault Break,261.3067284871078,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
-Tradeify,Sigma ORB + Vault Break,261.3067284871078,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.5122,0.4874,0.0,36.0,1649.5726816
+Tradeify,Sigma ORB + Vault Break,261.3067284871078,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.5106,0.4892,0.0,38.0,1649.7695888
 Tradeify,Sigma ORB + Vault Break,261.3067284871078,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
-Tradeify,Sigma ORB + Vault Break,261.3067284871078,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.6988,0.3008,0.0,32.0,2285.4340208
+Tradeify,Sigma ORB + Vault Break,261.3067284871078,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.7018,0.2978,0.0,34.0,2297.4326584
 Tradeify,Sigma ORB + Vault Break,261.3067284871078,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
-Tradeify,Sigma ORB + Vault Break,261.3067284871078,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8332,0.1666,0.0,25.0,2710.9790152
-Tradeify,Flash ORB + Overnight Bias ORB,237.2254309503302,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.5662,0.4338,0.0,3.0,434.68670640000005
-Tradeify,Flash ORB + Overnight Bias ORB,237.2254309503302,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.3978,0.6012,0.0,53.0,1255.1763936
-Tradeify,Flash ORB + Overnight Bias ORB,237.2254309503302,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
-Tradeify,Flash ORB + Overnight Bias ORB,237.2254309503302,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.6268,0.3724,0.0,52.0,1986.5934392000001
-Tradeify,Flash ORB + Overnight Bias ORB,237.2254309503302,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
-Tradeify,Flash ORB + Overnight Bias ORB,237.2254309503302,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8116,0.1868,0.0,45.0,2581.3280056000003
-Tradeify,Flash ORB + Overnight Bias ORB,237.2254309503302,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
-Tradeify,Flash ORB + Overnight Bias ORB,237.2254309503302,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.9102,0.0886,0.0,34.0,2896.9547368
-Tradeify,Overnight Bias ORB + Vault Break,216.55298617221877,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5704,0.4296,0.0,4.0,460.59589040000003
-Tradeify,Overnight Bias ORB + Vault Break,216.55298617221877,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.41,0.5886,0.0,61.0,1311.9666296
+Tradeify,Sigma ORB + Vault Break,261.3067284871078,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8434,0.1562,0.0,26.0,2741.9308711999997
+Tradeify,Overnight Bias ORB + Sigma ORB,288.4745795241914,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5462,0.4538,0.0,3.0,486.1397568
+Tradeify,Overnight Bias ORB + Sigma ORB,288.4745795241914,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.336,0.664,0.0,28.0,1102.2689392000002
+Tradeify,Overnight Bias ORB + Sigma ORB,288.4745795241914,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Overnight Bias ORB + Sigma ORB,288.4745795241914,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.5348,0.4652,0.0,28.0,1777.5603640000002
+Tradeify,Overnight Bias ORB + Sigma ORB,288.4745795241914,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Overnight Bias ORB + Sigma ORB,288.4745795241914,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.7428,0.2572,0.0,25.0,2502.9207488
+Tradeify,Overnight Bias ORB + Sigma ORB,288.4745795241914,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Overnight Bias ORB + Sigma ORB,288.4745795241914,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8526,0.1474,0.0,20.0,2873.1436280000003
+Tradeify,Overnight Bias ORB + Vault Break,216.55298617221877,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5766,0.4234,0.0,4.0,468.370388
+Tradeify,Overnight Bias ORB + Vault Break,216.55298617221877,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.4196,0.5786,0.0,60.0,1340.4034272
 Tradeify,Overnight Bias ORB + Vault Break,216.55298617221877,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
-Tradeify,Overnight Bias ORB + Vault Break,216.55298617221877,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.6306,0.3668,0.0,58.0,2020.6656151999996
+Tradeify,Overnight Bias ORB + Vault Break,216.55298617221877,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.6356,0.3628,0.0,57.0,2034.5680399999999
 Tradeify,Overnight Bias ORB + Vault Break,216.55298617221877,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
-Tradeify,Overnight Bias ORB + Vault Break,216.55298617221877,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.825,0.1736,0.0,49.0,2644.611324
+Tradeify,Overnight Bias ORB + Vault Break,216.55298617221877,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8272,0.1702,0.0,50.0,2655.7943632
 Tradeify,Overnight Bias ORB + Vault Break,216.55298617221877,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
-Tradeify,Overnight Bias ORB + Vault Break,216.55298617221877,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.9242,0.0752,0.0,37.0,2968.276656
+Tradeify,Overnight Bias ORB + Vault Break,216.55298617221877,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.9206,0.0782,0.0,38.0,2956.5755935999996
+Tradeify,Gold ORB (RBE) + Sigma ORB,247.28994405207038,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.5754,0.4246,0.0,2.0,480.67938319999996
+Tradeify,Gold ORB (RBE) + Sigma ORB,247.28994405207038,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.333,0.667,0.0108,21.0,1060.4399687999999
+Tradeify,Gold ORB (RBE) + Sigma ORB,247.28994405207038,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Gold ORB (RBE) + Sigma ORB,247.28994405207038,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.5114,0.4886,0.0218,21.0,1658.7275152
+Tradeify,Gold ORB (RBE) + Sigma ORB,247.28994405207038,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Gold ORB (RBE) + Sigma ORB,247.28994405207038,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.6974,0.3026,0.0222,19.0,2292.9456119999995
+Tradeify,Gold ORB (RBE) + Sigma ORB,247.28994405207038,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Gold ORB (RBE) + Sigma ORB,247.28994405207038,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.819,0.181,0.0234,16.0,2717.9637096
+Tradeify,Flash ORB + Overnight Bias ORB,237.2254309503302,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.5522,0.4478,0.0,3.0,420.52059920000005
+Tradeify,Flash ORB + Overnight Bias ORB,237.2254309503302,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.3826,0.6166,0.0,53.0,1208.2643568
+Tradeify,Flash ORB + Overnight Bias ORB,237.2254309503302,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Flash ORB + Overnight Bias ORB,237.2254309503302,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.6128,0.386,0.0,52.0,1942.9660648000001
+Tradeify,Flash ORB + Overnight Bias ORB,237.2254309503302,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Flash ORB + Overnight Bias ORB,237.2254309503302,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8196,0.179,0.0,45.0,2611.2670424000003
+Tradeify,Flash ORB + Overnight Bias ORB,237.2254309503302,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Flash ORB + Overnight Bias ORB,237.2254309503302,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.9186,0.0806,0.0,34.0,2921.7284799999998
+Tradeify,Flash ORB + Gold ORB (RBE),196.04079547820913,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.5648,0.4352,0.0,2.0,446.51277039999997
+Tradeify,Flash ORB + Gold ORB (RBE),196.04079547820913,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.3372,0.6628,0.0,27.0,1055.23012
+Tradeify,Flash ORB + Gold ORB (RBE),196.04079547820913,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Flash ORB + Gold ORB (RBE),196.04079547820913,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.5086,0.4914,0.0,26.0,1621.7142184
+Tradeify,Flash ORB + Gold ORB (RBE),196.04079547820913,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Flash ORB + Gold ORB (RBE),196.04079547820913,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.6968,0.3032,0.0,23.0,2249.0181583999997
+Tradeify,Flash ORB + Gold ORB (RBE),196.04079547820913,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Flash ORB + Gold ORB (RBE),196.04079547820913,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8142,0.1858,0.0,19.0,2651.6335215999998
+Tradeify,NQ Precision Bot + Vault Break,158.27973035826525,post-lock recovery,0.1,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5834,0.4166,0.0,11.0,403.73508560000005
+Tradeify,NQ Precision Bot + Vault Break,158.27973035826525,post-lock recovery,0.1,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.2352,0.5944,0.0,171.5,1056.8332712
+Tradeify,NQ Precision Bot + Vault Break,158.27973035826525,post-lock recovery,0.1,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,NQ Precision Bot + Vault Break,158.27973035826525,post-lock recovery,0.1,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.3978,0.345,0.0,163.0,1716.2436847999998
+Tradeify,NQ Precision Bot + Vault Break,158.27973035826525,post-lock recovery,0.1,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,NQ Precision Bot + Vault Break,158.27973035826525,post-lock recovery,0.1,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.595,0.1432,0.0,143.0,2333.1487064
+Tradeify,NQ Precision Bot + Vault Break,158.27973035826525,post-lock recovery,0.1,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,NQ Precision Bot + Vault Break,158.27973035826525,post-lock recovery,0.1,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.7548,0.0524,0.0,110.0,2690.1088863999985
+Tradeify,Flash ORB + Opening-Shock Continuation,225.54323016746122,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.5758,0.4242,0.0,5.0,395.867104
+Tradeify,Flash ORB + Opening-Shock Continuation,225.54323016746122,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.2966,0.685,0.0,91.0,948.9874983999997
+Tradeify,Flash ORB + Opening-Shock Continuation,225.54323016746122,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Flash ORB + Opening-Shock Continuation,225.54323016746122,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.4768,0.5006,0.0,88.0,1518.2839248
+Tradeify,Flash ORB + Opening-Shock Continuation,225.54323016746122,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Flash ORB + Opening-Shock Continuation,225.54323016746122,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.678,0.2986,0.0,76.0,2148.3439319999998
+Tradeify,Flash ORB + Opening-Shock Continuation,225.54323016746122,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Flash ORB + Opening-Shock Continuation,225.54323016746122,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8208,0.1584,0.0,57.5,2585.7481775999995
+Tradeify,Flash ORB + Vault Break,210.05757991324657,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.546,0.454,0.0,4.0,400.99725600000005
+Tradeify,Flash ORB + Vault Break,210.05757991324657,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.2986,0.6938,0.0,79.0,944.2407392000001
+Tradeify,Flash ORB + Vault Break,210.05757991324657,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Flash ORB + Vault Break,210.05757991324657,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.509,0.478,0.0,76.0,1613.3517264
+Tradeify,Flash ORB + Vault Break,210.05757991324657,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Flash ORB + Vault Break,210.05757991324657,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.7206,0.2646,0.0,67.0,2278.4652432
+Tradeify,Flash ORB + Vault Break,210.05757991324657,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Flash ORB + Vault Break,210.05757991324657,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8524,0.1358,0.0,51.0,2690.0363511999994
+Tradeify,NQ Precision Bot + Overnight Bias ORB,185.4475813953489,post-lock recovery,0.1,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5674,0.4326,0.0,7.0,448.8964024
+Tradeify,NQ Precision Bot + Overnight Bias ORB,185.4475813953489,post-lock recovery,0.1,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.4518,0.5358,0.0,90.0,1468.9948591999998
+Tradeify,NQ Precision Bot + Overnight Bias ORB,185.4475813953489,post-lock recovery,0.1,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,NQ Precision Bot + Overnight Bias ORB,185.4475813953489,post-lock recovery,0.1,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.7208,0.2618,0.0,88.0,2338.5984975999995
+Tradeify,NQ Precision Bot + Overnight Bias ORB,185.4475813953489,post-lock recovery,0.1,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,NQ Precision Bot + Overnight Bias ORB,185.4475813953489,post-lock recovery,0.1,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8922,0.0922,0.0,73.0,2886.3586855999997
+Tradeify,NQ Precision Bot + Overnight Bias ORB,185.4475813953489,post-lock recovery,0.1,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,NQ Precision Bot + Overnight Bias ORB,185.4475813953489,post-lock recovery,0.1,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.9616,0.0296,0.0,55.0,3093.5236135999994
+Tradeify,Opening-Shock Continuation + Sigma ORB,276.79237874132247,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5894,0.4106,0.0,4.0,449.99296960000004
+Tradeify,Opening-Shock Continuation + Sigma ORB,276.79237874132247,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.323,0.6768,0.0,43.0,1010.8923127999999
+Tradeify,Opening-Shock Continuation + Sigma ORB,276.79237874132247,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Opening-Shock Continuation + Sigma ORB,276.79237874132247,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.492,0.508,0.0,41.0,1583.1139832
+Tradeify,Opening-Shock Continuation + Sigma ORB,276.79237874132247,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Opening-Shock Continuation + Sigma ORB,276.79237874132247,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.7004,0.2996,0.0,37.0,2280.4648712
+Tradeify,Opening-Shock Continuation + Sigma ORB,276.79237874132247,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Opening-Shock Continuation + Sigma ORB,276.79237874132247,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8332,0.1666,0.0,30.0,2701.9153816
+Tradeify,NQ Precision Bot + Sigma ORB,230.20132371023794,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.567,0.433,0.0,4.0,433.19597039999996
+Tradeify,NQ Precision Bot + Sigma ORB,230.20132371023794,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.32,0.6798,0.0,48.0,1002.487536
+Tradeify,NQ Precision Bot + Sigma ORB,230.20132371023794,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,NQ Precision Bot + Sigma ORB,230.20132371023794,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.4944,0.505,0.0,46.0,1581.3489112
+Tradeify,NQ Precision Bot + Sigma ORB,230.20132371023794,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,NQ Precision Bot + Sigma ORB,230.20132371023794,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.6826,0.3164,0.0,40.0,2225.098644
+Tradeify,NQ Precision Bot + Sigma ORB,230.20132371023794,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,NQ Precision Bot + Sigma ORB,230.20132371023794,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8214,0.1784,0.0,32.0,2673.3211880000003
+Tradeify,Flash ORB + NQ Precision Bot,178.9521751363767,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.549,0.451,0.0,6.0,385.082312
+Tradeify,Flash ORB + NQ Precision Bot,178.9521751363767,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.2468,0.7184,0.0,118.0,828.8706344
+Tradeify,Flash ORB + NQ Precision Bot,178.9521751363767,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Flash ORB + NQ Precision Bot,178.9521751363767,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.441,0.4866,0.0,117.0,1494.6205776000002
+Tradeify,Flash ORB + NQ Precision Bot,178.9521751363767,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Flash ORB + NQ Precision Bot,178.9521751363767,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.6574,0.2684,0.0,102.0,2164.1716632
+Tradeify,Flash ORB + NQ Precision Bot,178.9521751363767,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Flash ORB + NQ Precision Bot,178.9521751363767,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.7986,0.1316,0.0,78.0,2589.3341424
+Tradeify,Gold ORB (RBE) + Vault Break,175.36835070009766,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.567,0.433,0.0,2.0,445.167292
+Tradeify,Gold ORB (RBE) + Vault Break,175.36835070009766,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.3436,0.6564,0.0,29.0,1074.7770039999998
+Tradeify,Gold ORB (RBE) + Vault Break,175.36835070009766,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Gold ORB (RBE) + Vault Break,175.36835070009766,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.508,0.492,0.0,28.0,1608.2240439999998
+Tradeify,Gold ORB (RBE) + Vault Break,175.36835070009766,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Gold ORB (RBE) + Vault Break,175.36835070009766,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.6918,0.3082,0.0,24.0,2224.0756839999995
+Tradeify,Gold ORB (RBE) + Vault Break,175.36835070009766,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Gold ORB (RBE) + Vault Break,175.36835070009766,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8038,0.1962,0.0,20.0,2611.0003839999995
+Tradeify,Sigma ORB + VWAP Pullback,226.14809906387018,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5892,0.4108,0.0,4.0,450.10913039999997
+Tradeify,Sigma ORB + VWAP Pullback,226.14809906387018,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.315,0.6848,0.0,45.0,1016.6006896000001
+Tradeify,Sigma ORB + VWAP Pullback,226.14809906387018,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Sigma ORB + VWAP Pullback,226.14809906387018,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.5062,0.4938,0.0,43.0,1646.8405224
+Tradeify,Sigma ORB + VWAP Pullback,226.14809906387018,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Sigma ORB + VWAP Pullback,226.14809906387018,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.7138,0.2858,0.0,39.0,2315.308464
+Tradeify,Sigma ORB + VWAP Pullback,226.14809906387018,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Sigma ORB + VWAP Pullback,226.14809906387018,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8462,0.1536,0.0,30.0,2741.7668255999997
+Tradeify,Overnight Bias ORB + VWAP Pullback,181.3943567489811,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5852,0.4148,0.0,6.0,460.2211352
+Tradeify,Overnight Bias ORB + VWAP Pullback,181.3943567489811,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.4586,0.54,0.0,68.0,1462.9567447999998
+Tradeify,Overnight Bias ORB + VWAP Pullback,181.3943567489811,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Overnight Bias ORB + VWAP Pullback,181.3943567489811,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.6986,0.2974,0.0,65.0,2237.9710063999996
+Tradeify,Overnight Bias ORB + VWAP Pullback,181.3943567489811,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Overnight Bias ORB + VWAP Pullback,181.3943567489811,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8724,0.1228,0.0,56.0,2789.9165128
+Tradeify,Overnight Bias ORB + VWAP Pullback,181.3943567489811,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Overnight Bias ORB + VWAP Pullback,181.3943567489811,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.9526,0.0428,0.0,43.0,3046.9563663999998
+Tradeify,Gold ORB (RBE) + Overnight Bias ORB,202.5362017371813,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.5558,0.4442,0.0,2.0,461.9478927999999
+Tradeify,Gold ORB (RBE) + Overnight Bias ORB,202.5362017371813,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.3708,0.6292,0.0,25.0,1194.026948
+Tradeify,Gold ORB (RBE) + Overnight Bias ORB,202.5362017371813,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Gold ORB (RBE) + Overnight Bias ORB,202.5362017371813,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.5676,0.4324,0.0,24.0,1845.4214671999998
+Tradeify,Gold ORB (RBE) + Overnight Bias ORB,202.5362017371813,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Gold ORB (RBE) + Overnight Bias ORB,202.5362017371813,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.7282,0.2718,0.0,21.0,2359.2983783999994
+Tradeify,Gold ORB (RBE) + Overnight Bias ORB,202.5362017371813,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Gold ORB (RBE) + Overnight Bias ORB,202.5362017371813,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8412,0.1588,0.0,17.0,2753.2809991999993
+Tradeify,Flash ORB + VWAP Pullback,174.89895049000893,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.5916,0.4084,0.0,5.0,406.1920008
+Tradeify,Flash ORB + VWAP Pullback,174.89895049000893,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.3296,0.6494,0.0,96.0,1104.1153880000002
+Tradeify,Flash ORB + VWAP Pullback,174.89895049000893,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Flash ORB + VWAP Pullback,174.89895049000893,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.5304,0.44,0.0,94.0,1778.2993440000005
+Tradeify,Flash ORB + VWAP Pullback,174.89895049000893,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Flash ORB + VWAP Pullback,174.89895049000893,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.7486,0.2142,0.0,82.0,2489.4047576000007
+Tradeify,Flash ORB + VWAP Pullback,174.89895049000893,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Flash ORB + VWAP Pullback,174.89895049000893,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8756,0.0958,0.0,63.0,2860.084996
+Tradeify,Open Drive + Sigma ORB,265.43801926692646,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.5512,0.4488,0.0,3.0,488.7083232
+Tradeify,Open Drive + Sigma ORB,265.43801926692646,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.33,0.67,0.0,24.0,1075.3874952
+Tradeify,Open Drive + Sigma ORB,265.43801926692646,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Open Drive + Sigma ORB,265.43801926692646,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.4888,0.5112,0.0,22.0,1649.8682928
+Tradeify,Open Drive + Sigma ORB,265.43801926692646,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Open Drive + Sigma ORB,265.43801926692646,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.6924,0.3076,0.0,20.0,2384.9674928000004
+Tradeify,Open Drive + Sigma ORB,265.43801926692646,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Open Drive + Sigma ORB,265.43801926692646,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.833,0.1668,0.0,17.0,2898.83422
+Tradeify,Gold ORB (RBE) + NQ Precision Bot,144.2629459232278,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.533,0.467,0.0,3.0,421.6517432
+Tradeify,Gold ORB (RBE) + NQ Precision Bot,144.2629459232278,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.3256,0.6744,0.0,34.0,1025.6146871999997
+Tradeify,Gold ORB (RBE) + NQ Precision Bot,144.2629459232278,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Gold ORB (RBE) + NQ Precision Bot,144.2629459232278,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.518,0.482,0.0,32.0,1665.6808839999997
+Tradeify,Gold ORB (RBE) + NQ Precision Bot,144.2629459232278,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Gold ORB (RBE) + NQ Precision Bot,144.2629459232278,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.7006,0.2994,0.0,28.0,2268.2490808
+Tradeify,Gold ORB (RBE) + NQ Precision Bot,144.2629459232278,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Gold ORB (RBE) + NQ Precision Bot,144.2629459232278,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8182,0.1816,0.0,23.0,2667.5710415999993
+Tradeify,Flash ORB + Open Drive,214.1888706930652,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.5676,0.4324,0.0,3.0,440.85547599999995
+Tradeify,Flash ORB + Open Drive,214.1888706930652,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.3406,0.6594,0.0204,33.0,1048.0581032000002
+Tradeify,Flash ORB + Open Drive,214.1888706930652,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Flash ORB + Open Drive,214.1888706930652,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.5046,0.4954,0.0304,31.0,1573.7987544000005
+Tradeify,Flash ORB + Open Drive,214.1888706930652,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Flash ORB + Open Drive,214.1888706930652,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.7138,0.286,0.033,27.0,2289.0875576000003
+Tradeify,Flash ORB + Open Drive,214.1888706930652,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Flash ORB + Open Drive,214.1888706930652,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8542,0.1458,0.0292,21.0,2757.9502264000007
+Tradeify,Open Drive + Vault Break,193.51642591495374,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.5622,0.4378,0.0,3.0,425.57393279999997
+Tradeify,Open Drive + Vault Break,193.51642591495374,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.3506,0.6494,0.024,34.0,1082.6870152
+Tradeify,Open Drive + Vault Break,193.51642591495374,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Open Drive + Vault Break,193.51642591495374,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.5302,0.4696,0.033,33.0,1678.1444095999998
+Tradeify,Open Drive + Vault Break,193.51642591495374,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Open Drive + Vault Break,193.51642591495374,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.7428,0.2572,0.0314,29.0,2399.6783343999996
+Tradeify,Open Drive + Vault Break,193.51642591495374,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Open Drive + Vault Break,193.51642591495374,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.869,0.131,0.029,23.0,2813.9744392
+Tradeify,Open Drive + Overnight Bias ORB,220.68427695203735,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.548,0.452,0.0,3.0,451.24632240000005
+Tradeify,Open Drive + Overnight Bias ORB,220.68427695203735,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.3696,0.6304,0.0216,29.0,1178.121828
+Tradeify,Open Drive + Overnight Bias ORB,220.68427695203735,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Open Drive + Overnight Bias ORB,220.68427695203735,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.55,0.45,0.0268,27.0,1782.4186096
+Tradeify,Open Drive + Overnight Bias ORB,220.68427695203735,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Open Drive + Overnight Bias ORB,220.68427695203735,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.7454,0.2546,0.0296,23.0,2456.2450888
+Tradeify,Open Drive + Overnight Bias ORB,220.68427695203735,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Open Drive + Overnight Bias ORB,220.68427695203735,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8632,0.1368,0.0254,18.0,2860.6350408
+Tradeify,NQ Precision Bot + Opening-Shock Continuation,173.76538061247987,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.543,0.457,0.0,14.0,366.2923536
+Tradeify,NQ Precision Bot + Opening-Shock Continuation,173.76538061247987,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.1078,0.6656,0.0,188.0,735.0109456
+Tradeify,NQ Precision Bot + Opening-Shock Continuation,173.76538061247987,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,NQ Precision Bot + Opening-Shock Continuation,173.76538061247987,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.2084,0.4248,0.0,183.0,1292.8738936
+Tradeify,NQ Precision Bot + Opening-Shock Continuation,173.76538061247987,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,NQ Precision Bot + Opening-Shock Continuation,173.76538061247987,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.3848,0.1814,0.0,161.5,1956.3084152000004
+Tradeify,NQ Precision Bot + Opening-Shock Continuation,173.76538061247987,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,NQ Precision Bot + Opening-Shock Continuation,173.76538061247987,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.5638,0.0726,0.0,132.0,2397.720111199999
+Tradeify,Gold ORB (RBE) + Opening-Shock Continuation,190.8540009543123,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5888,0.4112,0.0,3.0,455.031388
+Tradeify,Gold ORB (RBE) + Opening-Shock Continuation,190.8540009543123,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.3452,0.6548,0.0,31.0,1093.5866639999997
+Tradeify,Gold ORB (RBE) + Opening-Shock Continuation,190.8540009543123,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Gold ORB (RBE) + Opening-Shock Continuation,190.8540009543123,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.5212,0.4786,0.0,31.0,1680.9205119999997
+Tradeify,Gold ORB (RBE) + Opening-Shock Continuation,190.8540009543123,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Gold ORB (RBE) + Opening-Shock Continuation,190.8540009543123,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.704,0.296,0.0,28.0,2287.6921439999996
+Tradeify,Gold ORB (RBE) + Opening-Shock Continuation,190.8540009543123,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Gold ORB (RBE) + Opening-Shock Continuation,190.8540009543123,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.822,0.178,0.0,22.0,2694.6897839999997
+Tradeify,VWAP Pullback + Vault Break,154.22650571189746,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.6092,0.3908,0.0,8.0,418.75050880000003
+Tradeify,VWAP Pullback + Vault Break,154.22650571189746,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.3754,0.5666,0.0,124.0,1303.4500992
+Tradeify,VWAP Pullback + Vault Break,154.22650571189746,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,VWAP Pullback + Vault Break,154.22650571189746,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.5872,0.3252,0.0,119.0,2033.0052639999997
+Tradeify,VWAP Pullback + Vault Break,154.22650571189746,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,VWAP Pullback + Vault Break,154.22650571189746,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.7878,0.1242,0.0,102.0,2667.4516783999998
+Tradeify,VWAP Pullback + Vault Break,154.22650571189746,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,VWAP Pullback + Vault Break,154.22650571189746,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8884,0.0474,0.0,78.0,2931.571267199999
+Tradeify,Opening-Shock Continuation + VWAP Pullback,169.7121559661121,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5532,0.4468,0.0,10.0,393.18518240000003
+Tradeify,Opening-Shock Continuation + VWAP Pullback,169.7121559661121,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.286,0.611,0.0,138.0,1119.4495375999998
+Tradeify,Opening-Shock Continuation + VWAP Pullback,169.7121559661121,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Opening-Shock Continuation + VWAP Pullback,169.7121559661121,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.4888,0.3518,0.0,138.0,1865.3468255999996
+Tradeify,Opening-Shock Continuation + VWAP Pullback,169.7121559661121,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Opening-Shock Continuation + VWAP Pullback,169.7121559661121,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.6928,0.1328,0.0,123.0,2541.4096992
+Tradeify,Opening-Shock Continuation + VWAP Pullback,169.7121559661121,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Opening-Shock Continuation + VWAP Pullback,169.7121559661121,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8234,0.0502,0.0,98.0,2867.9283239999995
+Tradeify,NQ Precision Bot + VWAP Pullback,123.12110093502758,post-lock recovery,0.1,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.5898,0.4102,0.0,19.0,413.5673608000001
+Tradeify,NQ Precision Bot + VWAP Pullback,123.12110093502758,post-lock recovery,0.1,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.1992,0.5128,0.0,168.0,1175.3617087999999
+Tradeify,NQ Precision Bot + VWAP Pullback,123.12110093502758,post-lock recovery,0.1,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,NQ Precision Bot + VWAP Pullback,123.12110093502758,post-lock recovery,0.1,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.3406,0.226,0.0,167.0,1888.3385719999999
+Tradeify,NQ Precision Bot + VWAP Pullback,123.12110093502758,post-lock recovery,0.1,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,NQ Precision Bot + VWAP Pullback,123.12110093502758,post-lock recovery,0.1,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.5144,0.0462,0.0,154.0,2489.916828000001
+Tradeify,NQ Precision Bot + VWAP Pullback,123.12110093502758,post-lock recovery,0.1,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,NQ Precision Bot + VWAP Pullback,123.12110093502758,post-lock recovery,0.1,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.6774,0.01,0.0,135.0,2814.2893199999994
+Tradeify,Gold ORB (RBE) + VWAP Pullback,140.20972127686002,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,False,True,1.0,False,0.577,0.423,0.0,2.0,447.5246864
+Tradeify,Gold ORB (RBE) + VWAP Pullback,140.20972127686002,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.356,0.644,0.0,31.0,1135.8006656
+Tradeify,Gold ORB (RBE) + VWAP Pullback,140.20972127686002,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Gold ORB (RBE) + VWAP Pullback,140.20972127686002,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.5186,0.4814,0.0,30.0,1673.7669671999997
+Tradeify,Gold ORB (RBE) + VWAP Pullback,140.20972127686002,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Gold ORB (RBE) + VWAP Pullback,140.20972127686002,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.7058,0.2942,0.0,27.0,2307.8147776
+Tradeify,Gold ORB (RBE) + VWAP Pullback,140.20972127686002,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,False,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Gold ORB (RBE) + VWAP Pullback,140.20972127686002,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,True,1.0,False,0.8216,0.1784,0.0,22.0,2703.6895567999995
+Tradeify,Gold ORB (RBE) + Open Drive,179.4996414799163,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.5794,0.4206,0.0,2.0,466.2740096
+Tradeify,Gold ORB (RBE) + Open Drive,179.4996414799163,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.3666,0.6334,0.0,21.0,1162.7541007999998
+Tradeify,Gold ORB (RBE) + Open Drive,179.4996414799163,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Gold ORB (RBE) + Open Drive,179.4996414799163,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.5474,0.4526,0.0,20.0,1777.7848183999997
+Tradeify,Gold ORB (RBE) + Open Drive,179.4996414799163,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Gold ORB (RBE) + Open Drive,179.4996414799163,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.721,0.279,0.0,17.0,2364.6895608
+Tradeify,Gold ORB (RBE) + Open Drive,179.4996414799163,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Gold ORB (RBE) + Open Drive,179.4996414799163,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8306,0.1694,0.0,13.0,2756.9628791999994
+Tradeify,Open Drive + VWAP Pullback,158.35779649171607,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.593,0.407,0.0,3.0,421.317616
+Tradeify,Open Drive + VWAP Pullback,158.35779649171607,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.373,0.627,0.0354,36.0,1142.6697696
+Tradeify,Open Drive + VWAP Pullback,158.35779649171607,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Open Drive + VWAP Pullback,158.35779649171607,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.5168,0.4832,0.0428,34.0,1638.6511616
+Tradeify,Open Drive + VWAP Pullback,158.35779649171607,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Open Drive + VWAP Pullback,158.35779649171607,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.728,0.2718,0.0448,30.0,2355.0307800000005
+Tradeify,Open Drive + VWAP Pullback,158.35779649171607,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Open Drive + VWAP Pullback,158.35779649171607,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8584,0.1416,0.0358,24.0,2783.4741480000002
+Tradeify,Open Drive + Opening-Shock Continuation,209.0020761691684,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.5428,0.4572,0.0,3.0,396.3867736
+Tradeify,Open Drive + Opening-Shock Continuation,209.0020761691684,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.3156,0.6842,0.0284,36.0,955.6095655999998
+Tradeify,Open Drive + Opening-Shock Continuation,209.0020761691684,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,Open Drive + Opening-Shock Continuation,209.0020761691684,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.4872,0.5124,0.0326,34.0,1533.9233312
+Tradeify,Open Drive + Opening-Shock Continuation,209.0020761691684,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,Open Drive + Opening-Shock Continuation,209.0020761691684,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.6856,0.3144,0.037,30.0,2212.9680439999997
+Tradeify,Open Drive + Opening-Shock Continuation,209.0020761691684,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,Open Drive + Opening-Shock Continuation,209.0020761691684,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.833,0.167,0.0344,24.0,2699.3896056
+Tradeify,NQ Precision Bot + Open Drive,162.41102113808387,post-lock recovery,0.2,100.0,200.0,600.0,$500 buffer above locked floor,True,True,1.0,False,0.5872,0.4128,0.0,4.0,426.1019272000001
+Tradeify,NQ Precision Bot + Open Drive,162.41102113808387,post-lock recovery,0.2,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.3574,0.6426,0.0294,43.0,1089.6292744000002
+Tradeify,NQ Precision Bot + Open Drive,162.41102113808387,post-lock recovery,0.2,100.0,500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,600.0
+Tradeify,NQ Precision Bot + Open Drive,162.41102113808387,post-lock recovery,0.2,100.0,500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.5258,0.4742,0.0356,40.0,1653.9728280000002
+Tradeify,NQ Precision Bot + Open Drive,162.41102113808387,post-lock recovery,0.2,100.0,1000.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1100.0
+Tradeify,NQ Precision Bot + Open Drive,162.41102113808387,post-lock recovery,0.2,100.0,1000.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.7316,0.2684,0.043,34.0,2349.8328576000004
+Tradeify,NQ Precision Bot + Open Drive,162.41102113808387,post-lock recovery,0.2,100.0,1500.0,600.0,$500 buffer above locked floor,True,True,1.0,False,1.0,0.0,0.0,1.0,1600.0
+Tradeify,NQ Precision Bot + Open Drive,162.41102113808387,post-lock recovery,0.2,100.0,1500.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",True,True,1.0,False,0.8546,0.1454,0.0362,26.0,2761.4489952
 Tradeify,No trade,0.0,no-trade control,,100.0,200.0,600.0,$500 buffer above locked floor,False,False,,False,0.0,0.0,,,300.0
 Tradeify,No trade,0.0,no-trade control,,100.0,200.0,3000.0,"$53,000 balance target (payout eligibility not enforced)",False,False,,False,0.0,0.0,,,300.0
 Tradeify,No trade,0.0,no-trade control,,100.0,500.0,600.0,$500 buffer above locked floor,False,False,,False,1.0,0.0,,0.0,600.0

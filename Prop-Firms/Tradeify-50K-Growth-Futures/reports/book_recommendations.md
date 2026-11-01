@@ -25,7 +25,7 @@ Base comparison risk: USD 100 requested total risk per book trade.
   - Median trading days to first payout: 163.0
 
 ## Near-floor recovery
-No-trade is the mathematical drawdown control, but it is not a compliant long-term Tradeify mode because minimum weekly activity applies; none of the weekly-eligible active candidates stayed within a 5% modeled breach probability.
+No weekly-eligible active candidate achieves both at least 50% recovery probability and at most 5% modeled breach probability at the $200 cushion. No-trade preserves the floor but is not a compliant long-term mode because weekly activity is required. Best recovery chance: Open Drive + VWAP Pullback at USD 158.36 risk (59.3% recovery; 40.7% breach). Lowest-breach active choice: Open Drive + VWAP Pullback at USD 158.36 risk (59.3% recovery; 40.7% breach).
 
 Recovery outputs are balance-only; the Tradeify $53,000 target does not enforce payout consistency, five $150 winning days or payout processing.
 
