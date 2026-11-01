@@ -1068,6 +1068,68 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
                     lines.append(f'  - {label}: {float(funded[key]):.2f}')
                 else:
                     lines.append(f'  - {label}: USD {float(funded[key]):,.2f}')
+    # Show the complete risk ladder for the selected books in the human-readable
+    # report. The full Monte Carlo CSV still contains every one-to-four-sleeve
+    # combination; these compact tables make the recommended candidates auditable.
+    def append_risk_ladder(section_title, selected_row):
+        if selected_row is None:
+            return
+        selected_book = str(selected_row["book"])
+        ladder = df[df["book"].astype(str).eq(selected_book)].sort_values(risk_col)
+        if ladder.empty:
+            return
+        effective_col = "effective_risk_after_micro_sizing_usd"
+        median_col = ("median_days_to_first_payout_from_start" if "Tradeify" in title
+                      else "median_days_to_first_reward_from_start")
+        expected_col = ("first_payout_net_usd_mean" if "Tradeify" in title
+                        else "expected_first_reward_usd")
+        has_survival = "survival_90d_conditional_approx" in ladder.columns
+        headers = ["Requested risk", "Effective risk", "Pass", "Evaluation breach",
+                   "Challenge-to-payout", "Funded breach"]
+        if has_survival:
+            headers.append("90-day survival")
+        headers += ["Median payout days", "Expected first payout"]
+        lines.extend(["", f"### {section_title}", "| " + " | ".join(headers) + " |",
+                      "| " + " | ".join(["---"] * len(headers)) + " |"])
+        for _, row in ladder.iterrows():
+            requested = float(row[risk_col])
+            effective = (float(row[effective_col]) if effective_col in row.index and pd.notna(row[effective_col])
+                         else requested)
+            cells = [f"${requested:,.0f}", f"${effective:,.2f}" if effective_col in row.index else f"${effective:,.0f}",
+                     f"{float(row[pass_col]):.1%}", f"{float(row['evaluation_hard_breach_rate']):.1%}",
+                     f"{float(row[payout_col]):.1%}", f"{float(row[breach_col]):.1%}"]
+            if has_survival:
+                cells.append(f"{float(row['survival_90d_conditional_approx']):.1%}")
+            median_days = row.get(median_col, np.nan)
+            cells.append(f"{float(median_days):.0f}" if pd.notna(median_days) else "—")
+            expected = row.get(expected_col, np.nan)
+            cells.append(f"${float(expected):,.2f}" if pd.notna(expected) else "—")
+            lines.append("| " + " | ".join(cells) + " |")
+
+    append_risk_ladder("Challenge candidate risk ladder", challenge)
+    if funded is not None and (challenge is None or str(funded["book"]) != str(challenge["book"])):
+        append_risk_ladder("Funded candidate risk ladder", funded)
+
+    if "Tradeify" in title and "train_funded_score" in base.columns:
+        pair_rows = base[base["strategies"].astype(str).str.count(r"\\+") == 1].copy()
+        if not pair_rows.empty:
+            pair = pair_rows.sort_values("train_funded_score", ascending=False).iloc[0]
+            lines += ["", "## Lower-risk two-sleeve alternative",
+                      f'- **{pair["strategies"]}** (top training-funded-score candidate among eligible two-sleeve books)',
+                      f'  - Requested risk: USD {float(pair[risk_col]):,.2f}',
+                      f'  - Effective risk after minimum-micro sizing: USD {float(pair["effective_risk_after_micro_sizing_usd"]):,.2f}',
+                      f'  - Evaluation pass rate: {float(pair[pass_col]):.1%}',
+                      f'  - Evaluation hard-breach rate: {float(pair["evaluation_hard_breach_rate"]):.1%}',
+                      f'  - Challenge-to-first-payout rate: {float(pair[payout_col]):.1%}',
+                      f'  - Funded hard-breach rate (conditional on funding): {float(pair[breach_col]):.1%}',
+                      f'  - Approximate 90-trading-day funded survival: {float(pair["survival_90d_conditional_approx"]):.1%}',
+                      f'  - Median trading days to evaluation pass: {float(pair["median_days_to_evaluation_pass"]):.1f}',
+                      f'  - Median trading days to first payout: {float(pair["median_days_to_first_payout_from_start"]):.1f}',
+                      f'  - Expected first net payout across all paths: USD {float(pair["first_payout_net_usd_mean"]):,.2f}',
+                      f'  - Expected total net payout cash across all paths: USD {float(pair["total_net_payout_cash_mean"]):,.2f}',
+                      "This is not the overall training-score winner. It is the top funded-score candidate within the eligible two-sleeve subset; its validation results are holdout estimates, not a basis for promoting it over the overall training-selected books."]
+            append_risk_ladder("Two-sleeve alternative risk ladder", pair)
+
     if "Tradeify" in title:
         recovery_scope_note="Recovery outputs are balance-only. The $53,000 target is a balance threshold, not an approved payout; 35% consistency, five $150 winning days and payout processing are not enforced in the recovery path."
     else:
