@@ -916,18 +916,19 @@ def run_platform(platform):
     # Add leading two/three-sleeve combinations so prop selection is not
     # restricted to four-sleeve category books and single strategies.
     existing=set(tuple(v) for v in prop_candidates.values())
-    for score_col in ["challenge_score","funded_score"]:
-        candidates=combo_df[combo_df["size"].isin([2,3])].sort_values(score_col,ascending=False)
-        added=0
-        for _,rr in candidates.iterrows():
-            combo=tuple(rr["strategies"].split(" | "))
-            if combo in existing:
-                continue
-            prop_candidates[f"{score_col}_candidate_{added+1}"]=combo
-            existing.add(combo)
-            added+=1
-            if added==3:
-                break
+    for size in [2,3]:
+        for score_col in ["challenge_score","funded_score"]:
+            candidates=combo_df[combo_df["size"]==size].sort_values(score_col,ascending=False)
+            added=0
+            for _,rr in candidates.iterrows():
+                combo=tuple(rr["strategies"].split(" | "))
+                if combo in existing:
+                    continue
+                prop_candidates[f"{score_col}_{size}sleeve_candidate_{added+1}"]=combo
+                existing.add(combo)
+                added+=1
+                if added==2:
+                    break
     # Deduplicate identical strategy sets; keep the first category label.
     unique_candidates={}
     seen_combos=set()
