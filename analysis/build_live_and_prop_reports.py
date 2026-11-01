@@ -1239,20 +1239,28 @@ Results are conditional on historical export distributions and the assumptions i
         chart_extra = ""
         if firm=="Tradeify-50K-Growth-Futures":
             extra_links += "\n- [Intraday MAE / soft-DLL stress](reports/mae_soft_dll_stress.csv)"
-            chart_extra = "\n![Intraday MAE / soft-DLL stress](charts/mae_soft_dll_stress.png)\n"
+            sizing_note = "Whole-micro sizing is used, with at least one micro per active sleeve and a four-mini concurrent cap. Effective risk after minimum sizing is shown in the results."
+            daily_limit_note = "Tradeify EOD trailing drawdown is modeled from daily closes. Real-time daily-loss pause sequencing is not reconstructed; the NT8 MAE stress report is a separate diagnostic."
+            pairing_note = "NT8 MAE is available for the separate soft-DLL stress diagnostic."
+            chart_extra = "\n![Evaluation drawdown breach probability](charts/evaluation_breach_probability.png)\n![Intraday MAE / soft-DLL stress](charts/mae_soft_dll_stress.png)\n"
+        else:
+            sizing_note = "Risk ladder is USD 25–100 total book risk per trade, allocated equally across sleeves. Sizing is continuous; instrument-specific minimum lots are not enforced."
+            daily_limit_note = "FTMO equity-based daily and maximum loss limits can be breached by floating losses not visible in closed-trade exports."
+            pairing_note = "MT5 RBE entry/exit legs use exact-volume matching where possible and FIFO fallback because the Deals export has no position IDs."
         (d/"README.md").write_text(f"""# {title}
 
 - [Account rules and assumptions](reports/account_rules.json)
 - [Monte Carlo results](reports/{file})
+- [Methodology](../methodology.md)
 {extra_links}
 
-The model uses normalized daily R-multiples and a 5-trading-day circular block bootstrap. Each simulation uses {N_SIMS:,} paths over {HORIZON} trading days. Tradeify uses at least one micro per sleeve and applies the four-mini cap.
+The model uses normalized daily R-multiples and a 5-trading-day circular block bootstrap. Each simulation uses {N_SIMS:,} paths over {HORIZON} trading days. {sizing_note}
 
 ## Important limits
 
 - The source exports are closed-trade records, not a complete tick-by-tick account equity path.
-- Daily rules are approximated from closed PnL. Tradeify MAE stress is a separate diagnostic; it is not an intraday replay.
-- MT5 standard Deals exports lack position IDs; entry/exit legs use exact-volume matching where possible, with FIFO fallback.
+- {daily_limit_note}
+- {pairing_note}
 - Timestamps remain as exported. The firm's timezone/session boundaries are not reconstructed.
 - Strategy execution, native exits and stop behavior are not changed.
 - Treat results as historical scenario estimates, not promises.
