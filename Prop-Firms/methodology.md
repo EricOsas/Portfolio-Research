@@ -16,8 +16,8 @@ Modeled account objectives:
 
 - Phase 1 profit target: USD 1,000.
 - Phase 2 profit target: USD 500.
-- Maximum daily loss: USD 500.
-- Maximum loss: USD 1,000.
+- Maximum daily loss: USD 500, equity-based and reset at 00:00 CE(S)T from the day's starting balance.
+- Maximum loss: USD 1,000 static floor, 10% of initial capital.
 - Minimum four trading days in each phase.
 - Default reward split: 80%.
 - First reward request: day 14 or later after the first funded trade; the simulation approximates this as 10 trading days.
@@ -32,19 +32,20 @@ The model does not reconstruct intratrade floating losses, news restrictions, ov
 Modeled account rules:
 
 - Evaluation target: USD 3,000.
-- Daily loss limit: USD 1,250, modeled as a soft pause threshold.
+- Daily loss limit: USD 1,250, modeled as a soft pause. Closed daily PnL losses are clipped at -$1,250; this is not an intraday replay.
 - End-of-day trailing maximum loss: USD 2,000.
-- Maximum concurrent exposure: four minis / 40 micros.
+- Maximum concurrent exposure: four minis / 40 micros; full size is available from day one.
 - At least one micro per active strategy sleeve; sizes are rounded to whole micros.
 - Funded trailing floor locks at USD 50,100.
 - First payout balance threshold: USD 53,000.
-- Funded consistency: 35%.
+- No evaluation consistency rule for Growth.
+- Funded payout consistency: 35%.
 - Five winning days with more than USD 150 profit, plus at least one trade per week.
 - 90% reward split.
 - Minimum payout request: USD 500.
 - Payout caps are modeled by request number; two trading days are used as the processing approximation.
 
-The Growth evaluation account page and public pricing material have presented inconsistent evaluation-consistency wording. Both cases are reported: the published Growth base case with no evaluation consistency rule, and a 35% evaluation-consistency stress case. Funded consistency is applied in both.
+The current dedicated Growth evaluation guide explicitly states no evaluation consistency rule. The 35% consistency rule applies to Growth Sim Funded payout eligibility, not evaluation.
 
 Risk ladder: USD 100, 250, 500 and 750 requested total book risk per trade. Because each active sleeve must use at least one micro, actual risk can exceed or differ from the requested amount. The report shows effective risk after micro sizing and maximum concurrent mini-equivalent exposure.
 
@@ -62,8 +63,8 @@ Recovery simulations include no-trade controls.
 ## Important limitations
 
 - Daily PnL is based on completed-trade exits. Intraday floating equity and exact daily-loss pause sequencing are not reconstructed.
-- FTMO exports do not provide intratrade MAE; its equity-based loss rules are therefore modeled from closed PnL.
-- Tradeify's EOD trailing drawdown is modeled from daily closes; its real-time daily-loss pause is not fully reconstructed.
+- FTMO 2-Step has a $500 equity-based daily loss and a static $1,000 maximum-loss floor. The model uses closed PnL, so floating-loss breaches remain unobservable.
+- Tradeify's EOD trailing drawdown is modeled from daily closes. The $1,250 soft DLL is approximated by clipping closed daily losses; intraday trigger timing and overshoot are not reconstructed.
 - News, hedging/correlated-product restrictions, overnight/session restrictions, broker slippage, margin and exact timezone conversion are not fully tested.
 - MT5 RBE pairing uncertainty is documented in its data-quality report.
 - The risk unit is a realized-loss proxy, not verified initial stop risk.
