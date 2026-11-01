@@ -1083,7 +1083,7 @@ def run_platform(platform):
         tradeify_df.to_csv(tradeify_dir/"reports"/"monte_carlo_evaluation_funded_payout.csv",index=False)
         tradeify_recovery_df.to_csv(tradeify_dir/"reports"/"recovery_mode.csv",index=False)
         build_prop_outputs(tradeify_dir,tradeify_df,tradeify_recovery_df,
-            "requested_risk_per_book_trade_usd",500.0,"evaluation_pass_rate",
+            "requested_risk_per_book_trade_usd",250.0,"evaluation_pass_rate",
             "challenge_to_first_payout_rate","funded_hard_breach_rate_conditional",
             "Tradeify $50k Growth futures",
             eligibility_cols=["position_limit_compliant","microscalping_eligible","weekly_activity_eligible"],
