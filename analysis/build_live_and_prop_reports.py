@@ -145,8 +145,7 @@ def load_platform_trades(platform):
                 "unclosed_entry_legs": unclosed,
                 "entry_exit_volume_mismatches": partial_volume_mismatches,
             })
-            for p in opened:
-                # Keep unmatched entries out of realized PnL; report them as quality exceptions.
+            # Unmatched entries are excluded from realized PnL and retained in the quality summary.
 
     out = pd.DataFrame(trades)
     if out.empty:
