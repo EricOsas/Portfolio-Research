@@ -506,7 +506,8 @@ def simulate_ftmo(paths, active, risk):
         "note": "Daily closed-PnL model; $20 minimum closed profit assumed for bank transfer; four-business-day review/processing approximation; reward is counted only if the account remains funded through approval; floating-loss breaches are not visible in exports.",
     }
 
-def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok):
+def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
+                      position_limit_compliant=True):
     n, h = paths.shape
     phase = np.zeros(n, dtype=np.int8)  # 0=Evaluation, 1=Funded, 2=Failed
     eval_eq = np.zeros(n); eval_hwm = np.zeros(n); eval_floor = np.full(n,-2000.0)
@@ -611,7 +612,7 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok):
             no_pending = fu & (pending_days == 0) & (phase == 1)
             consistency_ok = (cycle_profit > 0) & (best_cycle_day <= 0.35 * cycle_profit)
             payout_ok = (funded_eq >= 3000.0) & (win_days >= 5) & consistency_ok
-            if not microscalp_ok or not weekly_activity_ok:
+            if not microscalp_ok or not weekly_activity_ok or not position_limit_compliant:
                 payout_ok[:] = False
             cap_idx = np.minimum(payout_count,3)
             caps = np.array([1500.0,2000.0,2500.0,3000.0])
@@ -622,7 +623,9 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok):
             pending_amount[request] = amount[request]
             pending_days[request] = 2
 
-    reached_funded = eval_pass_day >= 0
+    target_reached = eval_pass_day >= 0
+    account_eligible = bool(weekly_activity_ok and position_limit_compliant)
+    reached_funded = target_reached & account_eligible
     first_payout = first_payout_day >= 0
     survived_90 = []
     for i in np.where(reached_funded)[0]:
@@ -631,7 +634,9 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok):
         if end_day < h:
             survived_90.append(fail_funded_day[i] < 0 or fail_funded_day[i] > end_day)
     return {
+        "evaluation_target_hit_rate": float(target_reached.mean()),
         "evaluation_pass_rate": float(reached_funded.mean()),
+        "evaluation_account_eligible": account_eligible,
         "funded_first_payout_rate_conditional": float(first_payout[reached_funded].mean()) if reached_funded.any() else 0.0,
         "challenge_to_first_payout_rate": float(first_payout.mean()),
         "funded_hard_breach_rate": float(fail_funded.mean()),
@@ -1083,7 +1088,8 @@ def run_platform(platform):
                 effective=sum(weights.values())
                 book_daily=weighted_daily_pnl(rmat,validation_idx,combo,weights)
                 paths_t,actpaths_t=sample_block_paths(book_daily.values,active.values,seed=candidate_seed,date_index=validation_idx)
-                res=simulate_tradeify(paths_t,actpaths_t,1.0,micro["eligible"],week_ok)
+                res=simulate_tradeify(paths_t,actpaths_t,1.0,micro["eligible"],week_ok,
+                                      position_limit_compliant=compliant)
                 extra={"book":cname,"strategies":" + ".join(combo),
                     "requested_risk_per_book_trade_usd":risk,"effective_risk_after_micro_sizing_usd":effective,
                     "microscalping_trade_share_over_10s":micro["trade_share_over_10s"],
