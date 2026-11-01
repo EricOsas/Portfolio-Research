@@ -913,6 +913,21 @@ def run_platform(platform):
     for cat,books in selected.items():
         for j,combo in enumerate(books,1):
             prop_candidates[f"{cat}_book_{j}"]=combo
+    # Add leading two/three-sleeve combinations so prop selection is not
+    # restricted to four-sleeve category books and single strategies.
+    existing=set(tuple(v) for v in prop_candidates.values())
+    for score_col in ["challenge_score","funded_score"]:
+        candidates=combo_df[combo_df["size"].isin([2,3])].sort_values(score_col,ascending=False)
+        added=0
+        for _,rr in candidates.iterrows():
+            combo=tuple(rr["strategies"].split(" | "))
+            if combo in existing:
+                continue
+            prop_candidates[f"{score_col}_candidate_{added+1}"]=combo
+            existing.add(combo)
+            added+=1
+            if added==3:
+                break
     validation_idx=val_idx if len(val_idx)>=60 else dates
     ftmo_rows=[]; tradeify_rows=[]; recovery_rows=[]
     ftmo_dir=PROP_ROOT/"FTMO-10K-2Step-CFD"
