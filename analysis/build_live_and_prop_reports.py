@@ -375,29 +375,47 @@ def simulate_ftmo(paths, active, risk):
     p2_day = np.full(n, -1, dtype=int)
     funded_age = np.zeros(n, dtype=int)
     first_funded_trade_day = np.full(n, -1, dtype=int)
+    reward_request_day = np.full(n, -1, dtype=int)
+    reward_request_amount = np.zeros(n)
     reward_day = np.full(n, -1, dtype=int)
     reward = np.zeros(n)
     fail_daily = np.zeros(n, dtype=bool)
     fail_max = np.zeros(n, dtype=bool)
+    fail_daily_challenge = np.zeros(n, dtype=bool)
+    fail_max_challenge = np.zeros(n, dtype=bool)
+    fail_daily_verification = np.zeros(n, dtype=bool)
+    fail_max_verification = np.zeros(n, dtype=bool)
+    fail_daily_funded = np.zeros(n, dtype=bool)
+    fail_max_funded = np.zeros(n, dtype=bool)
+
     for d in range(h):
         start_phase = phase.copy()
-        daily = paths[:,d] * risk
-        act = active[:,d]
+        daily = paths[:, d] * risk
+        act = active[:, d]
+
         eval_mask = (start_phase == 1) | (start_phase == 2)
         if eval_mask.any():
             eq[eval_mask] += daily[eval_mask]
             active_days[eval_mask] += act[eval_mask].astype(int)
             daily_bad = eval_mask & (daily < -500.0)
             max_bad = eval_mask & (eq <= -1000.0)
+            challenge_mask = start_phase == 1
+            verification_mask = start_phase == 2
             fail_daily |= daily_bad
             fail_max |= max_bad
+            fail_daily_challenge |= daily_bad & challenge_mask
+            fail_max_challenge |= max_bad & challenge_mask
+            fail_daily_verification |= daily_bad & verification_mask
+            fail_max_verification |= max_bad & verification_mask
             phase[daily_bad | max_bad] = 4
+
             p1 = (start_phase == 1) & (phase != 4) & (eq >= 1000.0) & (active_days >= 4)
             if p1.any():
                 p1_day[p1] = d
                 phase[p1] = 2
                 eq[p1] = 0.0
                 active_days[p1] = 0
+
             p2 = (start_phase == 2) & (phase != 4) & (eq >= 500.0) & (active_days >= 4)
             if p2.any():
                 p2_day[p2] = d
@@ -406,6 +424,7 @@ def simulate_ftmo(paths, active, risk):
                 active_days[p2] = 0
                 funded_age[p2] = 0
                 first_funded_trade_day[p2] = -1
+
         funded_mask = (start_phase == 3) & (phase == 3)
         if funded_mask.any():
             eq[funded_mask] += daily[funded_mask]
@@ -413,34 +432,58 @@ def simulate_ftmo(paths, active, risk):
             first_funded_trade_day[first_trade] = d
             has_first_trade = funded_mask & (first_funded_trade_day >= 0)
             funded_age[has_first_trade] = d - first_funded_trade_day[has_first_trade] + 1
+
             daily_bad = funded_mask & (daily < -500.0)
             max_bad = funded_mask & (eq <= -1000.0)
             fail_daily |= daily_bad
             fail_max |= max_bad
+            fail_daily_funded |= daily_bad
+            fail_max_funded |= max_bad
             phase[daily_bad | max_bad] = 4
-            # Count only rewards whose four-business-day processing completes
-            # inside the 252-trading-day simulation horizon.
-            claim = funded_mask & (phase == 3) & (funded_age >= 10) & (eq >= 20.0) & (reward_day < 0) & ((d + 4) < h)
+
+            # Reward request is available after 10 trading days from the first
+            # funded trade (approximation of FTMO's 14 calendar days). Count it
+            # only if four-business-day processing fits inside the horizon.
+            claim = (funded_mask & (phase == 3) & (funded_age >= 10) &
+                     (eq >= 20.0) & (reward_request_day < 0) & ((d + 4) < h))
             if claim.any():
-                reward_day[claim] = d + 4
-                reward[claim] = 0.80 * eq[claim]
+                reward_request_day[claim] = d
+                reward_request_amount[claim] = 0.80 * eq[claim]
+
+        # Reward is approved only if the funded account remains active through
+        # the modeled four-business-day processing period.
+        pending_reward = ((reward_request_day >= 0) & (reward_day < 0) &
+                          (d >= reward_request_day + 4))
+        approved = pending_reward & (phase == 3)
+        if approved.any():
+            reward_day[approved] = d
+            reward[approved] = reward_request_amount[approved]
+
     reached_funded = p2_day >= 0
     first_payout = reward_day >= 0
+    funded_hard_breach = fail_daily_funded | fail_max_funded
     return {
         "pass_phase1_rate": float((p1_day >= 0).mean()),
-        "pass_verification_conditional_rate": float(first_payout.sum() * 0 + ((p2_day >= 0).sum() / max(1,(p1_day >= 0).sum()))),
+        "pass_verification_conditional_rate": float((p2_day >= 0).sum() / max(1, (p1_day >= 0).sum())),
         "pass_both_phases_rate": float(reached_funded.mean()),
         "funded_first_reward_rate_conditional": float(first_payout[reached_funded].mean()) if reached_funded.any() else 0.0,
         "challenge_to_first_reward_rate": float(first_payout.mean()),
         "fail_daily_loss_rate": float(fail_daily.mean()),
         "fail_max_loss_rate": float(fail_max.mean()),
-        "median_days_to_phase1": float(np.median(p1_day[p1_day>=0])+1) if (p1_day>=0).any() else np.nan,
-        "median_days_to_phase2": float(np.median(p2_day[p2_day>=0])+1) if reached_funded.any() else np.nan,
-        "median_days_to_first_reward_from_start": float(np.median(reward_day[first_payout])+1) if first_payout.any() else np.nan,
+        "challenge_daily_loss_breach_rate": float(fail_daily_challenge.mean()),
+        "challenge_max_loss_breach_rate": float(fail_max_challenge.mean()),
+        "verification_daily_loss_breach_rate": float(fail_daily_verification.mean()),
+        "verification_max_loss_breach_rate": float(fail_max_verification.mean()),
+        "funded_daily_loss_breach_rate_conditional": float(fail_daily_funded[reached_funded].mean()) if reached_funded.any() else 0.0,
+        "funded_max_loss_breach_rate_conditional": float(fail_max_funded[reached_funded].mean()) if reached_funded.any() else 0.0,
+        "funded_hard_breach_rate_conditional": float(funded_hard_breach[reached_funded].mean()) if reached_funded.any() else 0.0,
+        "median_days_to_phase1": float(np.median(p1_day[p1_day >= 0]) + 1) if (p1_day >= 0).any() else np.nan,
+        "median_days_to_phase2": float(np.median(p2_day[p2_day >= 0]) + 1) if reached_funded.any() else np.nan,
+        "median_days_to_first_reward_from_start": float(np.median(reward_day[first_payout]) + 1) if first_payout.any() else np.nan,
         "expected_first_reward_usd": float(reward.mean()),
         "median_first_reward_usd_conditional": float(np.median(reward[first_payout])) if first_payout.any() else 0.0,
         "simulations": int(n), "horizon_trading_days": int(h),
-        "note": "Daily closed-PnL model; $20 minimum closed profit assumed for bank transfer; four-business-day review/processing approximation; FTMO equity limits can be breached by floating losses not visible in exports.",
+        "note": "Daily closed-PnL model; $20 minimum closed profit assumed for bank transfer; four-business-day review/processing approximation; reward is counted only if the account remains funded through approval; floating-loss breaches are not visible in exports.",
     }
 
 def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok):
@@ -1075,7 +1118,7 @@ def run_platform(platform):
         ftmo_recovery_df.to_csv(ftmo_dir/"reports"/"recovery_mode.csv",index=False)
         build_prop_outputs(ftmo_dir,ftmo_df,ftmo_recovery_df,
             "risk_per_book_trade_usd",50.0,"pass_both_phases_rate",
-            "challenge_to_first_reward_rate","fail_max_loss_rate","FTMO $10k 2-Step CFD")
+            "challenge_to_first_reward_rate","funded_hard_breach_rate_conditional","FTMO $10k 2-Step CFD")
     else:
         (tradeify_dir/"reports").mkdir(parents=True,exist_ok=True)
         tradeify_df=pd.DataFrame(tradeify_rows)
