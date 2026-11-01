@@ -1,40 +1,148 @@
 firm,book,risk_usd_per_book_trade,state,floor_equity,starting_cushion_usd,target_equity,recovery_probability,ruin_probability,soft_dll_pause_days_mean,median_days_to_target,mean_terminal_equity
+FTMO,Tokyo Coil,5.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0036,0.0894,0.0,225.5,-578.9520616460414
+FTMO,Tokyo Coil,5.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0274,0.0016,0.0,225.0,-408.2935133151235
+FTMO,Tokyo Coil,5.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.254,0.0,0.0,206.0,-174.66659577224897
+FTMO,Tokyo Coil,5.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.7552,0.0,0.0,135.0,-20.728052672124786
+FTMO,Tokyo Coil,10.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.293,0.2982,0.0,193.0,-433.61622659850286
+FTMO,Tokyo Coil,10.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.4916,0.0516,0.0,178.0,-188.41939885100643
+FTMO,Tokyo Coil,10.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.7552,0.0016,0.0,135.0,-41.817682953782835
+FTMO,Tokyo Coil,10.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9352,0.0,0.0,70.0,18.906961810703955
 FTMO,Tokyo Coil,12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.4056,0.3768,0.0,167.0,-438.97892267997673
 FTMO,Tokyo Coil,12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.6414,0.0894,0.0,154.0,-153.01252064955665
 FTMO,Tokyo Coil,12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.8466,0.006,0.0,113.0,-14.91128613574869
 FTMO,Tokyo Coil,12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9528,0.0004,0.0,58.0,29.86795545682555
-FTMO,Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.3062,0.1564,0.0,201.0,-332.0278535884898
-FTMO,Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.5046,0.0122,0.0,185.0,-143.67193780005965
-FTMO,Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.8018,0.0004,0.0,143.0,-30.598785490500653
-FTMO,Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9646,0.0002,0.0,76.0,10.03485299414733
-FTMO,Opening-Shock Continuation,12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0,0.138,0.0,,-832.0110589158999
-FTMO,Opening-Shock Continuation,12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0,0.0028,0.0,,-676.3829716477208
-FTMO,Opening-Shock Continuation,12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.0,0.0,0.0,,-426.3070091943942
-FTMO,Opening-Shock Continuation,12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.0634,0.0,0.0,211.0,-176.98905364599648
-FTMO,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0258,0.0666,0.0,225.0,-464.8751857090166
-FTMO,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.099,0.0024,0.0,218.0,-299.6062230941051
-FTMO,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.4678,0.0,0.0,192.0,-99.94194640014692
-FTMO,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.895,0.0,0.0,117.0,-5.8384281176473705
-FTMO,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0388,0.0654,0.0,225.5,-427.47821023749935
-FTMO,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.1468,0.0006,0.0,217.0,-261.4619970108436
-FTMO,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.5528,0.0,0.0,188.0,-77.69475620788478
-FTMO,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9222,0.0,0.0,107.0,-0.749813533455711
-FTMO,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.1762,0.1234,0.0,218.0,-360.9856168167775
-FTMO,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.3558,0.007,0.0,203.0,-182.84155642939274
-FTMO,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.721,0.0,0.0,162.0,-46.13099252831453
-FTMO,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9532,0.0,0.0,90.0,4.9834240204989255
-FTMO,Gold ORB (RBE) + Tokyo Coil,12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.3828,0.104,0.0,201.0,-245.39367650706106
-FTMO,Gold ORB (RBE) + Tokyo Coil,12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.5998,0.0054,0.0,186.0,-92.36456270260337
-FTMO,Gold ORB (RBE) + Tokyo Coil,12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.8666,0.0,0.0,140.0,-6.964805776279136
-FTMO,Gold ORB (RBE) + Tokyo Coil,12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9808,0.0,0.0,72.0,17.040899100471957
-FTMO,Tokyo Coil + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.1008,0.1536,0.0,218.0,-451.84204157241925
-FTMO,Tokyo Coil + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.2288,0.0106,0.0,204.5,-259.732552481742
-FTMO,Tokyo Coil + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.596,0.0,0.0,170.0,-82.02386917324955
-FTMO,Tokyo Coil + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9006,0.0,0.0,99.0,2.447527942171555
-FTMO,Flash ORB + Opening-Shock Continuation,12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0,0.101,0.0,,-736.6250920411242
-FTMO,Flash ORB + Opening-Shock Continuation,12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0,0.0028,0.0,,-576.0168077255935
-FTMO,Flash ORB + Opening-Shock Continuation,12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.0098,0.0,0.0,234.0,-326.10009416074286
-FTMO,Flash ORB + Opening-Shock Continuation,12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.3582,0.0,0.0,185.0,-94.21777687698479
+FTMO,Tokyo Coil,25.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.4176,0.5744,0.0,76.0,-554.6384154629651
+FTMO,Tokyo Coil,25.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.693,0.295,0.0,71.0,-243.89994645432975
+FTMO,Tokyo Coil,25.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.8988,0.0872,0.0,54.0,-11.805105573629143
+FTMO,Tokyo Coil,25.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.973,0.0222,0.0,28.0,69.07520467504528
+FTMO,Gold ORB (RBE),5.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0,0.0132,0.0,,-613.4626466718325
+FTMO,Gold ORB (RBE),5.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.001,0.0,0.0,239.0,-460.8137070944295
+FTMO,Gold ORB (RBE),5.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.0714,0.0,0.0,224.0,-213.7287168201576
+FTMO,Gold ORB (RBE),5.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.67,0.0,0.0,168.0,-27.57765677490611
+FTMO,Gold ORB (RBE),10.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.134,0.1082,0.0,216.0,-384.829758157928
+FTMO,Gold ORB (RBE),10.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.284,0.0036,0.0,205.0,-209.24742881402088
+FTMO,Gold ORB (RBE),10.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.67,0.0,0.0,168.0,-55.15531354981222
+FTMO,Gold ORB (RBE),10.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9448,0.0,0.0,93.0,4.846259763463147
+FTMO,Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.3082,0.1574,0.0,200.0,-323.4615777619916
+FTMO,Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.5046,0.0132,0.0,185.0,-138.4047361030209
+FTMO,Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.8114,0.0,0.0,143.0,-26.48485774241049
+FTMO,Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9676,0.0,0.0,74.0,11.086970674065624
+FTMO,Gold ORB (RBE),25.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.587,0.3678,0.0,120.0,-368.99156235395344
+FTMO,Gold ORB (RBE),25.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.836,0.1082,0.0,107.0,-97.95067572314291
+FTMO,Gold ORB (RBE),25.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.9606,0.0132,0.0,73.0,11.345057653254427
+FTMO,Gold ORB (RBE),25.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9914,0.0006,0.0,36.0,32.67743631434346
+FTMO,Opening-Shock Continuation,5.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0,0.0034,0.0,,-871.4598295250374
+FTMO,Opening-Shock Continuation,5.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0,0.0,0.0,,-721.4445957625617
+FTMO,Opening-Shock Continuation,5.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.0,0.0,0.0,,-471.44459576256156
+FTMO,Opening-Shock Continuation,5.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.0,0.0,0.0,,-221.4445957625616
+FTMO,Opening-Shock Continuation,10.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0,0.0684,0.0,,-844.1856968078578
+FTMO,Opening-Shock Continuation,10.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0,0.0006,0.0,,-692.8941332203033
+FTMO,Opening-Shock Continuation,10.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.0,0.0,0.0,,-442.8891915251232
+FTMO,Opening-Shock Continuation,10.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.0138,0.0,0.0,227.0,-192.92861974310105
+FTMO,Opening-Shock Continuation,12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0,0.1224,0.0,,-832.8891187322395
+FTMO,Opening-Shock Continuation,12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0,0.0034,0.0,,-678.6495738125933
+FTMO,Opening-Shock Continuation,12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.0,0.0,0.0,,-428.6114894064039
+FTMO,Opening-Shock Continuation,12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.0582,0.0,0.0,209.0,-179.47409884811245
+FTMO,Opening-Shock Continuation,25.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0,0.38,0.0,,-796.3811658334578
+FTMO,Opening-Shock Continuation,25.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0012,0.0684,0.0,234.0,-610.4654880924676
+FTMO,Opening-Shock Continuation,25.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.0582,0.0034,0.0,209.0,-359.0243665086042
+FTMO,Opening-Shock Continuation,25.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.4246,0.0,0.0,148.0,-131.8124273855486
+FTMO,Gold ORB (RBE) + Vault Break,5.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0,0.0026,0.0,,-718.16221462643
+FTMO,Gold ORB (RBE) + Vault Break,5.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0,0.0,0.0,,-567.9192208346279
+FTMO,Gold ORB (RBE) + Vault Break,5.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.0004,0.0,0.0,228.0,-317.93202367051197
+FTMO,Gold ORB (RBE) + Vault Break,5.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.238,0.0,0.0,211.0,-76.71330738587794
+FTMO,Gold ORB (RBE) + Vault Break,10.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.002,0.0384,0.0,222.5,-546.1939866811714
+FTMO,Gold ORB (RBE) + Vault Break,10.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0158,0.0,0.0,232.0,-386.5142514004947
+FTMO,Gold ORB (RBE) + Vault Break,10.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.238,0.0,0.0,211.0,-153.42661477175588
+FTMO,Gold ORB (RBE) + Vault Break,10.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.811,0.0,0.0,142.0,-14.447921505275387
+FTMO,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0244,0.067,0.0,230.0,-469.0120483264572
+FTMO,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0944,0.0026,0.0,222.0,-302.46848290178383
+FTMO,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.4544,0.0,0.0,191.0,-101.41427040555774
+FTMO,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.8948,0.0,0.0,117.5,-4.634963533157776
+FTMO,Gold ORB (RBE) + Vault Break,25.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.486,0.2382,0.0,178.0,-316.7375788599119
+FTMO,Gold ORB (RBE) + Vault Break,25.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.7002,0.0384,0.0,161.0,-100.31655360233466
+FTMO,Gold ORB (RBE) + Vault Break,25.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.8944,0.0026,0.0,117.0,-10.384196010212394
+FTMO,Gold ORB (RBE) + Vault Break,25.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.981,0.0,0.0,57.0,14.047894469265378
+FTMO,Flash ORB + Gold ORB (RBE),5.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0,0.001,0.0,,-700.5809369780347
+FTMO,Flash ORB + Gold ORB (RBE),5.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0,0.0,0.0,,-550.4518738735418
+FTMO,Flash ORB + Gold ORB (RBE),5.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.0004,0.0,0.0,251.5,-300.45438024322556
+FTMO,Flash ORB + Gold ORB (RBE),5.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.3192,0.0,0.0,208.5,-63.76720330705509
+FTMO,Flash ORB + Gold ORB (RBE),10.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0036,0.035,0.0,236.0,-511.06271864353914
+FTMO,Flash ORB + Gold ORB (RBE),10.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0272,0.0,0.0,230.0,-352.1427491177286
+FTMO,Flash ORB + Gold ORB (RBE),10.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.3192,0.0,0.0,208.5,-127.53440661411018
+FTMO,Flash ORB + Gold ORB (RBE),10.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.8586,0.0,0.0,133.0,-8.495574422920342
+FTMO,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.041,0.067,0.0,229.0,-429.97379226448356
+FTMO,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.1438,0.001,0.0,220.0,-263.16543143457847
+FTMO,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.5462,0.0,0.0,184.0,-78.89030500796852
+FTMO,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9218,0.0,0.0,109.0,-0.36147833025626047
+FTMO,Flash ORB + Gold ORB (RBE),25.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.5416,0.2386,0.0,167.0,-294.494584111628
+FTMO,Flash ORB + Gold ORB (RBE),25.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.764,0.035,0.0,152.0,-75.89661993251737
+FTMO,Flash ORB + Gold ORB (RBE),25.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.9216,0.001,0.0,109.0,-1.3366318522584835
+FTMO,Flash ORB + Gold ORB (RBE),25.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9868,0.0,0.0,53.0,17.197441522122297
+FTMO,Gold ORB (RBE) + Noise Band Momentum,5.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0,0.0066,0.0,,-653.7847900838368
+FTMO,Gold ORB (RBE) + Noise Band Momentum,5.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0,0.0,0.0,,-502.7089896444717
+FTMO,Gold ORB (RBE) + Noise Band Momentum,5.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.012,0.0,0.0,233.0,-253.02105177498078
+FTMO,Gold ORB (RBE) + Noise Band Momentum,5.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.543,0.0,0.0,187.0,-39.49825889334375
+FTMO,Gold ORB (RBE) + Noise Band Momentum,10.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0346,0.073,0.0,227.0,-434.82767998457393
+FTMO,Gold ORB (RBE) + Noise Band Momentum,10.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.136,0.0018,0.0,219.5,-266.3245841005949
+FTMO,Gold ORB (RBE) + Noise Band Momentum,10.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.543,0.0,0.0,187.0,-78.9965177866875
+FTMO,Gold ORB (RBE) + Noise Band Momentum,10.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.925,0.0,0.0,108.0,-0.153466797419787
+FTMO,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.164,0.1162,0.0,214.0,-356.45534281036294
+FTMO,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.3528,0.0066,0.0,206.0,-180.6771184881527
+FTMO,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.7274,0.0,0.0,162.0,-43.26013088737022
+FTMO,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9552,0.0,0.0,86.0,5.82164382897338
+FTMO,Gold ORB (RBE) + Noise Band Momentum,25.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.6042,0.3076,0.0,141.0,-322.80702971536425
+FTMO,Gold ORB (RBE) + Noise Band Momentum,25.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.8398,0.073,0.0,126.0,-77.86450252469855
+FTMO,Gold ORB (RBE) + Noise Band Momentum,25.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.953,0.0066,0.0,86.0,6.9813376558543565
+FTMO,Gold ORB (RBE) + Noise Band Momentum,25.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9908,0.0004,0.0,41.0,22.786536110416506
+FTMO,Gold ORB (RBE) + Tokyo Coil,5.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0,0.0054,0.0,,-586.9755207418954
+FTMO,Gold ORB (RBE) + Tokyo Coil,5.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.001,0.0,0.0,241.0,-435.93412450288685
+FTMO,Gold ORB (RBE) + Tokyo Coil,5.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.0848,0.0,0.0,227.0,-189.4380650315352
+FTMO,Gold ORB (RBE) + Tokyo Coil,5.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.7426,0.0,0.0,166.0,-16.146810418263605
+FTMO,Gold ORB (RBE) + Tokyo Coil,10.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.1544,0.0658,0.0,221.0,-321.15148115306647
+FTMO,Gold ORB (RBE) + Tokyo Coil,10.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.3482,0.0006,0.0,209.0,-165.61837255053328
+FTMO,Gold ORB (RBE) + Tokyo Coil,10.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.7426,0.0,0.0,166.0,-32.29362083652721
+FTMO,Gold ORB (RBE) + Tokyo Coil,10.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9698,0.0,0.0,90.0,11.709094457116397
+FTMO,Gold ORB (RBE) + Tokyo Coil,12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.3764,0.1074,0.0,204.0,-251.20212785315923
+FTMO,Gold ORB (RBE) + Tokyo Coil,12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.5838,0.0054,0.0,185.0,-95.22155457028192
+FTMO,Gold ORB (RBE) + Tokyo Coil,12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.87,0.0,0.0,140.0,-8.082704429304302
+FTMO,Gold ORB (RBE) + Tokyo Coil,12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9818,0.0,0.0,73.0,18.29573613439947
+FTMO,Gold ORB (RBE) + Tokyo Coil,25.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.6626,0.3024,0.0,118.0,-290.7915213002321
+FTMO,Gold ORB (RBE) + Tokyo Coil,25.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.8982,0.0658,0.0,106.0,-39.15817717278376
+FTMO,Gold ORB (RBE) + Tokyo Coil,25.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.9786,0.0054,0.0,73.0,32.36378595624581
+FTMO,Gold ORB (RBE) + Tokyo Coil,25.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9956,0.0002,0.0,35.0,39.62488132171049
+FTMO,Tokyo Coil + Vault Break,5.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0,0.0088,0.0,,-692.4972692242635
+FTMO,Tokyo Coil + Vault Break,5.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0,0.0,0.0,,-541.4466246478854
+FTMO,Tokyo Coil + Vault Break,5.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.0074,0.0,0.0,233.0,-291.6051336910865
+FTMO,Tokyo Coil + Vault Break,5.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.401,0.0,0.0,194.0,-62.48580762970077
+FTMO,Tokyo Coil + Vault Break,10.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0206,0.1008,0.0,224.0,-514.7148409595259
+FTMO,Tokyo Coil + Vault Break,10.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0812,0.0026,0.0,222.0,-338.5995588071992
+FTMO,Tokyo Coil + Vault Break,10.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.401,0.0,0.0,194.0,-124.97161525940155
+FTMO,Tokyo Coil + Vault Break,10.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.8474,0.0,0.0,120.0,-7.348375483698478
+FTMO,Tokyo Coil + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0996,0.1594,0.0,218.5,-451.0679560590718
+FTMO,Tokyo Coil + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.228,0.0088,0.0,206.0,-256.2261085040506
+FTMO,Tokyo Coil + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.591,0.0,0.0,171.0,-80.51281238588136
+FTMO,Tokyo Coil + Vault Break,12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.907,0.0,0.0,98.0,3.889354569783026
+FTMO,Tokyo Coil + Vault Break,25.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.487,0.3734,0.0,149.0,-404.581158760548
+FTMO,Tokyo Coil + Vault Break,25.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.7406,0.1008,0.0,136.0,-123.46873436056165
+FTMO,Tokyo Coil + Vault Break,25.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.9054,0.0088,0.0,98.0,2.872973699008487
+FTMO,Tokyo Coil + Vault Break,25.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.9734,0.0004,0.0,48.0,34.813055887318484
+FTMO,Flash ORB + Opening-Shock Continuation,5.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0,0.0022,0.0,,-831.1440220775551
+FTMO,Flash ORB + Opening-Shock Continuation,5.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0,0.0,0.0,,-681.064698717352
+FTMO,Flash ORB + Opening-Shock Continuation,5.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.0,0.0,0.0,,-431.06469871735203
+FTMO,Flash ORB + Opening-Shock Continuation,5.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.0004,0.0,0.0,220.5,-181.06454909785225
+FTMO,Flash ORB + Opening-Shock Continuation,10.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0,0.0568,0.0,,-766.2168962041086
+FTMO,Flash ORB + Opening-Shock Continuation,10.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0,0.0006,0.0,,-612.1952623752131
+FTMO,Flash ORB + Opening-Shock Continuation,10.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.0004,0.0,0.0,220.5,-362.1290981957045
+FTMO,Flash ORB + Opening-Shock Continuation,10.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.1854,0.0,0.0,202.0,-117.3411420785266
+FTMO,Flash ORB + Opening-Shock Continuation,12.5,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0,0.101,0.0,,-737.8596926557101
+FTMO,Flash ORB + Opening-Shock Continuation,12.5,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0,0.0022,0.0,,-577.860055193888
+FTMO,Flash ORB + Opening-Shock Continuation,12.5,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.006,0.0,0.0,234.0,-327.77238399948266
+FTMO,Flash ORB + Opening-Shock Continuation,12.5,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.3628,0.0,0.0,182.0,-94.04020688257295
+FTMO,Flash ORB + Opening-Shock Continuation,25.0,static-floor recovery to initial balance,-1000.0,100.0,0.0,0.0218,0.307,0.0,226.0,-637.1869623910902
+FTMO,Flash ORB + Opening-Shock Continuation,25.0,static-floor recovery to initial balance,-1000.0,250.0,0.0,0.0814,0.0568,0.0,216.0,-419.8231116205994
+FTMO,Flash ORB + Opening-Shock Continuation,25.0,static-floor recovery to initial balance,-1000.0,500.0,0.0,0.3628,0.0022,0.0,182.0,-188.47703056616118
+FTMO,Flash ORB + Opening-Shock Continuation,25.0,static-floor recovery to initial balance,-1000.0,750.0,0.0,0.7738,0.0,0.0,109.0,-43.7165997311728
 FTMO,No trade,0.0,no-trade control,-1000.0,100.0,0.0,0.0,0.0,,,-900.0
 FTMO,No trade,0.0,no-trade control,-1000.0,250.0,0.0,0.0,0.0,,,-750.0
 FTMO,No trade,0.0,no-trade control,-1000.0,500.0,0.0,0.0,0.0,,,-500.0

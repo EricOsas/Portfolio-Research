@@ -25,7 +25,7 @@ Base comparison risk: USD 100 requested total risk per book trade.
   - Median trading days to first payout: 163.0
 
 ## Near-floor recovery
-No-trade is the safest near-floor control; none of the weekly-eligible active candidates stayed within a 5% modeled breach probability.
+No-trade is the mathematical drawdown control, but it is not a compliant long-term Tradeify mode because minimum weekly activity applies; none of the weekly-eligible active candidates stayed within a 5% modeled breach probability.
 
 Recovery outputs are balance-only; the Tradeify $53,000 target does not enforce payout consistency, five $150 winning days or payout processing.
 
