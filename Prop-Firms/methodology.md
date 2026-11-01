@@ -4,7 +4,7 @@
 
 - 5,000 Monte Carlo paths per scenario.
 - 252 trading-day horizon.
-- 5-trading-day circular block bootstrap using the later 40% chronological validation sample.
+- 5-trading-day block bootstrap aligned to complete Monday-Friday weeks, sampled with replacement from the later 40% chronological validation sample.
 - Book candidates are selected using the earlier 60% training sample. This is one chronological holdout, not a multi-fold rolling walk-forward test.
 - Each sleeve's realized-loss R unit is calibrated on that training sample, then held fixed for the validation sample and all prop position sizing.
 - FTMO book PnL uses the average constituent-sleeve R multiplied by total book risk; Tradeify uses sleeve-specific training R units and whole-micro weights.
@@ -13,9 +13,9 @@
 - Challenge pass, evaluation hard breach, funded hard breach conditional on funding, funded survival, payout eligibility, payout amounts and recovery scenarios are reported separately.
 - The model is based on completed-trade exports, not an intraday account-equity replay.
 - The 252-day rates are probabilities within a one-trading-year simulation horizon, not lifetime pass/payout probabilities.
-- The 5,000 paths quantify variability under resampled historical daily returns; they do not prove the future distribution will match history. Monte Carlo sampling error is smaller than this model/data uncertainty.
+- The 5,000 paths quantify variability under resampled historical daily returns; they do not prove the future distribution will match history. Monte Carlo sampling error is smaller than this model/data uncertainty. Full calendar-week blocks preserve the weekly activity structure.
 - Common bootstrap block samples are used across each firm's risk ladder for a given book, making position-size comparisons less noisy.
-- Tradeify weekly activity and microscalping eligibility are checked on validation trades. Trades with missing duration data count as not qualifying for the over-10-second rule; duration coverage is reported.
+- Tradeify weekly activity is checked on complete Monday-Friday validation weeks. Bootstrap blocks are aligned to those weeks, so simulated weeks preserve the observed activity pattern. Microscalping eligibility is checked on validation trades; missing durations count as not qualifying for the over-10-second rule.
 
 ## FTMO — USD 10,000 Standard 2-Step CFD
 
@@ -28,7 +28,7 @@ Modeled account objectives:
 - Minimum four trading days in each phase.
 - Default reward split: 80%.
 - The modeled cash-withdrawal case pays 80% of the requested profit and leaves 20% in the funded account. FTMO's rollover option is not simulated.
-- First reward request: day 14 or later after the first funded trade; the simulation approximates this as 10 trading days.
+- First reward request: day 14 or later after the first funded trade; the simulation allows 10 elapsed trading days (the 11th active trading day) as an approximation.
 - Minimum closed profit: USD 20 for bank transfer. A four-business-day review/processing delay is applied.
 
 Risk ladder: USD 25, 50, 75 and 100 total book risk per trade, divided equally across sleeves. Sizing is continuous; instrument-specific minimum lot sizes are not enforced and must be checked against FTMO symbol specifications.
