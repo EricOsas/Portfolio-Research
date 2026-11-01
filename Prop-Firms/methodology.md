@@ -38,6 +38,8 @@ The model does not reconstruct intratrade floating losses, news restrictions, ov
 
 ## Tradeify — USD 50,000 Growth futures
 
+The model assumes the current non-legacy Growth rules for accounts purchased on or after September 12, 2025. Older legacy accounts have different DLL and payout thresholds and need a separate model.
+
 Modeled account rules:
 
 - Evaluation target: USD 3,000.
