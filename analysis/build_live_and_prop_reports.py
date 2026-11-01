@@ -952,6 +952,8 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
             target_rows=target_rows[target_rows["target_label"].astype(str).str.contains("break-even|buffer",case=False,regex=True)]
         if "weekly_activity_eligible" in target_rows.columns:
             target_rows=target_rows[target_rows["weekly_activity_eligible"].astype(bool)]
+        if "Tradeify" in title and "microscalping_eligible" in target_rows.columns:
+            target_rows=target_rows[target_rows["microscalping_eligible"].astype(bool)]
         viable=target_rows[(target_rows["book"]!="No trade") & (target_rows["ruin_probability"].astype(float)<=0.05) & (target_rows["recovery_probability"].astype(float)>=0.50)]
         if len(viable):
             best=viable.sort_values("recovery_probability",ascending=False).iloc[0]
@@ -963,10 +965,21 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
                     ["recovery_probability","ruin_probability"],ascending=[False,True]).iloc[0]
                 best_survival=active_target.sort_values(
                     ["ruin_probability","recovery_probability"],ascending=[True,False]).iloc[0]
+                lowest_exposure=active_target.sort_values(
+                    ["risk_usd_per_book_trade","ruin_probability"],ascending=[True,True]).iloc[0]
                 detail=(f'Best recovery chance: {best_recovery["book"]} at USD {float(best_recovery["risk_usd_per_book_trade"]):,.2f} risk '
                         f'({float(best_recovery["recovery_probability"]):.1%} recovery; {float(best_recovery["ruin_probability"]):.1%} breach). '
                         f'Lowest-breach active choice: {best_survival["book"]} at USD {float(best_survival["risk_usd_per_book_trade"]):,.2f} risk '
-                        f'({float(best_survival["recovery_probability"]):.1%} recovery; {float(best_survival["ruin_probability"]):.1%} breach).')
+                        f'({float(best_survival["recovery_probability"]):.1%} recovery; {float(best_survival["ruin_probability"]):.1%} breach). '
+                        f'Lowest-exposure active choice: {lowest_exposure["book"]} at USD {float(lowest_exposure["risk_usd_per_book_trade"]):,.2f} risk '
+                        f'({float(lowest_exposure["recovery_probability"]):.1%} recovery; {float(lowest_exposure["ruin_probability"]):.1%} breach).')
+                if "FTMO" in title:
+                    non_rbe=active_target[~active_target["book"].astype(str).str.contains("Gold ORB \(RBE\)",regex=True)]
+                    if len(non_rbe):
+                        nr=non_rbe.sort_values(
+                            ["recovery_probability","ruin_probability"],ascending=[False,True]).iloc[0]
+                        detail += (f' Best RBE-excluded alternative: {nr["book"]} at USD {float(nr["risk_usd_per_book_trade"]):,.2f} risk '
+                                   f'({float(nr["recovery_probability"]):.1%} recovery; {float(nr["ruin_probability"]):.1%} breach).')
             else:
                 detail="No active candidate passed the eligibility screen."
             if "Tradeify" in title:
@@ -1023,8 +1036,12 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
                     lines.append(f'  - {label}: {float(funded[key]):.2f}')
                 else:
                     lines.append(f'  - {label}: USD {float(funded[key]):,.2f}')
+    if "Tradeify" in title:
+        recovery_scope_note="Recovery outputs are balance-only. The $53,000 target is a balance threshold, not an approved payout; 35% consistency, five $150 winning days and payout processing are not enforced in the recovery path."
+    else:
+        recovery_scope_note="FTMO recovery is balance-only and targets return to initial equity above the static loss floor; reward eligibility and rollover are not modeled in recovery paths."
     lines += ["","## Near-floor recovery",recovery_candidate,
-              "","Recovery outputs are balance-only; the Tradeify $53,000 target does not enforce payout consistency, five $150 winning days or payout processing.",
+              "",recovery_scope_note,
               "","These are simulated candidates, not live-deployment approvals. Use the full risk ladder and rule assumptions in the CSV/JSON reports."]
     (reports/"book_recommendations.md").write_text("\n".join(lines),encoding="utf-8")
 
@@ -1394,10 +1411,12 @@ def write_rule_docs():
         "min_trading_days_each_phase":4,"time_limit":"Unlimited",
         "consistency_rule":"None for 2-Step; FTMO Best Day Rule applies to 1-Step only",
         "funded_reward_split_default":0.80,"reward_rollover_option":True,
-        "modeled_reward_mode":"Cash withdrawal; 80% paid and 20% of requested profit remains in account",
-        "first_reward_request":"Day 14 or later after first funded trade; model allows 10 elapsed trading days (11th active trading day)",
+        "modeled_reward_mode":"Cash withdrawal; 80% of reference-period profit paid; new reference period resets to initial capital; rollover excluded",
+        "first_reward_request":"Day 14 or later after first funded trade; model approximates this as 10 elapsed trading days (11th sampled business day counting the first-trade day)",
         "minimum_closed_profit_usd_bank_transfer":20,"minimum_closed_profit_usd_crypto":50,
         "reward_processing_model_business_days":4,
+        "cash_withdrawal_cycle_reset":"After reward approval, new reference period resets to initial capital; prior period profits/losses are cleared unless reward is rolled over",
+        "trading_during_reward_processing":"Frozen in model after Reward Day until new reference period begins",
         "daily_reset":"00:00 CE(S)T; based on current-day 00:00 balance",
         "official_sources":["https://ftmo.com/en/trading-objectives/","https://ftmo.com/en/2-step-challenge/","https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/","https://ftmo.com/faq/i-have-successfully-passed-what-to-do-now/","https://ftmo.com/en/faq/can-i-trade-news/","https://ftmo.com/en/faq/do-i-have-to-close-my-positions-overnight-or-before-the-weekend/"],
         "rules_checked_date":"2026-11-01",
@@ -1406,7 +1425,8 @@ def write_rule_docs():
                             "Each book divides risk equally across sleeves",
                             "10 elapsed trading days (11th sampled business day counting the first-trade day) approximate the 14-calendar-day first reward request date",
                             "Phase review, verification and KYC delays are not modeled; phase transitions occur on the next simulated trading day",
-                            "Four business days approximate reward review plus payment processing",
+                            "Four business days approximate reward review plus payment processing; trading is frozen during this period",
+                            "Cash withdrawal starts a new reference period at initial capital; no rollover is modeled",
                             "No intraday floating PnL in MT5 exports; close-only rule model is optimistic"]
     }
     tradeify_rules={
