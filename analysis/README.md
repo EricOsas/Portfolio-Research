@@ -20,9 +20,9 @@
 Methodology:
 - Chronological 60/40 train/validation split. Each sleeve's realized-loss R unit is calibrated on training data and held fixed in validation; book selection uses training data and Monte Carlo uses validation data.
 - All one-to-four-sleeve combinations are screened on the normalized daily series.
-- 5,000 Monte Carlo paths, 5-trading-day circular block bootstrap, 252-trading-day horizon.
+- 5,000 Monte Carlo paths, five-day blocks aligned to Monday-Friday validation weeks, 252-trading-day horizon.
 - Tradeify futures sizing uses whole-micro increments, at least one micro per active sleeve, and a four-mini concurrent exposure cap.
-- Tradeify includes a separate NT8 MAE / soft-DLL stress report. It is not an intraday equity replay.
+- Tradeify minimum activity is checked on complete validation weeks; Monte Carlo resamples complete calendar-week blocks. Evaluation pass rates exclude books that fail minimum activity or position-limit eligibility. Tradeify includes a separate NT8 MAE / soft-DLL stress report. It is not an intraday equity replay.
 - Recovery scenarios include no-trade controls and model the probability of reaching a buffer or payout target before breaching the account floor.
 
 ## Scope controls
