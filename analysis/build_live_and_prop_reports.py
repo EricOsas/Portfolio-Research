@@ -23,7 +23,7 @@ HORIZON = 252
 BLOCK = 5
 SEED = 20261101
 FTMO_RISKS = [25.0, 50.0, 75.0, 100.0]
-TRADEIFY_RISKS = [100.0, 150.0, 200.0, 250.0]
+TRADEIFY_RISKS = [100.0, 250.0, 500.0, 750.0]
 
 def slug(s):
     return re.sub(r"[^a-z0-9]+", "-", str(s).lower()).strip("-")
@@ -811,10 +811,12 @@ def run_platform(platform):
                     "mini_equivalent_per_sleeve":json.dumps(sizes,sort_keys=True),
                     "max_concurrent_mini_equivalent":exposure,"position_limit_scale":scale,
                     "position_limit_compliant":compliant}
+                res["position_limit_compliant"]=compliant
                 tradeify_rows.append({**extra,**res})
                 # Alternative evaluation-consistency stress case because Tradeify's
                 # pricing reference conflicts with its dedicated Growth rule page.
                 stress=simulate_tradeify(paths_t,actpaths_t,1.0,micro["eligible"],week_ok,True)
+                stress["position_limit_compliant"]=compliant
                 tradeify_rows.append({**extra,**stress})
 
     # Recovery mode: compare low-complexity one/two-sleeve books with a no-trade
@@ -921,12 +923,15 @@ def write_rule_docs():
         "funded_trailing_drawdown_usd":2000,"funded_drawdown_lock_balance_usd":52100,
         "funded_locked_floor_usd":50100,"payout_min_balance_usd":53000,
         "payout_consistency":0.35,"payout_profitable_days":5,"payout_day_profit_minimum_usd":150,
-        "profit_split":0.90,"payout_caps_usd":[1500,2000,2500,3000],
+        "profit_split":0.90,"payout_minimum_usd":500,"payout_caps_usd":[1500,2000,2500,3000],
+        "payout_processing_model_trading_days":2,
         "max_position_size":"4 minis / 40 micros","minimum_activity":"At least 1 trade per week",
+        "no_hedging_correlated_products":True,"overnight_positions":"Must be flat by daily cutoff",
         "microscalping":"More than 50% of trades and more than 50% of profit from trades longer than 10 seconds",
         "daily_close":"4:45 PM ET regular days; 12:59 PM ET early-close days",
         "news":"Allowed; slippage risk remains",
-        "model_assumptions":["$100/$150/$200/$250 total book risk per trade sensitivity",
+        "model_assumptions":["$100/$250/$500/$750 requested total book risk per trade sensitivity",
+                            "Minimum 1 micro per active sleeve; whole-micro sizing rounded down above the minimum",
                             "Each book divides risk equally across sleeves",
                             "Payout processing approximated as 2 trading days; balance must remain at or above $53,000",
                             "Four-mini exposure cap applied as continuous mini-equivalent scaling",
