@@ -453,10 +453,10 @@ def simulate_ftmo(paths, active, risk):
             fail_max_funded |= max_bad
             phase[daily_bad | max_bad] = 4
 
-            # Reward request is available after 10 trading days from the first
-            # funded trade (approximation of FTMO's 14 calendar days). Count it
+            # Reward request is available after 10 elapsed trading days from the first
+            # funded trade (11th active trading day; approximates 14 calendar days). Count it
             # only if four-business-day processing fits inside the horizon.
-            claim = (funded_mask & (phase == 3) & (funded_age >= 10) &
+            claim = (funded_mask & (phase == 3) & (funded_age >= 11) &
                      (eq >= 20.0) & (reward_request_day < 0) & ((d + 4) < h))
             if claim.any():
                 reward_request_day[claim] = d
