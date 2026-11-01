@@ -34,7 +34,7 @@
     "Each book divides risk equally across sleeves",
     "10 elapsed trading days (11th sampled business day counting the first-trade day) approximate the 14-calendar-day first reward request date",
     "Phase review, verification and KYC delays are not modeled; phase transitions occur on the next simulated trading day",
-    "Four business days approximate review/payment processing; trading is frozen during this period",
+    "Four business days approximate reward review plus payment processing; trading is frozen during this period",
     "Cash withdrawal starts a new reference period at initial capital; no rollover is modeled",
     "No intraday floating PnL in MT5 exports; close-only rule model is optimistic"
   ]
