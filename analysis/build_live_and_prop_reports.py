@@ -776,6 +776,24 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
             fig.savefig(charts/"recovery_probability.png",dpi=160,bbox_inches="tight")
             plt.close(fig)
 
+    if "evaluation_hard_breach_rate" in df.columns:
+        fig,ax=plt.subplots(figsize=(10.5,5.8))
+        for book in top_books:
+            g=df[df["book"]==book].copy()
+            if stress_filter and stress_filter in g.columns:
+                g=g[g[stress_filter].astype(str).str.contains("base case|no consistency",case=False,regex=True)]
+            g=g.sort_values(risk_col)
+            ax.plot(g[risk_col].astype(float),g["evaluation_hard_breach_rate"].astype(float),marker="o",linewidth=1.7,label=book)
+        ax.set_title(f"{title}: evaluation drawdown breach probability",loc="left",fontweight="bold")
+        ax.set_xlabel("Requested total book risk per trade (USD)")
+        ax.set_ylabel("Probability")
+        ax.set_ylim(0,1)
+        ax.grid(True,alpha=.25,linestyle="--")
+        ax.legend(fontsize=7,loc="best")
+        fig.tight_layout()
+        fig.savefig(charts/"evaluation_breach_probability.png",dpi=160,bbox_inches="tight")
+        plt.close(fig)
+
     challenge=ranking.iloc[0] if len(ranking) else None
     funded=base.assign(funded_score=base[conditional_col].astype(float)*(1.0-base[breach_col].astype(float))).sort_values("funded_score",ascending=False).iloc[0] if len(base) and conditional_col in base.columns else challenge
     recovery_candidate="No active book met the near-floor recovery threshold; preserve the account rather than force trades."
@@ -784,7 +802,7 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
         target_rows=recovery_df[recovery_df["starting_cushion_usd"].astype(float).eq(near_cushion)]
         if "target_label" in target_rows.columns:
             target_rows=target_rows[target_rows["target_label"].astype(str).str.contains("break-even|buffer",case=False,regex=True)]
-        viable=target_rows[(target_rows["book"]!="No trade") & (target_rows["ruin_probability"].astype(float)<=0.05)]
+        viable=target_rows[(target_rows["book"]!="No trade") & (target_rows["ruin_probability"].astype(float)<=0.05) & (target_rows["recovery_probability"].astype(float)>=0.50)]
         if len(viable):
             best=viable.sort_values("recovery_probability",ascending=False).iloc[0]
             recovery_candidate=f'{best["book"]}: recovery probability {best["recovery_probability"]:.1%}, breach probability {best["ruin_probability"]:.1%}.'
