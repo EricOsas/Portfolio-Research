@@ -32,7 +32,7 @@ A strategy can be suitable in one category and unsuitable in another. The catego
 
 - **NT8:** 9 strategies, 9,192 completed trades.
 - **MT5:** 10 strategies, 11,918 completed trades. Gold X9 remains missing; the MT5 set is 10 of 11 expected exports.
-- The refreshed Gold ORB (RBE) exports are included: **1,216 NT8 trades** and **1,164 MT5 trades**.
+- The refreshed Gold ORB (RBE) exports are included: **1,216 NT8 trades** on **GC DEC26** (full-size GC, not MGC) and **1,164 MT5 trades** on **XAUUSD**.
 - Export history runs through **2026-10-30**. The normalized portfolio split is chronological: first 60% for training, later 40% for validation. Validation is **2024-02-07 to 2026-10-30**.
 - All 255 NT8 and 385 MT5 one-to-four-sleeve combinations are screened on the normalized daily-R series. The prop Monte Carlo covers every single sleeve plus selected category finalists and leading two-/three-sleeve candidates; it does not run 5,000 paths for every possible combination.
 - The risk unit is each sleeve's **mean absolute realized losing-trade PnL from the training sample**, held fixed in validation. This is a reproducible normalization proxy, not verified initial stop risk.
