@@ -1069,6 +1069,11 @@ def run_platform(platform):
                 recovery_books.append(combo)
                 added += 1
             if added==limit: break
+    # Include the leading prop challenge/funded pairs in recovery analysis so
+    # payout-eligible books can be compared with lower-risk balance-recovery sleeves.
+    for cname, combo in prop_candidates.items():
+        if len(combo)==2 and cname.startswith(("challenge_score","funded_score")) and combo not in recovery_books:
+            recovery_books.append(combo)
     if platform=="MT5":
         for combo in recovery_books:
             weights={s:12.5/len(combo) for s in combo}
@@ -1094,6 +1099,10 @@ def run_platform(platform):
             rec_paths,rec_act=sample_block_paths(recovery_daily.values,
                 activemat.loc[validation_idx,list(combo)].any(axis=1).values,
                 n_sims=N_SIMS,horizon=HORIZON,seed=SEED+999+len(recovery_rows))
+            rec_trades=trades[trades["strategy"].isin(combo) &
+                              trades["exit_date"].between(validation_idx.min(),validation_idx.max())]
+            rec_micro=microscalping_stats(rec_trades)
+            rec_weekly=weekly_activity_ok(activemat.loc[validation_idx,list(combo)].any(axis=1))
             for cushion in [200.0,500.0,1000.0,1500.0]:
                 for target in [600.0,3000.0]:
                     res=simulate_recovery(rec_paths,1.0,100.0,cushion,target,daily_limit=1250.0,daily_limit_mode="soft")
@@ -1101,13 +1110,19 @@ def run_platform(platform):
                         "risk_usd_per_book_trade":sum(weights.values()),"state":"post-lock recovery",
                         "mini_equivalent_exposure":exposure,"floor_equity":100.0,
                         "starting_cushion_usd":cushion,"target_equity":target,
-                        "target_label":"$500 buffer above locked floor" if target==600.0 else "$53,000 first-payout balance",**res})
+                        "target_label":"$500 buffer above locked floor" if target==600.0 else "$53,000 balance target (payout eligibility not enforced)",
+                        "weekly_activity_eligible":rec_weekly,
+                        "microscalping_eligible":rec_micro["eligible"],
+                        "microscalping_duration_coverage":rec_micro["duration_coverage"],
+                        "payout_eligibility_enforced":False,**res})
         for cushion in [200.0,500.0,1000.0,1500.0]:
             for target in [600.0,3000.0]:
                 recovery_rows.append({"firm":"Tradeify","book":"No trade","risk_usd_per_book_trade":0.0,
                     "state":"no-trade control","floor_equity":100.0,"starting_cushion_usd":cushion,
                     "target_equity":target,
-                    "target_label":"$500 buffer above locked floor" if target==600.0 else "$53,000 first-payout balance",
+                    "target_label":"$500 buffer above locked floor" if target==600.0 else "$53,000 balance target (payout eligibility not enforced)",
+                    "weekly_activity_eligible":False,"microscalping_eligible":False,
+                    "payout_eligibility_enforced":False,
                     "recovery_probability":float(100.0+cushion >= target),"ruin_probability":0.0,
                     "median_days_to_target":0.0 if 100.0+cushion >= target else np.nan,
                     "mean_terminal_equity":100.0+cushion})
