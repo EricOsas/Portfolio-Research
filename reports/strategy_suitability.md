@@ -103,7 +103,7 @@ Book selection uses the training segment only. The table shows full-sample one-c
 | NT8 | Recovery score | Flash + Gold RBE + Opening-Shock + Sigma | $963,883 | $32,363 | 1.610 | 2.571 | 127.44R | 2.667 | 8.94R | 31.64% |
 | MT5 | Live | Flash + Gold RBE + Opening-Shock + Overnight Bias | $62,128 | $2,623 | 1.614 | 2.641 | 82.10R | 3.104 | 6.56R | 1.26% |
 | MT5 | Challenge | Flash + Gold RBE + Open Drive + Tokyo Coil | $119,490 | $5,111 | 1.628 | 2.435 | 190.10R | 2.929 | 12.78R | 59.12% |
-| MT5 | Funded | Gold RBE + Noise Band + Overnight Bias + Tokyo Coil | $93,755 | $4,769 | 1.674 | 2.729 | 138.23R | 3.273 | 7.10R | 58.36% |
+| MT5 | Funded | Flash + Gold RBE + Open Drive + Tokyo Coil | $119,490 | $5,111 | 1.628 | 2.435 | 190.10R | 2.929 | 12.78R | 58.36% |
 | MT5 | Recovery score | Gold RBE + Opening-Shock + Tokyo Coil + Vault | $73,848 | $2,423 | 1.635 | 2.466 | 103.35R | 2.808 | 6.06R | 6.30% |
 
 Interpretation:
@@ -112,6 +112,7 @@ Interpretation:
 - The **NT8 live book** has lower validation max drawdown than the generic NT8 challenge/funded books. Its full-sample dollar result is not directly comparable with MT5 because NT8 uses one contract per sleeve and includes GC as well as NQ.
 - The generic **challenge books** show higher returns but materially higher 10R drawdown-barrier probabilities. That is the trade-off: a book that looks attractive for hitting a target can be too volatile for long-term live use.
 - The generic **funded books** are not automatically safe funded portfolios. Firm-specific payout and breach simulations below take precedence.
+- MT5's funded rank-2 alternative, **Gold RBE + Noise Band Momentum + Overnight Bias ORB + Tokyo Coil**, had better validation tail metrics than rank 1: 138.23R validation net, 3.273 Sharpe, 7.10R max drawdown, and 11.26% bootstrap probability of a 10R drawdown. It is a useful holdout challenger, but one 60/40 split is not enough to promote it without rolling validation.
 - The generic **recovery score** is a statistical screen. It is not the same as a prop account already sitting near its drawdown floor.
 
 ## Prop-firm account simulations
