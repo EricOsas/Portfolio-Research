@@ -413,9 +413,9 @@ def simulate_ftmo(paths, active, risk):
             fail_daily |= daily_bad
             fail_max |= max_bad
             phase[daily_bad | max_bad] = 4
-            claim = funded_mask & (phase == 3) & (funded_age >= 10) & (eq > 0) & (reward_day < 0)
+            claim = funded_mask & (phase == 3) & (funded_age >= 10) & (eq >= 20.0) & (reward_day < 0)
             if claim.any():
-                reward_day[claim] = d
+                reward_day[claim] = d + 4
                 reward[claim] = 0.80 * eq[claim]
     reached_funded = p2_day >= 0
     first_payout = reward_day >= 0
@@ -433,7 +433,7 @@ def simulate_ftmo(paths, active, risk):
         "expected_first_reward_usd": float(reward.mean()),
         "median_first_reward_usd_conditional": float(np.median(reward[first_payout])) if first_payout.any() else 0.0,
         "simulations": int(n), "horizon_trading_days": int(h),
-        "note": "Daily closed-PnL model; FTMO limits are equity-based, so intratrade floating losses are not fully observable in these exports.",
+        "note": "Daily closed-PnL model; $20 minimum closed profit assumed for bank transfer; four-business-day review/processing approximation; FTMO equity limits can be breached by floating losses not visible in exports.",
     }
 
 def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, eval_consistency=False):
@@ -1098,7 +1098,9 @@ def write_rule_docs():
         "max_daily_loss_usd":500,"max_loss_static_usd":1000,
         "min_trading_days_each_phase":4,"time_limit":"Unlimited",
         "consistency_rule":"None for 2-Step",
-        "funded_reward_split_default":0.80,"first_reward_request":"Day 14 or later after first funded trade",
+        "funded_reward_split_default":0.80,"first_reward_request":"Day 14 or later after first funded trade; model uses 10 trading days",
+        "minimum_closed_profit_usd_bank_transfer":20,"minimum_closed_profit_usd_crypto":50,
+        "reward_processing_model_business_days":4,
         "daily_reset":"00:00 CE(S)T; based on current-day 00:00 balance",
         "official_sources":["https://ftmo.com/en/trading-objectives/","https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/","https://ftmo.com/en/faq/can-i-trade-news/"],
         "news":"Standard funded account: selected events have a 2-minute pre/post execution restriction; not applicable during evaluation",
