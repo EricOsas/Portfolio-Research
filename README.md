@@ -1,80 +1,110 @@
 # Portfolio Research
 
-Platform-separated performance research for the NT8 and MT5 strategy exports in this repository.
+Research workspace for the NT8 futures and MT5 CFD strategy exports. Raw export analysis, normalized live-account curves, and prop-firm simulations are kept separate.
 
 ## Deliverables
 
-- [NT8 research pack](NT8/README.md)
-- [MT5 research pack](MT5/README.md)
-- [Latest build summary](reports/run_summary.json)
-- [Analysis engine](analysis/build_equity_reports.py)
-
-Each platform directory contains individual strategy curves, a strategy dashboard, an all-strategy curve, an evidence-screened recommended curve, metrics, daily PnL, correlations, a normalized event ledger and data-quality diagnostics.
+- [Raw NT8 research pack](NT8/README.md)
+- [Raw MT5 research pack](MT5/README.md)
+- [Normalized live-account research](Normalized-Live/README.md)
+- [Prop-firm research](Prop-Firms/README.md)
+- [Latest raw build summary](reports/run_summary.json)
+- [Raw export analysis engine](analysis/build_equity_reports.py)
+- [Normalized and prop-firm engine](analysis/build_live_and_prop_reports.py)
 
 ## Export inventory
 
-- NT8: 9/9 exports parsed — Gold ORB (RBE), Vault Break, VWAP Pullback, Overnight Bias ORB, Open Drive, NQ Precision Bot, Opening-Shock Continuation, Sigma ORB and Flash ORB.
-- MT5: 9/9 available exports parsed — Tokyo Coil, Vault Break, Overnight Bias ORB, Open Drive, NQ Precision Bot, Opening-Shock Continuation, Sigma ORB, Flash ORB and Noise Band Momentum. Gold X9 and Gold ORB (RBE) remain pending exports.
-- VWAP Pullback is NT8-specific. Tokyo Coil, Gold X9 and Noise Band Momentum are MT5-specific.
+- **NT8: 9/9 exports parsed.** Gold ORB (RBE), Vault Break, VWAP Pullback, Overnight Bias ORB, Open Drive, NQ Precision Bot, Opening-Shock Continuation, Sigma ORB and Flash ORB.
+- **MT5: 10/11 exports parsed.** Gold ORB (RBE), Tokyo Coil, Vault Break, Overnight Bias ORB, Open Drive, NQ Precision Bot, Opening-Shock Continuation, Sigma ORB, Flash ORB and Noise Band Momentum. Gold X9 remains pending.
+- VWAP Pullback is NT8-specific. Tokyo Coil and Noise Band Momentum are MT5-specific.
 
-## Core strategy shortlist
+The refreshed NT8 RBE CSV reports **GC DEC26**. Other NT8 exports use NQ. The refreshed MT5 RBE XLSX reports XAUUSD; MT5 Tokyo Coil uses USDJPY; the other MT5 exports use USTEC.
 
-- **NT8:** Overnight Bias ORB, Sigma ORB, Gold ORB (RBE), Vault Break.
-- **MT5:** Overnight Bias ORB, Tokyo Coil, Open Drive, Flash ORB.
+## Raw-export core shortlist
 
-These are first-pass research candidates, not live-deployment approval. Other positive strategies remain secondary candidates.
+- **NT8:** Overnight Bias ORB, Sigma ORB, Vault Break, Gold ORB (RBE).
+- **MT5:** Gold ORB (RBE), Overnight Bias ORB, Tokyo Coil, Open Drive.
 
-## Portfolio summary
+These are first-pass export-screening candidates, not live-deployment approval. Normalized and prop-firm selection is performed separately.
+
+## Raw portfolio summary
 
 | Platform | Portfolio | Net PnL | Max drawdown | Daily PF | Daily Sharpe |
 |---|---|---:|---:|---:|---:|
-| NT8 | All 9 exports | $1,461,906.64 | $52,279.64 | 1.69 | 2.69 |
-| NT8 | Core 4 shortlist | $851,931.96 | $32,485.88 | 1.64 | 2.46 |
-| MT5 | All 9 available exports | $1,470,380.01 | $94,936.84 | 1.57 | 2.23 |
-| MT5 | Core 4 shortlist | $1,069,692.84 | $65,338.78 | 1.57 | 2.01 |
+| NT8 | All 9 exports | $1,743,720.84 | $52,302.04 | 1.76 | 2.94 |
+| NT8 | Core 4 shortlist | $1,133,746.16 | $37,855.28 | 1.69 | 2.71 |
+| MT5 | All 10 available exports | $1,676,302.62 | $76,232.35 | 1.64 | 2.49 |
+| MT5 | Core 4 shortlist | $1,266,355.98 | $70,255.73 | 1.65 | 2.31 |
 
-Daily PF and daily Sharpe are calculated from daily aggregated net PnL, not individual-trade PF/Sharpe. Max drawdown is in USD from the cumulative PnL curve.
+Daily PF and daily Sharpe use daily aggregated net PnL, not individual-trade PF/Sharpe. Max drawdown is measured from the cumulative exported PnL curve.
 
-## Validation
+## Normalized live-account research
 
-- All 9 NT8 exports parsed. The sum of each file's Profit column matches its final exported Cum. net profit.
-- All 8 standard MT5 Strategy Tester reports reconcile deal Profit + Commission + Swap to final balance minus initial deposit.
-- MT5 NQ Precision Bot uses its custom completed-trade ledger; the sum of Adj. Net P&L matches the report's Total Net Profit.
-- Export history spans 2020 to 30 October 2026, with per-strategy start/end dates shown in the reports. These are trade-export analyses, not a new 2021-onward NQ minute-bar backtest.
+[Open Normalized-Live](Normalized-Live/README.md)
+
+- NT8: one exported contract equivalent per strategy, equity starts at USD 0.
+- MT5: fixed USD 100 risk proxy per completed trade, equity starts at USD 0.
+- All one-to-four-sleeve combinations are screened. Individual sleeves and selected books receive block-bootstrap drawdown analysis.
+- Live risk-of-ruin figures are R-multiple drawdown barriers, not literal account ruin probabilities because no account balance was specified.
+
+One GC contract and one NQ contract are not equal-risk exposures. MT5's USD 100 sizing uses a realized-loss risk-unit proxy, not the strategy's initial stop risk.
+
+## Prop-firm research
+
+[Open Prop-Firms](Prop-Firms/README.md)
+
+- [FTMO $10,000 2-Step CFD](Prop-Firms/FTMO-10K-2Step-CFD/README.md)
+- [Tradeify $50,000 Growth futures](Prop-Firms/Tradeify-50K-Growth-Futures/README.md)
+
+The prop simulations use 5,000 Monte Carlo paths, a five-trading-day circular block bootstrap, and a 252-trading-day horizon. FTMO uses a total book-risk ladder of $25–$100. Tradeify uses $100–$750 requested total book risk, whole-micro sizing, at least one micro per active sleeve, and a four-mini concurrent exposure cap. Actual risk can exceed the requested amount because of the minimum micro size.
+
+Tradeify evaluation results include both the published Growth base case and a 35% evaluation-consistency stress case because the public rule references are inconsistent. The funded model applies the funded consistency and payout conditions.
+
+## Validation and data quality
+
+- All 9 NT8 exports parsed. Each file's Profit sum reconciles to its final exported cumulative net profit.
+- All 9 standard MT5 Strategy Tester reports reconcile deal Profit + Commission + Swap to final balance minus initial deposit.
+- MT5 NQ Precision Bot uses its custom completed-trade ledger; Adj. Net P&L reconciles to the report's Total Net Profit.
+- The MT5 RBE Deals table has no position ID and contains overlapping positions. Entry/exit legs are paired by symbol/side and exact volume where possible, with FIFO fallback. Cashflows reconcile, but RBE duration and trade-level risk estimates retain pairing uncertainty.
+- Export history spans 2020 through 30 October 2026. These are trade-export analyses, not a new NQ minute-bar backtest.
 
 ## Methodology and limits
 
-- NT8 uses the Strategy Analyzer Profit field as exported. It is already net of Commission; commission is not subtracted a second time.
-- Standard MT5 reports use each deal's Profit + Commission + Swap. The NQ Precision Bot custom ledger uses Adj. Net P&L as its final net value.
-- Curves begin at USD 0 and show cumulative exported net PnL using original quantities/lots. They are not normalized to a common risk unit or account balance.
-- The all-strategy curve is the unscaled sum of source strategy PnL. It does not model margin, simultaneous exposure, execution conflicts, prop-firm drawdown rules or capital allocation.
-- NT8 completed-trade PnL is timestamped at exit. MT5 deal cash flows can include entry commissions on entry dates. Event timing follows each platform's exported accounting.
-- Timestamps are kept as exported. No timezone conversion is assumed.
-- NT8 RBE trades use MGC while the other NT8 strategies use NQ. MT5 Tokyo Coil uses USDJPY; the other MT5 exports use USTEC. Dollar PnL is therefore not a risk-normalized cross-strategy comparison.
-- The recommended subset is a transparent screening shortlist, not parameter optimization, a guarantee or a final position-sizing plan.
-- Original source exports in NT8 Trades/ and MT5 Trades/ are not modified.
+- NT8 Profit is used as exported; it is already net of Commission, so commission is not subtracted again.
+- MT5 standard reports use deal Profit + Commission + Swap. The NQ Precision Bot custom ledger uses Adj. Net P&L.
+- Raw curves use original exported quantities/lots. They do not model margin, simultaneous exposure, execution conflicts, prop-firm rules or capital allocation.
+- Normalized MT5 risk units use mean absolute realized losing-trade PnL. This is a sizing proxy, not verified initial stop risk.
+- Strategy PnL is timestamped at exit for completed-trade curves. Activity is timestamped by entry date. Timestamps remain as exported; no timezone conversion is assumed.
+- Prop simulations use a chronological 60/40 train/validation split. Book selection is performed on the first 60%; Monte Carlo evaluation uses the later validation sample.
+- Tradeify trailing drawdown is modeled from end-of-day equity. Intraday daily-loss pauses are not reconstructed from closed trades; the NT8 MAE report is a separate conservative soft-DLL stress diagnostic.
+- FTMO equity-based daily/max-loss breaches can occur from floating losses. MT5 exports do not contain intratrade MAE, so FTMO results use closed-PnL paths.
+- News restrictions, correlated-product hedging, broker margin, instrument-specific minimum lot sizes, slippage beyond exported costs, and exact timezone/session conversion are not fully modeled.
+- No strategy logic, native exits, stops, or parameters were redesigned or optimized.
 
 ## Rebuild
 
-GitHub Actions rebuilds reports when source exports or analysis code change. To run locally:
+```bash
+python -m pip install -r analysis/requirements.txt
+python analysis/build_equity_reports.py
+python analysis/build_live_and_prop_reports.py
+```
 
-    python -m pip install -r analysis/requirements.txt
-    python analysis/build_equity_reports.py
+GitHub Actions rebuilds the reports when source exports or analysis code change.
 
 ## Equity curves
 
-### NT8
+### NT8 raw exports
 
 ![NT8 individual strategy dashboard](NT8/charts/individual/strategy_dashboard.png)
 
 - [All 9 NT8 strategies combined](NT8/charts/portfolios/all_strategies.png)
-- [NT8 core shortlist](NT8/charts/portfolios/recommended_strategies.png)
+- [NT8 core 4 shortlist](NT8/charts/portfolios/recommended_strategies.png)
 - [All individual NT8 curves](NT8/charts/individual/)
 
-### MT5
+### MT5 raw exports
 
 ![MT5 individual strategy dashboard](MT5/charts/individual/strategy_dashboard.png)
 
-- [All 9 available MT5 strategies combined](MT5/charts/portfolios/all_strategies.png)
-- [MT5 core shortlist](MT5/charts/portfolios/recommended_strategies.png)
+- [All 10 available MT5 strategies combined](MT5/charts/portfolios/all_strategies.png)
+- [MT5 core 4 shortlist](MT5/charts/portfolios/recommended_strategies.png)
 - [All individual MT5 curves](MT5/charts/individual/)
