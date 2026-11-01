@@ -624,8 +624,12 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
             pending_days[request] = 2
 
     target_reached = eval_pass_day >= 0
-    account_eligible = bool(weekly_activity_ok and position_limit_compliant)
-    reached_funded = target_reached & account_eligible
+    # Position-limit compliance is required to execute the modeled book at all.
+    # Weekly activity and microscalping are funded payout-eligibility rules,
+    # not evaluation pass conditions.
+    execution_eligible = bool(position_limit_compliant)
+    payout_activity_eligible = bool(weekly_activity_ok and microscalp_ok)
+    reached_funded = target_reached & execution_eligible
     first_payout = first_payout_day >= 0
     survived_90 = []
     for i in np.where(reached_funded)[0]:
@@ -636,7 +640,8 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
     return {
         "evaluation_target_hit_rate": float(target_reached.mean()),
         "evaluation_pass_rate": float(reached_funded.mean()),
-        "evaluation_account_eligible": account_eligible,
+        "evaluation_execution_eligible": execution_eligible,
+        "funded_payout_activity_eligible": payout_activity_eligible,
         "funded_first_payout_rate_conditional": float(first_payout[reached_funded].mean()) if reached_funded.any() else 0.0,
         "challenge_to_first_payout_rate": float(first_payout.mean()),
         "funded_hard_breach_rate": float(fail_funded.mean()),
