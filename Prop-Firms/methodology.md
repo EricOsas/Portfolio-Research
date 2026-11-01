@@ -58,7 +58,9 @@ The NT8 MAE report measures one-micro-per-sleeve adverse-excursion stress. Same-
 
 ## Recovery scenarios
 
-Recovery simulations include no-trade controls.
+Recovery simulations include no-trade controls and selected low-complexity books plus the leading challenge/funded pairs.
+
+These are balance-recovery simulations, not payout-eligibility simulations. Tradeify weekly-activity and microscalping eligibility are reported beside each recovery book, but the recovery path does not enforce funded 35% consistency, five $150 winning days, or payout request processing. The $53,000 target therefore means the account balance reaches the payout threshold; it does not mean a payout is approved.
 
 - FTMO: starting cushions of USD 100, 250, 500 and 750 above the static loss floor; target is return to initial account equity.
 - Tradeify: starting cushions of USD 200, 500, 1,000 and 1,500 above the locked floor; targets are a USD 500 buffer above the floor and the USD 53,000 first-payout balance.
