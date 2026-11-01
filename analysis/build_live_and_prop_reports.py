@@ -679,7 +679,7 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
         "weekly_activity_eligible": bool(weekly_activity_ok),
         "evaluation_consistency_variant": "official Growth rules: no evaluation consistency",
         "simulations": int(n), "horizon_trading_days": int(h),
-        "note": "EOD trailing updates are modeled. Closed daily losses are clipped at -$1,250 initially and -$2,000 from the next session after +$3,000 funded profit; intraday DLL trigger timing, overshoot, floating equity and slippage are not reconstructable from closed-trade exports.",
+        "note": "35% consistency uses gross daily PnL before commissions; account balance, DLL, trailing drawdown and $150 winning-day checks use net closed PnL. EOD trailing updates are modeled. Closed daily losses are clipped at -$1,250 initially and -$2,000 from the next session after +$3,000 funded profit; intraday DLL trigger timing, overshoot, floating equity and slippage are not reconstructable from closed-trade exports.",
     }
 
 def microscalping_stats(trades):
