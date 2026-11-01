@@ -35,6 +35,14 @@ Book selection uses training-only challenge/funded scores. All one-to-four-sleev
   - Funded hard-breach rate (conditional on funding): 0.5%
   - Median trading days to first FTMO reward: 127.0
 
+### Challenge candidate risk ladder
+| Requested risk | Effective risk | Pass | Evaluation breach | Challenge-to-payout | Funded breach | Median payout days | Expected first payout |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| $25 | $25 | 62.4% | 0.0% | 54.3% | 0.0% | 196 | $51.83 |
+| $50 | $50 | 95.1% | 0.9% | 92.9% | 0.5% | 127 | $165.11 |
+| $75 | $75 | 94.5% | 4.9% | 92.9% | 3.0% | 90 | $243.55 |
+| $100 | $100 | 89.2% | 10.8% | 86.6% | 6.3% | 70 | $304.58 |
+
 ## Near-floor recovery
 No active candidate achieves both at least 50% recovery probability and at most 5% modeled breach probability at the $100 cushion. No-trade preserves the account but cannot recover it to initial balance. Best recovery chance: Gold ORB (RBE) + Tokyo Coil at USD 25.00 risk (66.7% recovery; 29.3% breach). Lowest-breach active choice: Gold ORB (RBE) + Overnight Bias ORB at USD 5.00 risk (0.0% recovery; 0.0% breach). Lowest-exposure active choice: Gold ORB (RBE) + Overnight Bias ORB at USD 5.00 risk (0.0% recovery; 0.0% breach). Best RBE-excluded alternative: Overnight Bias ORB + Tokyo Coil at USD 25.00 risk (60.8% recovery; 28.0% breach).
 
