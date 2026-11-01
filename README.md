@@ -59,7 +59,7 @@ One GC contract and one NQ contract are not equal-risk exposures. MT5's USD 100 
 
 The prop simulations use 5,000 Monte Carlo paths, a five-trading-day circular block bootstrap, and a 252-trading-day horizon. FTMO uses a total book-risk ladder of $25–$100. Tradeify uses $100–$750 requested total book risk, whole-micro sizing, at least one micro per active sleeve, and a four-mini concurrent exposure cap. Actual risk can exceed the requested amount because of the minimum micro size.
 
-Tradeify evaluation results include both the published Growth base case and a 35% evaluation-consistency stress case because the public rule references are inconsistent. The funded model applies the funded consistency and payout conditions.
+Tradeify Growth evaluation has no consistency rule. The funded model applies the official 35% payout consistency rule, five profitable days above $150, the $53,000 minimum payout balance and current payout caps. The $1,250 daily loss limit is a soft pause, approximated by clipping closed daily losses at -$1,250.
 
 ## Validation and data quality
 
@@ -77,7 +77,7 @@ Tradeify evaluation results include both the published Growth base case and a 35
 - Normalized MT5 risk units use mean absolute realized losing-trade PnL. This is a sizing proxy, not verified initial stop risk.
 - Strategy PnL is timestamped at exit for completed-trade curves. Activity is timestamped by entry date. Timestamps remain as exported; no timezone conversion is assumed.
 - Prop simulations use a chronological 60/40 train/validation split. Book selection is performed on the first 60%; Monte Carlo evaluation uses the later validation sample.
-- Tradeify trailing drawdown is modeled from end-of-day equity. Intraday daily-loss pauses are not reconstructed from closed trades; the NT8 MAE report is a separate conservative soft-DLL stress diagnostic.
+- Tradeify's $2,000 EOD trailing drawdown and $50,100 locked floor are modeled. Its $1,250 soft DLL is approximated by clipping daily closed-PnL losses; intraday pause timing and overshoot are unknown. NT8 MAE is a separate stress diagnostic.
 - FTMO equity-based daily/max-loss breaches can occur from floating losses. MT5 exports do not contain intratrade MAE, so FTMO results use closed-PnL paths.
 - News restrictions, correlated-product hedging, broker margin, instrument-specific minimum lot sizes, slippage beyond exported costs, and exact timezone/session conversion are not fully modeled.
 - No strategy logic, native exits, stops, or parameters were redesigned or optimized.
