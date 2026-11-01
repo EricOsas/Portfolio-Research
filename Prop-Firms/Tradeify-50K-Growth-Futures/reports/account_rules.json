@@ -50,6 +50,7 @@
     "Each book divides risk equally across sleeves",
     "Payout processing approximated as 2 trading days; balance must remain at or above $53,000",
     "Four-mini exposure cap enforced after whole-micro sizing; any remaining noncompliant sizing is flagged",
+    "Current non-legacy Growth evaluation rules apply (accounts purchased on/after September 12, 2025); older legacy accounts require a separate rule model",
     "Growth evaluation has no consistency rule; funded payout requires 35% consistency, five days above $150 and the $53,000 balance threshold",
     "At least one trade per complete Monday-Friday week is required for funded payout eligibility; evaluation pass does not require weekly activity. The model checks complete historical weeks and uses week-aligned bootstrap blocks",
     "Evaluation pass rate requires an executable book within the position cap; weekly activity and microscalping are funded payout-eligibility checks",

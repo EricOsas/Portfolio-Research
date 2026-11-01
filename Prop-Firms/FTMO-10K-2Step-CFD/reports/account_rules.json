@@ -30,7 +30,7 @@
   "model_assumptions": [
     "$25/$50/$75/$100 total book risk per trade sensitivity",
     "Each book divides risk equally across sleeves",
-    "10 elapsed trading days (11th active trading day) approximate the 14-calendar-day first reward request date",
+    "10 elapsed trading days (11th sampled business day counting the first-trade day) approximate the 14-calendar-day first reward request date",
     "Phase review, verification and KYC delays are not modeled; phase transitions occur on the next simulated trading day",
     "Four business days approximate reward review plus payment processing",
     "No intraday floating PnL in MT5 exports; close-only rule model is optimistic"
