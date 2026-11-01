@@ -18,7 +18,7 @@
 - `Prop-Firms/Tradeify-50K-Growth-Futures`: Tradeify $50k Growth futures account simulation.
 
 Methodology:
-- Chronological 60/40 train/validation split. Book selection uses training data; Monte Carlo uses validation data.
+- Chronological 60/40 train/validation split. Each sleeve's realized-loss R unit is calibrated on training data and held fixed in validation; book selection uses training data and Monte Carlo uses validation data.
 - All one-to-four-sleeve combinations are screened on the normalized daily series.
 - 5,000 Monte Carlo paths, 5-trading-day circular block bootstrap, 252-trading-day horizon.
 - Tradeify futures sizing uses whole-micro increments, at least one micro per active sleeve, and a four-mini concurrent exposure cap.
@@ -33,6 +33,6 @@ The engines intentionally do not re-optimize strategy parameters, redesign strat
 
 - Trade exports are not a tick-level replay or an independent NQ minute-bar backtest.
 - MT5 RBE has no position ID; entry/exit legs use exact-volume matching where possible and FIFO fallback.
-- Realized-loss risk units are proxies, not verified initial stop risk.
+- Realized-loss risk units are training-sample proxies, not verified initial stop risk.
 - Intraday floating losses, broker margin, news restrictions, correlated-product hedging, and instrument-specific lot minima are not fully reconstructed.
 - Read the README and account_rules.json inside each output directory before using its estimates.
