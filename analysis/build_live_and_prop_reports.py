@@ -859,6 +859,9 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
             buffer_rows=rec[rec[target_col].astype(str).str.contains("buffer",case=False,regex=True)]
         else:
             buffer_rows=rec
+        if "weekly_activity_eligible" in near.columns:
+            near=near[near["weekly_activity_eligible"].astype(bool)]
+            buffer_rows=buffer_rows[(buffer_rows["weekly_activity_eligible"].astype(bool)) | (buffer_rows["book"]=="No trade")]
         active_near=near[near["book"]!="No trade"]
         if not active_near.empty:
             chosen=active_near.sort_values(
@@ -884,6 +887,10 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
         # and is not a payout-eligibility simulation.
         if target_col=="target_label":
             payout_rows=rec[rec[target_col].astype(str).str.contains("53,000",case=False,regex=True)]
+            if "weekly_activity_eligible" in payout_rows.columns:
+                payout_rows=payout_rows[(payout_rows["weekly_activity_eligible"].astype(bool) &
+                                          payout_rows["microscalping_eligible"].astype(bool)) |
+                                         (payout_rows["book"]=="No trade")]
             payout_near=payout_rows[payout_rows["starting_cushion_usd"].astype(float).eq(near_cushion)]
             payout_active=payout_near[payout_near["book"]!="No trade"]
             if not payout_active.empty:
@@ -932,12 +939,14 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
         target_rows=recovery_df[recovery_df["starting_cushion_usd"].astype(float).eq(near_cushion)]
         if "target_label" in target_rows.columns:
             target_rows=target_rows[target_rows["target_label"].astype(str).str.contains("break-even|buffer",case=False,regex=True)]
+        if "weekly_activity_eligible" in target_rows.columns:
+            target_rows=target_rows[target_rows["weekly_activity_eligible"].astype(bool)]
         viable=target_rows[(target_rows["book"]!="No trade") & (target_rows["ruin_probability"].astype(float)<=0.05) & (target_rows["recovery_probability"].astype(float)>=0.50)]
         if len(viable):
             best=viable.sort_values("recovery_probability",ascending=False).iloc[0]
             recovery_candidate=f'{best["book"]}: recovery probability {best["recovery_probability"]:.1%}, breach probability {best["ruin_probability"]:.1%}.'
         else:
-            recovery_candidate="No-trade is the safest near-floor control; none of the active candidates stayed within a 5% modeled breach probability."
+            recovery_candidate="No-trade is the safest near-floor control; none of the weekly-eligible active candidates stayed within a 5% modeled breach probability."
 
     lines=[f"# {title} — book ranking",
            "",
