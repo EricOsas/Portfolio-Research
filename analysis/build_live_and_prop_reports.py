@@ -1399,7 +1399,8 @@ def write_rule_docs():
                             "Growth evaluation has no consistency rule; funded payout requires 35% consistency, five days above $150 and the $53,000 balance threshold",
                             "At least one trade per Monday-Friday week is required in evaluation and funded; the model checks complete historical weeks and uses week-aligned bootstrap blocks",
                             "The evaluation pass rate requires weekly activity and position-limit compliance; payout eligibility also requires microscalping compliance",
-                            "Funded DLL rises from $1,250 to $2,000 from the next session after the $53,000 balance threshold; closed-PnL clipping is an approximation and does not reconstruct intraday overshoot",
+                            "Funded DLL rises from $1,250 to $2,000 from the next session after the $53,000 balance threshold; the model assumes the higher DLL remains after payouts",
+                            "Closed-PnL clipping is an approximation and does not reconstruct intraday trigger timing or overshoot",
                             "EOD drawdown updates modeled; real-time floating breaches not fully reconstructable"]
     }
     write_json(PROP_ROOT/"FTMO-10K-2Step-CFD"/"reports"/"account_rules.json",ftmo_rules)
