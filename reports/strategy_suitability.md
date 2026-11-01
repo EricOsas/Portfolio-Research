@@ -209,7 +209,8 @@ At a USD 100 cushion above the USD 9,000 static floor (USD 9,100 equity), the ta
 
 - Highest recovery probability: **Gold ORB (RBE) + Tokyo Coil**, USD 25 total risk; 66.74% chance to return to USD 10,000, with 29.34% modeled breach.
 - RBE-excluded alternative: **Overnight Bias ORB + Tokyo Coil**, USD 25 risk; 60.78% recovery and 28.02% breach.
-- Lowest-exposure active candidate: **Tokyo Coil** at USD 5 risk; only 0.36% recovery and 8.94% breach. It is low exposure, but not a practical recovery engine.
+- Lowest-risk single-sleeve option: **Tokyo Coil** at USD 5 risk; only 0.36% recovery and 8.94% breach. It is low exposure, but not a practical recovery engine.
+- Lowest-breach active book: **Gold ORB (RBE) + Overnight Bias ORB** at USD 5 total risk; 0% recovery and 0% observed breach. This preserves the remaining cushion in the sample but does not rebuild it.
 - At a USD 250 cushion, **Gold ORB (RBE) + Overnight Bias ORB** at USD 25 risk reaches initial equity in 84.06% of paths with 0.96% breach; the RBE-excluded **Overnight Bias ORB + Tokyo Coil** gives 84.36% recovery and 4.68% breach.
 - At a USD 500 cushion, **Gold ORB (RBE) + Tokyo Coil** at USD 12.50 risk gives 86.20% recovery with no breach observed in 5,000 paths. The RBE-excluded **Tokyo Coil** at USD 12.50 risk gives 84.66% recovery and 0.60% breach. At a USD 750 cushion, Tokyo Coil alone at USD 5 risk gives 75.52% recovery with no breach observed.
 
