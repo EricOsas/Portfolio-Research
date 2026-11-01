@@ -885,6 +885,38 @@ def run_platform(platform):
         pd.DataFrame(tradeify_rows).to_csv(tradeify_dir/"reports"/"monte_carlo_evaluation_funded_payout.csv",index=False)
         pd.DataFrame(recovery_rows).to_csv(tradeify_dir/"reports"/"recovery_mode.csv",index=False)
 
+        # Intraday adverse-excursion diagnostic: one micro per sleeve (0.1 mini).
+        # Sum of same-entry-day MAEs is a conservative stack, not a synchronized
+        # tick-level equity path.
+        mae_rows=[]
+        for cname,combo in prop_candidates.items():
+            daily_mae=pd.Series(0.0,index=validation_idx)
+            total_trades=known_mae=0
+            trade_maes=[]
+            for strategy in combo:
+                t=trades[trades["strategy"]==strategy].copy()
+                total_trades += len(t)
+                known_mae += int(t["mae"].notna().sum())
+                scaled=t["mae"]*0.1
+                trade_maes.extend(scaled.dropna().tolist())
+                grouped=scaled.groupby(t["entry_date"]).sum(min_count=1)
+                daily_mae=daily_mae.add(grouped.reindex(validation_idx,fill_value=0.0).fillna(0.0),fill_value=0.0)
+            active_mae=daily_mae[daily_mae>0]
+            mae_rows.append({
+                "book":cname,"strategies":" + ".join(combo),"sleeves":len(combo),
+                "sizing":"one micro per sleeve (0.1 mini equivalent)",
+                "mae_trade_coverage":known_mae/total_trades if total_trades else 0.0,
+                "mean_trade_mae_usd":float(np.mean(trade_maes)) if trade_maes else np.nan,
+                "p95_trade_mae_usd":float(np.quantile(trade_maes,.95)) if trade_maes else np.nan,
+                "max_trade_mae_usd":float(np.max(trade_maes)) if trade_maes else np.nan,
+                "mean_daily_stacked_mae_usd":float(active_mae.mean()) if len(active_mae) else 0.0,
+                "p95_daily_stacked_mae_usd":float(active_mae.quantile(.95)) if len(active_mae) else 0.0,
+                "max_daily_stacked_mae_usd":float(active_mae.max()) if len(active_mae) else 0.0,
+                "active_days_mae_over_1250_share":float((active_mae>1250).mean()) if len(active_mae) else 0.0,
+                "active_days_mae_over_2000_share":float((active_mae>2000).mean()) if len(active_mae) else 0.0,
+            })
+        pd.DataFrame(mae_rows).to_csv(tradeify_dir/"reports"/"mae_soft_dll_stress.csv",index=False)
+
     # Cross-sleeve correlation on normalized daily R, never raw export dollar size.
     rmat.corr(min_periods=30).to_csv(out/"reports"/"risk_unit_correlation_matrix.csv")
     write_json(out/"reports"/"data_quality.json",{
