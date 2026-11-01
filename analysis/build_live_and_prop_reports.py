@@ -674,9 +674,9 @@ def weighted_daily_pnl(rmat, dates, combo, weights):
 def simulate_recovery(paths, risk, floor, start_cushion, target, daily_limit=None):
     n,h=paths.shape
     eq=np.full(n, floor+start_cushion, dtype=float)
-    recovered=np.zeros(n,dtype=bool)
-    ruined=np.zeros(n,dtype=bool)
-    day=np.full(n,-1,dtype=int)
+    recovered=eq >= target
+    ruined=eq <= floor
+    day=np.where(recovered,0,-1).astype(int)
     for d in range(h):
         daily=paths[:,d]*risk
         active=~recovered & ~ruined
