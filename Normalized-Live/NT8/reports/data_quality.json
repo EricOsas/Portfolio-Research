@@ -1,0 +1,28 @@
+{
+  "platform": "NT8",
+  "trade_count": 9192,
+  "strategies": [
+    "Flash ORB",
+    "Gold ORB (RBE)",
+    "NQ Precision Bot",
+    "Open Drive",
+    "Opening-Shock Continuation",
+    "Overnight Bias ORB",
+    "Sigma ORB",
+    "VWAP Pullback",
+    "Vault Break"
+  ],
+  "source_timezone": "Preserved as exported; no conversion performed.",
+  "mt5_pairing_quality": [],
+  "risk_unit": "Mean absolute realized losing-trade PnL. NT8 first converted to one-contract PnL; MT5 uses exported position-level PnL. This is a reproducible loss-normalization proxy, not guaranteed to equal the strategy's initial stop risk.",
+  "mt5_standard_deals": "No position ID is present in the standard Deals tables. Entry/exit legs are paired FIFO by symbol and opposite side; quality exceptions are reported.",
+  "live_sizing": "NT8 = one contract equivalent per strategy. MT5 = $100 per trade at 1R based on mean realized loss.",
+  "limitations": [
+    "Exported closed trades do not contain a complete intratrade equity path.",
+    "FTMO daily/max loss is equity-based; MT5 simulations use closed-PnL paths and are optimistic for floating-loss breaches.",
+    "Tradeify trailing drawdown is real-time enforced; NT8 MAE is available for descriptive stress but this first pass uses daily close PnL in Monte Carlo.",
+    "Tradeify session boundary and FTMO server reset are not timezone-normalized; account rule days use exported dates.",
+    "The 4-mini cap is approximated using continuous mini-equivalent exposure from average realized loss per contract.",
+    "This is an export-based portfolio simulation, not an independent tick-level replay or live execution certification."
+  ]
+}

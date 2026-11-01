@@ -1,0 +1,20 @@
+{
+  "account": "FTMO $10,000 2-Step CFD; Standard assumed",
+  "phase_1_profit_target_usd": 1000,
+  "verification_profit_target_usd": 500,
+  "max_daily_loss_usd": 500,
+  "max_loss_static_usd": 1000,
+  "min_trading_days_each_phase": 4,
+  "time_limit": "Unlimited",
+  "consistency_rule": "None for 2-Step",
+  "funded_reward_split_default": 0.8,
+  "first_reward_request": "Day 14 or later after first funded trade",
+  "daily_reset": "00:00 CE(S)T; based on current-day 00:00 balance",
+  "news": "Standard funded account: selected events have a 2-minute pre/post execution restriction; not applicable during evaluation",
+  "model_assumptions": [
+    "$25/$50/$75/$100 total book risk per trade sensitivity",
+    "Each book divides risk equally across sleeves",
+    "10 business days used as an approximation for 14 calendar days to first reward",
+    "No intraday floating PnL in MT5 exports; close-only rule model is optimistic"
+  ]
+}
