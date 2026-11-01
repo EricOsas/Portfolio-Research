@@ -46,9 +46,9 @@ These are generic screening scores. They do not replace the FTMO- or Tradeify-sp
 ## Bootstrap risk analysis
 
 - 5,000 paths.
-- 5-trading-day circular block bootstrap.
+- 5-trading-day block bootstrap aligned to complete Monday-Friday weeks and sampled with replacement.
 - 252-trading-day horizon.
-- The bootstrap resamples validation daily PnL blocks to retain short-run clustering.
+- The bootstrap resamples complete validation calendar-week PnL blocks to retain short-run clustering and weekday structure.
 - The 5,000 paths describe variability under the historical validation distribution; they do not remove uncertainty about regime changes or whether the future resembles the sample.
 - The live drawdown-risk report bootstraps the average constituent-sleeve R series for each book and measures the probability of maximum drawdown reaching 10R, 20R and 50R barriers. These are balance-free drawdown proxies, not literal account ruin probabilities.
 
