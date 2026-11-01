@@ -1019,6 +1019,21 @@ def run_platform(platform):
                 added+=1
                 if added==2:
                     break
+    # MT5 Gold ORB (RBE) trade pairing uses FIFO fallback because the Deals
+    # export lacks position IDs. Add leading RBE-excluded pairs/triples as a
+    # sensitivity for FTMO book selection.
+    if platform=="MT5":
+        for size in [2,3]:
+            for score_col in ["challenge_score","funded_score"]:
+                no_rbe=combo_df[(combo_df["size"]==size) &
+                                (~combo_df["strategies"].str.contains("Gold ORB (RBE)",regex=False))]
+                no_rbe=no_rbe.sort_values(score_col,ascending=False)
+                for _,rr in no_rbe.iterrows():
+                    combo=tuple(rr["strategies"].split(" | "))
+                    if combo not in existing:
+                        prop_candidates[f"{score_col}_{size}sleeve_no_rbe"]=combo
+                        existing.add(combo)
+                        break
     # Deduplicate identical strategy sets; keep the first category label.
     unique_candidates={}
     seen_combos=set()
