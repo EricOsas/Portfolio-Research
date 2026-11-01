@@ -13,6 +13,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: portfolio-research-build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,11 +38,13 @@ jobs:
         run: python analysis/build_equity_reports.py
       - name: Inspect MT5 export schemas
         run: python analysis/inspect_mt5_headers.py
+      - name: Build normalized live and prop-firm research
+        run: python analysis/build_live_and_prop_reports.py
       - name: Commit generated reports
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add NT8 MT5 reports
+          git add NT8 MT5 Normalized-Live Prop-Firms reports
           if ! git diff --cached --quiet; then
             git commit -m "chore: refresh platform equity reports [skip ci]"
             git push
