@@ -436,13 +436,12 @@ def simulate_ftmo(paths, active, risk):
         "note": "Daily closed-PnL model; $20 minimum closed profit assumed for bank transfer; four-business-day review/processing approximation; FTMO equity limits can be breached by floating losses not visible in exports.",
     }
 
-def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, eval_consistency=False):
+def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok):
     n, h = paths.shape
     phase = np.zeros(n, dtype=np.int8)  # 0=Evaluation, 1=Funded, 2=Failed
     eval_eq = np.zeros(n); eval_hwm = np.zeros(n); eval_floor = np.full(n,-2000.0)
     funded_eq = np.zeros(n); funded_hwm = np.zeros(n); funded_floor = np.full(n,-2000.0)
     locked = np.zeros(n, dtype=bool)
-    dll = np.full(n,1250.0)
     eval_active_days = np.zeros(n,dtype=int)
     eval_best_day = np.zeros(n)
     eval_profit = np.zeros(n)
@@ -465,13 +464,17 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
     cycle_best_day = np.zeros(n)
     for d in range(h):
         start_phase = phase.copy()
-        daily = paths[:,d] * risk
+        raw_daily = paths[:,d] * risk
+        # Growth DLL is a soft stop, not a hard account failure. With only
+        # completed-trade daily PnL available, approximate the stop by clipping
+        # the day's closed loss at the $1,250 DLL. Intraday overshoot is unknown.
+        daily = np.maximum(raw_daily, -1250.0)
         act = active[:,d]
 
         ev = start_phase == 0
         if ev.any():
             eval_eq[ev] += daily[ev]
-            eval_dll_hits[ev & (daily < -1250.0)] += 1
+            eval_dll_hits[ev & (raw_daily <= -1250.0)] += 1
             eval_active_days[ev] += act[ev].astype(int)
             eval_profit[ev] += daily[ev]
             eval_best_day[ev] = np.maximum(eval_best_day[ev], daily[ev])
@@ -480,10 +483,8 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
             hit_floor = ev & (eval_eq <= eval_floor)
             fail_eval |= hit_floor
             phase[hit_floor] = 2
-            consistency_ok = (eval_profit > 0) & (eval_best_day <= 0.35 * eval_profit)
             min_days_ok = eval_active_days >= 1
-            rule_ok = consistency_ok if eval_consistency else np.ones(n,dtype=bool)
-            passed = ev & (phase == 0) & (eval_eq >= 3000.0) & min_days_ok & rule_ok
+            passed = ev & (phase == 0) & (eval_eq >= 3000.0) & min_days_ok
             if passed.any():
                 eval_pass_day[passed] = d
                 phase[passed] = 1
@@ -492,7 +493,6 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
                 funded_floor[passed] = -2000.0
                 locked[passed] = False
                 funded_age[passed] = 0
-                dll[passed] = 1250.0
                 win_days[passed] = 0
                 cycle_profit[passed] = 0.0
                 best_cycle_day[passed] = 0.0
@@ -502,7 +502,7 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
         if fu.any():
             funded_eq[fu] += daily[fu]
             funded_age[fu] += 1
-            dll_hits[fu & (daily < -dll)] += 1
+            dll_hits[fu & (raw_daily <= -1250.0)] += 1
             cycle_profit[fu] += daily[fu]
             best_cycle_day[fu] = np.maximum(best_cycle_day[fu], daily[fu])
             win_days[fu] += (daily[fu] > 150.0).astype(int)
@@ -518,9 +518,6 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
             fail_funded |= hit_floor
             fail_funded_day[hit_floor] = d
             phase[hit_floor] = 2
-
-            # The DLL rises to $2,000 from the next session after the +$3,000 threshold.
-            dll[fu & (funded_eq >= 3000.0)] = 2000.0
 
             # A payout request is subject to 2-day processing. Balance must stay
             # at or above +$3,000 until approval. The model assumes requests are
@@ -585,9 +582,9 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok, ev
         "survival_90d_observed_sample_count": int(len(survived_90)),
         "microscalping_eligible": bool(microscalp_ok),
         "weekly_activity_eligible": bool(weekly_activity_ok),
-        "evaluation_consistency_variant": "35% stress" if eval_consistency else "published Growth base case: no consistency",
+        "evaluation_consistency_variant": "official Growth rules: no evaluation consistency",
         "simulations": int(n), "horizon_trading_days": int(h),
-        "note": "EOD trailing updates and closed-PnL checks are modeled. Real-time floating equity, intraday DLL pause sequencing and broker slippage are not fully reconstructable from closed-trade exports.",
+        "note": "EOD trailing updates are modeled. Growth soft DLL is approximated by clipping each closed-PnL daily loss at -$1,250; intraday trigger timing, overshoot, floating equity and slippage are not reconstructable from closed-trade exports.",
     }
 
 def microscalping_stats(trades):
@@ -671,19 +668,21 @@ def weighted_daily_pnl(rmat, dates, combo, weights):
         result = result + rmat.loc[dates, strategy] * weights[strategy]
     return result
 
-def simulate_recovery(paths, risk, floor, start_cushion, target, daily_limit=None):
+def simulate_recovery(paths, risk, floor, start_cushion, target, daily_limit=None, daily_limit_mode="hard"):
     n,h=paths.shape
     eq=np.full(n, floor+start_cushion, dtype=float)
     recovered=eq >= target
     ruined=eq <= floor
     day=np.where(recovered,0,-1).astype(int)
     for d in range(h):
-        daily=paths[:,d]*risk
+        raw_daily=paths[:,d]*risk
         active=~recovered & ~ruined
-        if daily_limit is not None:
-            bad_day=active & (daily < -daily_limit)
-        else:
-            bad_day=np.zeros(n,dtype=bool)
+        bad_day=np.zeros(n,dtype=bool)
+        daily=raw_daily.copy()
+        if daily_limit is not None and daily_limit_mode=="hard":
+            bad_day=active & (raw_daily < -daily_limit)
+        elif daily_limit is not None and daily_limit_mode=="soft":
+            daily=np.maximum(raw_daily, -daily_limit)
         eq[active] += daily[active]
         ruined |= active & ((eq <= floor) | bad_day)
         hit=active & (~ruined) & (eq >= target)
@@ -959,7 +958,7 @@ def run_platform(platform):
                 effective=sum(weights.values())
                 book_daily=weighted_daily_pnl(rmat,validation_idx,combo,weights)
                 paths_t,actpaths_t=sample_block_paths(book_daily.values,active.values,seed=SEED+len(tradeify_rows)+300)
-                res=simulate_tradeify(paths_t,actpaths_t,1.0,micro["eligible"],week_ok,False)
+                res=simulate_tradeify(paths_t,actpaths_t,1.0,micro["eligible"],week_ok)
                 extra={"book":cname,"strategies":" + ".join(combo),
                     "requested_risk_per_book_trade_usd":risk,"effective_risk_after_micro_sizing_usd":effective,
                     "mini_equivalent_per_sleeve":json.dumps(sizes,sort_keys=True),
@@ -967,11 +966,6 @@ def run_platform(platform):
                     "position_limit_compliant":compliant}
                 res["position_limit_compliant"]=compliant
                 tradeify_rows.append({**extra,**res})
-                # Alternative evaluation-consistency stress case because Tradeify's
-                # pricing reference conflicts with its dedicated Growth rule page.
-                stress=simulate_tradeify(paths_t,actpaths_t,1.0,micro["eligible"],week_ok,True)
-                stress["position_limit_compliant"]=compliant
-                tradeify_rows.append({**extra,**stress})
 
     # Recovery mode: compare low-complexity one/two-sleeve books with a no-trade
     # control. Tradeify uses at least one micro per sleeve; FTMO uses $12.50 risk
@@ -1014,7 +1008,7 @@ def run_platform(platform):
                 n_sims=N_SIMS,horizon=HORIZON,seed=SEED+999+len(recovery_rows))
             for cushion in [200.0,500.0,1000.0,1500.0]:
                 for target in [600.0,3000.0]:
-                    res=simulate_recovery(rec_paths,1.0,100.0,cushion,target,daily_limit=None)
+                    res=simulate_recovery(rec_paths,1.0,100.0,cushion,target,daily_limit=1250.0,daily_limit_mode="soft")
                     recovery_rows.append({"firm":"Tradeify","book":" + ".join(combo),
                         "risk_usd_per_book_trade":sum(weights.values()),"state":"post-lock recovery",
                         "mini_equivalent_exposure":exposure,"floor_equity":100.0,
@@ -1121,13 +1115,16 @@ def write_rule_docs():
         "account":"FTMO $10,000 2-Step CFD; Standard assumed",
         "phase_1_profit_target_usd":1000,"verification_profit_target_usd":500,
         "max_daily_loss_usd":500,"max_loss_static_usd":1000,
+        "daily_loss_basis":"Equity-based; daily limit resets at 00:00 CE(S)T from that day's starting balance",
+        "maximum_loss_basis":"Static 10% of initial simulated capital",
         "min_trading_days_each_phase":4,"time_limit":"Unlimited",
-        "consistency_rule":"None for 2-Step",
+        "consistency_rule":"None for 2-Step; FTMO Best Day Rule applies to 1-Step only",
         "funded_reward_split_default":0.80,"first_reward_request":"Day 14 or later after first funded trade; model uses 10 trading days",
         "minimum_closed_profit_usd_bank_transfer":20,"minimum_closed_profit_usd_crypto":50,
         "reward_processing_model_business_days":4,
         "daily_reset":"00:00 CE(S)T; based on current-day 00:00 balance",
-        "official_sources":["https://ftmo.com/en/trading-objectives/","https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/","https://ftmo.com/en/faq/can-i-trade-news/"],
+        "official_sources":["https://ftmo.com/en/trading-objectives/","https://ftmo.com/en/2-step-challenge/","https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/","https://ftmo.com/en/faq/can-i-trade-news/","https://ftmo.com/en/faq/do-i-have-to-close-my-positions-overnight-or-before-the-weekend/"],
+        "rules_checked_date":"2026-11-01",
         "news":"Standard funded account: selected events have a 2-minute pre/post execution restriction; not applicable during evaluation",
         "model_assumptions":["$25/$50/$75/$100 total book risk per trade sensitivity",
                             "Each book divides risk equally across sleeves",
@@ -1139,21 +1136,22 @@ def write_rule_docs():
         "evaluation_profit_target_usd":3000,"evaluation_daily_loss_limit_usd":1250,
         "evaluation_trailing_drawdown_usd":2000,"evaluation_min_trading_days":1,
         "evaluation_consistency_base_case":"None (dedicated Growth account guide)",
-        "evaluation_consistency_stress_case":"35% (pricing-reference conflict sensitivity)",
-        "funded_daily_loss_limit_initial_usd":1250,"funded_daily_loss_limit_after_6pct_usd":2000,
+        "funded_daily_loss_limit_usd":1250,
         "funded_trailing_drawdown_usd":2000,"funded_drawdown_lock_balance_usd":52100,
         "funded_locked_floor_usd":50100,"payout_min_balance_usd":53000,
         "funded_drawdown_measurement":"End-of-day trailing until floor locks at $50,100",
-        "daily_loss_measurement":"Real-time equity soft pause; closed-PnL simulation does not reproduce intraday sequence",
+        "daily_loss_measurement":"Real-time equity soft pause; simulation clips closed daily PnL at -$1,250 as an approximation. Intraday overshoot is unknown.",
         "payout_consistency":0.35,"payout_profitable_days":5,"payout_day_profit_minimum_usd":150,
         "profit_split":0.90,"payout_minimum_usd":500,"payout_caps_usd":[1500,2000,2500,3000],
         "payout_processing_model_trading_days":2,
-        "max_position_size":"4 minis / 40 micros","minimum_activity":"At least 1 trade per week",
+        "max_position_size":"4 minis / 40 micros","position_scaling":"No scaling restrictions; full maximum position size available from day one",
+        "minimum_activity":"At least 1 trade per week (Monday-Friday)",
         "no_hedging_correlated_products":True,"overnight_positions":"Must be flat by daily cutoff",
         "microscalping":"More than 50% of trades and more than 50% of profit from trades longer than 10 seconds",
         "daily_close":"4:45 PM ET regular days; 12:59 PM ET early-close days",
         "news":"Allowed; slippage risk remains",
-        "official_sources":["https://help.tradeify.co/en/articles/10495915-growth-evaluation-accounts","https://help.tradeify.co/en/articles/12268167-essential-trading-rules-overview","https://help.tradeify.co/en/articles/10468320-rules-consistency-rule"],
+        "official_sources":["https://help.tradeify.co/en/articles/10495915-growth-evaluation-accounts","https://help.tradeify.co/en/articles/12268167-essential-trading-rules-overview","https://help.tradeify.co/en/articles/10468320-rules-consistency-rule","https://help.tradeify.co/en/articles/11083796-growth-funded-account-payout-policy","https://help.tradeify.co/en/articles/10495897-rules-trailing-max-drawdowns"],
+        "rules_checked_date":"2026-11-01",
         "model_assumptions":["$100/$250/$500/$750 requested total book risk per trade sensitivity",
                             "Minimum 1 micro per active sleeve; whole-micro sizing rounded down above the minimum",
                             "Each book divides risk equally across sleeves",
@@ -1240,7 +1238,7 @@ Results are conditional on historical export distributions and the assumptions i
         if firm=="Tradeify-50K-Growth-Futures":
             extra_links += "\n- [Intraday MAE / soft-DLL stress](reports/mae_soft_dll_stress.csv)"
             sizing_note = "Whole-micro sizing is used, with at least one micro per active sleeve and a four-mini concurrent cap. Effective risk after minimum sizing is shown in the results."
-            daily_limit_note = "Tradeify EOD trailing drawdown is modeled from daily closes. Real-time daily-loss pause sequencing is not reconstructed; the NT8 MAE stress report is a separate diagnostic."
+            daily_limit_note = "Tradeify EOD trailing drawdown is modeled from daily closes. The $1,250 soft daily-loss limit is approximated by clipping closed daily losses at -$1,250; intraday trigger timing and overshoot remain unknown. NT8 MAE is a separate diagnostic."
             pairing_note = "NT8 MAE is available for the separate soft-DLL stress diagnostic."
             chart_extra = "\n![Evaluation drawdown breach probability](charts/evaluation_breach_probability.png)\n![Intraday MAE / soft-DLL stress](charts/mae_soft_dll_stress.png)\n"
         else:
