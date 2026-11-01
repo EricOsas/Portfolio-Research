@@ -1396,7 +1396,7 @@ def write_rule_docs():
         "profit_split":0.90,"payout_minimum_usd":500,"payout_caps_usd":[1500,2000,2500,3000],
         "payout_processing_model_trading_days":2,
         "max_position_size":"4 minis / 40 micros","position_scaling":"No scaling restrictions; full maximum position size available from day one",
-        "minimum_activity":"At least 1 trade per complete Monday-Friday week for funded payout eligibility; not an evaluation pass condition",
+        "minimum_activity":"At least 1 trade per complete Monday-Friday week; applies during evaluation and funded trading",
         "no_hedging_correlated_products":True,"overnight_positions":"Must be flat by daily cutoff",
         "microscalping":"More than 50% of trades and more than 50% of profit from trades longer than 10 seconds",
         "daily_close":"4:45 PM ET regular days; 12:59 PM ET early-close days",
@@ -1409,8 +1409,8 @@ def write_rule_docs():
                             "Payout processing approximated as 2 trading days; balance must remain at or above $53,000",
                             "Four-mini exposure cap enforced after whole-micro sizing; any remaining noncompliant sizing is flagged",
                             "Growth evaluation has no consistency rule; funded payout requires 35% consistency, five days above $150 and the $53,000 balance threshold",
-                            "At least one trade per complete Monday-Friday week is required for funded payout eligibility; evaluation pass does not require weekly activity. The model checks complete historical weeks and uses week-aligned bootstrap blocks",
-                            "Evaluation pass rate requires an executable book within the position cap; weekly activity and microscalping are funded payout-eligibility checks",
+                            "At least one trade per complete Monday-Friday week applies during evaluation and funded trading; the model checks complete historical weeks and uses week-aligned bootstrap blocks",
+                            "Evaluation pass rate requires weekly activity and position-limit compliance; microscalping is an additional funded payout-eligibility check",
                             "Funded DLL rises from $1,250 to $2,000 from the next session after the $53,000 balance threshold; the model assumes the higher DLL remains after payouts",
                             "Closed-PnL clipping is an approximation and does not reconstruct intraday trigger timing or overshoot",
                             "EOD drawdown updates modeled; real-time floating breaches not fully reconstructable"]
@@ -1493,7 +1493,7 @@ Results are conditional on historical export distributions and the assumptions i
         chart_extra = ""
         if firm=="Tradeify-50K-Growth-Futures":
             extra_links += "\n- [Intraday MAE / soft-DLL stress](reports/mae_soft_dll_stress.csv)"
-            sizing_note = "Growth evaluation has no consistency rule. Funded payouts require 35% consistency, five winning days above $150, a $53,000 balance, at least one trade per complete Monday-Friday week and the microscalping test. Weekly activity and microscalping are funded payout-eligibility rules, not evaluation pass conditions. Whole-micro sizing uses at least one micro per active sleeve and a four-mini concurrent cap; effective risk after minimum sizing is shown."
+            sizing_note = "Growth evaluation has no consistency rule. At least one trade per complete Monday-Friday week is required during evaluation and funded trading. Funded payouts require 35% consistency, five winning days above $150, a $53,000 balance and the microscalping test. Whole-micro sizing uses at least one micro per active sleeve and a four-mini concurrent cap; effective risk after minimum sizing is shown."
             daily_limit_note = "The initial $1,250 soft daily-loss limit is modeled as a closed-PnL clip; after the funded balance reaches $53,000, the model applies the official $2,000 DLL from the next session. Intraday trigger timing, overshoot and trade sequence remain unknown. The EOD trailing drawdown is modeled from daily closes; NT8 MAE is a separate diagnostic."
             pairing_note = "NT8 MAE stacks same-entry-day adverse excursions across active sleeves; it is not a synchronized intraday equity replay."
             recovery_note = "Recovery curves are balance-only. The $53,000 target does not enforce payout consistency, five $150 winning days or payout processing."
