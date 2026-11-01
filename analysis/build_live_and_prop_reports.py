@@ -454,10 +454,17 @@ def simulate_ftmo(paths, active, risk):
         # the modeled four-business-day processing period.
         pending_reward = ((reward_request_day >= 0) & (reward_day < 0) &
                           (d >= reward_request_day + 4))
-        approved = pending_reward & (phase == 3)
+        approved = pending_reward & (phase == 3) & (eq >= reward_request_amount)
+        denied = pending_reward & (phase == 3) & (eq < reward_request_amount)
         if approved.any():
             reward_day[approved] = d
             reward[approved] = reward_request_amount[approved]
+            # Cash withdrawal pays 80% and leaves the remaining 20% of the
+            # requested profit in the account. Rollover is a separate option.
+            eq[approved] -= reward_request_amount[approved]
+        if denied.any():
+            reward_request_day[denied] = -1
+            reward_request_amount[denied] = 0.0
 
     reached_funded = p2_day >= 0
     first_payout = reward_day >= 0
@@ -1223,7 +1230,9 @@ def write_rule_docs():
         "maximum_loss_basis":"Static 10% of initial simulated capital",
         "min_trading_days_each_phase":4,"time_limit":"Unlimited",
         "consistency_rule":"None for 2-Step; FTMO Best Day Rule applies to 1-Step only",
-        "funded_reward_split_default":0.80,"first_reward_request":"Day 14 or later after first funded trade; model uses 10 trading days",
+        "funded_reward_split_default":0.80,"reward_rollover_option":True,
+        "modeled_reward_mode":"Cash withdrawal; 80% paid and 20% of requested profit remains in account",
+        "first_reward_request":"Day 14 or later after first funded trade; model uses 10 trading days",
         "minimum_closed_profit_usd_bank_transfer":20,"minimum_closed_profit_usd_crypto":50,
         "reward_processing_model_business_days":4,
         "daily_reset":"00:00 CE(S)T; based on current-day 00:00 balance",
