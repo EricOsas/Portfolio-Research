@@ -1,6 +1,6 @@
 strategy,status,source_file,note
 Gold X9,pending_export,,No trade export in repository.
-Gold ORB (RBE),pending_export,,No trade export in repository.
+Gold ORB (RBE),parsed,MT5 RBE Trades.xlsx,Trade export parsed successfully.
 Tokyo Coil,parsed,MT5 TokyoCoil Trades.xlsx,Trade export parsed successfully.
 Vault Break,parsed,MT5 VaultBreak Trades.xlsx,Trade export parsed successfully.
 Overnight Bias ORB,parsed,MT5 OvernightBiasRB Trades.xlsx,Trade export parsed successfully.

@@ -6,8 +6,37 @@
   },
   {
     "strategy": "Gold ORB (RBE)",
-    "status": "pending_export",
-    "notes": "No source export."
+    "status": "parsed",
+    "source_file": "MT5 RBE Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 2987,
+    "parsed_deal_events": 2328,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-03T07:31:40",
+    "last_event": "2026-10-30T17:40:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "XAUUSD",
+      "report_period": "M1 (2020.01.01 - 2026.10.31)",
+      "report_currency": "USD",
+      "initial_deposit": 100000.0,
+      "reported_total_net_profit": 205922.61,
+      "reported_profit_factor": 1.436758,
+      "reported_total_trades": 1164.0
+    },
+    "balance_reconciliation": {
+      "initial_deposit": 100000.0,
+      "final_balance": 305922.61,
+      "balance_change": 205922.61,
+      "sum_deal_cashflows": 205922.61,
+      "difference": 0.0,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "XAUUSD"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
   },
   {
     "strategy": "Tokyo Coil",
