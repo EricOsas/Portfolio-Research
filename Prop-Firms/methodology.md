@@ -12,6 +12,7 @@
 - Challenge pass, drawdown breach, funded survival, payout eligibility, payout amounts and recovery scenarios are reported separately.
 - The model is based on completed-trade exports, not an intraday account-equity replay.
 - The 252-day rates are probabilities within a one-trading-year simulation horizon, not lifetime pass/payout probabilities.
+- Tradeify weekly activity and microscalping eligibility are checked on validation trades. Trades with missing duration data count as not qualifying for the over-10-second rule; duration coverage is reported.
 
 ## FTMO — USD 10,000 Standard 2-Step CFD
 
