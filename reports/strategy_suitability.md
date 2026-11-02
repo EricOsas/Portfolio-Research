@@ -87,6 +87,8 @@ All probabilities below are 5,000-path, 252-trading-day estimates. Breach means 
 
 The repeat estimates assume each new account has the same probability and is independent. They exclude challenge fees and resets. The combined breach figures combine evaluation breach with funded breach conditional on passing; funded breaches can occur after a payout, so breach and payout events are not mutually exclusive.
 
+**Tradeify switch caveat:** the challenge and funded books are simulated separately. The 52.66% combined first-payout estimate multiplies the challenge book's pass rate by the funded book's conditional first-payout rate. The model does not replay a mid-account strategy switch. Each book's expected payout-cash total is a same-book scenario.
+
 ## Expected monthly PnL and drawdown
 
 These are 5,000-path validation bootstrap estimates at the base risk shown. A month is 21 trading sessions.
