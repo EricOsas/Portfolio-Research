@@ -380,6 +380,44 @@ def live_bootstrap_summary(paths):
         "ruin_50R": float((maxdd >= 50).mean()),
     }
 
+def monthly_path_summary(paths, risk):
+    """Summarize 21-session month blocks from the bootstrapped strategy PnL path.
+
+    These are strategy-stream estimates at the configured book risk, before
+    account failure, payout eligibility, withdrawal resets, or rule-based stops.
+    """
+    daily = np.asarray(paths, dtype=float) * float(risk)
+    n, h = daily.shape
+    months = h // 21
+    if months < 1:
+        return {}
+    blocks = daily[:, :months * 21].reshape(n, months, 21)
+    monthly_pnl = blocks.sum(axis=2).reshape(-1)
+
+    month_equity = np.cumsum(blocks, axis=2)
+    month_high_water = np.maximum.accumulate(np.maximum(month_equity, 0.0), axis=2)
+    monthly_drawdown = np.maximum(month_high_water - month_equity, 0.0).max(axis=2).reshape(-1)
+
+    equity = np.cumsum(daily, axis=1)
+    high_water = np.maximum.accumulate(np.maximum(equity, 0.0), axis=1)
+    max_drawdown_252d = np.maximum(high_water - equity, 0.0).max(axis=1)
+
+    return {
+        "mean_monthly_strategy_pnl_usd": float(np.mean(monthly_pnl)),
+        "median_monthly_strategy_pnl_usd": float(np.median(monthly_pnl)),
+        "p10_monthly_strategy_pnl_usd": float(np.percentile(monthly_pnl, 10)),
+        "p90_monthly_strategy_pnl_usd": float(np.percentile(monthly_pnl, 90)),
+        "median_monthly_peak_to_trough_dd_usd": float(np.median(monthly_drawdown)),
+        "p90_monthly_peak_to_trough_dd_usd": float(np.percentile(monthly_drawdown, 90)),
+        "p95_max_drawdown_252d_usd": float(np.percentile(max_drawdown_252d, 95)),
+        "monthly_metric_basis": (
+            "21-trading-day blocks; strategy PnL before account failures, "
+            "DLL clipping, payout rules or withdrawal resets. Monthly DD is "
+            "within-block peak-to-trough; 252d DD is full-path peak-to-trough."
+        ),
+    }
+
+
 def simulate_ftmo(paths, active, risk):
     n, h = paths.shape
     phase = np.ones(n, dtype=np.int8)  # 1=Challenge, 2=Verification, 3=Funded, 4=Failed
@@ -487,6 +525,7 @@ def simulate_ftmo(paths, active, risk):
     first_payout = reward_day >= 0
     funded_hard_breach = fail_daily_funded | fail_max_funded
     return {
+        **monthly_path_summary(paths, risk),
         "pass_phase1_rate": float((p1_day >= 0).mean()),
         "pass_verification_conditional_rate": float((p2_day >= 0).sum() / max(1, (p1_day >= 0).sum())),
         "pass_both_phases_rate": float(reached_funded.mean()),
@@ -654,6 +693,7 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
         if end_day < h:
             survived_90.append(fail_funded_day[i] < 0 or fail_funded_day[i] > end_day)
     return {
+        **monthly_path_summary(paths, risk),
         "evaluation_target_hit_rate": float(target_reached.mean()),
         "evaluation_pass_rate": float(reached_funded.mean()),
         "evaluation_account_eligible": evaluation_account_eligible,
