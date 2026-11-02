@@ -1,0 +1,55 @@
+; ====================================================================
+; OpenDrive — NQ (NAS100 / USTEC)
+; Profile: Live Account (Static Fixed Risk 1%)
+; Performance: +$52,811 / PF 1.26 / MaxDD 12.08% / 2,006 Trades
+; ====================================================================
+
+; --- 1 - Trading ---
+EnableTrading=true
+AllowLong=true
+AllowShort=true
+
+; --- 2 - Risk & Sizing ---
+RiskMode=1
+RiskPercent=1.0
+RiskMoney=0.0
+UseFixedLots=false
+FixedLots=1.0
+AllowMinLotFallback=true
+DailyLossLimitPct=0.0
+
+; --- 3 - Signal Core ---
+EmaPeriod=12
+EntryHourNY=9
+EntryMinNY=30
+
+; --- 4 - Stops & Trailing ---
+AtrPeriod=14
+AtrMode=1
+StopATR=4.0
+ActivateATR=0.25
+TrailATR=3.0
+FlatAtExit=true
+ExitHourNY=16
+ExitMinNY=0
+
+; --- 5 - Costs & Execution ---
+MaxSpreadPoints=0
+SlippagePoints=3
+CommissionPerLot=7.0
+MagicNumber=93093001
+TradeComment=OpenDrive_Fix
+
+; --- 6 - Display & Visuals ---
+ShowVisuals=true
+ShowPanel=true
+ShowExtras=false
+WriteLog=true
+
+; --- 7 - News Guard ---
+News_WebRequest_URL=https://nfs.faireconomy.media
+News_Impact=1
+News_Window=10
+News_Cost_Covered_BE=true
+News_Flatten_Before=false
+News_Block_Modification=true
