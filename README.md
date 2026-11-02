@@ -99,6 +99,7 @@ Tradeify Growth evaluation has no consistency rule. The funded model applies the
 ```bash
 python -m pip install -r analysis/requirements.txt
 python analysis/build_equity_reports.py
+python analysis/inspect_mt5_headers.py
 python analysis/build_live_and_prop_reports.py
 ```
 
