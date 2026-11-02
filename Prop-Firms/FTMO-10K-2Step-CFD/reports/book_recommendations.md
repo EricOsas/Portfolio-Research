@@ -36,12 +36,24 @@ Book selection uses training-only challenge/funded scores. All one-to-four-sleev
   - Median trading days to first FTMO reward: 127.0
 
 ### Challenge candidate risk ladder
-| Requested risk | Effective risk | Pass | Evaluation breach | Challenge-to-payout | Funded breach | Median payout days | Expected first payout |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| $25 | $25 | 62.4% | 0.0% | 54.3% | 0.0% | 196 | $51.83 |
-| $50 | $50 | 95.1% | 0.9% | 92.9% | 0.5% | 127 | $165.11 |
-| $75 | $75 | 94.5% | 4.9% | 92.9% | 3.0% | 90 | $243.55 |
-| $100 | $100 | 89.2% | 10.8% | 86.6% | 6.3% | 70 | $304.58 |
+Monthly PnL uses 21-trading-day blocks. P10 is the 10th-percentile month; P90 monthly DD is the 90th-percentile within-month peak-to-trough drawdown. The 252-day DD is the 95th-percentile full-path drawdown.
+| Requested risk | Effective risk | Pass | Evaluation breach | Challenge-to-payout | Funded breach | Median payout days | Expected first payout | Mean monthly PnL | P10 monthly PnL | P90 monthly DD | P95 252d max DD |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| $25 | $25 | 62.4% | 0.0% | 54.3% | 0.0% | 196 | $51.83 | — | — | — | — |
+| $50 | $50 | 95.1% | 0.9% | 92.9% | 0.5% | 127 | $165.11 | $281 | $-153 | $361 | $1,008 |
+| $75 | $75 | 94.5% | 4.9% | 92.9% | 3.0% | 90 | $243.55 | — | — | — | — |
+| $100 | $100 | 89.2% | 10.8% | 86.6% | 6.3% | 70 | $304.58 | — | — | — | — |
+
+## Expected account attempts before first payout
+- Challenge pass probability: 95.1%.
+- First-payout probability after funding with the selected funded book: 97.6%.
+- Approximate payout probability per challenge start when switching to the selected funded book: 92.9%.
+- Expected challenge accounts started per first payout: 1.08.
+- Expected failed evaluation accounts before first payout: 0.05.
+- Expected funded accounts entered per first payout: 1.02.
+- Expected failed funded accounts before first payout: 0.02.
+- Approximate combined hard-breach probability per challenge start: 1.4%.
+These are geometric-repeat estimates. They assume each new account repeats the same probabilities; they are not a guarantee and do not include account fees.
 
 ## Near-floor recovery
 No active candidate achieves both at least 50% recovery probability and at most 5% modeled breach probability at the $100 cushion. No-trade preserves the account but cannot recover it to initial balance. Best recovery chance: Gold ORB (RBE) + Tokyo Coil at USD 25.00 risk (66.7% recovery; 29.3% breach). Lowest-breach active choice: Gold ORB (RBE) + Overnight Bias ORB at USD 5.00 risk (0.0% recovery; 0.0% breach). Lowest-exposure active choice: Gold ORB (RBE) + Overnight Bias ORB at USD 5.00 risk (0.0% recovery; 0.0% breach). Best RBE-excluded alternative: Overnight Bias ORB + Tokyo Coil at USD 25.00 risk (60.8% recovery; 28.0% breach).

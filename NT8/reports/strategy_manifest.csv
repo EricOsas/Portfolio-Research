@@ -1,10 +1,10 @@
 strategy,status,source_file,note
-Gold ORB (RBE),missing_file,NinjaTrader RBE Trades.csv,Expected export file not found.
-Vault Break,missing_file,NinjaTrader VaultBreak Trades.csv,Expected export file not found.
-VWAP Pullback,missing_file,NinjaTrader VWAPPullback Trades.csv,Expected export file not found.
-Overnight Bias ORB,missing_file,NinjaTrader OvernightBiasRB Trades.csv,Expected export file not found.
-Open Drive,missing_file,NinjaTrader OpenDrive Trades.csv,Expected export file not found.
-NQ Precision Bot,missing_file,NinjaTrader NQPrecisionBot Trades.csv,Expected export file not found.
-Opening-Shock Continuation,missing_file,NinjaTrader OpeningShockCont Trades.csv,Expected export file not found.
-Sigma ORB,missing_file,NinjaTrader SigmaORB Trades.csv,Expected export file not found.
-Flash ORB,missing_file,NinjaTrader FlashORB Trades.csv,Expected export file not found.
+Gold ORB (RBE),parsed,NinjaTrader RBE Trades.csv,Trade export parsed successfully.
+Vault Break,parsed,NinjaTrader VaultBreak Trades.csv,Trade export parsed successfully.
+VWAP Pullback,parsed,NinjaTrader VWAPPullback Trades.csv,Trade export parsed successfully.
+Overnight Bias ORB,parsed,NinjaTrader OvernightBiasRB Trades.csv,Trade export parsed successfully.
+Open Drive,parsed,NinjaTrader OpenDrive Trades.csv,Trade export parsed successfully.
+NQ Precision Bot,parsed,NinjaTrader NQPrecisionBot Trades.csv,Trade export parsed successfully.
+Opening-Shock Continuation,parsed,NinjaTrader OpeningShockCont Trades.csv,Trade export parsed successfully.
+Sigma ORB,parsed,NinjaTrader SigmaORB Trades.csv,Trade export parsed successfully.
+Flash ORB,parsed,NinjaTrader FlashORB Trades.csv,Trade export parsed successfully.

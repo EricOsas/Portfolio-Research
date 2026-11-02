@@ -1,12 +1,12 @@
 strategy,status,source_file,note
 Gold X9,pending_export,,No trade export in repository.
-Gold ORB (RBE),missing_file,MT5 RBE Trades.xlsx,Expected export file not found.
-Tokyo Coil,missing_file,MT5 TokyoCoil Trades.xlsx,Expected export file not found.
-Vault Break,missing_file,MT5 VaultBreak Trades.xlsx,Expected export file not found.
-Overnight Bias ORB,missing_file,MT5 OvernightBiasRB Trades.xlsx,Expected export file not found.
-Open Drive,missing_file,MT5 OpenDrive Trades.xlsx,Expected export file not found.
-NQ Precision Bot,missing_file,MT5 NQPrecisionBot Trades.xlsx,Expected export file not found.
-Opening-Shock Continuation,missing_file,MT5 OpeningShockContinuation Trades.xlsx,Expected export file not found.
-Sigma ORB,missing_file,MT5 SigmaORB Trades.xlsx,Expected export file not found.
-Flash ORB,missing_file,MT5 FlashORB Trades.xlsx,Expected export file not found.
-Noise Band Momentum,missing_file,MT5 NoiseBandMomentum Trades.xlsx,Expected export file not found.
+Gold ORB (RBE),parsed,MT5 RBE Trades.xlsx,Trade export parsed successfully.
+Tokyo Coil,parsed,MT5 TokyoCoil Trades.xlsx,Trade export parsed successfully.
+Vault Break,parsed,MT5 VaultBreak Trades.xlsx,Trade export parsed successfully.
+Overnight Bias ORB,parsed,MT5 OvernightBiasRB Trades.xlsx,Trade export parsed successfully.
+Open Drive,parsed,MT5 OpenDrive Trades.xlsx,Trade export parsed successfully.
+NQ Precision Bot,parsed,MT5 NQPrecisionBot Trades.xlsx,Trade export parsed successfully.
+Opening-Shock Continuation,parsed,MT5 OpeningShockContinuation Trades.xlsx,Trade export parsed successfully.
+Sigma ORB,parsed,MT5 SigmaORB Trades.xlsx,Trade export parsed successfully.
+Flash ORB,parsed,MT5 FlashORB Trades.xlsx,Trade export parsed successfully.
+Noise Band Momentum,parsed,MT5 NoiseBandMomentum Trades.xlsx,Trade export parsed successfully.

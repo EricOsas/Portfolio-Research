@@ -6,52 +6,344 @@
   },
   {
     "strategy": "Gold ORB (RBE)",
-    "status": "missing_file",
-    "source_file": "MT5 RBE Trades.xlsx"
+    "status": "parsed",
+    "source_file": "MT5 RBE Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 2987,
+    "parsed_deal_events": 2328,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-03T07:31:40",
+    "last_event": "2026-10-30T17:40:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "XAUUSD",
+      "report_period": "M1 (2020.01.01 - 2026.10.31)",
+      "report_currency": "USD",
+      "initial_deposit": 100000.0,
+      "reported_total_net_profit": 205922.61,
+      "reported_profit_factor": 1.436758,
+      "reported_total_trades": 1164.0
+    },
+    "balance_reconciliation": {
+      "initial_deposit": 100000.0,
+      "final_balance": 305922.61,
+      "balance_change": 205922.61,
+      "sum_deal_cashflows": 205922.61,
+      "difference": 0.0,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "XAUUSD"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
   },
   {
     "strategy": "Tokyo Coil",
-    "status": "missing_file",
-    "source_file": "MT5 TokyoCoil Trades.xlsx"
+    "status": "parsed",
+    "source_file": "MT5 TokyoCoil Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 2660,
+    "parsed_deal_events": 1564,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-10T06:59:40",
+    "last_event": "2026-10-28T08:02:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "USDJPY",
+      "report_period": "M1 (2020.01.01 - 2026.10.31)",
+      "report_currency": "USD",
+      "initial_deposit": 100000.0,
+      "reported_total_net_profit": 679863.5,
+      "reported_profit_factor": 1.498609,
+      "reported_total_trades": 782.0
+    },
+    "balance_reconciliation": {
+      "initial_deposit": 100000.0,
+      "final_balance": 779863.5,
+      "balance_change": 679863.5,
+      "sum_deal_cashflows": 679863.5,
+      "difference": 0.0,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "USDJPY"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
   },
   {
     "strategy": "Vault Break",
-    "status": "missing_file",
-    "source_file": "MT5 VaultBreak Trades.xlsx"
+    "status": "parsed",
+    "source_file": "MT5 VaultBreak Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 3157,
+    "parsed_deal_events": 3082,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T18:00:00",
+    "last_event": "2026-10-27T19:48:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "USTEC",
+      "report_period": "M1 (2020.01.01 - 2026.10.31)",
+      "report_currency": "USD",
+      "initial_deposit": 100000.0,
+      "reported_total_net_profit": 81245.08,
+      "reported_profit_factor": 1.188497,
+      "reported_total_trades": 1541.0
+    },
+    "balance_reconciliation": {
+      "initial_deposit": 100000.0,
+      "final_balance": 181245.08,
+      "balance_change": 81245.07999999999,
+      "sum_deal_cashflows": 81245.08000000002,
+      "difference": 2.9103830456733704e-11,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
   },
   {
     "strategy": "Overnight Bias ORB",
-    "status": "missing_file",
-    "source_file": "MT5 OvernightBiasRB Trades.xlsx"
+    "status": "parsed",
+    "source_file": "MT5 OvernightBiasRB Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 1519,
+    "parsed_deal_events": 1444,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T21:15:00",
+    "last_event": "2026-10-30T22:30:00",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "USTEC",
+      "report_period": "M1 (2020.01.01 - 2026.10.31)",
+      "report_currency": "USD",
+      "initial_deposit": 100000.0,
+      "reported_total_net_profit": 118213.2,
+      "reported_profit_factor": 1.537032,
+      "reported_total_trades": 722.0
+    },
+    "balance_reconciliation": {
+      "initial_deposit": 100000.0,
+      "final_balance": 218213.2,
+      "balance_change": 118213.20000000001,
+      "sum_deal_cashflows": 118213.2,
+      "difference": -1.4551915228366852e-11,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
   },
   {
     "strategy": "Open Drive",
-    "status": "missing_file",
-    "source_file": "MT5 OpenDrive Trades.xlsx"
+    "status": "parsed",
+    "source_file": "MT5 OpenDrive Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 3627,
+    "parsed_deal_events": 3518,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T16:35:00",
+    "last_event": "2026-10-30T16:58:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "USTEC",
+      "report_period": "M1 (2020.01.01 - 2026.10.31)",
+      "report_currency": "USD",
+      "initial_deposit": 100000.0,
+      "reported_total_net_profit": 262356.67,
+      "reported_profit_factor": 1.320318,
+      "reported_total_trades": 1759.0
+    },
+    "balance_reconciliation": {
+      "initial_deposit": 100000.0,
+      "final_balance": 362356.67,
+      "balance_change": 262356.67,
+      "sum_deal_cashflows": 262356.67,
+      "difference": 0.0,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
   },
   {
     "strategy": "NQ Precision Bot",
-    "status": "missing_file",
-    "source_file": "MT5 NQPrecisionBot Trades.xlsx"
+    "status": "parsed",
+    "source_file": "MT5 NQPrecisionBot Trades.xlsx",
+    "parser": "MT5 custom NQ Precision Bot XLSX completed-trade ledger",
+    "sheet": "Trades",
+    "header_row_1_based": 1,
+    "parsed_trade_rows": 796,
+    "ignored_rows_after_header": 0,
+    "first_event": "2020-01-06T17:03:40",
+    "last_event": "2026-10-30T17:08:20",
+    "profit_semantics": "Adj. Net P&L is used as final net PnL; Broker Net is retained for reconciliation.",
+    "settings": {
+      "report_symbol": "USTEC",
+      "report_period": "M1",
+      "initial_deposit": 25000.0,
+      "reported_total_net_profit": 2124.95,
+      "reported_profit_factor": 1.13,
+      "reported_win_rate": 0.0,
+      "reported_total_trades": 796.0,
+      "starting_balance": 25000.0,
+      "ending_equity": 27124.95
+    },
+    "broker_net_sum_usd": 2124.9500000000003,
+    "adjusted_net_sum_usd": 2124.9500000000003,
+    "modeled_cost_adjustment_sum_usd": 0.0,
+    "reported_total_net_profit_usd": 2124.95,
+    "adjusted_net_reconciliation": {
+      "difference": 4.547473508864641e-13,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
   },
   {
     "strategy": "Opening-Shock Continuation",
-    "status": "missing_file",
-    "source_file": "MT5 OpeningShockContinuation Trades.xlsx"
+    "status": "parsed",
+    "source_file": "MT5 OpeningShockContinuation Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 1066,
+    "parsed_deal_events": 990,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T17:00:00",
+    "last_event": "2026-10-23T17:40:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "USTEC",
+      "report_period": "M1 (2020.01.01 - 2026.10.31)",
+      "report_currency": "USD",
+      "initial_deposit": 100000.0,
+      "reported_total_net_profit": 28792.3,
+      "reported_profit_factor": 1.205624,
+      "reported_total_trades": 495.0
+    },
+    "balance_reconciliation": {
+      "initial_deposit": 100000.0,
+      "final_balance": 128792.3,
+      "balance_change": 28792.300000000003,
+      "sum_deal_cashflows": 28792.3,
+      "difference": -3.637978807091713e-12,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
   },
   {
     "strategy": "Sigma ORB",
-    "status": "missing_file",
-    "source_file": "MT5 SigmaORB Trades.xlsx"
+    "status": "parsed",
+    "source_file": "MT5 SigmaORB Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 4380,
+    "parsed_deal_events": 4298,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T17:00:00",
+    "last_event": "2026-10-30T22:44:00",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "USTEC",
+      "report_period": "M1 (2020.01.01 - 2026.10.31)",
+      "report_currency": "USD",
+      "initial_deposit": 100000.0,
+      "reported_total_net_profit": 9281.31,
+      "reported_profit_factor": 1.090921,
+      "reported_total_trades": 2149.0
+    },
+    "balance_reconciliation": {
+      "initial_deposit": 100000.0,
+      "final_balance": 109281.31,
+      "balance_change": 9281.309999999998,
+      "sum_deal_cashflows": 9281.310000000001,
+      "difference": 3.637978807091713e-12,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
   },
   {
     "strategy": "Flash ORB",
-    "status": "missing_file",
-    "source_file": "MT5 FlashORB Trades.xlsx"
+    "status": "parsed",
+    "source_file": "MT5 FlashORB Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 2638,
+    "parsed_deal_events": 2560,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T21:15:00",
+    "last_event": "2026-10-29T19:32:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "USTEC",
+      "report_period": "M1 (2020.01.01 - 2026.10.31)",
+      "report_currency": "USD",
+      "initial_deposit": 100000.0,
+      "reported_total_net_profit": 9259.47,
+      "reported_profit_factor": 1.225519,
+      "reported_total_trades": 1280.0
+    },
+    "balance_reconciliation": {
+      "initial_deposit": 100000.0,
+      "final_balance": 109259.47,
+      "balance_change": 9259.470000000001,
+      "sum_deal_cashflows": 9259.470000000001,
+      "difference": 0.0,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
   },
   {
     "strategy": "Noise Band Momentum",
-    "status": "missing_file",
-    "source_file": "MT5 NoiseBandMomentum Trades.xlsx"
+    "status": "parsed",
+    "source_file": "MT5 NoiseBandMomentum Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 2538,
+    "parsed_deal_events": 2460,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T17:00:00",
+    "last_event": "2026-10-26T23:00:00",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "USTEC",
+      "report_period": "M1 (2020.01.01 - 2026.10.31)",
+      "report_currency": "USD",
+      "initial_deposit": 100000.0,
+      "reported_total_net_profit": 279243.53,
+      "reported_profit_factor": 1.25069,
+      "reported_total_trades": 1230.0
+    },
+    "balance_reconciliation": {
+      "initial_deposit": 100000.0,
+      "final_balance": 379243.53,
+      "balance_change": 279243.53,
+      "sum_deal_cashflows": 279243.53,
+      "difference": 0.0,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
   }
 ]
