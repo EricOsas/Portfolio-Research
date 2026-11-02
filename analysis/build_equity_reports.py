@@ -600,9 +600,45 @@ def write_platform(platform: str, manifest: dict[str, str | None], input_dir: Pa
     (output_dir / "reports" / "summary.json").write_text(json.dumps(summary, indent=2, default=str), encoding="utf-8")
     return summary
 
+def validate_source_exports(nt8_input: Path, mt5_input: Path) -> None:
+    """Fail before writing reports if the reorganized source tree is incomplete."""
+    expected = {
+        "NT8": (nt8_input, [name for name in NT8_FILES.values() if name is not None]),
+        "MT5": (mt5_input, [name for name in MT5_FILES.values() if name is not None]),
+    }
+    problems = []
+    for platform, (folder, filenames) in expected.items():
+        missing = [name for name in filenames if not (folder / name).is_file()]
+        if missing:
+            problems.append(
+                f"{platform}: expected {len(filenames)} exports in {folder}, "
+                f"found {len(filenames) - len(missing)}; missing: {', '.join(missing)}"
+            )
+    if problems:
+        raise FileNotFoundError(
+            "Source export preflight failed. Reports were not rebuilt. "
+            "Check the Trades/NT8 Trades and Trades/MT5 Trades directories.\\n"
+            + "\\n".join(problems)
+        )
+
+
 def main() -> int:
-    nt8 = write_platform("NT8", NT8_FILES, ROOT / "NT8 Trades", ROOT / "NT8")
-    mt5 = write_platform("MT5", MT5_FILES, ROOT / "MT5 Trades", ROOT / "MT5")
+    nt8_input = ROOT / "Trades" / "NT8 Trades"
+    mt5_input = ROOT / "Trades" / "MT5 Trades"
+    validate_source_exports(nt8_input, mt5_input)
+
+    nt8 = write_platform("NT8", NT8_FILES, nt8_input, ROOT / "NT8")
+    mt5 = write_platform("MT5", MT5_FILES, mt5_input, ROOT / "MT5")
+
+    expected_nt8 = len(NT8_FILES)
+    expected_mt5 = sum(1 for filename in MT5_FILES.values() if filename is not None)
+    if nt8["parsed_strategies"] != expected_nt8 or mt5["parsed_strategies"] != expected_mt5:
+        raise RuntimeError(
+            "Report build is incomplete; refusing to publish partial results. "
+            f"NT8 parsed {nt8['parsed_strategies']}/{expected_nt8}; "
+            f"MT5 parsed {mt5['parsed_strategies']}/{expected_mt5}."
+        )
+
     top = {"generated_utc": datetime.utcnow().isoformat(timespec="seconds") + "Z",
            "repository": "EricOsas/Portfolio-Research",
            "method": "Export-based cumulative net PnL; original exported sizing; no added costs.",
