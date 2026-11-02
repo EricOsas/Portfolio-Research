@@ -2,6 +2,13 @@
 
 Research workspace for the NT8 futures and MT5 CFD strategy exports. Raw export analysis, normalized live-account curves, and prop-firm simulations are kept separate.
 
+## Source export layout
+
+- NT8 source exports: `Trades/NT8 Trades/` (9 expected CSV files).
+- MT5 source exports: `Trades/MT5 Trades/` (10 expected XLSX files).
+- Gold X9 remains pending; it is not counted as a required MT5 export.
+- Analysis scripts and GitHub Actions use these paths. The build now fails before publishing if required exports are missing or fail parsing.
+
 ## Deliverables
 
 - [Raw NT8 research pack](NT8/README.md)
@@ -62,6 +69,8 @@ One GC contract and one NQ contract are not equal-risk exposures. MT5's USD 100 
 
 The prop simulations use 5,000 Monte Carlo paths for every one-to-four-sleeve combination across the full firm-specific risk ladders, with five-day blocks aligned to complete Monday-Friday weeks and a 252-trading-day horizon. Primary books are selected on training-only scores; validation-best rows are diagnostic only. Near-floor recovery separately screens positive-training single sleeves and pairs. Tradeify evaluation pass rates require weekly activity and position-limit compliance. Microscalping is an additional funded payout-eligibility check. FTMO uses a total book-risk ladder of $25–$100. Tradeify uses $100–$750 requested total book risk, whole-micro sizing, at least one micro per active sleeve, and a four-mini concurrent exposure cap. Actual risk can exceed the requested amount because of the minimum micro size.
 
+The prop Monte Carlo reports now include mean, median and 10th-percentile monthly strategy PnL, monthly peak-to-trough drawdown percentiles, and 252-day max-drawdown stress. These monthly figures are strategy-stream estimates before account failures, DLL clipping, payout rules or withdrawal resets; payout probability and cash payout are modeled separately.
+
 Tradeify Growth evaluation has no consistency rule. The funded model applies the official 35% payout consistency rule, five profitable days above $150, the $53,000 minimum payout balance and current payout caps. The initial $1,250 soft daily-loss limit is approximated with closed-PnL clipping; after funded balance reaches $53,000, the model applies the $2,000 limit from the next session and assumes it remains unlocked after payouts. Intraday trigger timing and overshoot remain unknown.
 
 ## Validation and data quality
@@ -90,6 +99,7 @@ Tradeify Growth evaluation has no consistency rule. The funded model applies the
 ```bash
 python -m pip install -r analysis/requirements.txt
 python analysis/build_equity_reports.py
+python analysis/inspect_mt5_headers.py
 python analysis/build_live_and_prop_reports.py
 ```
 

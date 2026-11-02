@@ -380,6 +380,44 @@ def live_bootstrap_summary(paths):
         "ruin_50R": float((maxdd >= 50).mean()),
     }
 
+def monthly_path_summary(paths, risk):
+    """Summarize 21-session month blocks from the bootstrapped strategy PnL path.
+
+    These are strategy-stream estimates at the configured book risk, before
+    account failure, payout eligibility, withdrawal resets, or rule-based stops.
+    """
+    daily = np.asarray(paths, dtype=float) * float(risk)
+    n, h = daily.shape
+    months = h // 21
+    if months < 1:
+        return {}
+    blocks = daily[:, :months * 21].reshape(n, months, 21)
+    monthly_pnl = blocks.sum(axis=2).reshape(-1)
+
+    month_equity = np.cumsum(blocks, axis=2)
+    month_high_water = np.maximum.accumulate(np.maximum(month_equity, 0.0), axis=2)
+    monthly_drawdown = np.maximum(month_high_water - month_equity, 0.0).max(axis=2).reshape(-1)
+
+    equity = np.cumsum(daily, axis=1)
+    high_water = np.maximum.accumulate(np.maximum(equity, 0.0), axis=1)
+    max_drawdown_252d = np.maximum(high_water - equity, 0.0).max(axis=1)
+
+    return {
+        "mean_monthly_strategy_pnl_usd": float(np.mean(monthly_pnl)),
+        "median_monthly_strategy_pnl_usd": float(np.median(monthly_pnl)),
+        "p10_monthly_strategy_pnl_usd": float(np.percentile(monthly_pnl, 10)),
+        "p90_monthly_strategy_pnl_usd": float(np.percentile(monthly_pnl, 90)),
+        "median_monthly_peak_to_trough_dd_usd": float(np.median(monthly_drawdown)),
+        "p90_monthly_peak_to_trough_dd_usd": float(np.percentile(monthly_drawdown, 90)),
+        "p95_max_drawdown_252d_usd": float(np.percentile(max_drawdown_252d, 95)),
+        "monthly_metric_basis": (
+            "21-trading-day blocks; strategy PnL before account failures, "
+            "DLL clipping, payout rules or withdrawal resets. Monthly DD is "
+            "within-block peak-to-trough; 252d DD is full-path peak-to-trough."
+        ),
+    }
+
+
 def simulate_ftmo(paths, active, risk):
     n, h = paths.shape
     phase = np.ones(n, dtype=np.int8)  # 1=Challenge, 2=Verification, 3=Funded, 4=Failed
@@ -487,6 +525,7 @@ def simulate_ftmo(paths, active, risk):
     first_payout = reward_day >= 0
     funded_hard_breach = fail_daily_funded | fail_max_funded
     return {
+        **monthly_path_summary(paths, risk),
         "pass_phase1_rate": float((p1_day >= 0).mean()),
         "pass_verification_conditional_rate": float((p2_day >= 0).sum() / max(1, (p1_day >= 0).sum())),
         "pass_both_phases_rate": float(reached_funded.mean()),
@@ -654,6 +693,7 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
         if end_day < h:
             survived_90.append(fail_funded_day[i] < 0 or fail_funded_day[i] > end_day)
     return {
+        **monthly_path_summary(paths, risk),
         "evaluation_target_hit_rate": float(target_reached.mean()),
         "evaluation_pass_rate": float(reached_funded.mean()),
         "evaluation_account_eligible": evaluation_account_eligible,
@@ -1102,9 +1142,16 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
                    "Challenge-to-payout", "Funded breach"]
         if has_survival:
             headers.append("90-day survival")
-        headers += ["Median payout days", "Expected first payout"]
-        lines.extend(["", f"### {section_title}", "| " + " | ".join(headers) + " |",
-                      "| " + " | ".join(["---"] * len(headers)) + " |"])
+        headers += [
+            "Median payout days", "Expected first payout",
+            "Mean monthly PnL", "P10 monthly PnL", "P90 monthly DD", "P95 252d max DD"
+        ]
+        lines.extend([
+            "", f"### {section_title}",
+            "Monthly PnL uses 21-trading-day blocks. P10 is the 10th-percentile month; P90 monthly DD is the 90th-percentile within-month peak-to-trough drawdown. The 252-day DD is the 95th-percentile full-path drawdown.",
+            "| " + " | ".join(headers) + " |",
+            "| " + " | ".join(["---"] * len(headers)) + " |"
+        ])
         for _, row in ladder.iterrows():
             requested = float(row[risk_col])
             effective = (float(row[effective_col]) if effective_col in row.index and pd.notna(row[effective_col])
@@ -1118,11 +1165,40 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
             cells.append(f"{float(median_days):.0f}" if pd.notna(median_days) else "—")
             expected = row.get(expected_col, np.nan)
             cells.append(f"${float(expected):,.2f}" if pd.notna(expected) else "—")
+            for metric in [
+                "mean_monthly_strategy_pnl_usd",
+                "p10_monthly_strategy_pnl_usd",
+                "p90_monthly_peak_to_trough_dd_usd",
+                "p95_max_drawdown_252d_usd",
+            ]:
+                value = row.get(metric, np.nan)
+                cells.append(f"${float(value):,.0f}" if pd.notna(value) else "—")
             lines.append("| " + " | ".join(cells) + " |")
 
     append_risk_ladder("Challenge candidate risk ladder", challenge)
     if funded is not None and (challenge is None or str(funded["book"]) != str(challenge["book"])):
         append_risk_ladder("Funded candidate risk ladder", funded)
+
+    if challenge is not None and funded is not None:
+        challenge_pass = float(challenge[pass_col])
+        funded_first_rate = float(funded.get(conditional_col, np.nan))
+        evaluation_breach = float(challenge.get("evaluation_hard_breach_rate", np.nan))
+        funded_breach = float(funded.get(breach_col, np.nan))
+        combined_payout_rate = challenge_pass * funded_first_rate
+        combined_hard_breach = evaluation_breach + challenge_pass * funded_breach
+        if 0 < challenge_pass <= 1 and 0 < funded_first_rate <= 1:
+            lines += [
+                "", "## Expected account attempts before first payout",
+                f"- Challenge pass probability: {challenge_pass:.1%}.",
+                f"- First-payout probability after funding with the selected funded book: {funded_first_rate:.1%}.",
+                f"- Approximate payout probability per challenge start when switching to the selected funded book: {combined_payout_rate:.1%}.",
+                f"- Expected challenge accounts started per first payout: {1.0 / combined_payout_rate:.2f}.",
+                f"- Expected failed evaluation accounts before passing: {(1.0 - challenge_pass) / challenge_pass:.2f}.",
+                f"- Expected funded accounts entered per first payout: {1.0 / funded_first_rate:.2f}.",
+                f"- Expected failed funded accounts before first payout: {(1.0 - funded_first_rate) / funded_first_rate:.2f}.",
+                f"- Approximate combined hard-breach probability per challenge start: {combined_hard_breach:.1%}.",
+                "These are geometric-repeat estimates. They assume each new account repeats the same probabilities; they are not a guarantee and do not include account fees.",
+            ]
 
     if "Tradeify" in title and "train_funded_score" in base.columns:
         pair_rows = base[base["strategies"].astype(str).str.count(r"\+") == 1].copy()
@@ -1135,12 +1211,19 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
                       f'  - Evaluation pass rate: {float(pair[pass_col]):.1%}',
                       f'  - Evaluation hard-breach rate: {float(pair["evaluation_hard_breach_rate"]):.1%}',
                       f'  - Challenge-to-first-payout rate: {float(pair[payout_col]):.1%}',
+                      f'  - Funded first-payout rate conditional on funding: {float(pair[conditional_col]):.1%}',
                       f'  - Funded hard-breach rate (conditional on funding): {float(pair[breach_col]):.1%}',
+                      f'  - Expected challenge starts per payout at this same book: {1.0 / float(pair[payout_col]):.2f}',
+                      f'  - Expected funded accounts per payout: {1.0 / float(pair[conditional_col]):.2f}',
                       f'  - Approximate 90-trading-day funded survival: {float(pair["survival_90d_conditional_approx"]):.1%}',
                       f'  - Median trading days to evaluation pass: {float(pair["median_days_to_evaluation_pass"]):.1f}',
                       f'  - Median trading days to first payout: {float(pair["median_days_to_first_payout_from_start"]):.1f}',
                       f'  - Expected first net payout across all paths: USD {float(pair["first_payout_net_usd_mean"]):,.2f}',
                       f'  - Expected total net payout cash across all paths: USD {float(pair["total_net_payout_cash_mean"]):,.2f}',
+                      f'  - Mean monthly strategy PnL before account rules: USD {float(pair["mean_monthly_strategy_pnl_usd"]):,.0f}',
+                      f'  - P10 monthly strategy PnL before account rules: USD {float(pair["p10_monthly_strategy_pnl_usd"]):,.0f}',
+                      f'  - P90 monthly peak-to-trough drawdown: USD {float(pair["p90_monthly_peak_to_trough_dd_usd"]):,.0f}',
+                      "Monthly PnL and drawdown are strategy-stream estimates before account failures, DLL clipping, payout rules or withdrawal resets.",
                       "This is not the overall training-score winner. It is the top funded-score candidate within the eligible two-sleeve subset; its validation results are holdout estimates, not a basis for promoting it over the overall training-selected books."]
             append_risk_ladder("Two-sleeve alternative risk ladder", pair)
 

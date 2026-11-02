@@ -4,6 +4,8 @@
 
 `build_equity_reports.py` reads NT8 and MT5 source exports, normalizes realized PnL events, writes platform-separated metrics and charts, and produces a transparent export-level screening shortlist.
 
+Source exports are stored under `Trades/NT8 Trades/` (9 CSV files) and `Trades/MT5 Trades/` (10 XLSX files). Gold X9 remains an intentionally pending MT5 export. The build preflights all required source files and refuses to publish partial or empty reports.
+
 - NT8 Profit is used as exported; it is already net of Commission.
 - MT5 standard Strategy Tester reports use deal Profit + Commission + Swap.
 - NQ Precision Bot uses its custom completed-trade ledger.
@@ -21,6 +23,7 @@ Methodology:
 - Chronological 60/40 train/validation split. Each sleeve's realized-loss R unit is calibrated on training data and held fixed in validation; book selection uses training data and Monte Carlo uses validation data.
 - All one-to-four-sleeve combinations are screened on the normalized daily series.
 - 5,000 Monte Carlo paths, five-day blocks aligned to Monday-Friday validation weeks, 252-trading-day horizon.
+- Prop-firm CSVs include mean/median/P10/P90 monthly strategy PnL, monthly peak-to-trough drawdown percentiles and 252-day max drawdown. Monthly figures are pre-account-rule strategy-stream estimates; pass/breach and payout simulation outputs remain separate.
 - Tradeify futures sizing uses whole-micro increments, at least one micro per active sleeve, and a four-mini concurrent exposure cap.
 - Tradeify minimum activity is checked on complete validation weeks and applies to evaluation and funded trading; Monte Carlo resamples complete calendar-week blocks. Evaluation pass rates exclude books that fail minimum activity or position-limit eligibility. Funded payout eligibility additionally requires the microscalping test.
 - Tradeify's funded DLL rises from $1,250 to $2,000 after the $53,000 balance threshold; the model clips closed daily PnL at the applicable limit. The separate NT8 MAE / soft-DLL stress report is not an intraday equity replay.

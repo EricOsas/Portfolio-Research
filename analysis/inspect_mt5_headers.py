@@ -7,7 +7,7 @@ from pathlib import Path
 from openpyxl import load_workbook
 
 ROOT = Path(__file__).resolve().parents[1]
-INPUT = ROOT / "MT5 Trades"
+INPUT = ROOT / "Trades" / "MT5 Trades"
 OUTPUT = ROOT / "reports" / "source_schemas" / "mt5_export_schemas.json"
 
 def norm(value):
@@ -52,7 +52,14 @@ def inspect(path):
     return result
 
 def main():
+    if not INPUT.is_dir():
+        raise FileNotFoundError(f"MT5 source directory not found: {INPUT}")
     files = sorted(INPUT.glob("*.xlsx"))
+    if len(files) < 10:
+        raise RuntimeError(
+            f"Expected at least 10 MT5 exports in {INPUT}; found {len(files)}. "
+            "Refusing to publish an incomplete schema inventory."
+        )
     output = {"file_count": len(files), "files": [inspect(p) for p in files]}
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(output, indent=2, default=str), encoding="utf-8")

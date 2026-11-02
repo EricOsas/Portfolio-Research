@@ -4,11 +4,13 @@ on:
   push:
     branches: [main]
     paths:
+      # Current source layout. Broad parent pattern also catches future subfolders.
+      - "Trades/**"
+      # Legacy paths retained so older branches still trigger a rebuild.
       - "NT8 Trades/**"
       - "MT5 Trades/**"
-      - "analysis/*.py"
-      - "analysis/requirements.txt"
-      - ".github/workflows/build-equity-reports.yml"
+      - "analysis/**"
+      - ".github/workflows/**"
   workflow_dispatch:
 
 permissions:
