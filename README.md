@@ -2,6 +2,13 @@
 
 Research workspace for the NT8 futures and MT5 CFD strategy exports. Raw export analysis, normalized live-account curves, and prop-firm simulations are kept separate.
 
+## Source export layout
+
+- NT8 source exports: `Trades/NT8 Trades/` (9 expected CSV files).
+- MT5 source exports: `Trades/MT5 Trades/` (10 expected XLSX files).
+- Gold X9 remains pending; it is not counted as a required MT5 export.
+- Analysis scripts and GitHub Actions use these paths. The build now fails before publishing if required exports are missing or fail parsing.
+
 ## Deliverables
 
 - [Raw NT8 research pack](NT8/README.md)
