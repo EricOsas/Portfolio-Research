@@ -525,7 +525,6 @@ def simulate_ftmo(paths, active, risk):
     first_payout = reward_day >= 0
     funded_hard_breach = fail_daily_funded | fail_max_funded
     return {
-        **monthly_path_summary(paths, risk),
         "pass_phase1_rate": float((p1_day >= 0).mean()),
         "pass_verification_conditional_rate": float((p2_day >= 0).sum() / max(1, (p1_day >= 0).sum())),
         "pass_both_phases_rate": float(reached_funded.mean()),
@@ -693,7 +692,6 @@ def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
         if end_day < h:
             survived_90.append(fail_funded_day[i] < 0 or fail_funded_day[i] > end_day)
     return {
-        **monthly_path_summary(paths, risk),
         "evaluation_target_hit_rate": float(target_reached.mean()),
         "evaluation_pass_rate": float(reached_funded.mean()),
         "evaluation_account_eligible": evaluation_account_eligible,
@@ -1411,6 +1409,19 @@ def run_platform(platform):
             "train_recovery_score":float(rr["recovery_score"]),
         }
     validation_idx=val_idx if len(val_idx)>=60 else dates
+    monthly_focus_combos = {
+        tuple(combo)
+        for category in ("challenge", "funded")
+        for combo in selected.get(category, [])
+    }
+    # Also report the lower-risk Tradeify two-sleeve alternatives. The
+    # monthly calculation is only run at the base risk, not for every
+    # screened combination and every sensitivity point.
+    if platform == "NT8":
+        monthly_focus_combos.update(
+            tuple(row["strategies"].split(" | "))
+            for _, row in combo_df[combo_df["size"] == 2].iterrows()
+        )
     ftmo_rows=[]; tradeify_rows=[]; recovery_rows=[]
     ftmo_dir=PROP_ROOT/"FTMO-10K-2Step-CFD"
     tradeify_dir=PROP_ROOT/"Tradeify-50K-Growth-Futures"
@@ -1422,7 +1433,11 @@ def run_platform(platform):
         if platform=="MT5":
             for risk in FTMO_RISKS:
                 res=simulate_ftmo(paths,actpaths,risk)
-                ftmo_rows.append({"book":cname,"strategies":" + ".join(combo),"risk_per_book_trade_usd":risk,**score_meta,**res})
+                monthly = monthly_path_summary(paths, risk) if (
+                    tuple(combo) in monthly_focus_combos and risk == 50.0
+                ) else {}
+                ftmo_rows.append({"book":cname,"strategies":" + ".join(combo),"risk_per_book_trade_usd":risk,
+                                  **score_meta,**res,**monthly})
         else:
             t=trades[trades["strategy"].isin(combo) &
                      trades["exit_date"].between(validation_idx.min(), validation_idx.max())]
@@ -1452,6 +1467,9 @@ def run_platform(platform):
                 res=simulate_tradeify(paths_t,actpaths_t,1.0,micro["eligible"],week_ok,
                                       position_limit_compliant=compliant,
                                       consistency_paths=consistency_paths_t)
+                monthly = monthly_path_summary(paths_t, 1.0) if (
+                    tuple(combo) in monthly_focus_combos and risk == 100.0
+                ) else {}
                 extra={"book":cname,"strategies":" + ".join(combo),**score_meta,
                     "requested_risk_per_book_trade_usd":risk,"effective_risk_after_micro_sizing_usd":effective,
                     "microscalping_trade_share_over_10s":micro["trade_share_over_10s"],
@@ -1461,7 +1479,7 @@ def run_platform(platform):
                     "max_concurrent_mini_equivalent":exposure,"position_limit_scale":scale,
                     "position_limit_compliant":compliant}
                 res["position_limit_compliant"]=compliant
-                tradeify_rows.append({**extra,**res})
+                tradeify_rows.append({**extra,**res,**monthly})
 
     # Recovery mode: compare low-complexity one/two-sleeve books with a no-trade
     # control. Tradeify uses at least one micro per sleeve. FTMO tests a small
