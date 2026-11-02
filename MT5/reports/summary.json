@@ -1,67 +1,76 @@
 {
   "platform": "MT5",
   "expected_strategies": 11,
-  "parsed_strategies": 10,
+  "parsed_strategies": 0,
   "pending_or_missing": [
     {
       "strategy": "Gold X9",
       "status": "pending_export",
       "source_file": "",
       "note": "No trade export in repository."
+    },
+    {
+      "strategy": "Gold ORB (RBE)",
+      "status": "missing_file",
+      "source_file": "MT5 RBE Trades.xlsx",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "Tokyo Coil",
+      "status": "missing_file",
+      "source_file": "MT5 TokyoCoil Trades.xlsx",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "Vault Break",
+      "status": "missing_file",
+      "source_file": "MT5 VaultBreak Trades.xlsx",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "Overnight Bias ORB",
+      "status": "missing_file",
+      "source_file": "MT5 OvernightBiasRB Trades.xlsx",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "Open Drive",
+      "status": "missing_file",
+      "source_file": "MT5 OpenDrive Trades.xlsx",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "NQ Precision Bot",
+      "status": "missing_file",
+      "source_file": "MT5 NQPrecisionBot Trades.xlsx",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "Opening-Shock Continuation",
+      "status": "missing_file",
+      "source_file": "MT5 OpeningShockContinuation Trades.xlsx",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "Sigma ORB",
+      "status": "missing_file",
+      "source_file": "MT5 SigmaORB Trades.xlsx",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "Flash ORB",
+      "status": "missing_file",
+      "source_file": "MT5 FlashORB Trades.xlsx",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "Noise Band Momentum",
+      "status": "missing_file",
+      "source_file": "MT5 NoiseBandMomentum Trades.xlsx",
+      "note": "Expected export file not found."
     }
   ],
-  "selected_strategies": [
-    "Gold ORB (RBE)",
-    "Overnight Bias ORB",
-    "Tokyo Coil",
-    "Open Drive"
-  ],
-  "all_portfolio_metrics": {
-    "event_count": 23040,
-    "closed_trade_or_exit_deal_count": 11918,
-    "active_days": 1768,
-    "first_date": "2020-01-02",
-    "last_date": "2026-10-30",
-    "calendar_span_days": 2494,
-    "total_net_pnl_usd": 1676302.62,
-    "average_event_net_pnl_usd": 72.75619010416668,
-    "gross_profit_column_sum_usd": 1685999.58,
-    "commission_cashflow_sum_usd": 0.0,
-    "swap_cashflow_sum_usd": -9696.96,
-    "modeled_cost_adjustment_sum_usd": 0.0,
-    "daily_profit_factor": 1.6449933117880329,
-    "daily_sharpe_252": 2.486673282499066,
-    "max_drawdown_usd": 76232.35000000056,
-    "net_profit_to_max_drawdown": 21.989386658026255,
-    "positive_active_month_share": 0.8170731707317073,
-    "positive_active_year_share": 1.0,
-    "positive_days_share": 0.4626696832579186,
-    "best_day_usd": 41528.52,
-    "worst_day_usd": -14439.28,
-    "daily_pnl_std_usd": 6005.183273767225
-  },
-  "recommended_portfolio_metrics": {
-    "event_count": 8854,
-    "closed_trade_or_exit_deal_count": 4427,
-    "active_days": 1767,
-    "first_date": "2020-01-02",
-    "last_date": "2026-10-30",
-    "calendar_span_days": 2494,
-    "total_net_pnl_usd": 1266355.98,
-    "average_event_net_pnl_usd": 143.0264264739101,
-    "gross_profit_column_sum_usd": 1267247.31,
-    "commission_cashflow_sum_usd": 0.0,
-    "swap_cashflow_sum_usd": -891.33,
-    "modeled_cost_adjustment_sum_usd": 0.0,
-    "daily_profit_factor": 1.654873070389553,
-    "daily_sharpe_252": 2.3107123196381796,
-    "max_drawdown_usd": 70255.73000000021,
-    "net_profit_to_max_drawdown": 18.02494942405404,
-    "positive_active_month_share": 0.7926829268292683,
-    "positive_active_year_share": 1.0,
-    "positive_days_share": 0.45897000565930957,
-    "best_day_usd": 44009.92,
-    "worst_day_usd": -9814.82,
-    "daily_pnl_std_usd": 4882.053073917481
-  }
+  "selected_strategies": [],
+  "all_portfolio_metrics": {},
+  "recommended_portfolio_metrics": {}
 }

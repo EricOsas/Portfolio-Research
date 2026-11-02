@@ -1,27 +1,14 @@
 # NT8 strategy selection
 
-Screening is a transparent evidence filter, not parameter optimization. Eligible strategies must have positive net PnL, daily PF > 1.00, at least 30 active days, at least 45% positive active months, and net PnL/max drawdown > 0.50. Candidates are ranked by daily Sharpe, daily PF, net-PnL/max-DD, positive-month share and sample size. Up to four are retained, excluding candidates with absolute daily-PnL correlation above 0.80 to an already selected strategy. Correlation requires 30 overlapping business days. The shortlist is provisional and is not a sizing instruction.
+No parsed strategies.
 
 ## Selected strategies
 
-- **Overnight Bias ORB** — included in the provisional portfolio.
-- **Sigma ORB** — included in the provisional portfolio.
-- **Vault Break** — included in the provisional portfolio.
-- **Gold ORB (RBE)** — included in the provisional portfolio.
+- None. No strategy passed the evidence screen; do not treat the all-strategy curve as a deployment recommendation.
 
 ## Eligible candidates (ranked)
 
-| strategy                   |   screen_score |   total_net_pnl_usd |   daily_profit_factor |   daily_sharpe_252 |   max_drawdown_usd |   net_profit_to_max_drawdown |   positive_active_month_share |   active_days |
-|:---------------------------|---------------:|--------------------:|----------------------:|-------------------:|-------------------:|-----------------------------:|------------------------------:|--------------:|
-| Overnight Bias ORB         |       0.911111 |           267561    |               1.71229 |           1.88099  |           14851.6  |                    18.0157   |                      0.703704 |           606 |
-| Sigma ORB                  |       0.888889 |           422052    |               1.528   |           1.79811  |           34422.5  |                    12.2609   |                      0.743902 |          1040 |
-| Vault Break                |       0.677778 |           134530    |               1.43369 |           1.45083  |           11275    |                    11.9317   |                      0.604938 |           683 |
-| Gold ORB (RBE)             |       0.644444 |           309603    |               1.41856 |           1.38273  |           35135.2  |                     8.81177  |                      0.666667 |           901 |
-| Flash ORB                  |       0.577778 |           182897    |               1.27318 |           1.35518  |           15468    |                    11.8243   |                      0.695122 |          1207 |
-| Open Drive                 |       0.455556 |           298131    |               1.27438 |           1.14133  |           45561.7  |                     6.54347  |                      0.609756 |          1760 |
-| VWAP Pullback              |       0.416667 |            65920.5  |               1.29912 |           0.962463 |            9701.44 |                     6.79492  |                      0.621951 |           657 |
-| Opening-Shock Continuation |       0.244444 |            55765    |               1.24054 |           0.798403 |           25000    |                     2.2306   |                      0.658537 |           481 |
-| NQ Precision Bot           |       0.183333 |             7260.32 |               1.12676 |           0.318917 |           12627.6  |                     0.574955 |                      0.621951 |           688 |
+No eligible candidates.
 
 ## Interpretation limits
 

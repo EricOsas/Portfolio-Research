@@ -1,60 +1,64 @@
 {
   "platform": "NT8",
   "expected_strategies": 9,
-  "parsed_strategies": 9,
-  "pending_or_missing": [],
-  "selected_strategies": [
-    "Overnight Bias ORB",
-    "Sigma ORB",
-    "Vault Break",
-    "Gold ORB (RBE)"
+  "parsed_strategies": 0,
+  "pending_or_missing": [
+    {
+      "strategy": "Gold ORB (RBE)",
+      "status": "missing_file",
+      "source_file": "NinjaTrader RBE Trades.csv",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "Vault Break",
+      "status": "missing_file",
+      "source_file": "NinjaTrader VaultBreak Trades.csv",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "VWAP Pullback",
+      "status": "missing_file",
+      "source_file": "NinjaTrader VWAPPullback Trades.csv",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "Overnight Bias ORB",
+      "status": "missing_file",
+      "source_file": "NinjaTrader OvernightBiasRB Trades.csv",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "Open Drive",
+      "status": "missing_file",
+      "source_file": "NinjaTrader OpenDrive Trades.csv",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "NQ Precision Bot",
+      "status": "missing_file",
+      "source_file": "NinjaTrader NQPrecisionBot Trades.csv",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "Opening-Shock Continuation",
+      "status": "missing_file",
+      "source_file": "NinjaTrader OpeningShockCont Trades.csv",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "Sigma ORB",
+      "status": "missing_file",
+      "source_file": "NinjaTrader SigmaORB Trades.csv",
+      "note": "Expected export file not found."
+    },
+    {
+      "strategy": "Flash ORB",
+      "status": "missing_file",
+      "source_file": "NinjaTrader FlashORB Trades.csv",
+      "note": "Expected export file not found."
+    }
   ],
-  "all_portfolio_metrics": {
-    "event_count": 9192,
-    "closed_trade_or_exit_deal_count": 9192,
-    "active_days": 1773,
-    "first_date": "2020-01-02",
-    "last_date": "2026-10-30",
-    "calendar_span_days": 2494,
-    "total_net_pnl_usd": 1743720.8399999999,
-    "average_event_net_pnl_usd": 189.69983028720625,
-    "gross_profit_column_sum_usd": 1775940.0,
-    "commission_cashflow_sum_usd": -32219.159999999996,
-    "swap_cashflow_sum_usd": 0.0,
-    "modeled_cost_adjustment_sum_usd": 0.0,
-    "daily_profit_factor": 1.7583955035952132,
-    "daily_sharpe_252": 2.9449285607618525,
-    "max_drawdown_usd": 52302.03999999989,
-    "net_profit_to_max_drawdown": 33.33944220913761,
-    "positive_active_month_share": 0.8292682926829268,
-    "positive_active_year_share": 1.0,
-    "positive_days_share": 0.5081782289904118,
-    "best_day_usd": 48214.04,
-    "worst_day_usd": -16385.960000000003,
-    "daily_pnl_std_usd": 5248.157725231632
-  },
-  "recommended_portfolio_metrics": {
-    "event_count": 4398,
-    "closed_trade_or_exit_deal_count": 4398,
-    "active_days": 1581,
-    "first_date": "2020-01-03",
-    "last_date": "2026-10-30",
-    "calendar_span_days": 2493,
-    "total_net_pnl_usd": 1133746.1600000001,
-    "average_event_net_pnl_usd": 257.7867576170987,
-    "gross_profit_column_sum_usd": 1147165.0,
-    "commission_cashflow_sum_usd": -13418.84,
-    "swap_cashflow_sum_usd": 0.0,
-    "modeled_cost_adjustment_sum_usd": 0.0,
-    "daily_profit_factor": 1.6873806227258459,
-    "daily_sharpe_252": 2.714743068214815,
-    "max_drawdown_usd": 37855.27999999968,
-    "net_profit_to_max_drawdown": 29.94948551430632,
-    "positive_active_month_share": 0.8536585365853658,
-    "positive_active_year_share": 1.0,
-    "positive_days_share": 0.5420619860847565,
-    "best_day_usd": 27422.12,
-    "worst_day_usd": -13254.16,
-    "daily_pnl_std_usd": 3709.905216935019
-  }
+  "selected_strategies": [],
+  "all_portfolio_metrics": {},
+  "recommended_portfolio_metrics": {}
 }
