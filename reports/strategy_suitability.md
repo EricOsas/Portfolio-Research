@@ -87,6 +87,21 @@ All probabilities below are 5,000-path, 252-trading-day estimates. Breach means 
 
 The repeat estimates assume each new account has the same probability and is independent. They exclude challenge fees and resets. The combined breach figures combine evaluation breach with funded breach conditional on passing; funded breaches can occur after a payout, so breach and payout events are not mutually exclusive.
 
+## Expected monthly PnL and drawdown
+
+These are 5,000-path validation bootstrap estimates at the base risk shown. A month is 21 trading sessions.
+
+| Prop book | Effective risk | Mean monthly PnL | Median monthly PnL | P10 monthly PnL | Median monthly DD | P90 monthly DD | P95 252-day max DD |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| FTMO challenge/funded book | USD 50 | USD 281 | USD 259 | -USD 153 | USD 162 | USD 361 | USD 1,008 |
+| Tradeify challenge book | USD 457 | USD 1,646 | USD 1,432 | -USD 996 | USD 1,156 | USD 2,275 | USD 6,189 |
+| Tradeify funded book | USD 473 | USD 1,574 | USD 1,350 | -USD 937 | USD 1,090 | USD 2,153 | USD 5,912 |
+| Tradeify lower-risk pair | USD 237 | USD 614 | USD 592 | -USD 571 | USD 591 | USD 1,155 | USD 3,237 |
+
+P10 monthly PnL is a weak-month estimate. P90 monthly DD is the 90th-percentile peak-to-trough drawdown inside a 21-session block. P95 252-day max DD is the 95th-percentile full-year strategy drawdown.
+
+**Important:** monthly PnL and drawdown are the strategy stream before account failures, daily-loss clipping, payout rules, payout splits and withdrawal resets. They are not monthly cash withdrawals. Account-level payout expectations are listed above and in each firm's `book_recommendations.md`.
+
 ## What the four categories mean
 
 - **Live:** no evaluation deadline. Prioritize durable expectancy, drawdown control, stable monthly behavior, and a portfolio that can be run repeatedly. The normalized live books use the requested fixed sizing rather than an account balance.
