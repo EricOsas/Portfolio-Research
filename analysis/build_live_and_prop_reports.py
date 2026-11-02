@@ -1185,15 +1185,19 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
         combined_payout_rate = challenge_pass * funded_first_rate
         combined_hard_breach = evaluation_breach + challenge_pass * funded_breach
         if 0 < challenge_pass <= 1 and 0 < funded_first_rate <= 1:
+            expected_challenge_accounts = 1.0 / combined_payout_rate
+            expected_funded_accounts = 1.0 / funded_first_rate
+            expected_failed_evaluation_accounts = max(0.0, expected_challenge_accounts - expected_funded_accounts)
+            expected_failed_funded_accounts = max(0.0, expected_funded_accounts - 1.0)
             lines += [
                 "", "## Expected account attempts before first payout",
                 f"- Challenge pass probability: {challenge_pass:.1%}.",
                 f"- First-payout probability after funding with the selected funded book: {funded_first_rate:.1%}.",
                 f"- Approximate payout probability per challenge start when switching to the selected funded book: {combined_payout_rate:.1%}.",
-                f"- Expected challenge accounts started per first payout: {1.0 / combined_payout_rate:.2f}.",
-                f"- Expected failed evaluation accounts before passing: {(1.0 - challenge_pass) / challenge_pass:.2f}.",
-                f"- Expected funded accounts entered per first payout: {1.0 / funded_first_rate:.2f}.",
-                f"- Expected failed funded accounts before first payout: {(1.0 - funded_first_rate) / funded_first_rate:.2f}.",
+                f"- Expected challenge accounts started per first payout: {expected_challenge_accounts:.2f}.",
+                f"- Expected failed evaluation accounts before first payout: {expected_failed_evaluation_accounts:.2f}.",
+                f"- Expected funded accounts entered per first payout: {expected_funded_accounts:.2f}.",
+                f"- Expected failed funded accounts before first payout: {expected_failed_funded_accounts:.2f}.",
                 f"- Approximate combined hard-breach probability per challenge start: {combined_hard_breach:.1%}.",
                 "These are geometric-repeat estimates. They assume each new account repeats the same probabilities; they are not a guarantee and do not include account fees.",
             ]
@@ -1212,7 +1216,9 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
                       f'  - Funded first-payout rate conditional on funding: {float(pair[conditional_col]):.1%}',
                       f'  - Funded hard-breach rate (conditional on funding): {float(pair[breach_col]):.1%}',
                       f'  - Expected challenge starts per payout at this same book: {1.0 / float(pair[payout_col]):.2f}',
+                      f'  - Expected failed evaluation accounts before payout: {max(0.0, 1.0 / float(pair[payout_col]) - 1.0 / float(pair[conditional_col])):.2f}',
                       f'  - Expected funded accounts per payout: {1.0 / float(pair[conditional_col]):.2f}',
+                      f'  - Expected failed funded accounts before payout: {max(0.0, 1.0 / float(pair[conditional_col]) - 1.0):.2f}',
                       f'  - Approximate 90-trading-day funded survival: {float(pair["survival_90d_conditional_approx"]):.1%}',
                       f'  - Median trading days to evaluation pass: {float(pair["median_days_to_evaluation_pass"]):.1f}',
                       f'  - Median trading days to first payout: {float(pair["median_days_to_first_payout_from_start"]):.1f}',
