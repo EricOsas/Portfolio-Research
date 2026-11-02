@@ -1142,7 +1142,10 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
                    "Challenge-to-payout", "Funded breach"]
         if has_survival:
             headers.append("90-day survival")
-        headers += ["Median payout days", "Expected first payout"]
+        headers += [
+            "Median payout days", "Expected first payout",
+            "Mean monthly PnL", "P10 monthly PnL", "P90 monthly DD", "P95 252d max DD"
+        ]
         lines.extend(["", f"### {section_title}", "| " + " | ".join(headers) + " |",
                       "| " + " | ".join(["---"] * len(headers)) + " |"])
         for _, row in ladder.iterrows():
@@ -1158,6 +1161,14 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
             cells.append(f"{float(median_days):.0f}" if pd.notna(median_days) else "—")
             expected = row.get(expected_col, np.nan)
             cells.append(f"${float(expected):,.2f}" if pd.notna(expected) else "—")
+            for metric in [
+                "mean_monthly_strategy_pnl_usd",
+                "p10_monthly_strategy_pnl_usd",
+                "p90_monthly_peak_to_trough_dd_usd",
+                "p95_max_drawdown_252d_usd",
+            ]:
+                value = row.get(metric, np.nan)
+                cells.append(f"${float(value):,.0f}" if pd.notna(value) else "—")
             lines.append("| " + " | ".join(cells) + " |")
 
     append_risk_ladder("Challenge candidate risk ladder", challenge)
@@ -1181,6 +1192,10 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
                       f'  - Median trading days to first payout: {float(pair["median_days_to_first_payout_from_start"]):.1f}',
                       f'  - Expected first net payout across all paths: USD {float(pair["first_payout_net_usd_mean"]):,.2f}',
                       f'  - Expected total net payout cash across all paths: USD {float(pair["total_net_payout_cash_mean"]):,.2f}',
+                      f'  - Mean monthly strategy PnL before account rules: USD {float(pair["mean_monthly_strategy_pnl_usd"]):,.0f}',
+                      f'  - P10 monthly strategy PnL before account rules: USD {float(pair["p10_monthly_strategy_pnl_usd"]):,.0f}',
+                      f'  - P90 monthly peak-to-trough drawdown: USD {float(pair["p90_monthly_peak_to_trough_dd_usd"]):,.0f}',
+                      "Monthly PnL and drawdown are strategy-stream estimates before account failures, DLL clipping, payout rules or withdrawal resets.",
                       "This is not the overall training-score winner. It is the top funded-score candidate within the eligible two-sleeve subset; its validation results are holdout estimates, not a basis for promoting it over the overall training-selected books."]
             append_risk_ladder("Two-sleeve alternative risk ladder", pair)
 
