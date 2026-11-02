@@ -1,6 +1,6 @@
 # Strategy and book suitability report
 
-**Updated:** 2026-11-01  
+**Updated:** 2026-11-02  
 **Purpose:** classify sleeves and portfolios for standard live accounts, prop-firm challenges, funded accounts, and near-drawdown recovery. This is a historical research screen, not a live-deployment approval.
 
 ## Plain assignments
@@ -39,6 +39,53 @@ These are generic portfolio-screening categories. They are not fixed labels atta
 - **Tradeify $50k Growth:** overall training-score leaders are challenge_book_1 (Flash ORB + Gold ORB (RBE) + Sigma ORB + Vault Break) and funded_book_1 (Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB). Their USD 100 requests require USD 457.35 and USD 472.83 effective risk after minimum-micro sizing. A lower-risk, two-sleeve alternative is Flash ORB + Overnight Bias ORB at USD 237.23 effective risk; it is slower but has stronger validation survival.
 
 **Near-floor recovery:** at the strict starting cushions ($100 FTMO; $200 Tradeify), no active book achieves both at least 50% recovery probability and at most 5% breach probability. Tradeify's best eligible active recovery book still has about 41% modeled breach risk; the lowest-exposure single sleeve is only marginally safer. FTMO becomes materially more recoverable as the remaining cushion grows.
+
+## Prop-account results in plain numbers
+
+All probabilities below are 5,000-path, 252-trading-day estimates. Breach means a modeled firm loss-limit violation. Payout probability means at least one first payout within the horizon.
+
+### FTMO $10k 2-Step CFD
+
+- Book: Flash ORB + Gold ORB (RBE) + Open Drive + Tokyo Coil.
+- Total requested risk: USD 50 per book trade, split equally across four sleeves.
+- Pass both phases: **95.12%**.
+- Evaluation hard breach: **0.88%**.
+- Funded hard breach, conditional on funding: **0.55%**.
+- First-reward probability from challenge start: **92.88%**.
+- Approximate combined hard-breach probability across evaluation and funded stages: **1.40%**.
+- Expected first reward across all paths: **USD 165.11**; median reward on successful paths: **USD 127.52**.
+- Median time to first reward: **127 trading days**.
+- Geometric repeat estimate: **1.08 challenge accounts** and **1.02 funded accounts** per first reward.
+
+### Tradeify $50k Growth — higher-return four-sleeve route
+
+- Challenge book: Flash ORB + Gold ORB (RBE) + Sigma ORB + Vault Break.
+- Funded book: Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB.
+- USD 100 requested risk becomes **USD 457.35** effective challenge risk and **USD 472.83** effective funded risk after minimum-micro sizing.
+- Challenge pass: **71.06%**; evaluation hard breach: **28.94%**.
+- Funded first-payout probability, conditional on funding with the funded book: **74.11%**.
+- Funded hard breach, conditional on funding: **37.95%**.
+- Approximate first-payout probability per challenge start when switching to the funded book: **52.66%**. Keeping the challenge book unchanged gives **51.94%**.
+- Approximate combined hard-breach probability across both stages: **55.90%**.
+- Funded-book expected first payout across all paths: **USD 705.51**; median payout on successful paths: **USD 1,350**.
+- Median time to first payout: **68 trading days**.
+- Approximate 90-trading-day funded survival: **68.1%**.
+- Geometric repeat estimate: **1.90 challenge accounts** and **1.35 funded accounts** per first payout.
+
+### Tradeify — lower-risk two-sleeve alternative
+
+- Use Flash ORB + Overnight Bias ORB for both challenge and funded stages.
+- USD 100 requested risk becomes **USD 237.23** effective risk.
+- Challenge pass: **84.30%**; evaluation hard breach: **15.10%**.
+- First-payout probability from challenge start: **61.56%**.
+- Funded hard breach, conditional on funding: **21.30%**.
+- Approximate combined hard-breach probability across both stages: **33.06%**.
+- Approximate 90-trading-day funded survival: **89.31%**.
+- Expected first payout across all paths: **USD 831.06**; median payout on successful paths: **USD 1,350**.
+- Median time to first payout: **163 trading days**.
+- Geometric repeat estimate: **1.62 challenge accounts** and **1.37 funded accounts** per first payout.
+
+The repeat estimates assume each new account has the same probability and is independent. They exclude challenge fees and resets. The combined breach figures combine evaluation breach with funded breach conditional on passing; funded breaches can occur after a payout, so breach and payout events are not mutually exclusive.
 
 ## What the four categories mean
 
