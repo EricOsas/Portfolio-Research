@@ -4,6 +4,8 @@
 
 `build_equity_reports.py` reads NT8 and MT5 source exports, normalizes realized PnL events, writes platform-separated metrics and charts, and produces a transparent export-level screening shortlist.
 
+Source exports are stored under `Trades/NT8 Trades/` (9 CSV files) and `Trades/MT5 Trades/` (10 XLSX files). Gold X9 remains an intentionally pending MT5 export. The build preflights all required source files and refuses to publish partial or empty reports.
+
 - NT8 Profit is used as exported; it is already net of Commission.
 - MT5 standard Strategy Tester reports use deal Profit + Commission + Swap.
 - NQ Precision Bot uses its custom completed-trade ledger.
