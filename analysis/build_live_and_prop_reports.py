@@ -1179,6 +1179,27 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
     if funded is not None and (challenge is None or str(funded["book"]) != str(challenge["book"])):
         append_risk_ladder("Funded candidate risk ladder", funded)
 
+    if challenge is not None and funded is not None:
+        challenge_pass = float(challenge[pass_col])
+        funded_first_rate = float(funded.get(conditional_col, np.nan))
+        evaluation_breach = float(challenge.get("evaluation_hard_breach_rate", np.nan))
+        funded_breach = float(funded.get(breach_col, np.nan))
+        combined_payout_rate = challenge_pass * funded_first_rate
+        combined_hard_breach = evaluation_breach + challenge_pass * funded_breach
+        if 0 < challenge_pass <= 1 and 0 < funded_first_rate <= 1:
+            lines += [
+                "", "## Expected account attempts before first payout",
+                f"- Challenge pass probability: {challenge_pass:.1%}.",
+                f"- First-payout probability after funding with the selected funded book: {funded_first_rate:.1%}.",
+                f"- Approximate payout probability per challenge start when switching to the selected funded book: {combined_payout_rate:.1%}.",
+                f"- Expected challenge accounts started per first payout: {1.0 / combined_payout_rate:.2f}.",
+                f"- Expected failed evaluation accounts before passing: {(1.0 - challenge_pass) / challenge_pass:.2f}.",
+                f"- Expected funded accounts entered per first payout: {1.0 / funded_first_rate:.2f}.",
+                f"- Expected failed funded accounts before first payout: {(1.0 - funded_first_rate) / funded_first_rate:.2f}.",
+                f"- Approximate combined hard-breach probability per challenge start: {combined_hard_breach:.1%}.",
+                "These are geometric-repeat estimates. They assume each new account repeats the same probabilities; they are not a guarantee and do not include account fees.",
+            ]
+
     if "Tradeify" in title and "train_funded_score" in base.columns:
         pair_rows = base[base["strategies"].astype(str).str.count(r"\+") == 1].copy()
         if not pair_rows.empty:
