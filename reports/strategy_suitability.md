@@ -3,6 +3,27 @@
 **Updated:** 2026-11-01  
 **Purpose:** classify sleeves and portfolios for standard live accounts, prop-firm challenges, funded accounts, and near-drawdown recovery. This is a historical research screen, not a live-deployment approval.
 
+## Plain assignments
+
+These are the actual strategy combinations selected by the research. A plus sign means all listed strategies are run together.
+
+**NT8 futures books**
+- **Live account:** Opening-Shock Continuation + Overnight Bias ORB + Sigma ORB + Vault Break.
+- **Challenge:** Flash ORB + Gold ORB (RBE) + Sigma ORB + Vault Break.
+- **Funded account:** Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB.
+- **Recovery score:** same four strategies as the funded book. This is a ranking label, not approval to trade near the loss limit.
+
+**MT5 CFD books**
+- **Live account:** Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Overnight Bias ORB.
+- **Challenge:** Flash ORB + Gold ORB (RBE) + Open Drive + Tokyo Coil.
+- **Funded account:** Flash ORB + Gold ORB (RBE) + Open Drive + Tokyo Coil.
+- **Recovery score:** Gold ORB (RBE) + Opening-Shock Continuation + Tokyo Coil + Vault Break. This is not a near-floor recovery recommendation.
+
+**The two prop-account configurations**
+- **FTMO $10k 2-Step:** use the MT5 challenge/funded combination above. The model's base case is USD 50 total risk per book trade.
+- **Tradeify $50k Growth:** challenge book is Flash ORB + Gold ORB (RBE) + Sigma ORB + Vault Break. The funded book is Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB. Minimum-micro sizing raises the modeled effective risks above the requested USD 100.
+- **Tradeify lower-risk alternative:** Flash ORB + Overnight Bias ORB for both stages. It is slower, but has materially better modeled survival and payout probability than the four-sleeve leader.
+
 ## Executive decision summary
 
 | Use case | NT8 / futures research book | MT5 / CFD research book |
