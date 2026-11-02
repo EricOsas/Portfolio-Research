@@ -1146,8 +1146,12 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
             "Median payout days", "Expected first payout",
             "Mean monthly PnL", "P10 monthly PnL", "P90 monthly DD", "P95 252d max DD"
         ]
-        lines.extend(["", f"### {section_title}", "| " + " | ".join(headers) + " |",
-                      "| " + " | ".join(["---"] * len(headers)) + " |"])
+        lines.extend([
+            "", f"### {section_title}",
+            "Monthly PnL uses 21-trading-day blocks. P10 is the 10th-percentile month; P90 monthly DD is the 90th-percentile within-month peak-to-trough drawdown. The 252-day DD is the 95th-percentile full-path drawdown.",
+            "| " + " | ".join(headers) + " |",
+            "| " + " | ".join(["---"] * len(headers)) + " |"
+        ])
         for _, row in ladder.iterrows():
             requested = float(row[risk_col])
             effective = (float(row[effective_col]) if effective_col in row.index and pd.notna(row[effective_col])
