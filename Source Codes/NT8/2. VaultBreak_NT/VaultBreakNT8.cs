@@ -1330,6 +1330,12 @@ private static class ProductExposure
 
 	private DateTime recoveryNextPollUtc;
 
+	private DateTime unackedSinceUtc;
+
+	private DateTime unackedLastUtc;
+
+	private string unackedReasonReported;
+
 	private static readonly object FeeGate = new object();
 
 	private static readonly Dictionary<string, List<FeeTrade>> FeeHistory = new Dictionary<string, List<FeeTrade>>();
@@ -2407,6 +2413,142 @@ private static class ProductExposure
 		}
 	}
 
+	private bool RefuseUnacknowledgedEntry(string reason)
+	{
+		if (unackedReasonReported != reason)
+		{
+			unackedReasonReported = reason;
+			Print(Name + ": unacknowledged entry NOT cleared: " + reason);
+		}
+		return false;
+	}
+
+	// A journaled entry request that the broker never acknowledged, with zero recorded fills and no owned position.
+	// This is cleared automatically ONLY when the account itself proves nothing is live: connected, contract flat,
+	// no working order carrying this model's order prefix, no owned order/execution returned, held for a grace
+	// period of continuous observation. Anything else stays pending (fail-closed) and logs exactly why.
+	private bool TryResolveUnacknowledgedEntry(Order[] brokerOrders)
+	{
+		if (State != State.Realtime || IsInStrategyAnalyzer || !recoveryReady || recoveryFault || recoveryLock == null || !recoveryPending || ownedNet != 0 || string.IsNullOrEmpty(entryName) || closing || pendingCloseName != null || Account == null || Account.ConnectionStatus != ConnectionStatus.Connected)
+		{
+			unackedSinceUtc = default(DateTime);
+			return false;
+		}
+		DateTime utcNow = DateTime.UtcNow;
+		if (unackedSinceUtc == default(DateTime) || (utcNow - unackedLastUtc).TotalSeconds > 5.0)
+		{
+			unackedSinceUtc = utcNow;
+		}
+		unackedLastUtc = utcNow;
+		if (brokerOrders.Length != 0)
+		{
+			return RefuseUnacknowledgedEntry("broker returned an owned order: " + brokerOrders[0].Name);
+		}
+		string journalDetail = string.Join(", ", recoveryRequests.Values.OrderBy((RecoveryRequest r) => r.Name, StringComparer.Ordinal).Take(12).Select((RecoveryRequest r) => { int pv; processed.TryGetValue(r.Name, out pv); return r.Name + "[" + r.Type.ToString() + " q=" + r.Quantity + " proc=" + pv + " id=" + (string.IsNullOrEmpty(r.Id) ? "-" : "set") + "]"; })) + (recoveryRequests.Count > 12 ? " ...(" + recoveryRequests.Count + " total)" : "");
+		RecoveryRequest entryRequest;
+		if (!recoveryRequests.TryGetValue(entryName, out entryRequest))
+		{
+			return RefuseUnacknowledgedEntry("entry request missing from journal; journal: " + journalDetail);
+		}
+		int entryProcessed;
+		processed.TryGetValue(entryName, out entryProcessed);
+		if (entryProcessed != 0 || entryRequest.Processed != 0 || entryRequest.Value != 0.0)
+		{
+			return RefuseUnacknowledgedEntry("journal records fills for the unacknowledged entry " + entryName + "; journal: " + journalDetail);
+		}
+		// Older completed requests are history: with the account flat and no working owned order they cannot be live.
+		string prefix = owner.Substring(0, owner.LastIndexOf('_') + 1);
+		lock (Account.Positions)
+		{
+			if (Account.Positions.Any((Position p) => p.Instrument.FullName == ExecutionInstrument.FullName && p.Quantity != 0))
+			{
+				return RefuseUnacknowledgedEntry("contract is not flat on the account; the entry may have filled");
+			}
+		}
+		lock (Account.Orders)
+		{
+			if (Account.Orders.Any((Order o) => o != null && o.Name != null && o.Instrument != null && o.Instrument.FullName == ExecutionInstrument.FullName && o.Name.StartsWith(prefix, StringComparison.Ordinal) && Working(o)))
+			{
+				return RefuseUnacknowledgedEntry("a working order with this model's prefix exists on the account");
+			}
+		}
+		double held = (utcNow - unackedSinceUtc).TotalSeconds;
+		if (held < 45.0)
+		{
+			return RefuseUnacknowledgedEntry("verifying broker flatness; " + (45 - (int)held) + "s of continuous connected observation remaining");
+		}
+		try
+		{
+			string text = RecoveryCaseId();
+			string text2 = owner;
+			string text3 = prefix + Guid.NewGuid().ToString("N").Substring(0, 12);
+			string text4 = Path.Combine(Path.GetDirectoryName(recoveryPath), "settlements");
+			Directory.CreateDirectory(text4);
+			string text5 = Path.Combine(text4, text + "-" + Guid.NewGuid().ToString("N").Substring(0, 8));
+			byte[] array = File.ReadAllBytes(recoveryPath);
+			using (FileStream fileStream = new FileStream(text5 + ".before", FileMode.CreateNew, FileAccess.Write, FileShare.None))
+			{
+				fileStream.Write(array, 0, array.Length);
+				fileStream.Flush(flushToDisk: true);
+			}
+			string s = "Automatic clearance of unacknowledged entry\r\nUTC=" + DateTime.UtcNow.ToString("o") + "\r\nIdentity=" + recoveryIdentity + "\r\nEntry=" + entryName + "\r\nPreviousOwner=" + text2 + "\r\nNextOwner=" + text3 + "\r\nBasis: account connected; contract flat; no working order with this model prefix; no owned order or execution returned by the broker for the entry; journal records zero fills for the entry; journal at clearance: " + journalDetail + "; held " + held.ToString("F0", CultureInfo.InvariantCulture) + "s continuous observation.\r\nNo broker orders were submitted or cancelled. Owner prefix rotated so any late callback for the old entry name is not adopted.\r\n";
+			byte[] bytes = Encoding.UTF8.GetBytes(s);
+			using (FileStream fileStream2 = new FileStream(text5 + ".confirmation.txt", FileMode.CreateNew, FileAccess.Write, FileShare.None))
+			{
+				fileStream2.Write(bytes, 0, bytes.Length);
+				fileStream2.Flush(flushToDisk: true);
+			}
+			owner = text3;
+			ownedNet = 0;
+			entryName = null;
+			entryOrder = null;
+			closeOrder = null;
+			closing = false;
+			closeRejected = false;
+			pendingCloseName = null;
+			pendingCloseQuantity = 0;
+			pendingCloseExecuted = 0;
+			pendingCloseFinal = -1;
+			orders.Clear();
+			processed.Clear();
+			reportedFilled.Clear();
+			recoveryRequests.Clear();
+			recoverySnapshots.Clear();
+			lock (recoveredOrderNames)
+			{
+				recoveredOrderNames.Clear();
+			}
+			legs.Clear();
+			recoveredTrade = false;
+			connectionPaused = true;
+			SaveRecovery(allowDuringReconciliation: true);
+			if (recoveryFault)
+			{
+				return true;
+			}
+			lock (AppDomain.CurrentDomain)
+			{
+				if (AppDomain.CurrentDomain.GetData("NQIndependentModelExposure.v1") is Dictionary<string, string> dictionary && dictionary.TryGetValue(ExposureKey, out var value) && value == text2)
+				{
+					dictionary.Remove(ExposureKey);
+				}
+				ProductExposure.Release(text2);
+				exposureLease = false;
+			}
+			recoveryPending = false;
+			unackedSinceUtc = default(DateTime);
+			unackedReasonReported = null;
+			status = "Unacknowledged entry cleared; waiting for fresh signal";
+			Print(Name + ": RECOVERY_UNACKNOWLEDGED_ENTRY_CLEARED case=" + text + "; backup=" + text5 + ".before; account flat, no orders found; no broker orders submitted/cancelled.");
+			return true;
+		}
+		catch (Exception ex)
+		{
+			RecoveryBlock("Unacknowledged entry clearance could not be committed; review journal and backup: " + ex.Message);
+			return true;
+		}
+	}
+
 	private bool RecoveryTracksOrder(string name)
 	{
 		if (name == null)
@@ -2672,6 +2814,7 @@ private static class ProductExposure
 		try
 		{
 			bool flag = false;
+			bool unacknowledged = false;
 			Order[] array = RecoveryBrokerOrders();
 			Order[] array2 = array;
 			foreach (Order order in array2)
@@ -2755,12 +2898,15 @@ private static class ProductExposure
 			}
 			if (!flag && entryName != null && recoveryRequests.TryGetValue(entryName, out var value4) && value4.Processed < value4.Quantity && !orders.ContainsKey(entryName))
 			{
-				throw new InvalidDataException("Pending entry was not returned by broker; submission outcome is unknown");
+				// Broker never acknowledged the submission; wait for evidence instead of faulting permanently.
+				// TryResolveUnacknowledgedEntry() ends the wait only on strict, verified broker flatness.
+				flag = true;
+				unacknowledged = true;
 			}
 			bool flag2 = ownedNet != 0 && !RecoveryPositionConsistent();
 			if (flag | flag2)
 			{
-				if (!TryConfirmExternalSettlement(array))
+				if (!TryConfirmExternalSettlement(array) && !(unacknowledged && TryResolveUnacknowledgedEntry(array)))
 				{
 					if (flag2)
 					{
