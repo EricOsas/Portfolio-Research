@@ -3402,6 +3402,10 @@ public class RangeBreakoutNT8 : Strategy
 		try
 		{
 			recoveryRecord = recoveryStore.Load(recoveryFingerprint);
+			if (recoveryStore.AdoptedFromFingerprint != null)
+			{
+				Print("[RBE] Settings changed since the last checkpoint; the saved state has no live exposure, so the new settings were adopted. Previous fingerprint=" + recoveryStore.AdoptedFromFingerprint + "; new fingerprint=" + recoveryFingerprint + "; new settings (stop;minRange;trailTrigger;trailDistance;trailStep;coverCosts;coverageMultiple;riskMoney;strictRisk;maxContracts;maxBuy;maxSell;commission;slipTicks;tickSize;pointValue;timeZone;newsImpact;newsWindow;newsBE;newsFlatten): " + text);
+			}
 			if (recoveryRecord != null)
 			{
 				owner = recoveryRecord.Owner;
@@ -5374,6 +5378,9 @@ public sealed class RbeRecoveryStore : IDisposable
 
 	public string Path { get; private set; }
 
+	// Set by Load() when a checkpoint saved under different settings held no live state and the new settings were adopted.
+	public string AdoptedFromFingerprint { get; private set; }
+
 	private RbeRecoveryStore(string directory, string account, string instrument, string mode, string direction)
 	{
 		this.account = Required(account, "account");
@@ -5463,9 +5470,17 @@ public sealed class RbeRecoveryStore : IDisposable
 					rbeRecoveryRecord = (RbeRecoveryRecord)Serializer.Deserialize(xmlReader);
 				}
 				Validate(rbeRecoveryRecord);
+				AdoptedFromFingerprint = null;
 				if (!string.Equals(rbeRecoveryRecord.SettingsFingerprint, expectedFingerprint, StringComparison.Ordinal))
 				{
-					throw new InvalidOperationException("RBE recovery settings mismatch; saved live state must be reconciled before settings change. Saved fingerprint=" + rbeRecoveryRecord.SettingsFingerprint + "; requested fingerprint=" + expectedFingerprint + "; saved settings=" + ((rbeRecoveryRecord.SettingsXml == rbeRecoveryRecord.SettingsFingerprint) ? "legacy checkpoint contains only a hash" : rbeRecoveryRecord.SettingsXml));
+					string liveStateReason = LiveStateReason(rbeRecoveryRecord);
+					if (liveStateReason != null)
+					{
+						throw new InvalidOperationException("RBE recovery settings mismatch; saved live state (" + liveStateReason + ") must be reconciled before settings change. Saved fingerprint=" + rbeRecoveryRecord.SettingsFingerprint + "; requested fingerprint=" + expectedFingerprint + "; saved settings=" + ((rbeRecoveryRecord.SettingsXml == rbeRecoveryRecord.SettingsFingerprint) ? "legacy checkpoint contains only a hash" : rbeRecoveryRecord.SettingsXml));
+					}
+					// No live exposure in the checkpoint: nothing is protected by the old settings, so adopt the new ones.
+					// The next SaveRecovery() writes the new fingerprint and settings.
+					AdoptedFromFingerprint = rbeRecoveryRecord.SettingsFingerprint;
 				}
 				if (rbeRecoveryRecord.Generation < 1 || rbeRecoveryRecord.SavedUtc == default(DateTime))
 				{
@@ -5482,6 +5497,42 @@ public sealed class RbeRecoveryStore : IDisposable
 				throw new InvalidOperationException("RBE recovery checkpoint refused: " + ex.Message, ex);
 			}
 		}
+	}
+
+	private static string LiveStateReason(RbeRecoveryRecord record)
+	{
+		if (record.ActualNet != 0)
+		{
+			return "net position " + record.ActualNet.ToString(CultureInfo.InvariantCulture);
+		}
+		if (record.Long.Active || record.Short.Active)
+		{
+			return "active leg";
+		}
+		if (record.Reconciling)
+		{
+			return "reconciliation in progress";
+		}
+		if (record.FlowExitOutstanding)
+		{
+			return "exit outstanding";
+		}
+		foreach (RbeRecoveryOrder order in record.Orders)
+		{
+			if (!order.Terminal)
+			{
+				return "non-terminal order " + order.Name;
+			}
+			if (order.ReportedFilled != order.ProcessedFilled)
+			{
+				return "unprocessed fills on order " + order.Name;
+			}
+			if (!order.SubmissionAcknowledged)
+			{
+				return "unacknowledged order " + order.Name;
+			}
+		}
+		return null;
 	}
 
 	public static string SettlementConfirmation(RbeRecoveryRecord record)
