@@ -21,7 +21,7 @@ These are the actual strategy combinations selected by the research. A plus sign
 - **Recovery score:** Gold ORB (RBE) + GotobiFix EURJPY + Tokyo Coil + Vault Break. This is not a near-floor recovery recommendation.
 
 **The two prop-account configurations**
-- **FTMO $10k 2-Step:** challenge book Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive; funded book Flash ORB + Gold ORB (RBE) + GotobiFix USDJPY + Tokyo Coil. The model's base case is USD 50 total risk per book trade.
+- **The5ers $20k Bootcamp:** challenge book Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive; funded-stage book Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil. The model's base case is USD 25 total risk per book trade across a 3-step evaluation ($5k/$10k/$15k) and a $20k funded account.
 - **Tradeify $50k Growth:** challenge book FVG Duo + Flash ORB + Gold ORB (RBE) + Sigma ORB; funded book Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB. Minimum-micro sizing raises the modeled effective risks to roughly USD 512 and USD 476 against a USD 100 request.
 - **Tradeify lower-risk alternative:** Flash ORB + Overnight Bias ORB for both stages. It is slower, but has materially better modeled survival and payout probability than the four-sleeve leader.
 
@@ -36,28 +36,34 @@ These are the actual strategy combinations selected by the research. A plus sign
 
 These are generic portfolio-screening categories. They are not fixed labels attached to a strategy. The firm-specific simulations produce separate recommendations:
 
-- **FTMO $10k 2-Step:** training-selected challenge book Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive at USD 50 total risk passes both phases in 98.48% of paths and reaches a first reward in 97.96%. The funded book Flash ORB + Gold ORB (RBE) + GotobiFix USDJPY + Tokyo Coil has a 95.68% conditional first-reward rate and a 0.02% conditional funded breach rate at USD 50 risk.
+- **The5ers $20k Bootcamp:** training-selected challenge book Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive at USD 25 total risk reaches the funded account in 86.62% of paths and a first payout in 83.96%. The funded-stage book Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil has a 96.3% conditional first-payout rate and a 0.05% conditional funded breach rate at USD 25 risk.
 - **Tradeify $50k Growth:** the overall training-score challenge leader is FVG Duo + Flash ORB + Gold ORB (RBE) + Sigma ORB; the funded leader is Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB. Their USD 100 requests require about USD 511.97 and USD 475.65 effective risk after minimum-micro sizing. A lower-risk, two-sleeve alternative is Flash ORB + Overnight Bias ORB at USD 237.63 effective risk; it is slower but has stronger validation survival.
 
-**Near-floor recovery:** FTMO is materially recoverable at every tested cushion with the new MT5 books, but the best recovery candidates carry meaningful breach risk. Tradeify's best eligible active recovery book still carries roughly a third to a half modeled breach risk. Neither firm has a recovery book that is both high-probability and low-breach at the strictest cushion.
+**Near-floor recovery:** The5ers is recoverable from a USD 250 cushion upward, but at the strict USD 100 cushion the best pair still carries 7.3% breach risk. Tradeify's best eligible active recovery book carries roughly a third to a half modeled breach risk. Neither firm has a recovery book that is both high-probability and low-breach at the strictest cushion.
 
 ## Prop-account results in plain numbers
 
 All probabilities below are 5,000-path, 252-trading-day estimates. Breach means a modeled firm loss-limit violation. Payout probability means at least one first payout within the horizon.
 
-### FTMO $10k 2-Step CFD
+### The5ers $20k Bootcamp
 
 - Challenge book: Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive.
-- Funded book: Flash ORB + Gold ORB (RBE) + GotobiFix USDJPY + Tokyo Coil.
-- Total requested risk: USD 50 per book trade, split equally across four sleeves.
-- Pass both phases: **98.48%**.
-- Evaluation hard breach: **1.42%**.
-- Funded hard breach, conditional on funding: **0.91%**.
-- First-reward probability from challenge start: **97.96%**.
-- Approximate combined hard-breach probability across evaluation and funded stages: **1.4%**.
-- Expected first reward across all paths: **USD 253.40**; median reward on successful paths: **USD 215.71**.
-- Median time to first reward: **81 trading days**.
-- Geometric repeat estimate: **1.06 challenge accounts** and **1.05 funded accounts** per first reward.
+- Funded-stage book: Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil.
+- Total requested risk: USD 25 per book trade, split equally across four sleeves.
+- Step 1 pass: **93.38%**; Step 2 conditional: **99.10%**; Step 3 conditional: **93.60%**.
+- Reach the $20k funded account: **86.62%**.
+- Evaluation hard breach (any of the three steps): **7.46%**.
+- Funded hard breach, conditional on funding: **0.14%**.
+- First-payout probability from challenge start with the challenge book: **83.96%**.
+- First-payout probability with the funded-stage book, conditional on funding: **96.3%**.
+- Approximate first-payout probability per challenge start when switching to the funded-stage book: **83.4%**.
+- Expected first payout across all paths: **USD 69.08**; median payout on successful paths: **USD 72.77**.
+- Expected total payout cash: **USD 472.55** across **5.81** payouts on average.
+- Median time to Step 1 pass: **22 trading days**; through all three steps: **152**; first payout: **164**.
+- Approximate 90-trading-day funded survival: **99.88%**.
+- Geometric repeat estimate: **1.20 challenge accounts** and **1.04 funded accounts** per first payout.
+
+The challenge book's edge is concentrated in Gold X9 and the GotobiFix pairs. At USD 100 risk it still reaches funding in 57.9% of paths, but evaluation breach rises to 42.1% and funded breach to 69.0%; USD 25 is the only rung that keeps both sides acceptable.
 
 ### Tradeify $50k Growth — higher-return four-sleeve route
 
@@ -97,13 +103,14 @@ These are 5,000-path validation bootstrap estimates at the base risk shown. A mo
 
 | Prop book | Effective risk | Mean monthly PnL | P10 monthly PnL | P90 monthly DD | P95 252-day max DD |
 |---|---:|---:|---:|---:|---:|
-| FTMO challenge book | USD 50 | USD 476 | -USD 80 | USD 471 | USD 1,230 |
-| FTMO funded book | USD 50 | USD 218 | -USD 101 | USD 266 | USD 687 |
+| The5ers challenge book | USD 25 | USD 238 | -USD 40 | USD 236 | USD 615 |
 | Tradeify challenge book | USD 512 | USD 1,995 | -USD 1,111 | USD 2,558 | USD 7,003 |
 | Tradeify funded book | USD 476 | USD 1,527 | -USD 822 | USD 2,028 | USD 5,395 |
 | Tradeify lower-risk pair | USD 238 | USD 634 | -USD 522 | USD 1,119 | — |
 
 P10 monthly PnL is a weak-month estimate. P90 monthly DD is the 90th-percentile peak-to-trough drawdown inside a 21-session block. P95 252-day max DD is the 95th-percentile full-year strategy drawdown.
+
+Monthly figures are not reported for the The5ers funded-stage book in this build; its funded-stage payout and survival estimates are in the table above.
 
 **Important:** monthly PnL and drawdown are the strategy stream before account failures, daily-loss clipping, payout rules, payout splits and withdrawal resets. They are not monthly cash withdrawals. Account-level payout expectations are listed above and in each firm's `book_recommendations.md`.
 
@@ -213,21 +220,21 @@ These roles describe what each sleeve contributes inside a book. They are not in
 
 | Sleeve | Best-supported role | Evidence and constraint |
 |---|---|---|
-| Gold X9 | Return engine / FTMO challenge anchor | 0.128R expectancy, 86.1% win rate, PF 2.024 and Sharpe 3.114 on per-lot normalized PnL over 13,436 trades. Single-sleeve FTMO evaluation breach is 50.0% at $50 risk, so it must be paired with defensive sleeves. The raw export is a balance-compounding tester run; never size it from the raw dollar curve. |
-| GotobiFix EURJPY | High-quality low-drawdown contributor | 0.349R expectancy, PF 2.320, Sharpe 2.345, $1.2k max DD. Single-sleeve FTMO: 58.38% first reward, 0.26% evaluation breach. Best standalone risk/reward among the new sleeves. |
-| GotobiFix USDJPY | Challenge contributor | 0.322R expectancy, PF 2.185, Sharpe 2.253, $2.0k max DD. Single-sleeve FTMO evaluation breach 24.38% at $50 risk; strong inside a book, not alone. |
-| GotobiFix GBPJPY | Diversifier | 0.237R expectancy, PF 1.890, Sharpe 1.821. Lowest first-reward rate of the three pairs (39.96%) but a small 0.52% single-sleeve evaluation breach. |
-| FVG Duo | Return/diversification sleeve | 0.161R expectancy, PF 1.317, Sharpe 1.247. Single-sleeve FTMO first reward 72.18% with 5.70% evaluation breach. |
-| Gold ORB (RBE) | FTMO challenge/funded contributor; live return sleeve | 0.405R expectancy. At $50 book risk alone: 72.52% challenge-to-first-reward, 22.34% evaluation breach and 13.08% funded breach. Live PF/Sharpe are 1.579 / 1.721. MT5 Deals have no position IDs, so entry/exit pairing remains a data-quality caveat. |
-| Overnight Bias ORB | Live anchor / FTMO stabilizer | Live PF/Sharpe 1.629 / 1.749 with $1.13k max DD. Lowest MT5 10R drawdown tail (35.12%). FTMO single-sleeve first reward 72.48% with 0.44% evaluation breach. |
-| Tokyo Coil | High-expectancy challenge contributor | 0.269R expectancy, PF 1.452, Sharpe 1.399. FTMO single-sleeve first reward 54.40%, evaluation breach 3.88%; a stable book member after per-lot normalization. |
-| Open Drive | Aggressive challenge accelerator, weak funded anchor | 0.139R expectancy, but FTMO evaluation breach 36.78% and funded breach 19.83% at $50 risk. It raises growth potential and account risk together. |
-| Noise Band Momentum | Secondary challenge contributor | 0.136R expectancy; FTMO first-reward rate 50.88%, evaluation breach 15.74% and funded breach 5.38%. Live max DD is $3.74k. |
-| Flash ORB | Portfolio complement | Lower standalone FTMO first-reward rate (34.04%) but only 6.38% evaluation breach and 1.62% funded breach at $50 risk. Useful for combining return streams, not a standalone pass engine. |
-| Vault Break | Conservative/slow stabilizer | FTMO first-reward rate 16.38%, evaluation breach 4.46% and funded breach 0.36% at $50 risk. Lower breach does not make it a fast challenge choice. |
-| Sigma ORB | Secondary/high-drawdown sleeve | Weak live PF/Sharpe (1.103 / 0.543); FTMO evaluation breach 33.26% and funded breach 12.90% at $50 risk. |
-| Opening-Shock Continuation | Low-frequency diversifier | Standalone FTMO first-reward rate was 1.42% within one year. It may diversify a multi-sleeve book but should not be relied on as a solo pass engine. |
-| NQ Precision Bot | Low-priority research sleeve | 0.030R expectancy and 0.379 daily Sharpe; standalone FTMO first-reward rate 2.44% within one year. |
+| Gold X9 | Return engine / The5ers challenge anchor | 0.128R expectancy, 86.1% win rate, PF 2.024 and Sharpe 3.114 on per-lot normalized PnL over 13,436 trades. Alone at $25 book risk it passes Step 1 70.7% of the time but breaches evaluation 45.3% and funded 65.4%; it must be paired with defensive sleeves. The raw export is a balance-compounding tester run; never size it from the raw dollar curve. |
+| GotobiFix EURJPY | High-quality low-drawdown contributor | 0.349R expectancy, PF 2.320, Sharpe 2.345, $1.2k max DD. Alone at $25 book risk it passes Step 1 94.3% of the time with only 4.4% evaluation breach and 0% funded breach; best standalone risk/reward among the new sleeves. |
+| GotobiFix USDJPY | Challenge contributor | 0.322R expectancy, PF 2.185, Sharpe 2.253, $2.0k max DD. Alone at $25 book risk: 83.7% Step-1 pass, 14.5% evaluation breach, 0% funded breach. Strong inside a book, not alone. |
+| GotobiFix GBPJPY | Diversifier | 0.237R expectancy, PF 1.890, Sharpe 1.821. Alone at $25 risk: 91.1% Step-1 pass with 5.2% evaluation breach; the slowest of the three pairs to translate that into a payout. |
+| FVG Duo | Return/diversification sleeve | 0.161R expectancy, PF 1.317, Sharpe 1.247. Alone at $25 risk: 83.7% Step-1 pass, 19.1% evaluation breach, 11.5% challenge-to-payout. |
+| Gold ORB (RBE) | The5ers recovery/return sleeve; live return sleeve | 0.405R expectancy. Alone at $25 risk: 72.3% Step-1 pass, 39.7% evaluation breach, 10.7% funded breach, 53.6% challenge-to-payout. Live PF/Sharpe are 1.579 / 1.721. MT5 Deals have no position IDs, so entry/exit pairing remains a data-quality caveat. |
+| Overnight Bias ORB | Live anchor / recovery stabilizer | Live PF/Sharpe 1.629 / 1.749 with $1.13k max DD. Lowest MT5 10R drawdown tail (35.12%). Alone at $25 risk: 95.0% Step-1 pass with 4.4% evaluation breach. |
+| Tokyo Coil | High-expectancy challenge contributor | 0.269R expectancy, PF 1.452, Sharpe 1.399. Alone at $25 risk: 83.4% Step-1 pass, 16.8% evaluation breach, 0% funded breach; a stable book member after per-lot normalization. |
+| Open Drive | Aggressive challenge accelerator, weak funded anchor | 0.139R expectancy; alone at $25 risk it passes Step 1 only 64.0% of the time, with 58.0% evaluation breach and 13.9% funded breach. It raises growth potential and account risk together. |
+| Noise Band Momentum | Secondary challenge contributor | 0.136R expectancy; alone at $25 risk: 72.7% Step-1 pass, 33.6% evaluation breach, 0% funded breach. Live max DD is $3.74k. |
+| Flash ORB | Portfolio complement | Low standalone Step-1 pass (75.5%) and 23.7% evaluation breach at $25 risk, but 0% funded breach when it does fund. Useful for combining return streams, not a standalone pass engine. |
+| Vault Break | Conservative/slow stabilizer | Alone at $25 risk: 71.1% Step-1 pass, 21.5% evaluation breach, 0% challenge-to-payout within one year. Lower breach does not make it a fast challenge choice. |
+| Sigma ORB | Secondary/high-drawdown sleeve | Weak live PF/Sharpe (1.103 / 0.543); alone at $25 risk it passes Step 1 only 62.5% of the time with 53.6% evaluation breach. |
+| Opening-Shock Continuation | Low-frequency diversifier | Alone at $25 risk it passes Step 1 only 45.3% of the time and reaches no payout within one year. It may diversify a multi-sleeve book but is not a solo pass engine. |
+| NQ Precision Bot | Low-priority research sleeve | 0.030R expectancy and 0.379 daily Sharpe; alone at $25 risk: 63.3% Step-1 pass, 7.7% evaluation breach, no payout within one year. |
 
 **Key distinction:** a low-breach sleeve can still be a poor challenge sleeve because it may not reach the target in time. A high-expectancy sleeve can be a poor funded sleeve because its drawdown tail threatens the payout account. The book-level Monte Carlo, not the sleeve's win rate alone, determines the category fit.
 
@@ -258,53 +265,58 @@ Interpretation:
 
 Both firms use 5,000 Monte Carlo paths over 252 trading days, with five-day blocks aligned to complete Monday-Friday weeks and sampled from the later 40% validation period.
 
-### FTMO — USD 10,000 2-Step CFD
+### The5ers — USD 20,000 Bootcamp
 
-Modeled account rules: 10% Phase 1 target, 5% Verification target, USD 500 equity-based daily loss, USD 1,000 static maximum-loss floor, at least four trading days in each phase, and an 80% default reward split. The first Reward Day is modeled after approximately 10 elapsed trading days (the 11th sampled business day counting the first-trade day); four business days are reserved for review/payment with trading frozen. Cash withdrawal resets the next reference period to initial capital; rollover is not modeled and only the first reward is counted.
+Modeled account structure (The5ers Bootcamp, checked 2026-11-22): three sequential evaluation steps on $5,000, $10,000 and $15,000, each with a 6% target and a 5% static max loss; no daily loss limit and no time limit. The funded account is $20,000 with a 4% static max loss ($19,200 floor), a 3% daily pause, a 50% starting split, and payouts every 14 calendar days (modeled as 10 trading days). Bootcamp has no consistency rule. The 5% funded scale-up ladder is not modeled.
 
 **Training-selected challenge book:** Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive.  
-**Training-selected funded book:** Flash ORB + Gold ORB (RBE) + GotobiFix USDJPY + Tokyo Coil.  
-**Risk:** USD 50 total per book trade, split equally across four sleeves. Minimum CFD lot sizes are not enforced.
+**Training-selected funded-stage book:** Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil (highest training-funded score among the ten best training challenge books).  
+**Risk:** USD 25 total per book trade, split equally across four sleeves. Continuous sizing; minimum CFD lots are not enforced.
 
-| Metric | Challenge book | Funded book |
+| Metric | Challenge book | Funded-stage book |
 |---|---:|---:|
-| Phase 1 pass rate | 99.16% | 97.86% |
-| Verification pass rate, conditional on Phase 1 | 99.31% | 92.74% |
-| Pass both phases | 98.48% | 90.76% |
-| Challenge-to-first-reward probability | 97.96% | 86.84% |
-| Evaluation hard-breach probability | 1.42% | 0.04% |
-| Funded hard-breach probability, conditional on funding | 0.91% | 0.02% |
-| Median trading days to Phase 1 pass | 40 | 90 |
-| Median trading days to Verification pass | 64 | 135 |
-| Median trading days to first reward | 81 | 152 |
-| Expected first reward across all paths | USD 253.40 | USD 126.35 |
-| Median first reward on successful paths | USD 215.71 | USD 104.79 |
+| Step 1 pass rate | 93.38% | 95.14% |
+| Step 2 pass, conditional on Step 1 | 99.10% | 99.54% |
+| Step 3 pass, conditional on Step 2 | 93.60% | 92.04% |
+| Reach the funded account | 86.62% | 87.16% |
+| First payout from challenge start | 83.96% | 83.96% |
+| Evaluation hard-breach probability | 7.46% | 5.24% |
+| Funded hard-breach probability, conditional on funding | 0.14% | 0.05% |
+| Median trading days to Step 1 pass | 22 | 25 |
+| Median trading days through all steps | 152 | 161 |
+| Median trading days to first payout | 164 | 172 |
+| Expected first payout across all paths | USD 69.08 | USD 63.46 |
+| Median payout on successful paths | USD 72.77 | USD 68.54 |
+| Expected total payout cash | USD 472.55 | USD 405.76 |
+| Mean payout count | 5.81 | 5.45 |
+| 90-trading-day funded survival | 99.88% | 99.96% |
 
-**Challenge book risk ladder** (USD 25 / 50 / 75 / 100):
+The funded-stage book is chosen for payout survival rather than speed: its conditional first-payout rate after funding is 96.3%, and its funded-breach rate is 0.05%. The 83.4% combined estimate multiplies the challenge book's 86.62% reach-funded rate by that 96.3%, and does not replay a mid-account switch.
 
-| Requested risk | Pass both | Evaluation breach | Challenge-to-payout | Funded breach, conditional | Median payout days | Expected first payout |
-|---:|---:|---:|---:|---:|---:|---:|
-| USD 25 | 96.9% | 0.0% | 94.7% | 0.0% | 145 | USD 125.43 |
-| USD 50 | 98.5% | 1.4% | 98.0% | 0.9% | 81 | USD 253.40 |
-| USD 75 | 86.8% | 13.2% | 83.8% | 7.3% | 57 | USD 324.38 |
-| USD 100 | 71.1% | 28.9% | 63.7% | 21.3% | 43 | USD 347.40 |
+**Challenge book risk ladder** (USD 10 / 25 / 50 / 100):
 
-**Funded book risk ladder:**
+| Requested risk | Reach funded | Evaluation breach | Challenge-to-payout | Funded breach, conditional | 90-day survival | Median payout days | Expected first payout |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| USD 10 | 1.5% | 0.3% | 0.8% | 0.0% | — | 238 | USD 0.23 |
+| USD 25 | 86.6% | 7.5% | 84.0% | 0.1% | 99.9% | 164 | USD 69.08 |
+| USD 50 | 78.0% | 21.9% | 77.3% | 13.8% | 93.0% | 87 | USD 128.11 |
+| USD 100 | 57.9% | 42.1% | 54.4% | 69.0% | 61.9% | 45 | USD 182.80 |
 
-| Requested risk | Pass both | Evaluation breach | Challenge-to-payout | Funded breach, conditional | Median payout days | Expected first payout |
-|---:|---:|---:|---:|---:|---:|---:|
-| USD 25 | 34.3% | 0.0% | 26.0% | 0.0% | 217 | USD 20.53 |
-| USD 50 | 90.8% | 0.0% | 86.8% | 0.0% | 152 | USD 126.35 |
-| USD 75 | 97.1% | 0.8% | 95.3% | 0.6% | 111 | USD 205.09 |
-| USD 100 | 96.3% | 3.1% | 94.9% | 2.1% | 88 | USD 260.33 |
+**Funded-stage book risk ladder:**
 
-USD 50 is the base case for the challenge book; above USD 75 the same book starts breaching the daily loss limit often enough to reduce pass probability, even though expected payout keeps rising. The funded book is the opposite: its pass rate improves with size because the target is reached faster, and the breach cost stays low until USD 100.
+| Requested risk | Reach funded | Evaluation breach | Challenge-to-payout | Funded breach, conditional | 90-day survival | Median payout days | Expected first payout |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| USD 25 | 87.2% | 5.2% | 84.0% | 0.0% | 100.0% | 172 | USD 63.46 |
+| USD 50 | 80.5% | 19.5% | 79.7% | 7.6% | 96.2% | 93 | USD 123.19 |
+| USD 100 | 61.3% | 38.7% | 58.1% | 59.1% | 69.2% | 49 | USD 183.51 |
 
-**Holdout validation leader — diagnostic only:** FVG Duo + Gold X9 + GotobiFix EURJPY + Overnight Bias ORB records 99.5% pass-both, 99.3% challenge-to-first-reward and 0.5% evaluation breach at USD 50 risk. It is not the primary selection because it was identified as the validation leader after the training-only selection; promoting it would use the holdout to choose the book.
+At USD 10 the three 6% step targets require too many R over the 252-day horizon, so almost no path funds; the ladder is informative from USD 25 upward. Above USD 25 the expected first payout keeps rising, but breach risk rises faster: the USD 50 rung carries 13.8% conditional funded breach and USD 100 carries 69.0%.
 
-**RBE-excluded sensitivity:** the training-selected challenge and funded books already exclude MT5 Gold ORB (RBE), so the RBE-pairing caveat does not affect either primary selection. The RBE-excluded and RBE-included challenge candidates are identical in this run.
+**Holdout validation leader — diagnostic only:** Gold ORB (RBE) + Gold X9 + GotobiFix EURJPY + Overnight Bias ORB records 92.5% reach-funded, 91.5% challenge-to-payout and 5.8% evaluation breach at USD 25 risk. It is not the primary selection because it was identified as the validation leader after the training-only selection.
 
-The full risk ladders are in [FTMO book recommendations](../Prop-Firms/FTMO-10K-2-Step-CFD/reports/book_recommendations.md) and [the Monte Carlo CSV](../Prop-Firms/FTMO-10K-2-Step-CFD/reports/monte_carlo_challenge_payout.csv). The simulation is close-only: FTMO's equity-based loss rules can be breached by floating losses that are absent from the MT5 exports. Phase review/KYC delays are also omitted, so time-to-funded estimates are optimistic, and the 98% challenge pass rate should be treated as a closed-PnL upper bound.
+**RBE-excluded sensitivity:** the training-selected challenge and funded books already exclude MT5 Gold ORB (RBE), so the RBE-pairing caveat does not affect either primary selection.
+
+The full risk ladders are in [The5ers book recommendations](../Prop-Firms/The5ers-20K-Bootcamp/reports/book_recommendations.md) and [the Monte Carlo CSV](../Prop-Firms/The5ers-20K-Bootcamp/reports/monte_carlo_challenge_payout.csv). The simulation is close-only: the funded 3% daily pause is a closed-PnL clip, floating-loss breaches are invisible in the MT5 exports, and the funded scale-up ladder and account fees are excluded. The 84% first-payout rate should therefore be treated as an upper bound.
 
 ### Tradeify — USD 50,000 Growth futures
 
@@ -359,18 +371,18 @@ The USD 2,000 DLL step-up is modeled as persistent once unlocked. Daily loss cli
 
 Recovery starts from a defined cushion above the account's breach floor. It asks whether a fixed low-size book can reach a target before the floor is breached. It does not increase size to recover losses.
 
-### FTMO
+### The5ers
 
-At a USD 100 cushion above the USD 9,000 static floor (USD 9,100 equity), the target is return to the USD 10,000 initial balance.
+At a USD 100 cushion above the USD 19,200 funded floor (USD 19,300 equity), the target is return to the USD 20,000 funded initial balance.
 
-- Highest recovery probability: **Gold X9 + GotobiFix EURJPY**, USD 10 total risk; 81.28% chance to return to USD 10,000, with 17.58% modeled breach (median 110 trading days).
-- Next best: **FVG Duo + Gold X9**, USD 10 risk; 80.64% recovery and 18.70% breach; **Gold X9 + GotobiFix GBPJPY**, USD 10 risk; 80.58% recovery and 18.62% breach.
+- Highest recovery probability: **Gold ORB (RBE) + Gold X9**, USD 5 total risk; 89.02% chance to return to USD 20,000, with 7.30% modeled breach (median 141 trading days).
+- Best RBE-excluded alternative: **GotobiFix EURJPY + Overnight Bias ORB**, USD 25 risk; 84.06% recovery with 5.28% breach (median 158 days).
 - Lowest-breach active book: **GotobiFix USDJPY + Overnight Bias ORB** at USD 5 total risk; 0% recovery and 0% observed breach. This preserves the remaining cushion in the sample but does not rebuild it.
-- At a USD 250 cushion, **Gold X9 + Noise Band Momentum** at USD 10 risk reaches initial equity in 95.96% of paths with 3.40% breach; **Gold X9 + GotobiFix EURJPY** gives 95.94% recovery and 3.20% breach.
-- At a USD 500 cushion, **FVG Duo + Gold X9** at USD 10 risk gives 99.68% recovery with 0.16% breach; **Gold ORB (RBE) + Gold X9** at USD 5 risk gives 99.04% recovery with no breach observed.
-- At a USD 750 cushion, **FVG Duo + Gold X9** at USD 10 risk gives 100% recovery with no breach observed in 5,000 paths.
+- At a USD 250 cushion, **Gold ORB (RBE) + Gold X9** at USD 5 risk reaches the funded balance in 98.30% of paths with 0.38% breach; **Gold X9 + GotobiFix EURJPY** gives 96.54% recovery and 3.20% breach in a median of 69 days.
+- At a USD 500 cushion, **FVG Duo + Gold X9** at USD 10 risk gives 99.84% recovery with 0.16% breach; **Gold ORB (RBE) + Gold X9** at USD 5 risk gives 99.80% recovery with no breach observed.
+- At a USD 750 cushion, **GotobiFix USDJPY + Overnight Bias ORB** at USD 25 risk and **GotobiFix EURJPY + Overnight Bias ORB** at USD 12.50 risk both reach the funded balance in 100% of paths with no breach observed.
 
-The USD 100 cushion now clears the 50% recovery bar, but at roughly 17–19% breach risk. That is a real trade-off, not a safe recovery: if the account is only USD 100 above the floor, the highest-probability recovery books risk losing it about one time in five. No-trade preserves the account but cannot recover it. Zero observed breaches in 5,000 paths is not proof of zero risk; the approximate one-sided 95% upper bound is 0.06%. RBE-inclusive recovery candidates inherit MT5 pairing uncertainty.
+At the strict USD 100 cushion no book meets both the 50% recovery / 5% breach screen: the highest-probability pair carries 7.3% breach risk. From USD 250 upward the best pairs clear it comfortably. No-trade preserves the account but cannot recover it. Zero observed breaches in 5,000 paths is not proof of zero risk; the approximate one-sided 95% upper bound is 0.06%. RBE-inclusive recovery candidates inherit MT5 pairing uncertainty.
 
 ### Tradeify
 
@@ -386,7 +398,7 @@ No weekly-eligible active candidate meets the 5% near-floor breach-risk threshol
 ## How to use the results
 
 1. Use the **Normalized-Live** category books as starting points for standard accounts, not as prop-firm recommendations.
-2. Use the **FTMO** and **Tradeify** Monte Carlo reports for account-specific challenge/funded decisions. Do not transfer a risk setting from one firm to the other.
+2. Use the **The5ers Bootcamp** and **Tradeify** Monte Carlo reports for account-specific challenge/funded decisions. Do not transfer a risk setting from one firm to the other.
 3. For Tradeify, compare requested risk with effective risk after minimum micro sizing. The minimum contract rule can make actual risk more than twice the requested USD 100 budget.
 4. Treat recovery as a separate account state. Near the floor, do not assume a positive-expectancy strategy is a safe recovery book.
 5. Keep the original strategy-native entries and exits unchanged. No strategy stop redesign or parameter optimization was performed in this report.
@@ -396,8 +408,8 @@ No weekly-eligible active candidate meets the 5% near-floor breach-risk threshol
 - One chronological 60/40 train/validation split; this is not multi-fold walk-forward certification.
 - Monte Carlo uses 5,000 paths, a 252-trading-day horizon and five-day Monday-Friday block bootstrap. These are one-year scenario probabilities, not lifetime pass or payout probabilities. Paths that have not completed a phase or payout by day 252 count as non-passes/no payout, not necessarily hard breaches. Conditional funded breach and payout rates cover only the remaining horizon after funding, not a full 252 days post-funding. Tradeify's separate 90-day survival statistic uses only paths funded early enough to observe 90 further trading days.
 - Live drawdown barriers of 10R/20R/50R are balance-free R-based diagnostics, not literal account ruin.
-- FTMO phase review/verification/KYC delays are omitted; phase transitions occur on the next simulated trading day.
-- FTMO and Tradeify daily loss rules are equity-based/soft-pause rules. Closed-PnL simulations cannot see intraday floating losses or exact trigger sequences.
+- The5ers phase transitions occur on the next simulated trading day; account activation delays and the funded 5% scale-up ladder are not simulated.
+- The5ers evaluation has no daily loss limit; its funded 3% daily pause is a soft-pause rule modeled as a closed-PnL clip. Tradeify's daily limits are also soft-pause rules. Closed-PnL simulations cannot see intraday floating losses or exact trigger sequences.
 - Tradeify's five $150 winning-day test uses net closed daily PnL; the 35% consistency test uses gross daily PnL before commissions. Both use exit-date calendar buckets. Export timestamps are not converted to the firm's 6 PM–5 PM ET trading-day boundary.
 - Tradeify weekly activity is treated as a strict evaluation/funded eligibility screen; the official idle-time warning/grace process is not modeled.
 - The Tradeify soft DLL is clipped at USD 1,250 initially and USD 2,000 after the USD 53,000 threshold. The model assumes the higher limit remains after payouts.
@@ -415,9 +427,9 @@ No weekly-eligible active candidate meets the 5% near-floor breach-risk threshol
 - [MT5 all book combinations](../Normalized-Live/MT5/reports/all_book_combinations.csv)
 - [NT8 live bootstrap drawdown risk](../Normalized-Live/NT8/reports/live_bootstrap_risk_of_ruin.csv)
 - [MT5 live bootstrap drawdown risk](../Normalized-Live/MT5/reports/live_bootstrap_risk_of_ruin.csv)
-- [FTMO Monte Carlo results](../Prop-Firms/FTMO-10K-2Step-CFD/reports/monte_carlo_challenge_payout.csv)
+- [The5ers Monte Carlo results](../Prop-Firms/The5ers-20K-Bootcamp/reports/monte_carlo_challenge_payout.csv)
 - [Tradeify Monte Carlo results](../Prop-Firms/Tradeify-50K-Growth-Futures/reports/monte_carlo_evaluation_funded_payout.csv)
-- [FTMO recovery scenarios](../Prop-Firms/FTMO-10K-2Step-CFD/reports/recovery_mode.csv)
+- [The5ers recovery scenarios](../Prop-Firms/The5ers-20K-Bootcamp/reports/recovery_mode.csv)
 - [Tradeify recovery scenarios](../Prop-Firms/Tradeify-50K-Growth-Futures/reports/recovery_mode.csv)
 - [NQ minute archive data audit](nq_minute_data_audit.md)
 - [Prop-firm methodology and official rule sources](../Prop-Firms/methodology.md)

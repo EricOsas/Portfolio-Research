@@ -4,6 +4,7 @@ Base comparison risk: USD 100 requested total risk per book trade.
 
 Book selection uses training-only challenge/funded scores. All one-to-four-sleeve combinations are evaluated on the later validation sample; the validation-best row is shown separately as a diagnostic, not selected as the winner.
 
+
 ## Challenge candidate
 - **challenge_book_1** (FVG Duo + Flash ORB + Gold ORB (RBE) + Sigma ORB)
   - Challenge-to-payout: 46.1%

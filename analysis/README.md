@@ -17,7 +17,7 @@ Source exports are stored under `Trades/NT8 Trades/` (10 CSV files) and `Trades/
 
 - `Normalized-Live/NT8`: one exported contract equivalent per strategy, no starting balance.
 - `Normalized-Live/MT5`: fixed USD 100 risk proxy per completed trade on per-lot PnL (cash flow divided by traded volume), no starting balance.
-- `Prop-Firms/FTMO-10K-2Step-CFD`: FTMO $10k 2-Step CFD account simulation.
+- `Prop-Firms/The5ers-20K-Bootcamp`: The5ers $20k Bootcamp 3-step evaluation and $20k funded account simulation.
 - `Prop-Firms/Tradeify-50K-Growth-Futures`: Tradeify $50k Growth futures account simulation.
 
 Methodology:
@@ -28,7 +28,7 @@ Methodology:
 - Tradeify futures sizing uses whole-micro increments, at least one micro per active sleeve, and a four-mini concurrent exposure cap.
 - Tradeify minimum activity is checked on complete validation weeks and applies to evaluation and funded trading; Monte Carlo resamples complete calendar-week blocks. Evaluation pass rates exclude books that fail minimum activity or position-limit eligibility. Funded payout eligibility additionally requires the microscalping test.
 - Tradeify's funded DLL rises from $1,250 to $2,000 after the $53,000 balance threshold; the model clips closed daily PnL at the applicable limit. The separate NT8 MAE / soft-DLL stress report is not an intraday equity replay.
-- FTMO phase review and KYC/activation delays are not modeled; time-to-funded estimates may be optimistic.
+- The5ers evaluation has no daily limit; the funded 3% daily pause is modeled as a closed-PnL clip, and the 5% funded scale-up ladder is not modeled.
 - Recovery scenarios include no-trade controls and model the probability of reaching a buffer or payout target before breaching the account floor.
 
 ## Scope controls

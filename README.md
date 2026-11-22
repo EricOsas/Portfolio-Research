@@ -30,7 +30,7 @@ Research workspace for the NT8 futures and MT5 CFD strategy exports. Raw export 
 - **MT5: 15/15 registered exports parsed.** Gold X9, Gold ORB (RBE), Tokyo Coil, Vault Break, Overnight Bias ORB, Open Drive, NQ Precision Bot, Opening-Shock Continuation, Sigma ORB, Flash ORB, Noise Band Momentum, FVG Duo and GotobiFix EURJPY / GBPJPY / USDJPY.
 - VWAP Pullback is NT8-specific. Tokyo Coil, Noise Band Momentum, FVG Duo and the GotobiFix pairs are MT5-specific; FVG Duo also exists on NT8.
 
-Instruments: NT8 RBE and FVG Duo run on **GC DEC26**; all other NT8 exports use NQ. MT5 Gold X9 and RBE use **XAUUSD**, Tokyo Coil and the GotobiFix pairs use JPY crosses (USDJPY, EURJPY, GBPJPY), and the remaining MT5 exports use USTEC.
+Instruments: NT8 Gold ORB (RBE) runs on **GC DEC26**; every other NT8 export, including FVG Duo, runs on **NQ DEC26**. MT5 Gold X9 and RBE use **XAUUSD**, Tokyo Coil and the GotobiFix pairs use JPY crosses (USDJPY, EURJPY, GBPJPY), and the remaining MT5 exports use USTEC.
 
 **Position sizing varies in the MT5 exports.** Gold X9 (≈0.46 → 51.47 lots) and Tokyo Coil (≈9.4 → 38.4 lots) size from account balance, so their exported dollar curves are compounding tester runs, not fixed-size comparisons. The normalized and prop-firm layers divide each trade's cash flow by traded volume first, so those layers are comparable across systems; the raw MT5 total below is not.
 
@@ -67,10 +67,10 @@ One GC contract and one NQ contract are not equal-risk exposures. MT5's USD 100 
 
 [Open Prop-Firms](Prop-Firms/README.md)
 
-- [FTMO $10,000 2-Step CFD](Prop-Firms/FTMO-10K-2Step-CFD/README.md)
+- [The5ers $20,000 Bootcamp](Prop-Firms/The5ers-20K-Bootcamp/README.md)
 - [Tradeify $50,000 Growth futures](Prop-Firms/Tradeify-50K-Growth-Futures/README.md)
 
-The prop simulations use 5,000 Monte Carlo paths for every one-to-four-sleeve combination across the full firm-specific risk ladders, with five-day blocks aligned to complete Monday-Friday weeks and a 252-trading-day horizon. Primary books are selected on training-only scores; validation-best rows are diagnostic only. Near-floor recovery separately screens positive-training single sleeves and pairs. Tradeify evaluation pass rates require weekly activity and position-limit compliance. Microscalping is an additional funded payout-eligibility check. FTMO uses a total book-risk ladder of $25–$100. Tradeify uses $100–$750 requested total book risk, whole-micro sizing, at least one micro per active sleeve, and a four-mini concurrent exposure cap. Actual risk can exceed the requested amount because of the minimum micro size.
+The prop simulations use 5,000 Monte Carlo paths for every one-to-four-sleeve combination across the full firm-specific risk ladders, with five-day blocks aligned to complete Monday-Friday weeks and a 252-trading-day horizon. Primary books are selected on training-only scores; validation-best rows are diagnostic only. Near-floor recovery separately screens positive-training single sleeves and pairs. Tradeify evaluation pass rates require weekly activity and position-limit compliance. Microscalping is an additional funded payout-eligibility check. The5ers Bootcamp uses a USD 10–$100 total book-risk ladder across a 3-step evaluation ($5k/$10k/$15k, 6% target and 5% static max loss per step) and a $20k funded account (4% static max loss, 3% daily pause, 50% split, 14-day payout cycle). Tradeify uses $100–$750 requested total book risk, whole-micro sizing, at least one micro per active sleeve, and a four-mini concurrent exposure cap. Actual risk can exceed the requested amount because of the minimum micro size.
 
 The prop Monte Carlo reports now include mean, median and 10th-percentile monthly strategy PnL, monthly peak-to-trough drawdown percentiles, and 252-day max-drawdown stress. These monthly figures are strategy-stream estimates before account failures, DLL clipping, payout rules or withdrawal resets; payout probability and cash payout are modeled separately.
 
@@ -82,7 +82,7 @@ Tradeify Growth evaluation has no consistency rule. The funded model applies the
 - All 15 MT5 exports parsed. Standard Strategy Tester reports reconcile deal Profit + Commission + Swap to final balance minus initial deposit; the custom ledgers (NQ Precision Bot, GotobiFix) reconcile adjusted net PnL to their reported totals.
 - MT5 NQ Precision Bot uses its custom completed-trade ledger; Adj. Net P&L reconciles to the report's Total Net Profit.
 - The MT5 RBE Deals table has no position ID and contains overlapping positions. Entry/exit legs are paired by symbol/side and exact volume where possible, with FIFO fallback. Cashflows reconcile, but RBE duration and trade-level risk estimates retain pairing uncertainty.
-- Export history spans 2020 through 30 October 2026. The separate NQ M1 archive has now been decoded and audited, but the normalized/prop reports remain export-based; no independent strategy replay from M1 bars has yet been run. Raw market data and converted bars are not committed to this public repository.
+- Export history spans 2020 through 30 October 2026 on NT8 and 19 November 2026 on MT5. The separate NQ M1 archive has now been decoded and audited, but the normalized/prop reports remain export-based; no independent strategy replay from M1 bars has yet been run. Raw market data and converted bars are not committed to this public repository.
 
 ## Methodology and limits
 
@@ -93,7 +93,7 @@ Tradeify Growth evaluation has no consistency rule. The funded model applies the
 - Strategy PnL is timestamped at exit for completed-trade curves. Activity is timestamped by entry date. Timestamps remain as exported; no timezone conversion is assumed.
 - Prop simulations use a chronological 60/40 train/validation split. Book selection is performed on the first 60%; Monte Carlo evaluation uses the later validation sample.
 - Tradeify's $2,000 EOD trailing drawdown and $50,100 locked floor are modeled. Its soft DLL is approximated by clipping daily closed-PnL losses at $1,250 initially and $2,000 from the next session after the funded balance reaches $53,000; the model assumes the higher DLL remains after payouts. Intraday pause timing and overshoot are unknown. NT8 MAE is a separate stress diagnostic.
-- FTMO equity-based daily/max-loss breaches can occur from floating losses. MT5 exports do not contain intratrade MAE, so FTMO results use closed-PnL paths. Phase review and KYC/activation delays are not modeled. The first Reward Day is approximated as 10 elapsed trading days after the first funded trade; four business days are reserved for review/payment with trading frozen. Cash withdrawal pays 80% of reference-period profit and resets the next reference period to initial capital; rollover is not modeled.
+- The5ers evaluation has no daily loss limit; each step fails only on the 5% static max loss. The funded 3% daily pause is approximated by clipping closed daily PnL at -3% of the start-of-day balance. MT5 exports contain no intratrade MAE, so floating-loss breaches and intraday pause timing are not reconstructed. The 14-calendar-day payout cycle is approximated as 10 trading days at a 50% split, balance resets to $20,000 after withdrawal, and the 5% funded scale-up ladder is not modeled.
 - News restrictions, correlated-product hedging, broker margin, instrument-specific minimum lot sizes, slippage beyond exported costs, and exact timezone/session conversion are not fully modeled.
 - No strategy logic, native exits, stops, or parameters were redesigned or optimized.
 

@@ -41,7 +41,7 @@ All one-to-four-sleeve combinations are scored using the training segment only. 
 - **Funded:** 30% Sharpe, 25% positive-month share, 20% less severe worst day, 15% lower best-day concentration, 10% profit factor.
 - **Recovery:** 35% Sharpe, 25% lower maximum drawdown, 25% less severe worst day, 15% net R.
 
-These are generic screening scores. They do not replace the FTMO- or Tradeify-specific pass, payout, consistency, and breach simulations.
+These are generic screening scores. They do not replace the The5ers- or Tradeify-specific pass, payout, consistency, and breach simulations.
 
 ## Bootstrap risk analysis
 

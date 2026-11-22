@@ -7,10 +7,10 @@
 - 5-trading-day block bootstrap aligned to complete Monday-Friday weeks, sampled with replacement from the later 40% chronological validation sample.
 - Book candidates are selected using the earlier 60% training sample. This is one chronological holdout, not a multi-fold rolling walk-forward test.
 - Each sleeve's realized-loss R unit is calibrated on that training sample, then held fixed for the validation sample and all prop position sizing. MT5 cash flows are divided by traded volume first, so balance-compounding exports (Gold X9, Tokyo Coil) enter at per-lot risk rather than balance-scaled dollars.
-- FTMO book PnL uses the average constituent-sleeve R multiplied by total book risk; Tradeify uses sleeve-specific training R units and whole-micro weights.
-- Every one-to-four-sleeve combination is evaluated by firm-specific Monte Carlo across the full risk ladder: all 1,940 MT5 books for FTMO and all 385 NT8 books for Tradeify, each with 5,000 paths over 252 trading days. Identical strategy sets are deduplicated.
+- The5ers book PnL uses the average constituent-sleeve R multiplied by total book risk; Tradeify uses sleeve-specific training R units and whole-micro weights.
+- Every one-to-four-sleeve combination is evaluated by firm-specific Monte Carlo across the full risk ladder: all 1,940 MT5 books for The5ers and all 385 NT8 books for Tradeify, each with 5,000 paths over 252 trading days. Identical strategy sets are deduplicated.
 - Primary challenge and funded recommendations are selected using training-only challenge/funded scores, then evaluated on the later validation sample. The best validation-only row is reported as a diagnostic and is not used to choose the winner; this reduces holdout selection bias.
-- RBE-excluded FTMO candidates are included in the full combination universe and separately surfaced as a sensitivity because the MT5 Gold ORB (RBE) export lacks position IDs and requires fallback trade pairing.
+- RBE-excluded The5ers candidates are included in the full combination universe and separately surfaced as a sensitivity because the MT5 Gold ORB (RBE) export lacks position IDs and requires fallback trade pairing.
 - Challenge pass, evaluation hard breach, funded hard breach conditional on funding, funded survival, payout eligibility, payout amounts and recovery scenarios are reported separately.
 - Near-floor recovery scenarios test all positive-training single-sleeve and pair candidates with at least 30 active training days. Tradeify recovery candidates are further screened for weekly activity and microscalping eligibility.
 - The model is based on completed-trade exports, not an intraday account-equity replay. Tradeify reports both raw evaluation target-hit rate and eligible evaluation pass rate; the latter also requires minimum weekly activity and position-limit compliance.
@@ -20,25 +20,24 @@
 - Common bootstrap block samples are used across each firm's risk ladder for a given book, making position-size comparisons less noisy.
 - Tradeify weekly activity is checked on complete Monday-Friday validation weeks and applies during both evaluation and funded trading. Bootstrap blocks are aligned to those weeks, so simulated weeks preserve the observed activity pattern. The model applies weekly activity as a strict eligibility screen; the official guide says an idle-time warning is issued before action, and that warning/grace process is not simulated. Books that fail weekly activity or breach the four-mini position cap are not counted as eligible evaluation passes. Microscalping is a funded payout-eligibility rule; it is checked on validation trades, and missing durations count as not qualifying for the over-10-second rule.
 
-## FTMO — USD 10,000 Standard 2-Step CFD
+## The5ers — USD 20,000 Bootcamp
 
-Modeled account objectives:
+Modeled account structure (The5ers Bootcamp, checked 2026-11-22):
 
-- Phase 1 profit target: USD 1,000.
-- Phase 2 profit target: USD 500.
-- Maximum daily loss: USD 500, equity-based and reset at 00:00 CE(S)T from the day's starting balance.
-- Maximum loss: USD 1,000 static floor, 10% of initial capital.
-- Minimum four trading days in each phase.
-- Default reward split: 80%.
-- Cash withdrawal pays 80% of reference-period profit. After approval, a new reference period starts with the account reset to initial capital; prior period profits/losses are cleared unless some reward is rolled over. The model assumes cash withdrawal and excludes rollover.
-- First Reward Day: day 14 or later after the first funded trade; the simulation approximates this as 10 elapsed trading days (the 11th sampled business day counting the first-trade day).
-- Four business days approximate review and payment processing. Trading is frozen during that processing interval; trading resumes in the new reference period after approval.
-- The model advances from one evaluation phase to the next on the following simulated trading day; FTMO's review and KYC/activation delays are not included.
-- Minimum closed profit: USD 20 for bank transfer. A four-business-day review/processing delay is applied.
+- Three sequential evaluation steps, each on its own fixed demo balance:
+  - Step 1: $5,000, 6% target ($300), 5% static max loss ($250 floor at $4,750).
+  - Step 2: $10,000, 6% target ($600), 5% static max loss ($500 floor at $9,500).
+  - Step 3: $15,000, 6% target ($900), 5% static max loss ($750 floor at $14,250).
+- No daily loss limit and no time limit during evaluation. Minimum trading days are not listed.
+- Funded account: $20,000, 4% static max loss ($800 floor at $19,200), 3% daily pause (trading stops for the rest of the day; the triggering loss stands), 5% target per scale-up, 50% starting profit split.
+- Payouts every 14 calendar days, modeled as 10 trading days. The model pays 50% of profit above $20,000 and resets the balance to $20,000 after each withdrawal.
+- No consistency rule for Bootcamp.
+- News trading is allowed except bracketing around releases; overnight and weekend holding are allowed.
+- Accounts with no activity for 30 consecutive days are closed; the model does not simulate inactivity.
 
-Risk ladder: USD 25, 50, 75 and 100 total book risk per trade, divided equally across sleeves. Sizing is continuous; instrument-specific minimum lot sizes are not enforced and must be checked against FTMO symbol specifications.
+Risk ladder: USD 10, 25, 50 and 100 total book risk per trade, divided equally across sleeves; the base comparison risk is USD 25. Sizing is continuous; instrument-specific minimum lot sizes are not enforced. The fixed dollar risk is held constant across the three steps, so a USD 100 risk is a large fraction of the $250 Step-1 loss limit and the ladder shows that trade-off directly.
 
-The model does not reconstruct intratrade floating losses, news restrictions, overnight/weekend restrictions, margin, or symbol-specific execution conditions.
+The model does not reconstruct intratrade floating losses, exact daily-pause trigger timing, the funded 5% scale-up ladder, account fees, or symbol-specific execution conditions.
 
 ## Tradeify — USD 50,000 Growth futures
 
@@ -63,7 +62,7 @@ Modeled account rules:
 
 The current dedicated Growth evaluation guide explicitly states no evaluation consistency rule. The 35% consistency rule applies to Growth Sim Funded payout eligibility, not evaluation.
 
-Risk ladder: USD 100, 250, 500 and 750 requested total book risk per trade. Overall training-score challenge and funded leaders are four-sleeve books; at a USD 100 request their minimum-micro effective risks are approximately USD 457.35 and USD 472.83. A separate two-sleeve alternative, Flash ORB + Overnight Bias ORB, is the top training-funded-score candidate within the eligible two-sleeve subset; its effective risk is approximately USD 237.23 at both USD 100 and USD 250 requests because each sleeve is already at one micro. It is not the overall training-score winner. Actual risk can exceed or differ from the requested amount. The reports show effective risk after micro sizing and maximum concurrent mini-equivalent exposure. Compare the full risk ladders in the Monte Carlo CSV and the selected-book summaries.
+Risk ladder: USD 100, 250, 500 and 750 requested total book risk per trade. Overall training-score challenge and funded leaders are four-sleeve books; at a USD 100 request their minimum-micro effective risks are approximately USD 511.97 and USD 475.65. A separate two-sleeve alternative, Flash ORB + Overnight Bias ORB, is the top training-funded-score candidate within the eligible two-sleeve subset; its effective risk is approximately USD 237.63 at the USD 100 request because each sleeve is already at one micro (the model deduplicates identical effective-risk ladder points). It is not the overall training-score winner. Actual risk can exceed or differ from the requested amount. The reports show effective risk after micro sizing and maximum concurrent mini-equivalent exposure. Compare the full risk ladders in the Monte Carlo CSV and the selected-book summaries.
 
 The NT8 MAE report measures one-micro-per-sleeve adverse-excursion stress. Same-entry-day MAEs are stacked conservatively; this is not a synchronized intraday replay. It is intended to flag possible daily-loss pauses, not predict exact breach timing.
 
@@ -73,7 +72,7 @@ Recovery simulations include no-trade controls and selected low-complexity books
 
 These are balance-recovery simulations, not payout-eligibility simulations. Tradeify weekly-activity and microscalping eligibility are reported beside each recovery book, but the recovery path does not enforce funded 35% consistency, five $150 winning days, or payout request processing. The $53,000 target therefore means the account balance reaches the payout threshold; it does not mean a payout is approved.
 
-- FTMO: starting cushions of USD 100, 250, 500 and 750 above the static loss floor; target is return to initial account equity.
+- The5ers: starting cushions of USD 100, 250, 500 and 750 above the static 4% funded floor; target is return to the $20,000 funded initial balance.
 - Tradeify: starting cushions of USD 200, 500, 1,000 and 1,500 above the locked floor; targets are a USD 500 buffer above the floor and the USD 53,000 first-payout balance.
 - Tradeify recovery uses one micro per sleeve.
 - If no active book meets both the selected recovery-probability and breach-probability thresholds near the floor, no-trade is the safest modeled control.
@@ -86,13 +85,12 @@ These are balance-recovery simulations, not payout-eligibility simulations. Trad
 
 ## Official rule references
 
-Rules checked on 2026-11-01. These official pages define the modeled account versions:
+Rules checked on 2026-11-22. These official pages define the modeled account versions:
 
-- [FTMO 2-Step Challenge objectives](https://ftmo.com/en/2-step-challenge/)
-- [FTMO Trading Objectives](https://ftmo.com/en/trading-objectives/)
-- [FTMO reward withdrawal process](https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/)
-- [FTMO Account Terms and Conditions](https://ftmo.com/en/terms-and-conditions/) — Reference Period and Reward reset provisions
-- [FTMO phase review process](https://ftmo.com/faq/i-have-successfully-passed-what-to-do-now/)
+- [The5ers Bootcamp program](https://the5ers.com/bootcamp/)
+- [The5ers challenge program structures](https://the5ers.com/challenge-programs-bootcamp-high-stakes-hyper-growth-explained/)
+- [The5ers Bootcamp $20K rules summary](https://propfirmly.com/prop-firm-challenges/the5ers-bootcamp-20k)
+- [The5ers rules register](https://www.pipster.io/research/firms/the5ers)
 - [Tradeify Growth Evaluation rules](https://help.tradeify.co/en/articles/10495915-growth-evaluation-accounts)
 - [Tradeify Essential Trading Rules](https://help.tradeify.co/en/articles/12268167-essential-trading-rules-overview)
 - [Tradeify Daily Loss Limit](https://help.tradeify.co/en/articles/10468321-rules-daily-loss-limit)
@@ -103,11 +101,11 @@ Rules checked on 2026-11-01. These official pages define the modeled account ver
 ## Important limitations
 
 - Daily PnL is based on completed-trade exits. Intraday floating equity and exact daily-loss pause sequencing are not reconstructed.
-- FTMO 2-Step has a $500 equity-based daily loss and a static $1,000 maximum-loss floor. The model uses closed PnL, so floating-loss breaches remain unobservable.
+- The5ers evaluation has no daily loss limit and fails only on each step's 5% static max loss. The funded 3% daily pause is modeled by clipping closed daily PnL at -3% of the start-of-day balance; floating-loss breaches and intraday trigger timing remain unobservable.
 - Tradeify's EOD trailing drawdown is modeled from daily closes. The soft DLL is approximated by clipping closed daily losses at $1,250 initially and $2,000 after the funded balance reaches $53,000; intraday trigger timing and overshoot are not reconstructed.
 - Tradeify's five $150 winning-day test uses net closed daily PnL; the 35% consistency test uses gross daily PnL before commissions, matching the published rule. Both use exit-date calendar buckets; export timestamps are not converted to the firm's 6 PM–5 PM ET trading-day boundary, so eligibility can differ from the live platform.
 - Tradeify recovery candidates are restricted to weekly-activity-eligible books. The $53,000 recovery chart also requires microscalping eligibility, but it still does not enforce 35% consistency, five winning days above $150 or payout processing.
-- FTMO phase review, verification and KYC/activation delays are not simulated; phase transitions occur on the next simulated trading day, so time-to-funded estimates are optimistic.
+- The5ers phase transitions occur on the next simulated trading day; account activation delays and the 5% funded scale-up ladder are not simulated.
 - News, hedging/correlated-product restrictions, overnight/session restrictions, broker slippage, margin and exact timezone conversion are not fully tested.
 - MT5 RBE pairing uncertainty is documented in its data-quality report.
 - The risk unit is a training-period realized-loss proxy, not verified initial stop risk. MT5 microscalping eligibility is also checked on the validation sample.

@@ -1,4 +1,4 @@
-# FTMO $10,000 2-Step CFD
+# The5ers $20,000 Bootcamp
 
 - [Account rules and assumptions](reports/account_rules.json)
 - [Monte Carlo results](reports/monte_carlo_challenge_payout.csv)
@@ -7,16 +7,16 @@
 - [Book recommendations](reports/book_recommendations.md)
 - [Recovery-mode scenarios](reports/recovery_mode.csv)
 
-The model uses normalized daily R-multiples and a 5-trading-day block bootstrap aligned to complete Monday-Friday weeks. Each simulation uses 5,000 paths over 252 trading days. Risk ladder is USD 25–100 total book risk per trade, allocated equally across sleeves. Sizing is continuous; instrument-specific minimum lots are not enforced. MT5 cash flows are divided by traded volume before the R unit is calibrated, so balance-compounding exports (Gold X9, Tokyo Coil) enter at per-lot risk.
+The model uses normalized daily R-multiples and a 5-trading-day block bootstrap aligned to complete Monday-Friday weeks. Each simulation uses 5,000 paths over 252 trading days. Risk ladder is USD 10–100 total book risk per trade, allocated equally across sleeves. Sizing is continuous; instrument-specific minimum lots are not enforced. MT5 cash flows are divided by traded volume before the R unit is calibrated, so balance-compounding exports (Gold X9, Tokyo Coil) enter at per-lot risk.
 
 ## Important limits
 
 - The source exports are closed-trade records, not a complete tick-by-tick account equity path.
-- FTMO equity-based daily and maximum loss limits can be breached by floating losses not visible in closed-trade exports. The model also omits the 1–4 business-day phase review and KYC/activation delays, so time-to-funded estimates may be optimistic.
+- Evaluation has no daily loss limit, so only the 5% static per-step maximum loss can fail a step. The funded account adds a 3% daily pause, modeled as a closed-PnL clip: intraday trigger timing and overshoot are not visible in the exports, and the 5% funded scale-up ladder is not modeled.
 - MT5 RBE entry/exit legs use exact-volume matching where possible and FIFO fallback because the Deals export has no position IDs.
 - Timestamps remain as exported. The firm's timezone/session boundaries are not reconstructed.
 - Strategy execution, native exits and stop behavior are not changed.
-- Recovery curves are balance-only; FTMO recovery measures return to initial equity before the static loss floor, not reward-withdrawal eligibility.
+- Recovery curves are balance-only; The5ers recovery measures return to the funded $20,000 initial balance above the static 4% floor, not payout eligibility.
 - Treat results as historical scenario estimates, not promises.
 
 ## Charts

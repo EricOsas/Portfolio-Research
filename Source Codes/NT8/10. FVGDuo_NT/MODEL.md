@@ -1,6 +1,6 @@
 # FVG Duo (NT8)
 
-**Instrument:** NQ / GC futures (export used NQ DEC26). **Strategy version:** 5.00 shell.
+**Instrument:** NQ futures (export: NQ DEC26). **Strategy version:** 5.00 shell.
 
 NinjaTrader 8 execution shell for the FVG Duo engines: Opening Drive FVG
 (10-minute gap, 1.25% stop, dated New York session deadline) and Trend FVG

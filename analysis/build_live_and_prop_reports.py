@@ -22,7 +22,7 @@ N_SIMS = 5000
 HORIZON = 252
 BLOCK = 5
 SEED = 20261101
-FTMO_RISKS = [25.0, 50.0, 75.0, 100.0]
+THE5ERS_RISKS = [10.0, 25.0, 50.0, 100.0]
 TRADEIFY_RISKS = [100.0, 250.0, 500.0, 750.0]
 
 def slug(s):
@@ -425,135 +425,142 @@ def monthly_path_summary(paths, risk):
     }
 
 
-def simulate_ftmo(paths, active, risk):
+def simulate_the5ers(paths, active, risk):
+    """The5ers $20k Bootcamp: 3 evaluation steps, then a funded account.
+
+    Verified structure (The5ers Bootcamp page / FAQ, checked 2026-11-22):
+    Step 1 $5,000, Step 2 $10,000, Step 3 $15,000; each needs 6% with a 5%
+    static max loss and has no daily loss limit. The funded $20,000 account has
+    a 4% static max loss ($800 floor), a 3% daily pause (trading stops for the
+    rest of the day, the triggering loss stands) and payouts every 14 calendar
+    days (approximated as 10 trading days) at a 50% split. No consistency rule,
+    no time limit. Scaling after each 5% funded gain is not modeled.
+    """
     n, h = paths.shape
-    phase = np.ones(n, dtype=np.int8)  # 1=Challenge, 2=Verification, 3=Funded, 4=Failed
-    eq = np.zeros(n)
-    active_days = np.zeros(n, dtype=int)
-    p1_day = np.full(n, -1, dtype=int)
-    p2_day = np.full(n, -1, dtype=int)
-    funded_age = np.zeros(n, dtype=int)
-    first_funded_trade_day = np.full(n, -1, dtype=int)
-    reward_request_day = np.full(n, -1, dtype=int)
-    reward_request_amount = np.zeros(n)
-    reward_day = np.full(n, -1, dtype=int)
-    reward = np.zeros(n)
-    fail_daily = np.zeros(n, dtype=bool)
+    step = np.ones(n, dtype=np.int8)  # 1..3 = evaluation steps, 4 = funded, 5 = failed
+    bal = np.full(n, 5000.0)
+    step_balances = (5000.0, 10000.0, 15000.0)
+    step_target = tuple(b * 1.06 for b in step_balances)
+    step_floor = tuple(b * 0.95 for b in step_balances)
+    funded_balance = 20000.0
+    funded_floor = funded_balance * 0.96
+
+    pass1_day = np.full(n, -1, dtype=int)
+    pass2_day = np.full(n, -1, dtype=int)
+    pass3_day = np.full(n, -1, dtype=int)
+    fail_step = np.zeros((3, n), dtype=bool)
     fail_max = np.zeros(n, dtype=bool)
-    fail_daily_challenge = np.zeros(n, dtype=bool)
-    fail_max_challenge = np.zeros(n, dtype=bool)
-    fail_daily_verification = np.zeros(n, dtype=bool)
-    fail_max_verification = np.zeros(n, dtype=bool)
-    fail_daily_funded = np.zeros(n, dtype=bool)
-    fail_max_funded = np.zeros(n, dtype=bool)
+    funded_breach = np.zeros(n, dtype=bool)
+    funded_breach_day = np.full(n, -1, dtype=int)
+    funded_age = np.zeros(n, dtype=int)
+    pause_days = np.zeros(n, dtype=int)
+    payout_day = np.full(n, -1, dtype=int)
+    payout = np.zeros(n)
+    payout_count = np.zeros(n, dtype=int)
+    total_cash = np.zeros(n)
 
     for d in range(h):
-        start_phase = phase.copy()
+        start_step = step.copy()
+        start_bal = bal.copy()
         daily = paths[:, d] * risk
-        act = active[:, d]
 
-        eval_mask = (start_phase == 1) | (start_phase == 2)
-        if eval_mask.any():
-            eq[eval_mask] += daily[eval_mask]
-            active_days[eval_mask] += act[eval_mask].astype(int)
-            daily_bad = eval_mask & (daily < -500.0)
-            max_bad = eval_mask & (eq <= -1000.0)
-            challenge_mask = start_phase == 1
-            verification_mask = start_phase == 2
-            fail_daily |= daily_bad
-            fail_max |= max_bad
-            fail_daily_challenge |= daily_bad & challenge_mask
-            fail_max_challenge |= max_bad & challenge_mask
-            fail_daily_verification |= daily_bad & verification_mask
-            fail_max_verification |= max_bad & verification_mask
-            phase[daily_bad | max_bad] = 4
+        for idx, st in enumerate((1, 2, 3)):
+            m = (start_step == st)
+            if not m.any():
+                continue
+            bal[m] += daily[m]
+            bad = m & (bal <= step_floor[idx])
+            fail_step[idx] |= bad
+            fail_max |= bad
+            step[bad] = 5
+            passed = m & (step == st) & (bal >= step_target[idx])
+            if passed.any():
+                step[passed] = st + 1
+                next_balance = (10000.0, 15000.0, funded_balance)[idx]
+                bal[passed] = next_balance
+                if st == 1:
+                    pass1_day[passed] = d
+                elif st == 2:
+                    pass2_day[passed] = d
+                else:
+                    pass3_day[passed] = d
+                    funded_age[passed] = 0
 
-            p1 = (start_phase == 1) & (phase != 4) & (eq >= 1000.0) & (active_days >= 4)
-            if p1.any():
-                p1_day[p1] = d
-                phase[p1] = 2
-                eq[p1] = 0.0
-                active_days[p1] = 0
+        funded = (start_step == 4) & (step == 4)
+        if funded.any():
+            pause_limit = 0.03 * start_bal[funded]
+            raw = daily[funded]
+            paused = raw < -pause_limit
+            pause_days[funded] += paused.astype(int)
+            bal[funded] += np.maximum(raw, -pause_limit)
+            funded_age[funded] += 1
+            bad = funded & (bal <= funded_floor)
+            funded_breach |= bad
+            funded_breach_day[bad] = d
+            fail_max |= bad
+            step[bad] = 5
 
-            p2 = (start_phase == 2) & (phase != 4) & (eq >= 500.0) & (active_days >= 4)
-            if p2.any():
-                p2_day[p2] = d
-                phase[p2] = 3
-                eq[p2] = 0.0
-                active_days[p2] = 0
-                funded_age[p2] = 0
-                first_funded_trade_day[p2] = -1
+            due = funded & (step == 4) & (funded_age > 0) & (funded_age % 10 == 0) & (bal > funded_balance + 1e-9)
+            if due.any():
+                amount = np.zeros(n)
+                amount[due] = (bal[due] - funded_balance) * 0.50
+                total_cash[due] += amount[due]
+                payout_count[due] += 1
+                no_payout_yet = due & (payout_day < 0)
+                payout_day[no_payout_yet] = d
+                payout[no_payout_yet] = amount[no_payout_yet]
+                bal[due] = funded_balance
 
-        # Reward Day ends the current reference period. Freeze trading while
-        # FTMO reviews/processes the claim; the next cycle starts after approval.
-        funded_mask = (start_phase == 3) & (phase == 3) & (reward_request_day < 0)
-        if funded_mask.any():
-            eq[funded_mask] += daily[funded_mask]
-            first_trade = funded_mask & act & (first_funded_trade_day < 0)
-            first_funded_trade_day[first_trade] = d
-            has_first_trade = funded_mask & (first_funded_trade_day >= 0)
-            funded_age[has_first_trade] = d - first_funded_trade_day[has_first_trade] + 1
+    reached_funded = pass3_day >= 0
+    first_payout = payout_day >= 0
+    funded_days_to_first = np.full(n, np.nan)
+    funded_days_to_first[first_payout] = (payout_day[first_payout] - pass3_day[first_payout] + 1)
+    evaluable_90 = reached_funded & ((pass3_day + 90) < h)
+    funded_ok_90 = evaluable_90 & (~funded_breach | (funded_breach_day > pass3_day + 90))
 
-            daily_bad = funded_mask & (daily < -500.0)
-            max_bad = funded_mask & (eq <= -1000.0)
-            fail_daily |= daily_bad
-            fail_max |= max_bad
-            fail_daily_funded |= daily_bad
-            fail_max_funded |= max_bad
-            phase[daily_bad | max_bad] = 4
-
-            # Reward request is available after 10 elapsed trading days from the first
-            # funded trade (11th active trading day; approximates 14 calendar days). Count it
-            # only if four-business-day processing fits inside the horizon.
-            claim = (funded_mask & (phase == 3) & (funded_age >= 11) &
-                     (eq >= 20.0) & (reward_request_day < 0) & ((d + 4) < h))
-            if claim.any():
-                reward_request_day[claim] = d
-                reward_request_amount[claim] = 0.80 * eq[claim]
-
-        # The FTMO 2-Step cash-withdrawal cycle pays 80% of the period profit.
-        # After approval, a new reference period starts at initial capital;
-        # profits/losses from the prior period are cleared unless rolled over.
-        # This model assumes cash withdrawal, no rollover, and freezes trading
-        # during the four-business-day review/payment approximation.
-        pending_reward = ((reward_request_day >= 0) & (reward_day < 0) &
-                          (d >= reward_request_day + 4))
-        approved = pending_reward & (phase == 3)
-        if approved.any():
-            reward_day[approved] = d
-            reward[approved] = reward_request_amount[approved]
-            eq[approved] = 0.0
-            funded_age[approved] = 0
-            first_funded_trade_day[approved] = -1
-            reward_request_day[approved] = -1
-            reward_request_amount[approved] = 0.0
-
-    reached_funded = p2_day >= 0
-    first_payout = reward_day >= 0
-    funded_hard_breach = fail_daily_funded | fail_max_funded
     return {
-        "pass_phase1_rate": float((p1_day >= 0).mean()),
-        "pass_verification_conditional_rate": float((p2_day >= 0).sum() / max(1, (p1_day >= 0).sum())),
+        "pass_phase1_rate": float((pass1_day >= 0).mean()),
+        "pass_step1_rate": float((pass1_day >= 0).mean()),
+        "pass_step2_conditional_rate": float((pass2_day >= 0).sum() / max(1, (pass1_day >= 0).sum())),
+        "pass_step3_conditional_rate": float((pass3_day >= 0).sum() / max(1, (pass2_day >= 0).sum())),
+        "pass_verification_conditional_rate": float((pass3_day >= 0).sum() / max(1, (pass1_day >= 0).sum())),
         "pass_both_phases_rate": float(reached_funded.mean()),
         "funded_first_reward_rate_conditional": float(first_payout[reached_funded].mean()) if reached_funded.any() else 0.0,
+        "funded_first_payout_rate_conditional": float(first_payout[reached_funded].mean()) if reached_funded.any() else 0.0,
         "challenge_to_first_reward_rate": float(first_payout.mean()),
-        "fail_daily_loss_rate": float(fail_daily.mean()),
+        "challenge_to_first_payout_rate": float(first_payout.mean()),
+        "fail_daily_loss_rate": 0.0,
         "fail_max_loss_rate": float(fail_max.mean()),
-        "challenge_daily_loss_breach_rate": float(fail_daily_challenge.mean()),
-        "challenge_max_loss_breach_rate": float(fail_max_challenge.mean()),
-        "verification_daily_loss_breach_rate": float(fail_daily_verification.mean()),
-        "verification_max_loss_breach_rate": float(fail_max_verification.mean()),
-        "funded_daily_loss_breach_rate_conditional": float(fail_daily_funded[reached_funded].mean()) if reached_funded.any() else 0.0,
-        "funded_max_loss_breach_rate_conditional": float(fail_max_funded[reached_funded].mean()) if reached_funded.any() else 0.0,
-        "funded_hard_breach_rate_conditional": float(funded_hard_breach[reached_funded].mean()) if reached_funded.any() else 0.0,
-        "evaluation_hard_breach_rate": float((fail_daily_challenge | fail_max_challenge | fail_daily_verification | fail_max_verification).mean()),
-        "median_days_to_phase1": float(np.median(p1_day[p1_day >= 0]) + 1) if (p1_day >= 0).any() else np.nan,
-        "median_days_to_phase2": float(np.median(p2_day[p2_day >= 0]) + 1) if reached_funded.any() else np.nan,
-        "median_days_to_first_reward_from_start": float(np.median(reward_day[first_payout]) + 1) if first_payout.any() else np.nan,
-        "expected_first_reward_usd": float(reward.mean()),
-        "median_first_reward_usd_conditional": float(np.median(reward[first_payout])) if first_payout.any() else 0.0,
+        "challenge_daily_loss_breach_rate": 0.0,
+        "challenge_max_loss_breach_rate": float((fail_step[0] | fail_step[1] | fail_step[2]).mean()),
+        "step1_max_loss_breach_rate": float(fail_step[0].mean()),
+        "step2_max_loss_breach_rate": float(fail_step[1].mean()),
+        "step3_max_loss_breach_rate": float(fail_step[2].mean()),
+        "verification_daily_loss_breach_rate": 0.0,
+        "verification_max_loss_breach_rate": float((fail_step[1] | fail_step[2]).mean()),
+        "funded_daily_loss_breach_rate_conditional": 0.0,
+        "funded_max_loss_breach_rate_conditional": float(funded_breach[reached_funded].mean()) if reached_funded.any() else 0.0,
+        "funded_hard_breach_rate_conditional": float(funded_breach[reached_funded].mean()) if reached_funded.any() else 0.0,
+        "evaluation_hard_breach_rate": float((fail_step[0] | fail_step[1] | fail_step[2]).mean()),
+        "funded_daily_pause_days_mean": float(pause_days[reached_funded].mean()) if reached_funded.any() else 0.0,
+        "median_days_to_phase1": float(np.median(pass1_day[pass1_day >= 0]) + 1) if (pass1_day >= 0).any() else np.nan,
+        "median_days_to_phase2": float(np.median(pass3_day[pass3_day >= 0]) + 1) if reached_funded.any() else np.nan,
+        "median_days_to_funded_from_start": float(np.median(pass3_day[reached_funded]) + 1) if reached_funded.any() else np.nan,
+        "median_days_to_first_reward_from_start": float(np.median(payout_day[first_payout]) + 1) if first_payout.any() else np.nan,
+        "median_funded_days_to_first_payout": float(np.nanmedian(funded_days_to_first)) if first_payout.any() else np.nan,
+        "expected_first_reward_usd": float(payout.mean()),
+        "median_first_reward_usd_conditional": float(np.median(payout[first_payout])) if first_payout.any() else 0.0,
+        "total_payout_cash_mean": float(total_cash.mean()),
+        "payout_count_mean": float(payout_count.mean()),
+        "survival_90d_conditional_approx": float(funded_ok_90.sum() / max(1, evaluable_90.sum())) if evaluable_90.any() else np.nan,
         "simulations": int(n), "horizon_trading_days": int(h),
-        "note": "Daily closed-PnL model; $20 minimum closed profit assumed for bank transfer; first Reward Day approximated as 10 elapsed trading days after first funded trade; four-business-day review/payment approximation with trading frozen during processing; cash withdrawal pays 80% and resets the new reference period to initial capital (no rollover); only first reward is counted; floating-loss breaches are not visible in exports.",
+        "note": (
+            "Daily closed-PnL model. Bootcamp evaluation: three steps on $5k/$10k/$15k, 6% target and "
+            "5% static max loss each, no daily limit. Funded: $20k, 4% static max loss ($800), 3% daily "
+            "pause modeled as a closed-PnL clip, 50% split, payouts every 14 calendar days approximated "
+            "as 10 trading days. No consistency rule. 5% funded scale-up ladder not modeled. "
+            "Floating-loss breaches and intraday pause timing are not visible in exports."
+        ),
     }
 
 def simulate_tradeify(paths, active, risk, microscalp_ok, weekly_activity_ok,
@@ -857,7 +864,7 @@ def write_json(path, obj):
 
 def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
                        pass_col, payout_col, breach_col, title,
-                       eligibility_cols=None, stress_filter=None):
+                       eligibility_cols=None, stress_filter=None, funded_pool=None):
     charts=firm_dir/"charts"
     reports=firm_dir/"reports"
     charts.mkdir(parents=True,exist_ok=True)
@@ -924,7 +931,7 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
     if not recovery_df.empty:
         target_col="target_label" if "target_label" in recovery_df.columns else "state"
         rec=recovery_df.copy()
-        near_cushion=100.0 if "FTMO" in title else 200.0
+        near_cushion=100.0 if "The5ers" in title else 200.0
         near=rec[rec["starting_cushion_usd"].astype(float).eq(near_cushion)]
         if target_col=="target_label":
             near=near[near[target_col].astype(str).str.contains("buffer",case=False,regex=True)]
@@ -1012,13 +1019,18 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
         plt.close(fig)
 
     challenge=ranking.iloc[0] if len(ranking) else None
-    if len(base) and "train_funded_score" in base.columns:
-        funded=base.sort_values("train_funded_score",ascending=False).iloc[0]
+    funded_pool_df=base
+    if funded_pool and "train_challenge_score" in base.columns:
+        # A funded-stage book still has to be reachable: for multi-step programs
+        # restrict the funded choice to the best training challenge books.
+        funded_pool_df=base.sort_values("train_challenge_score",ascending=False).head(int(funded_pool))
+    if len(funded_pool_df) and "train_funded_score" in funded_pool_df.columns:
+        funded=funded_pool_df.sort_values("train_funded_score",ascending=False).iloc[0]
     else:
         funded=base.assign(validation_funded_score=base[conditional_col].astype(float)*(1.0-base[breach_col].astype(float))).sort_values("validation_funded_score",ascending=False).iloc[0] if len(base) and conditional_col in base.columns else challenge
     recovery_candidate="No active book met the near-floor recovery threshold; preserve the account rather than force trades."
     if not recovery_df.empty:
-        near_cushion=100.0 if "FTMO" in title else 200.0
+        near_cushion=100.0 if "The5ers" in title else 200.0
         target_rows=recovery_df[recovery_df["starting_cushion_usd"].astype(float).eq(near_cushion)]
         if "target_label" in target_rows.columns:
             target_rows=target_rows[target_rows["target_label"].astype(str).str.contains("break-even|buffer",case=False,regex=True)]
@@ -1045,7 +1057,7 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
                         f'({float(best_survival["recovery_probability"]):.1%} recovery; {float(best_survival["ruin_probability"]):.1%} breach). '
                         f'Lowest-exposure active choice: {lowest_exposure["book"]} at USD {float(lowest_exposure["risk_usd_per_book_trade"]):,.2f} risk '
                         f'({float(lowest_exposure["recovery_probability"]):.1%} recovery; {float(lowest_exposure["ruin_probability"]):.1%} breach).')
-                if "FTMO" in title:
+                if "The5ers" in title:
                     non_rbe=active_target[~active_target["book"].astype(str).str.contains(r"Gold ORB \(RBE\)",regex=True)]
                     if len(non_rbe):
                         nr=non_rbe.sort_values(
@@ -1066,34 +1078,35 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
            f"Base comparison risk: USD {base_risk:,.0f} requested total risk per book trade.",
            "",
            "Book selection uses training-only challenge/funded scores. All one-to-four-sleeve combinations are evaluated on the later validation sample; the validation-best row is shown separately as a diagnostic, not selected as the winner.",
+           ("The funded-stage book is the highest training-funded-score book among the ten best training challenge books, so it is a book that can realistically reach funding." if funded_pool else ""),
            "",
            "## Challenge candidate"]
     if challenge is not None:
         lines += [f'- **{challenge["book"]}** ({challenge["strategies"]})',
                   f'  - Challenge-to-payout: {float(challenge[payout_col]):.1%}',
-                  f'  - Pass rate: {float(challenge[pass_col]):.1%}',
+                  f'  - {"Reach funded" if "The5ers" in title else "Pass rate"}: {float(challenge[pass_col]):.1%}',
                   f'  - Evaluation hard-breach rate: {float(challenge["evaluation_hard_breach_rate"]):.1%}' if "evaluation_hard_breach_rate" in challenge else "  - Evaluation hard-breach rate: unavailable",
                   f'  - Funded hard-breach rate (conditional on funding): {float(challenge[breach_col]):.1%}']
         for key,label in [
             ("effective_risk_after_micro_sizing_usd","Effective risk after minimum-micro sizing"),
             ("median_days_to_evaluation_pass","Median trading days to eligible evaluation pass"),
-            ("median_days_to_phase1","Median trading days to Phase 1 pass"),
-            ("median_days_to_phase2","Median trading days to Verification pass"),
+            ("median_days_to_phase1","Median trading days to Step 1 pass"),
+            ("median_days_to_phase2","Median trading days through all evaluation steps"),
             ("median_days_to_first_payout_from_start","Median trading days to first payout"),
-            ("median_days_to_first_reward_from_start","Median trading days to first FTMO reward"),
-            ("expected_first_reward_usd","Expected first FTMO reward across all paths"),
-            ("median_first_reward_usd_conditional","Median FTMO reward on successful paths"),
+            ("median_days_to_first_reward_from_start","Median trading days to first The5ers payout"),
+            ("expected_first_reward_usd","Expected first The5ers payout across all paths"),
+            ("median_first_reward_usd_conditional","Median The5ers payout on successful paths"),
         ]:
             if key in challenge.index and pd.notna(challenge[key]):
                 lines.append(f'  - {label}: {float(challenge[key]):,.1f}' if "days" in key else f'  - {label}: USD {float(challenge[key]):,.2f}')
-    if "FTMO" in title and "train_challenge_score" in base.columns:
+    if "The5ers" in title and "train_challenge_score" in base.columns:
         no_rbe=base[~base["strategies"].astype(str).str.contains("Gold ORB (RBE)",regex=False)]
         if len(no_rbe):
             nr=no_rbe.sort_values("train_challenge_score",ascending=False).iloc[0]
             lines += ["","## RBE-excluded challenge sensitivity",
                       f'- **{nr["book"]}** ({nr["strategies"]})',
                       f'  - Challenge-to-first-reward: {float(nr[payout_col]):.1%}',
-                      f'  - Pass both phases: {float(nr[pass_col]):.1%}',
+                      f'  - {"Reach funded" if "The5ers" in title else "Pass both phases"}: {float(nr[pass_col]):.1%}',
                       f'  - Evaluation hard-breach rate: {float(nr["evaluation_hard_breach_rate"]):.1%}',
                       f'  - Funded hard-breach rate (conditional on funding): {float(nr[breach_col]):.1%}']
     validation_best=base.sort_values(payout_col,ascending=False).iloc[0] if len(base) else None
@@ -1101,7 +1114,7 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
         lines += ["","## Holdout validation leader (diagnostic only)",
                   f'- **{validation_best["book"]}** ({validation_best["strategies"]})',
                   f'  - Challenge-to-payout: {float(validation_best[payout_col]):.1%}',
-                  f'  - Pass rate: {float(validation_best[pass_col]):.1%}',
+                  f'  - {"Reach funded" if "The5ers" in title else "Pass rate"}: {float(validation_best[pass_col]):.1%}',
                   f'  - Evaluation hard-breach rate: {float(validation_best["evaluation_hard_breach_rate"]):.1%}' if "evaluation_hard_breach_rate" in validation_best else "  - Evaluation hard-breach rate: unavailable"]
     lines += ["","## Funded candidate"]
     if funded is not None:
@@ -1116,7 +1129,7 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
             ("total_net_payout_cash_mean","Expected total net payout cash across all paths"),
             ("payout_count_mean","Mean payout count over the horizon"),
             ("median_days_to_first_payout_from_start","Median trading days to first payout"),
-            ("median_days_to_first_reward_from_start","Median trading days to first FTMO reward"),
+            ("median_days_to_first_reward_from_start","Median trading days to first The5ers payout"),
         ]:
             if key in funded.index and pd.notna(funded[key]):
                 if "days" in key:
@@ -1241,7 +1254,7 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
     if "Tradeify" in title:
         recovery_scope_note="Recovery outputs are balance-only. The $53,000 target is a balance threshold, not an approved payout; 35% consistency, five $150 winning days and payout processing are not enforced in the recovery path."
     else:
-        recovery_scope_note="FTMO recovery is balance-only and targets return to initial equity above the static loss floor; reward eligibility and rollover are not modeled in recovery paths."
+        recovery_scope_note="The5ers recovery is balance-only and targets return to the funded $20,000 initial balance above the static 4% loss floor; the 3% daily pause is modeled as a closed-PnL clip, and payout eligibility is not modeled in recovery paths."
     lines += ["","## Near-floor recovery",recovery_candidate,
               "",recovery_scope_note,
               "","These are simulated candidates, not live-deployment approvals. Use the full risk ladder and rule assumptions in the CSV/JSON reports."]
@@ -1379,7 +1392,7 @@ def run_platform(platform):
                     break
     # MT5 Gold ORB (RBE) trade pairing uses FIFO fallback because the Deals
     # export lacks position IDs. Add leading RBE-excluded pairs/triples as a
-    # sensitivity for FTMO book selection.
+    # sensitivity for The5ers book selection.
     if platform=="MT5":
         for size in [2,3]:
             for score_col in ["challenge_score","funded_score"]:
@@ -1435,8 +1448,8 @@ def run_platform(platform):
             tuple(row["strategies"].split(" | "))
             for _, row in combo_df[combo_df["size"] == 2].iterrows()
         )
-    ftmo_rows=[]; tradeify_rows=[]; recovery_rows=[]
-    ftmo_dir=PROP_ROOT/"FTMO-10K-2Step-CFD"
+    the5ers_rows=[]; tradeify_rows=[]; recovery_rows=[]
+    the5ers_dir=PROP_ROOT/"The5ers-20K-Bootcamp"
     tradeify_dir=PROP_ROOT/"Tradeify-50K-Growth-Futures"
     for _ci,(cname,combo) in enumerate(prop_candidates.items(),1):
         if _ci % 100 == 0:
@@ -1444,14 +1457,14 @@ def run_platform(platform):
         score_meta=train_score_map[tuple(combo)]
         daily_r=rmat.loc[validation_idx,list(combo)].sum(axis=1)/len(combo)
         active=activemat.loc[validation_idx,list(combo)].any(axis=1)
-        paths, actpaths=sample_block_paths(daily_r.values,active.values,seed=SEED+len(ftmo_rows)+100,date_index=validation_idx)
+        paths, actpaths=sample_block_paths(daily_r.values,active.values,seed=SEED+len(the5ers_rows)+100,date_index=validation_idx)
         if platform=="MT5":
-            for risk in FTMO_RISKS:
-                res=simulate_ftmo(paths,actpaths,risk)
+            for risk in THE5ERS_RISKS:
+                res=simulate_the5ers(paths,actpaths,risk)
                 monthly = monthly_path_summary(paths, risk) if (
-                    tuple(combo) in monthly_focus_combos and risk == 50.0
+                    tuple(combo) in monthly_focus_combos and risk == 25.0
                 ) else {}
-                ftmo_rows.append({"book":cname,"strategies":" + ".join(combo),"risk_per_book_trade_usd":risk,
+                the5ers_rows.append({"book":cname,"strategies":" + ".join(combo),"risk_per_book_trade_usd":risk,
                                   **score_meta,**res,**monthly})
         else:
             t=trades[trades["strategy"].isin(combo) &
@@ -1497,7 +1510,7 @@ def run_platform(platform):
                 tradeify_rows.append({**extra,**res,**monthly})
 
     # Recovery mode: compare low-complexity one/two-sleeve books with a no-trade
-    # control. Tradeify uses at least one micro per sleeve. FTMO tests a small
+    # control. Tradeify uses at least one micro per sleeve. The5ers tests a small
     # continuous risk ladder because minimum CFD lot sizes are not enforced.
     singles = combo_df[combo_df["size"] == 1].sort_values("recovery_score",ascending=False)
     pairs = combo_df[combo_df["size"] == 2].sort_values("recovery_score",ascending=False)
@@ -1526,15 +1539,15 @@ def run_platform(platform):
                 date_index=validation_idx)
             for risk in [5.0,10.0,12.5,25.0]:
                 for cushion in [100.0,250.0,500.0,750.0]:
-                    res=simulate_recovery(rec_paths,risk,-1000.0,cushion,0.0,daily_limit=500.0)
-                    recovery_rows.append({"firm":"FTMO","book":" + ".join(combo),"risk_usd_per_book_trade":risk,
-                        "state":"static-floor recovery to initial balance","floor_equity":-1000.0,
+                    res=simulate_recovery(rec_paths,risk,-800.0,cushion,0.0,daily_limit=600.0,daily_limit_mode="soft")
+                    recovery_rows.append({"firm":"The5ers","book":" + ".join(combo),"risk_usd_per_book_trade":risk,
+                        "state":"static-floor recovery to funded initial balance","floor_equity":-800.0,
                         "starting_cushion_usd":cushion,"target_equity":0.0,**res})
         for cushion in [100.0,250.0,500.0,750.0]:
-            recovery_rows.append({"firm":"FTMO","book":"No trade","risk_usd_per_book_trade":0.0,
-                "state":"no-trade control","floor_equity":-1000.0,"starting_cushion_usd":cushion,
+            recovery_rows.append({"firm":"The5ers","book":"No trade","risk_usd_per_book_trade":0.0,
+                "state":"no-trade control","floor_equity":-800.0,"starting_cushion_usd":cushion,
                 "target_equity":0.0,"recovery_probability":0.0,"ruin_probability":0.0,
-                "median_days_to_target":np.nan,"mean_terminal_equity":-1000.0+cushion})
+                "median_days_to_target":np.nan,"mean_terminal_equity":-800.0+cushion})
     else:
         for combo in recovery_books:
             weights={s:0.1*float(trades.loc[trades["strategy"]==s,"risk_unit"].iloc[0]) for s in combo}
@@ -1573,14 +1586,15 @@ def run_platform(platform):
                     "mean_terminal_equity":100.0+cushion})
 
     if platform=="MT5":
-        (ftmo_dir/"reports").mkdir(parents=True,exist_ok=True)
-        ftmo_df=pd.DataFrame(ftmo_rows)
-        ftmo_recovery_df=pd.DataFrame(recovery_rows)
-        ftmo_df.to_csv(ftmo_dir/"reports"/"monte_carlo_challenge_payout.csv",index=False)
-        ftmo_recovery_df.to_csv(ftmo_dir/"reports"/"recovery_mode.csv",index=False)
-        build_prop_outputs(ftmo_dir,ftmo_df,ftmo_recovery_df,
-            "risk_per_book_trade_usd",50.0,"pass_both_phases_rate",
-            "challenge_to_first_reward_rate","funded_hard_breach_rate_conditional","FTMO $10k 2-Step CFD")
+        (the5ers_dir/"reports").mkdir(parents=True,exist_ok=True)
+        the5ers_df=pd.DataFrame(the5ers_rows)
+        the5ers_recovery_df=pd.DataFrame(recovery_rows)
+        the5ers_df.to_csv(the5ers_dir/"reports"/"monte_carlo_challenge_payout.csv",index=False)
+        the5ers_recovery_df.to_csv(the5ers_dir/"reports"/"recovery_mode.csv",index=False)
+        build_prop_outputs(the5ers_dir,the5ers_df,the5ers_recovery_df,
+            "risk_per_book_trade_usd",25.0,"pass_both_phases_rate",
+            "challenge_to_first_reward_rate","funded_hard_breach_rate_conditional","The5ers $20k Bootcamp",
+            funded_pool=10)
     else:
         (tradeify_dir/"reports").mkdir(parents=True,exist_ok=True)
         tradeify_df=pd.DataFrame(tradeify_rows)
@@ -1650,9 +1664,9 @@ def run_platform(platform):
         "mt5_standard_deals":"No position ID is present in the standard Deals tables. Entry/exit legs are paired by symbol and opposite side, exact volume match first, FIFO fallback; RBE has overlapping positions and residual pairing uncertainty.",
         "live_sizing":"NT8 = one contract equivalent per strategy. MT5 = $100 per trade at 1R based on the training-sample mean realized loss; that sizing is held fixed across the history.",
         "limitations":["Exported closed trades do not contain a complete intratrade equity path.",
-                       "FTMO daily/max loss is equity-based; MT5 simulations use closed-PnL paths and are optimistic for floating-loss breaches.",
+                       "The5ers evaluation has no daily loss limit; the funded 3% daily pause is modeled as a closed-PnL clip, so intraday pause timing and overshoot are not reconstructed.",
                        "Tradeify EOD trailing drawdown is modeled from daily closes. The funded DLL is modeled at $1,250 initially and $2,000 from the next session after the $53,000 balance threshold; closed-PnL clipping is an approximation.",
-                       "Tradeify session boundary and FTMO server reset are not timezone-normalized; account rule days use exported dates.",
+                       "Tradeify session boundary and The5ers server reset are not timezone-normalized; account rule days use exported dates.",
                        "Tradeify weekly activity applies during evaluation and funded trading; microscalping is an additional funded payout-eligibility screen.",
                        "Tradeify position sizes use whole-micro increments, at least one micro per active sleeve, and a four-mini maximum concurrent exposure cap. Intraday soft-DLL trigger timing and overshoot remain unknown.",
                        "This is an export-based portfolio simulation, not an independent tick-level replay or live execution certification."]
@@ -1662,32 +1676,36 @@ def run_platform(platform):
             "validation_start":str(validation_idx.min().date()),"validation_end":str(validation_idx.max().date())}
 
 def write_rule_docs():
-    ftmo_rules={
-        "account":"FTMO $10,000 2-Step CFD; Standard assumed",
-        "phase_1_profit_target_usd":1000,"verification_profit_target_usd":500,
-        "max_daily_loss_usd":500,"max_loss_static_usd":1000,
-        "daily_loss_basis":"Equity-based; daily limit resets at 00:00 CE(S)T from that day's starting balance",
-        "maximum_loss_basis":"Static 10% of initial simulated capital",
-        "min_trading_days_each_phase":4,"time_limit":"Unlimited",
-        "consistency_rule":"None for 2-Step; FTMO Best Day Rule applies to 1-Step only",
-        "funded_reward_split_default":0.80,"reward_rollover_option":True,
-        "modeled_reward_mode":"Cash withdrawal; 80% of reference-period profit paid; new reference period resets to initial capital; rollover excluded",
-        "first_reward_request":"Day 14 or later after first funded trade; model approximates this as 10 elapsed trading days (11th sampled business day counting the first-trade day)",
-        "minimum_closed_profit_usd_bank_transfer":20,"minimum_closed_profit_usd_crypto":50,
-        "reward_processing_model_business_days":4,
-        "cash_withdrawal_cycle_reset":"After reward approval, new reference period resets to initial capital; prior period profits/losses are cleared unless reward is rolled over",
-        "trading_during_reward_processing":"Frozen in model after Reward Day until new reference period begins",
-        "daily_reset":"00:00 CE(S)T; based on current-day 00:00 balance",
-        "official_sources":["https://ftmo.com/en/trading-objectives/","https://ftmo.com/en/2-step-challenge/","https://ftmo.com/en/faq/how-do-i-withdraw-my-profits/","https://ftmo.com/faq/i-have-successfully-passed-what-to-do-now/","https://ftmo.com/en/faq/can-i-trade-news/","https://ftmo.com/en/faq/do-i-have-to-close-my-positions-overnight-or-before-the-weekend/"],
-        "rules_checked_date":"2026-11-01",
-        "news":"Standard funded account: selected events have a 2-minute pre/post execution restriction; not applicable during evaluation",
-        "model_assumptions":["$25/$50/$75/$100 total book risk per trade sensitivity",
+    the5ers_rules={
+        "account":"The5ers $20,000 Bootcamp (3-step evaluation, then funded)",
+        "step_1_balance_usd":5000,"step_1_profit_target_usd":300,"step_1_max_loss_static_usd":250,
+        "step_2_balance_usd":10000,"step_2_profit_target_usd":600,"step_2_max_loss_static_usd":500,
+        "step_3_balance_usd":15000,"step_3_profit_target_usd":900,"step_3_max_loss_static_usd":750,
+        "profit_target_pct_each_step":0.06,"max_loss_pct_each_step":0.05,
+        "evaluation_daily_loss_limit":"None",
+        "funded_balance_usd":20000,"funded_max_loss_pct":0.04,"funded_max_loss_static_usd":800,
+        "funded_daily_pause_pct":0.03,"funded_daily_pause_usd":600,
+        "funded_scale_target_pct":0.05,"funded_scale_target_usd":1000,
+        "time_limit":"Unlimited","min_trading_days":"None listed",
+        "inactivity_limit_days":30,
+        "consistency_rule":"None for Bootcamp",
+        "profit_split_start":0.50,"profit_split_max":1.00,
+        "payout_cycle_calendar_days":14,"payout_cycle_model_trading_days":10,
+        "first_payout":"14 calendar days after the funded account is issued; model uses 10 trading days",
+        "leverage":"1:30 FX; 1:25 metals and indices (Bootcamp page)",
+        "news":"Allowed, except bracketing around releases",
+        "overnight_and_weekend":"Allowed",
+        "official_sources":["https://the5ers.com/bootcamp/","https://the5ers.com/challenge-programs-bootcamp-high-stakes-hyper-growth-explained/","https://www.pipster.io/research/firms/the5ers","https://propfirmly.com/prop-firm-challenges/the5ers-bootcamp-20k"],
+        "rules_checked_date":"2026-11-22",
+        "model_assumptions":["$10/$25/$50/$100 total book risk per trade sensitivity; base comparison $25",
                             "Each book divides risk equally across sleeves",
-                            "10 elapsed trading days (11th sampled business day counting the first-trade day) approximate the 14-calendar-day first reward request date",
-                            "Phase review, verification and KYC delays are not modeled; phase transitions occur on the next simulated trading day",
-                            "Four business days approximate reward review plus payment processing; trading is frozen during this period",
-                            "Cash withdrawal starts a new reference period at initial capital; no rollover is modeled",
-                            "No intraday floating PnL in MT5 exports; close-only rule model is optimistic"]
+                            "Each evaluation step starts at its own fixed balance ($5k/$10k/$15k); phase profits are not carried",
+                            "5% static max loss per step from that step's starting balance; 4% static funded floor at $19,200",
+                            "No daily loss limit during evaluation; funded 3% daily pause modeled as a closed-PnL clip",
+                            "Payout every 14 calendar days approximated as 10 trading days; 50% split; balance resets to $20,000 after withdrawal",
+                            "Funded 5% scale-up ladder (balance, max loss and split step-ups) is not modeled",
+                            "Floating PnL is absent from the MT5 exports; the close-only model is optimistic for intraday breaches",
+                            "Account fees are excluded from the payout estimates"]
     }
     tradeify_rules={
         "account":"Tradeify $50,000 Growth futures",
@@ -1726,7 +1744,7 @@ def write_rule_docs():
                             "Closed-PnL clipping is an approximation and does not reconstruct intraday trigger timing or overshoot",
                             "EOD drawdown updates modeled; real-time floating breaches not fully reconstructable"]
     }
-    write_json(PROP_ROOT/"FTMO-10K-2Step-CFD"/"reports"/"account_rules.json",ftmo_rules)
+    write_json(PROP_ROOT/"The5ers-20K-Bootcamp"/"reports"/"account_rules.json",the5ers_rules)
     write_json(PROP_ROOT/"Tradeify-50K-Growth-Futures"/"reports"/"account_rules.json",tradeify_rules)
 
 def write_readmes(summaries):
@@ -1756,7 +1774,7 @@ See the platform READMEs for the equity curves at the end of each report.
 
 Separate account-rule simulations using normalized strategy R-multiples and block-bootstrap Monte Carlo.
 
-- [FTMO $10,000 2-Step CFD](FTMO-10K-2Step-CFD/README.md)
+- [The5ers $20,000 Bootcamp](The5ers-20K-Bootcamp/README.md)
 - [Tradeify $50,000 Growth futures](Tradeify-50K-Growth-Futures/README.md)
 
 Results are conditional on historical export distributions and the assumptions in each account folder. They are not guarantees of passing, funding, payout or survival.
@@ -1796,7 +1814,7 @@ Results are conditional on historical export distributions and the assumptions i
 """,encoding="utf-8")
 
     for firm, title, file in [
-        ("FTMO-10K-2Step-CFD","FTMO $10,000 2-Step CFD","monte_carlo_challenge_payout.csv"),
+        ("The5ers-20K-Bootcamp","The5ers $20,000 Bootcamp","monte_carlo_challenge_payout.csv"),
         ("Tradeify-50K-Growth-Futures","Tradeify $50,000 Growth futures","monte_carlo_evaluation_funded_payout.csv"),
     ]:
         d=PROP_ROOT/firm
@@ -1810,10 +1828,10 @@ Results are conditional on historical export distributions and the assumptions i
             recovery_note = "Recovery curves are balance-only. The $53,000 target does not enforce payout consistency, five $150 winning days or payout processing."
             chart_extra = "\n![Evaluation drawdown breach probability](charts/evaluation_breach_probability.png)\n![Intraday MAE / soft-DLL stress](charts/mae_soft_dll_stress.png)\n![Recovery to $53,000 balance (payout eligibility not enforced)](charts/recovery_payout_threshold_probability.png)\n"
         else:
-            sizing_note = "Risk ladder is USD 25–100 total book risk per trade, allocated equally across sleeves. Sizing is continuous; instrument-specific minimum lots are not enforced. MT5 cash flows are divided by traded volume before the R unit is calibrated, so balance-compounding exports (Gold X9, Tokyo Coil) enter at per-lot risk."
-            daily_limit_note = "FTMO equity-based daily and maximum loss limits can be breached by floating losses not visible in closed-trade exports. The model also omits the 1–4 business-day phase review and KYC/activation delays, so time-to-funded estimates may be optimistic."
+            sizing_note = "Risk ladder is USD 10–100 total book risk per trade, allocated equally across sleeves. Sizing is continuous; instrument-specific minimum lots are not enforced. MT5 cash flows are divided by traded volume before the R unit is calibrated, so balance-compounding exports (Gold X9, Tokyo Coil) enter at per-lot risk."
+            daily_limit_note = "Evaluation has no daily loss limit, so only the 5% static per-step maximum loss can fail a step. The funded account adds a 3% daily pause, modeled as a closed-PnL clip: intraday trigger timing and overshoot are not visible in the exports, and the 5% funded scale-up ladder is not modeled."
             pairing_note = "MT5 RBE entry/exit legs use exact-volume matching where possible and FIFO fallback because the Deals export has no position IDs."
-            recovery_note = "Recovery curves are balance-only; FTMO recovery measures return to initial equity before the static loss floor, not reward-withdrawal eligibility."
+            recovery_note = "Recovery curves are balance-only; The5ers recovery measures return to the funded $20,000 initial balance above the static 4% floor, not payout eligibility."
         (d/"README.md").write_text(f"""# {title}
 
 - [Account rules and assumptions](reports/account_rules.json)
