@@ -23,7 +23,9 @@ Newest entry first. Only what was verified in this session is recorded here.
 
 **Docs updated:** `README.md`, `analysis/README.md`, `Prop-Firms/methodology.md`, `Normalized-Live/methodology.md`, `reports/strategy_suitability.md` (all FTMO sections replaced with The5ers numbers). `Prop-Firms/README.md` and both firm READMEs were regenerated.
 
-**Next action:** Commit and push; the GitHub Action will rebuild and should be checked once for runtime with the 1,940 MT5 books.
+**CI verified (run 45072819532, commit acda6e2)** — success in 17.9 min total: equity build 1.2 min, schema inspect 0.2 min, prop build 16.1 min, all steps green under the 180-min job / 150-min prop timeouts. The CI-generated commit ecffc9c reproduces the local The5ers numbers exactly (challenge 86.6% reach funded / 84.0% challenge-to-payout, funded candidate 96.3% conditional payout), so the 1,940-book prop universe fits comfortably in CI.
+
+**Next action:** Nothing outstanding; next rebuild happens automatically on the next `Trades/` or `analysis/` change.
 
 ## 2026-11-22 — new systems registered, engine + docs rebuilt
 
