@@ -29,7 +29,7 @@
     "positive_active_month_share": 0.7951807228915663,
     "positive_active_year_share": 1.0,
     "positive_days_share": 0.6332586786114222,
-    "best_day_usd": 2422679.2,
+    "best_day_usd": 2422679.1999999997,
     "worst_day_usd": -2303193.2399999998,
     "daily_pnl_std_usd": 289694.4650190208
   },
@@ -53,7 +53,7 @@
     "positive_active_month_share": 0.7831325301204819,
     "positive_active_year_share": 1.0,
     "positive_days_share": 0.725,
-    "best_day_usd": 2413958.38,
+    "best_day_usd": 2413958.3800000004,
     "worst_day_usd": -2304134.29,
     "daily_pnl_std_usd": 289474.9404720386
   }

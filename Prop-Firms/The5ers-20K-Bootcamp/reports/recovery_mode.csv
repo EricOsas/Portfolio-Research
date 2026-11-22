@@ -31,21 +31,21 @@ The5ers,GotobiFix USDJPY,25.0,static-floor recovery to funded initial balance,-8
 The5ers,GotobiFix USDJPY,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.6788,0.1336,0.0,130.0,-139.6181080272657
 The5ers,GotobiFix USDJPY,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.896,0.0166,0.0,75.0,-0.4816104608936921
 The5ers,GotobiFix USDJPY,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9912,0.001,0.0,11.0,39.01044101828242
-The5ers,Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.773,0.2228,0.0,90.0,-167.276085971104
-The5ers,Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.951,0.0442,0.0,75.0,-14.903387278236254
-The5ers,Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9962,0.002,0.0,41.0,22.03900509917093
+The5ers,Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.773,0.2228,0.0,90.0,-167.27608597110398
+The5ers,Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.951,0.0442,0.0,75.0,-14.903387278236249
+The5ers,Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9962,0.002,0.0,41.0,22.039005099170936
 The5ers,Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9992,0.0006,0.0,7.0,24.310386256018173
-The5ers,Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.6186,0.3814,0.0,38.0,-299.44161832336994
+The5ers,Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.6186,0.3814,0.0,38.0,-299.4416183233699
 The5ers,Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8338,0.1662,0.0,33.0,-104.02759001172353
-The5ers,Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9626,0.0374,0.0,19.0,14.249426905498217
+The5ers,Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9626,0.0374,0.0,19.0,14.249426905498229
 The5ers,Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.994,0.006,0.0,4.0,42.18863110845529
 The5ers,Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5776,0.4224,0.0,29.0,-337.2209782296703
 The5ers,Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7912,0.2088,0.0,25.0,-134.36919805470035
-The5ers,Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.937,0.063,0.0,15.0,-0.2735726363442249
-The5ers,Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9896,0.0104,0.0,4.0,53.30982412306536
+The5ers,Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.937,0.063,0.0,15.0,-0.2735726363442238
+The5ers,Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9896,0.0104,0.0,4.0,53.30982412306535
 The5ers,Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.512,0.488,0.0378,11.0,-405.2440385409571
 The5ers,Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.6692,0.3308,0.0414,10.0,-236.5634390690879
-The5ers,Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8546,0.1454,0.0356,7.0,-36.32372653221604
+The5ers,Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8546,0.1454,0.0356,7.0,-36.323726532216035
 The5ers,Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9614,0.0386,0.0144,2.0,86.24650539672925
 The5ers,Gold ORB (RBE),5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.4212,0.1418,0.0,188.0,-218.73639157383377
 The5ers,Gold ORB (RBE),5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.6442,0.0074,0.0,169.0,-71.19140468213425
@@ -130,19 +130,19 @@ The5ers,Opening-Shock Continuation,25.0,static-floor recovery to funded initial 
 The5ers,Flash ORB,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0486,0.0,,-593.7339319798992
 The5ers,Flash ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-441.3116740759415
 The5ers,Flash ORB,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0238,0.0,0.0,222.0,-191.68605164813565
-The5ers,Flash ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.8804,0.0,0.0,64.5,-6.086318454675206
+The5ers,Flash ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.8804,0.0,0.0,64.5,-6.086318454675208
 The5ers,Flash ORB,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0056,0.2208,0.0,224.5,-514.9585435574432
 The5ers,Flash ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0452,0.0232,0.0,218.0,-336.76228628761396
 The5ers,Flash ORB,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.4302,0.0,0.0,170.0,-111.60186254454712
-The5ers,Flash ORB,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.948,0.0,0.0,28.0,-0.5376221141602122
-The5ers,Flash ORB,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0362,0.291,0.0,219.0,-487.8136966225397
+The5ers,Flash ORB,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.948,0.0,0.0,28.0,-0.5376221141602133
+The5ers,Flash ORB,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0362,0.291,0.0,219.0,-487.8136966225398
 The5ers,Flash ORB,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.1508,0.0486,0.0,204.0,-292.226751038364
-The5ers,Flash ORB,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.577,0.001,0.0,146.0,-90.8848030997086
-The5ers,Flash ORB,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9594,0.0,0.0,21.0,1.2219795062002632
+The5ers,Flash ORB,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.577,0.001,0.0,146.0,-90.88480309970862
+The5ers,Flash ORB,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9594,0.0,0.0,21.0,1.2219795062002612
 The5ers,Flash ORB,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.3388,0.5146,0.0,148.0,-463.7204214518294
 The5ers,Flash ORB,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.5862,0.2202,0.0,133.0,-230.10089752245517
 The5ers,Flash ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8402,0.0468,0.0,78.0,-58.125158891044485
-The5ers,Flash ORB,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9788,0.0042,0.0,8.0,10.30702689918041
+The5ers,Flash ORB,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9788,0.0042,0.0,8.0,10.307026899180407
 The5ers,Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0426,0.0,,-622.4685689249384
 The5ers,Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0002,0.0,,-471.13894642856775
 The5ers,Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0024,0.0,0.0,208.0,-221.1650557091685
@@ -150,7 +150,7 @@ The5ers,Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,7
 The5ers,Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0004,0.2062,0.0,228.0,-561.6204340687823
 The5ers,Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0074,0.018,0.0,223.0,-393.31927807138237
 The5ers,Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.2522,0.0002,0.0,186.0,-152.8637330747583
-The5ers,Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9096,0.0,0.0,35.0,-5.2724415633468285
+The5ers,Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9096,0.0,0.0,35.0,-5.272441563346829
 The5ers,Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0064,0.2784,0.0,228.5,-537.549387240264
 The5ers,Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.053,0.0426,0.0,216.0,-357.598570088863
 The5ers,Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.4008,0.0012,0.0,164.0,-130.63951966860415
@@ -161,9 +161,9 @@ The5ers,Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,
 The5ers,Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.965,0.004,0.0,12.0,7.042944767138613
 The5ers,Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0978,0.0,,-551.0821013450272
 The5ers,Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0026,0.0022,0.0,230.0,-392.70136741204715
-The5ers,Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.1746,0.0,0.0,198.0,-149.39870634617577
-The5ers,Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9224,0.0,0.0,47.0,-0.5598053055821217
-The5ers,Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0884,0.3076,0.0,211.0,-463.0830329566713
+The5ers,Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.1746,0.0,0.0,198.0,-149.39870634617574
+The5ers,Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9224,0.0,0.0,47.0,-0.5598053055821219
+The5ers,Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0884,0.3076,0.0,211.0,-463.08303295667116
 The5ers,Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.2348,0.054,0.0,192.5,-263.2884022253871
 The5ers,Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.6366,0.0022,0.0,136.0,-75.90100436432154
 The5ers,Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9632,0.0002,0.0,21.0,8.225891366356759
@@ -174,7 +174,7 @@ The5ers,Noise Band Momentum,12.5,static-floor recovery to funded initial balance
 The5ers,Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.3862,0.5728,0.0,104.0,-470.6851482436876
 The5ers,Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.6452,0.3018,0.0,92.0,-243.0495637564045
 The5ers,Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8756,0.087,0.0,56.0,-49.825594595670005
-The5ers,Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9808,0.0096,0.0,9.0,30.00844461114824
+The5ers,Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9808,0.0096,0.0,9.0,30.008444611148246
 The5ers,FVG Duo,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.001,0.035,0.0,192.0,-470.2758813253366
 The5ers,FVG Duo,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0152,0.0002,0.0,234.0,-316.11951602385415
 The5ers,FVG Duo,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.3622,0.0,0.0,190.0,-87.63235637100249
@@ -210,10 +210,10 @@ The5ers,Open Drive,25.0,static-floor recovery to funded initial balance,-800.0,7
 The5ers,Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0008,0.216,0.0,232.0,-578.8128153181584
 The5ers,Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0082,0.0166,0.0,226.0,-411.70319868992556
 The5ers,Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.2154,0.0,0.0,186.0,-167.89892195804865
-The5ers,Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9076,0.0,0.0,38.0,-2.9816805763965117
+The5ers,Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9076,0.0,0.0,38.0,-2.981680576396512
 The5ers,Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.1166,0.4624,0.0,195.0,-527.1115816883712
-The5ers,Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.2686,0.1458,0.0,180.0,-312.8101562407851
-The5ers,Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.6294,0.0166,0.0,118.0,-102.56232191592282
+The5ers,Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.2686,0.1458,0.0,180.0,-312.81015624078515
+The5ers,Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.6294,0.0166,0.0,118.0,-102.56232191592284
 The5ers,Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9556,0.0008,0.0,16.0,5.800874374832035
 The5ers,Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.204,0.5276,0.0,176.0,-519.0657906749564
 The5ers,Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.4042,0.216,0.0,154.0,-293.69837700732853
@@ -242,18 +242,18 @@ The5ers,Gold ORB (RBE) + GotobiFix USDJPY,25.0,static-floor recovery to funded i
 The5ers,Flash ORB + GotobiFix USDJPY,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0032,0.0,,-578.3184933610663
 The5ers,Flash ORB + GotobiFix USDJPY,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-428.1695917245416
 The5ers,Flash ORB + GotobiFix USDJPY,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0046,0.0,0.0,233.0,-178.21921320456042
-The5ers,Flash ORB + GotobiFix USDJPY,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9354,0.0,0.0,75.0,0.0528617462386268
+The5ers,Flash ORB + GotobiFix USDJPY,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9354,0.0,0.0,75.0,0.05286174623862651
 The5ers,Flash ORB + GotobiFix USDJPY,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0002,0.0572,0.0,240.0,-465.8392955969779
 The5ers,Flash ORB + GotobiFix USDJPY,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0134,0.0004,0.0,237.0,-306.72887547456594
 The5ers,Flash ORB + GotobiFix USDJPY,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.4162,0.0,0.0,192.0,-81.09738330066817
-The5ers,Flash ORB + GotobiFix USDJPY,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.982,0.0,0.0,33.0,4.635764741348061
+The5ers,Flash ORB + GotobiFix USDJPY,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.982,0.0,0.0,33.0,4.63576474134806
 The5ers,Flash ORB + GotobiFix USDJPY,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.011,0.098,0.0,238.0,-417.8783920420479
 The5ers,Flash ORB + GotobiFix USDJPY,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.088,0.0032,0.0,223.0,-249.19305921511426
-The5ers,Flash ORB + GotobiFix USDJPY,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5964,0.0,0.0,166.0,-56.045371225828994
+The5ers,Flash ORB + GotobiFix USDJPY,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5964,0.0,0.0,166.0,-56.04537122582898
 The5ers,Flash ORB + GotobiFix USDJPY,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9868,0.0,0.0,25.0,6.524866336581093
 The5ers,Flash ORB + GotobiFix USDJPY,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.404,0.3014,0.0,179.0,-320.80665664928307
 The5ers,Flash ORB + GotobiFix USDJPY,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.6526,0.0572,0.0,156.0,-110.62190371354292
-The5ers,Flash ORB + GotobiFix USDJPY,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9034,0.0032,0.0,91.0,-8.821743658452418
+The5ers,Flash ORB + GotobiFix USDJPY,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9034,0.0032,0.0,91.0,-8.82174365845242
 The5ers,Flash ORB + GotobiFix USDJPY,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9948,0.0002,0.0,11.0,16.030377665589356
 The5ers,Gold ORB (RBE) + GotobiFix EURJPY,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0464,0.0154,0.0,226.0,-296.2195095449399
 The5ers,Gold ORB (RBE) + GotobiFix EURJPY,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.2164,0.0002,0.0,216.0,-155.64844308947067
@@ -322,10 +322,10 @@ The5ers,GotobiFix EURJPY + Opening-Shock Continuation,25.0,static-floor recovery
 The5ers,GotobiFix EURJPY + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0002,0.0,,-566.2405997348067
 The5ers,GotobiFix EURJPY + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-416.23369825964915
 The5ers,GotobiFix EURJPY + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.004,0.0,0.0,238.0,-166.26405468914373
-The5ers,GotobiFix EURJPY + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9624,0.0,0.0,80.0,2.6693200000909236
-The5ers,GotobiFix EURJPY + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0156,0.0,,-435.1022865066868
+The5ers,GotobiFix EURJPY + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9624,0.0,0.0,80.0,2.669320000090923
+The5ers,GotobiFix EURJPY + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0156,0.0,,-435.1022865066867
 The5ers,GotobiFix EURJPY + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.014,0.0,0.0,236.0,-282.8118342108434
-The5ers,GotobiFix EURJPY + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.4494,0.0,0.0,197.0,-61.78328004304736
+The5ers,GotobiFix EURJPY + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.4494,0.0,0.0,197.0,-61.783280043047355
 The5ers,GotobiFix EURJPY + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9908,0.0,0.0,37.0,7.83266475680765
 The5ers,GotobiFix EURJPY + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0118,0.031,0.0,236.0,-373.3153826042602
 The5ers,GotobiFix EURJPY + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0974,0.0002,0.0,222.0,-220.01642359183478
@@ -389,11 +389,11 @@ The5ers,Gold ORB (RBE) + Vault Break,5.0,static-floor recovery to funded initial
 The5ers,Gold ORB (RBE) + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.993,0.0,0.0,30.0,7.770671914968118
 The5ers,Gold ORB (RBE) + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.502,0.159,0.0,181.0,-202.95207894727577
 The5ers,Gold ORB (RBE) + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7286,0.0114,0.0,156.0,-52.626896621909296
-The5ers,Gold ORB (RBE) + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.942,0.0002,0.0,94.0,5.7159978376321625
+The5ers,Gold ORB (RBE) + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.942,0.0002,0.0,94.0,5.715997837632161
 The5ers,Gold ORB (RBE) + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9974,0.0,0.0,14.0,15.457695737443533
 The5ers,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.6064,0.225,0.0,151.0,-210.82377822129652
 The5ers,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.835,0.0286,0.0,132.0,-36.6039392715127
-The5ers,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9648,0.0014,0.0,75.5,13.072507863169903
+The5ers,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9648,0.0014,0.0,75.5,13.072507863169902
 The5ers,Gold ORB (RBE) + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9982,0.0002,0.0,12.0,19.284142502209637
 The5ers,Gold ORB (RBE) + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5876,0.4072,0.0,71.0,-313.07989144228947
 The5ers,Gold ORB (RBE) + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8366,0.1574,0.0,62.0,-95.1074163593096
@@ -418,7 +418,7 @@ The5ers,GotobiFix USDJPY + NQ Precision Bot,25.0,static-floor recovery to funded
 The5ers,GotobiFix USDJPY + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0028,0.0,,-593.3832966621059
 The5ers,GotobiFix USDJPY + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-443.31185083178195
 The5ers,GotobiFix USDJPY + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0006,0.0,0.0,250.0,-193.31556473490727
-The5ers,GotobiFix USDJPY + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9018,0.0,0.0,87.0,-1.1361534521922214
+The5ers,GotobiFix USDJPY + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9018,0.0,0.0,87.0,-1.1361534521922219
 The5ers,GotobiFix USDJPY + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0492,0.0,,-492.8385256067682
 The5ers,GotobiFix USDJPY + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.004,0.001,0.0,236.5,-336.77874477619025
 The5ers,GotobiFix USDJPY + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.2992,0.0,0.0,200.0,-100.90071948114974
@@ -434,7 +434,7 @@ The5ers,GotobiFix USDJPY + Vault Break,25.0,static-floor recovery to funded init
 The5ers,Flash ORB + GotobiFix EURJPY,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0004,0.0,,-549.8707976928418
 The5ers,Flash ORB + GotobiFix EURJPY,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-399.8450259155141
 The5ers,Flash ORB + GotobiFix EURJPY,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0178,0.0,0.0,239.0,-150.06327340272176
-The5ers,Flash ORB + GotobiFix EURJPY,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9728,0.0,0.0,70.0,2.6365610190811517
+The5ers,Flash ORB + GotobiFix EURJPY,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9728,0.0,0.0,70.0,2.636561019081151
 The5ers,Flash ORB + GotobiFix EURJPY,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0016,0.019,0.0,211.0,-403.4878351285913
 The5ers,Flash ORB + GotobiFix EURJPY,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0362,0.0,0.0,230.0,-251.07926175131402
 The5ers,Flash ORB + GotobiFix EURJPY,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5598,0.0,0.0,185.0,-45.71301284080427
@@ -445,23 +445,23 @@ The5ers,Flash ORB + GotobiFix EURJPY,12.5,static-floor recovery to funded initia
 The5ers,Flash ORB + GotobiFix EURJPY,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.995,0.0,0.0,25.0,9.244420755878137
 The5ers,Flash ORB + GotobiFix EURJPY,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5682,0.1846,0.0,175.0,-195.52414132067125
 The5ers,Flash ORB + GotobiFix EURJPY,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7876,0.019,0.0,150.0,-42.21002049635524
-The5ers,Flash ORB + GotobiFix EURJPY,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9574,0.0004,0.0,85.0,10.048664613822682
+The5ers,Flash ORB + GotobiFix EURJPY,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9574,0.0004,0.0,85.0,10.048664613822679
 The5ers,Flash ORB + GotobiFix EURJPY,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9982,0.0,0.0,10.0,18.0267846478262
 The5ers,Flash ORB + Gold ORB (RBE),5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0274,0.0226,0.0,229.0,-339.7677482828039
 The5ers,Flash ORB + Gold ORB (RBE),5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.1496,0.0,0.0,218.0,-192.96370419821505
 The5ers,Flash ORB + Gold ORB (RBE),5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.706,0.0,0.0,164.0,-28.416555180592322
 The5ers,Flash ORB + Gold ORB (RBE),5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.994,0.0,0.0,28.0,8.073266993483982
 The5ers,Flash ORB + Gold ORB (RBE),10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5434,0.132,0.0,176.0,-175.44732540802806
-The5ers,Flash ORB + Gold ORB (RBE),10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7614,0.0084,0.0,155.0,-42.975788898008595
-The5ers,Flash ORB + Gold ORB (RBE),10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9464,0.0,0.0,92.0,7.271012575501243
+The5ers,Flash ORB + Gold ORB (RBE),10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7614,0.0084,0.0,155.0,-42.9757888980086
+The5ers,Flash ORB + Gold ORB (RBE),10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9464,0.0,0.0,92.0,7.271012575501241
 The5ers,Flash ORB + Gold ORB (RBE),10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9978,0.0,0.0,14.0,16.49501754399971
 The5ers,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.6528,0.1952,0.0,151.0,-181.2128831657132
-The5ers,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8542,0.0226,0.0,130.0,-26.936478998637952
-The5ers,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9682,0.0008,0.0,72.0,14.525185403071097
+The5ers,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8542,0.0226,0.0,130.0,-26.936478998637956
+The5ers,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9682,0.0008,0.0,72.0,14.525185403071093
 The5ers,Flash ORB + Gold ORB (RBE),12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9982,0.0,0.0,11.0,20.72081674424267
 The5ers,Flash ORB + Gold ORB (RBE),25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.6132,0.3808,0.0,71.0,-290.0040244821556
 The5ers,Flash ORB + Gold ORB (RBE),25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8628,0.1306,0.0,61.0,-71.73527113148555
-The5ers,Flash ORB + Gold ORB (RBE),25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9756,0.0214,0.0,34.0,24.86634337532145
+The5ers,Flash ORB + Gold ORB (RBE),25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9756,0.0214,0.0,34.0,24.866343375321446
 The5ers,Flash ORB + Gold ORB (RBE),25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9972,0.0024,0.0,6.0,37.166681675462804
 The5ers,Gold ORB (RBE) + GotobiFix GBPJPY,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0346,0.0138,0.0,227.0,-317.9605546935421
 The5ers,Gold ORB (RBE) + GotobiFix GBPJPY,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.1746,0.0,0.0,215.0,-174.39475817195313
@@ -485,15 +485,15 @@ The5ers,Gold ORB (RBE) + Noise Band Momentum,5.0,static-floor recovery to funded
 The5ers,Gold ORB (RBE) + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9926,0.0,0.0,27.0,8.854195436032748
 The5ers,Gold ORB (RBE) + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5624,0.1732,0.0,169.0,-191.53950108285295
 The5ers,Gold ORB (RBE) + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.787,0.015,0.0,148.0,-41.306117849717474
-The5ers,Gold ORB (RBE) + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9484,0.0,0.0,87.0,8.283332232110189
+The5ers,Gold ORB (RBE) + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9484,0.0,0.0,87.0,8.28333223211019
 The5ers,Gold ORB (RBE) + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9974,0.0,0.0,13.0,16.378638915193285
-The5ers,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.648,0.2316,0.0,143.0,-202.3852055292668
+The5ers,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.648,0.2316,0.0,143.0,-202.38520552926678
 The5ers,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8624,0.0362,0.0,123.0,-33.861539973123946
 The5ers,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.969,0.0002,0.0,70.0,16.2214761010901
 The5ers,Gold ORB (RBE) + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9978,0.0,0.0,11.0,20.303538320655527
 The5ers,Gold ORB (RBE) + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5764,0.42,0.0,65.0,-321.2589520230884
 The5ers,Gold ORB (RBE) + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8238,0.1714,0.0,56.0,-105.47594095250838
-The5ers,Gold ORB (RBE) + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9624,0.0334,0.0,32.0,15.39331486887272
+The5ers,Gold ORB (RBE) + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9624,0.0334,0.0,32.0,15.393314868872718
 The5ers,Gold ORB (RBE) + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9966,0.0028,0.0,6.0,35.017373846015616
 The5ers,GotobiFix EURJPY + NQ Precision Bot,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0,0.0,,-575.1925840828529
 The5ers,GotobiFix EURJPY + NQ Precision Bot,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-425.1925840828529
@@ -512,36 +512,36 @@ The5ers,GotobiFix EURJPY + NQ Precision Bot,25.0,static-floor recovery to funded
 The5ers,GotobiFix EURJPY + NQ Precision Bot,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9442,0.0,0.0,108.0,10.452710377139597
 The5ers,GotobiFix EURJPY + NQ Precision Bot,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9988,0.0,0.0,15.0,16.02603966806318
 The5ers,Gold X9 + GotobiFix USDJPY,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7798,0.073,0.0,171.0,-73.83637149483974
-The5ers,Gold X9 + GotobiFix USDJPY,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9304,0.0026,0.0,141.0,-1.1148458560909342
-The5ers,Gold X9 + GotobiFix USDJPY,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.993,0.0,0.0,77.0,10.954494583182539
-The5ers,Gold X9 + GotobiFix USDJPY,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,12.0,12.120057955387079
+The5ers,Gold X9 + GotobiFix USDJPY,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9304,0.0026,0.0,141.0,-1.114845856090932
+The5ers,Gold X9 + GotobiFix USDJPY,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.993,0.0,0.0,77.0,10.954494583182543
+The5ers,Gold X9 + GotobiFix USDJPY,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,12.0,12.12005795538708
 The5ers,Gold X9 + GotobiFix USDJPY,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7942,0.2038,0.0,84.0,-150.58046739118294
-The5ers,Gold X9 + GotobiFix USDJPY,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9596,0.038,0.0,69.0,-8.937481968563219
-The5ers,Gold X9 + GotobiFix USDJPY,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.997,0.0026,0.0,38.0,21.627551187581272
-The5ers,Gold X9 + GotobiFix USDJPY,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9996,0.0004,0.0,6.0,23.002314026730716
+The5ers,Gold X9 + GotobiFix USDJPY,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9596,0.038,0.0,69.0,-8.937481968563207
+The5ers,Gold X9 + GotobiFix USDJPY,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.997,0.0026,0.0,38.0,21.62755118758128
+The5ers,Gold X9 + GotobiFix USDJPY,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9996,0.0004,0.0,6.0,23.002314026730723
 The5ers,Gold X9 + GotobiFix USDJPY,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7472,0.2524,0.0,64.0,-189.98607122026607
 The5ers,Gold X9 + GotobiFix USDJPY,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9268,0.0728,0.0,55.0,-32.84522098600326
 The5ers,Gold X9 + GotobiFix USDJPY,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9926,0.0074,0.0,30.0,23.33702528650162
 The5ers,Gold X9 + GotobiFix USDJPY,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9994,0.0006,0.0,5.0,27.32399333226845
 The5ers,Gold X9 + GotobiFix USDJPY,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5976,0.4024,0.0,27.0,-316.31542913476545
 The5ers,Gold X9 + GotobiFix USDJPY,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8086,0.1914,0.0,23.0,-117.42228701394396
-The5ers,Gold X9 + GotobiFix USDJPY,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9408,0.0592,0.0,14.0,2.8382242023461033
+The5ers,Gold X9 + GotobiFix USDJPY,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9408,0.0592,0.0,14.0,2.838224202346108
 The5ers,Gold X9 + GotobiFix USDJPY,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9888,0.0112,0.0,3.0,53.12690843563606
 The5ers,Gold X9 + GotobiFix EURJPY,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8076,0.0598,0.0,170.0,-59.10962746689535
-The5ers,Gold X9 + GotobiFix EURJPY,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.945,0.002,0.0,140.0,1.919855497264943
-The5ers,Gold X9 + GotobiFix EURJPY,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9938,0.0,0.0,76.0,11.30060219830121
-The5ers,Gold X9 + GotobiFix EURJPY,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9998,0.0,0.0,11.0,11.921161469473114
-The5ers,Gold X9 + GotobiFix EURJPY,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8206,0.1758,0.0,84.0,-127.51367306357375
-The5ers,Gold X9 + GotobiFix EURJPY,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9654,0.032,0.0,69.0,-4.480922019915268
-The5ers,Gold X9 + GotobiFix EURJPY,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9978,0.002,0.0,37.0,22.66598422080821
+The5ers,Gold X9 + GotobiFix EURJPY,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.945,0.002,0.0,140.0,1.9198554972649502
+The5ers,Gold X9 + GotobiFix EURJPY,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9938,0.0,0.0,76.0,11.300602198301213
+The5ers,Gold X9 + GotobiFix EURJPY,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9998,0.0,0.0,11.0,11.921161469473116
+The5ers,Gold X9 + GotobiFix EURJPY,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8206,0.1758,0.0,84.0,-127.51367306357373
+The5ers,Gold X9 + GotobiFix EURJPY,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9654,0.032,0.0,69.0,-4.480922019915262
+The5ers,Gold X9 + GotobiFix EURJPY,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9978,0.002,0.0,37.0,22.665984220808216
 The5ers,Gold X9 + GotobiFix EURJPY,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9998,0.0,0.0,6.0,24.763022492363234
-The5ers,Gold X9 + GotobiFix EURJPY,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7734,0.2258,0.0,65.0,-166.3454232066417
+The5ers,Gold X9 + GotobiFix EURJPY,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7734,0.2258,0.0,65.0,-166.34542320664173
 The5ers,Gold X9 + GotobiFix EURJPY,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9398,0.0598,0.0,53.0,-22.39546704257382
-The5ers,Gold X9 + GotobiFix EURJPY,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9942,0.0056,0.0,29.0,24.98055708788049
-The5ers,Gold X9 + GotobiFix EURJPY,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9998,0.0,0.0,5.0,30.04804844349778
-The5ers,Gold X9 + GotobiFix EURJPY,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.61,0.39,0.0,27.0,-303.57869988011834
+The5ers,Gold X9 + GotobiFix EURJPY,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9942,0.0056,0.0,29.0,24.980557087880488
+The5ers,Gold X9 + GotobiFix EURJPY,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9998,0.0,0.0,5.0,30.048048443497777
+The5ers,Gold X9 + GotobiFix EURJPY,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.61,0.39,0.0,27.0,-303.5786998801184
 The5ers,Gold X9 + GotobiFix EURJPY,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8326,0.1674,0.0,23.0,-96.55539130768669
-The5ers,Gold X9 + GotobiFix EURJPY,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9514,0.0486,0.0,13.0,11.140269227201397
+The5ers,Gold X9 + GotobiFix EURJPY,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9514,0.0486,0.0,13.0,11.140269227201394
 The5ers,Gold X9 + GotobiFix EURJPY,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9908,0.0092,0.0,3.0,55.71095615593508
 The5ers,GotobiFix GBPJPY + Overnight Bias ORB,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0,0.0,,-517.01523025162
 The5ers,GotobiFix GBPJPY + Overnight Bias ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-367.01523025162
@@ -639,17 +639,17 @@ The5ers,GotobiFix EURJPY + Noise Band Momentum,25.0,static-floor recovery to fun
 The5ers,GotobiFix EURJPY + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8244,0.046,0.0,131.0,-50.17583037902244
 The5ers,GotobiFix EURJPY + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9594,0.002,0.0,75.0,11.966835385203177
 The5ers,GotobiFix EURJPY + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9972,0.0,0.0,11.0,23.801516298036603
-The5ers,Gold X9 + GotobiFix GBPJPY,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8012,0.0626,0.0,172.0,-62.842279472274214
-The5ers,Gold X9 + GotobiFix GBPJPY,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9418,0.0026,0.0,141.0,0.9924026496467375
-The5ers,Gold X9 + GotobiFix GBPJPY,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9938,0.0,0.0,77.0,10.944158465098983
+The5ers,Gold X9 + GotobiFix GBPJPY,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8012,0.0626,0.0,172.0,-62.84227947227419
+The5ers,Gold X9 + GotobiFix GBPJPY,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9418,0.0026,0.0,141.0,0.9924026496467558
+The5ers,Gold X9 + GotobiFix GBPJPY,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9938,0.0,0.0,77.0,10.944158465098988
 The5ers,Gold X9 + GotobiFix GBPJPY,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9996,0.0,0.0,12.0,11.807973331540262
 The5ers,Gold X9 + GotobiFix GBPJPY,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8116,0.1862,0.0,84.0,-135.29190798695106
-The5ers,Gold X9 + GotobiFix GBPJPY,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9612,0.0364,0.0,70.0,-7.714950940212823
-The5ers,Gold X9 + GotobiFix GBPJPY,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9966,0.0026,0.0,37.0,21.885581729538902
-The5ers,Gold X9 + GotobiFix GBPJPY,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,6.0,24.292605458142713
+The5ers,Gold X9 + GotobiFix GBPJPY,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9612,0.0364,0.0,70.0,-7.714950940212814
+The5ers,Gold X9 + GotobiFix GBPJPY,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9966,0.0026,0.0,37.0,21.885581729538906
+The5ers,Gold X9 + GotobiFix GBPJPY,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,6.0,24.292605458142717
 The5ers,Gold X9 + GotobiFix GBPJPY,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7556,0.2438,0.0,65.0,-181.95918812739225
-The5ers,Gold X9 + GotobiFix GBPJPY,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9374,0.062,0.0,54.0,-24.535601423110226
-The5ers,Gold X9 + GotobiFix GBPJPY,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9934,0.0064,0.0,29.0,24.304710475894318
+The5ers,Gold X9 + GotobiFix GBPJPY,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9374,0.062,0.0,54.0,-24.535601423110215
+The5ers,Gold X9 + GotobiFix GBPJPY,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9934,0.0064,0.0,29.0,24.30471047589432
 The5ers,Gold X9 + GotobiFix GBPJPY,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9996,0.0004,0.0,5.0,29.21715186174727
 The5ers,Gold X9 + GotobiFix GBPJPY,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.591,0.409,0.0,28.0,-322.89870495033625
 The5ers,Gold X9 + GotobiFix GBPJPY,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.825,0.175,0.0,24.0,-103.24485758528172
@@ -701,23 +701,23 @@ The5ers,GotobiFix USDJPY + Noise Band Momentum,12.5,static-floor recovery to fun
 The5ers,GotobiFix USDJPY + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9884,0.0,0.0,23.0,9.488923255361895
 The5ers,GotobiFix USDJPY + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.506,0.291,0.0,167.0,-279.00184934104004
 The5ers,GotobiFix USDJPY + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7498,0.058,0.0,142.0,-80.04182276020535
-The5ers,GotobiFix USDJPY + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9312,0.003,0.0,80.0,1.8531772663064952
+The5ers,GotobiFix USDJPY + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9312,0.003,0.0,80.0,1.853177266306496
 The5ers,GotobiFix USDJPY + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9966,0.0002,0.0,10.0,22.769623989221813
 The5ers,Flash ORB + GotobiFix GBPJPY,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.001,0.0,,-574.4339792213722
 The5ers,Flash ORB + GotobiFix GBPJPY,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-424.3661802793337
 The5ers,Flash ORB + GotobiFix GBPJPY,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0046,0.0,0.0,236.0,-174.4249344534155
-The5ers,Flash ORB + GotobiFix GBPJPY,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.946,0.0,0.0,79.0,0.6160623762177092
+The5ers,Flash ORB + GotobiFix GBPJPY,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.946,0.0,0.0,79.0,0.6160623762177089
 The5ers,Flash ORB + GotobiFix GBPJPY,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0006,0.0336,0.0,249.0,-454.3477199889308
 The5ers,Flash ORB + GotobiFix GBPJPY,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0096,0.0002,0.0,224.5,-299.1485291270393
 The5ers,Flash ORB + GotobiFix GBPJPY,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.4136,0.0,0.0,197.0,-73.30854593424947
-The5ers,Flash ORB + GotobiFix GBPJPY,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9848,0.0,0.0,36.0,4.849982140243564
+The5ers,Flash ORB + GotobiFix GBPJPY,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9848,0.0,0.0,36.0,4.849982140243563
 The5ers,Flash ORB + GotobiFix GBPJPY,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0088,0.0638,0.0,229.5,-400.5194272602101
 The5ers,Flash ORB + GotobiFix GBPJPY,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0782,0.001,0.0,223.0,-239.67464073807253
 The5ers,Flash ORB + GotobiFix GBPJPY,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.6148,0.0,0.0,172.0,-47.165361189104445
 The5ers,Flash ORB + GotobiFix GBPJPY,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9906,0.0,0.0,28.0,6.990119771668398
 The5ers,Flash ORB + GotobiFix GBPJPY,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.43,0.2304,0.0,185.5,-267.8359722557948
 The5ers,Flash ORB + GotobiFix GBPJPY,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.6734,0.0336,0.0,160.0,-85.01461800067949
-The5ers,Flash ORB + GotobiFix GBPJPY,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9222,0.001,0.0,96.0,-3.373957630650304
+The5ers,Flash ORB + GotobiFix GBPJPY,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9222,0.001,0.0,96.0,-3.373957630650306
 The5ers,Flash ORB + GotobiFix GBPJPY,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9964,0.0,0.0,12.0,14.308148063799104
 The5ers,GotobiFix GBPJPY + Opening-Shock Continuation,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0002,0.0,,-612.5689503669997
 The5ers,GotobiFix GBPJPY + Opening-Shock Continuation,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-462.5589556262144
@@ -752,25 +752,25 @@ The5ers,GotobiFix GBPJPY + GotobiFix USDJPY,25.0,static-floor recovery to funded
 The5ers,GotobiFix GBPJPY + GotobiFix USDJPY,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9272,0.006,0.0,83.0,11.89342900463293
 The5ers,GotobiFix GBPJPY + GotobiFix USDJPY,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9936,0.0002,0.0,13.0,35.2993706556911
 The5ers,Gold X9 + Overnight Bias ORB,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.812,0.0634,0.0,169.0,-60.55357377397684
-The5ers,Gold X9 + Overnight Bias ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9492,0.0028,0.0,138.0,2.7061074312385385
+The5ers,Gold X9 + Overnight Bias ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9492,0.0028,0.0,138.0,2.7061074312385376
 The5ers,Gold X9 + Overnight Bias ORB,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9964,0.0,0.0,75.0,11.71628697765551
 The5ers,Gold X9 + Overnight Bias ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,11.0,12.310961910769151
 The5ers,Gold X9 + Overnight Bias ORB,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.81,0.1878,0.0,82.0,-136.731312277582
-The5ers,Gold X9 + Overnight Bias ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9628,0.0358,0.0,67.0,-5.600517387572545
+The5ers,Gold X9 + Overnight Bias ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9628,0.0358,0.0,67.0,-5.600517387572543
 The5ers,Gold X9 + Overnight Bias ORB,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9972,0.0028,0.0,36.0,22.883279315960454
 The5ers,Gold X9 + Overnight Bias ORB,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,6.0,25.597202306819796
 The5ers,Gold X9 + Overnight Bias ORB,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7448,0.2548,0.0,62.0,-189.88982394603394
-The5ers,Gold X9 + Overnight Bias ORB,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9374,0.0626,0.0,52.0,-23.927260434404943
-The5ers,Gold X9 + Overnight Bias ORB,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9918,0.0082,0.0,29.0,23.34732810386849
+The5ers,Gold X9 + Overnight Bias ORB,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9374,0.0626,0.0,52.0,-23.927260434404936
+The5ers,Gold X9 + Overnight Bias ORB,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9918,0.0082,0.0,29.0,23.347328103868488
 The5ers,Gold X9 + Overnight Bias ORB,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9994,0.0006,0.0,5.0,29.65590128387058
 The5ers,Gold X9 + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.6002,0.3998,0.0,26.0,-313.5338552850907
-The5ers,Gold X9 + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8216,0.1784,0.0,23.0,-104.85156726323132
-The5ers,Gold X9 + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9476,0.0524,0.0,13.0,10.924190811756548
+The5ers,Gold X9 + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8216,0.1784,0.0,23.0,-104.8515672632313
+The5ers,Gold X9 + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9476,0.0524,0.0,13.0,10.924190811756546
 The5ers,Gold X9 + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9926,0.0074,0.0,3.0,58.80883752405711
 The5ers,Tokyo Coil + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0026,0.0,,-573.9488723879805
 The5ers,Tokyo Coil + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-423.7229308490802
 The5ers,Tokyo Coil + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0092,0.0,0.0,234.0,-173.89455014440696
-The5ers,Tokyo Coil + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9298,0.0,0.0,75.0,0.2683417052711694
+The5ers,Tokyo Coil + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9298,0.0,0.0,75.0,0.268341705271169
 The5ers,Tokyo Coil + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.001,0.0544,0.0,240.0,-456.5185454867831
 The5ers,Tokyo Coil + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0202,0.0002,0.0,231.0,-298.237086478775
 The5ers,Tokyo Coil + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.4298,0.0,0.0,189.0,-75.80621937713966
@@ -780,24 +780,24 @@ The5ers,Tokyo Coil + Vault Break,12.5,static-floor recovery to funded initial ba
 The5ers,Tokyo Coil + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.6276,0.0,0.0,168.0,-50.33557571320325
 The5ers,Tokyo Coil + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9814,0.0,0.0,29.0,7.727232455873484
 The5ers,Tokyo Coil + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.4362,0.2662,0.0,179.0,-287.5974392337408
-The5ers,Tokyo Coil + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.6848,0.0544,0.0,157.0,-98.79579068317528
-The5ers,Tokyo Coil + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9004,0.0026,0.0,90.0,-7.268839938429756
+The5ers,Tokyo Coil + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.6848,0.0544,0.0,157.0,-98.7957906831753
+The5ers,Tokyo Coil + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9004,0.0026,0.0,90.0,-7.268839938429758
 The5ers,Tokyo Coil + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9916,0.0,0.0,14.0,17.29445625182094
-The5ers,Gold X9 + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.815,0.0624,0.0,169.0,-60.371190732510016
-The5ers,Gold X9 + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.946,0.0014,0.0,139.0,2.420349604616882
-The5ers,Gold X9 + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9946,0.0,0.0,76.0,11.315677714435168
-The5ers,Gold X9 + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,11.0,11.556877559129802
+The5ers,Gold X9 + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.815,0.0624,0.0,169.0,-60.37119073251003
+The5ers,Gold X9 + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.946,0.0014,0.0,139.0,2.4203496046168755
+The5ers,Gold X9 + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9946,0.0,0.0,76.0,11.315677714435171
+The5ers,Gold X9 + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,11.0,11.556877559129804
 The5ers,Gold X9 + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8042,0.1922,0.0,83.0,-140.4091120384564
-The5ers,Gold X9 + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9624,0.0358,0.0,68.0,-6.686110006318497
-The5ers,Gold X9 + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.998,0.0014,0.0,36.0,22.603049795552383
+The5ers,Gold X9 + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9624,0.0358,0.0,68.0,-6.686110006318494
+The5ers,Gold X9 + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.998,0.0014,0.0,36.0,22.60304979555239
 The5ers,Gold X9 + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,6.0,24.099659958037495
 The5ers,Gold X9 + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7582,0.241,0.0,64.0,-179.57972938637738
-The5ers,Gold X9 + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9376,0.0624,0.0,53.0,-24.202433032667557
-The5ers,Gold X9 + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.993,0.0066,0.0,29.0,24.14630579157008
-The5ers,Gold X9 + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9998,0.0002,0.0,5.0,29.805550838677405
+The5ers,Gold X9 + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9376,0.0624,0.0,53.0,-24.202433032667546
+The5ers,Gold X9 + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.993,0.0066,0.0,29.0,24.146305791570093
+The5ers,Gold X9 + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9998,0.0002,0.0,5.0,29.805550838677412
 The5ers,Gold X9 + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.6066,0.3934,0.0,26.0,-306.89946919447755
 The5ers,Gold X9 + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8148,0.1852,0.0,23.0,-112.50799855816881
-The5ers,Gold X9 + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9496,0.0504,0.0,13.0,11.55270425759325
+The5ers,Gold X9 + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9496,0.0504,0.0,13.0,11.552704257593254
 The5ers,Gold X9 + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.995,0.005,0.0,3.0,60.76335528781723
 The5ers,GotobiFix GBPJPY + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0,0.0,,-540.5112697853078
 The5ers,GotobiFix GBPJPY + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-390.51126978530783
@@ -815,68 +815,68 @@ The5ers,GotobiFix GBPJPY + Tokyo Coil,25.0,static-floor recovery to funded initi
 The5ers,GotobiFix GBPJPY + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8102,0.014,0.0,144.0,-28.971446910207504
 The5ers,GotobiFix GBPJPY + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.968,0.0,0.0,83.0,16.62927831065054
 The5ers,GotobiFix GBPJPY + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9986,0.0,0.0,13.0,23.356215003795146
-The5ers,Gold ORB (RBE) + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8902,0.073,0.0,141.0,-51.754074172403875
-The5ers,Gold ORB (RBE) + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.983,0.0038,0.0,113.0,8.645337989865723
-The5ers,Gold ORB (RBE) + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.998,0.0,0.0,60.0,14.129242786990462
+The5ers,Gold ORB (RBE) + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8902,0.073,0.0,141.0,-51.75407417240385
+The5ers,Gold ORB (RBE) + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.983,0.0038,0.0,113.0,8.645337989865737
+The5ers,Gold ORB (RBE) + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.998,0.0,0.0,60.0,14.129242786990464
 The5ers,Gold ORB (RBE) + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,10.0,13.380250105479787
 The5ers,Gold ORB (RBE) + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7746,0.2246,0.0,65.0,-163.41079750720962
-The5ers,Gold ORB (RBE) + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.951,0.0488,0.0,53.0,-13.184985343680845
-The5ers,Gold ORB (RBE) + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.996,0.0034,0.0,29.0,25.53510480275652
-The5ers,Gold ORB (RBE) + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,6.0,30.796626001811802
+The5ers,Gold ORB (RBE) + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.951,0.0488,0.0,53.0,-13.18498534368084
+The5ers,Gold ORB (RBE) + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.996,0.0034,0.0,29.0,25.535104802756525
+The5ers,Gold ORB (RBE) + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,6.0,30.79662600181181
 The5ers,Gold ORB (RBE) + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7264,0.2736,0.0,50.0,-203.42556012944394
-The5ers,Gold ORB (RBE) + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.928,0.072,0.0,41.0,-27.61638785047785
-The5ers,Gold ORB (RBE) + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.992,0.008,0.0,23.0,29.05091917091106
-The5ers,Gold ORB (RBE) + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9994,0.0006,0.0,5.0,37.01192738878467
+The5ers,Gold ORB (RBE) + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.928,0.072,0.0,41.0,-27.61638785047784
+The5ers,Gold ORB (RBE) + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.992,0.008,0.0,23.0,29.05091917091107
+The5ers,Gold ORB (RBE) + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9994,0.0006,0.0,5.0,37.01192738878468
 The5ers,Gold ORB (RBE) + Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.588,0.412,0.0,20.0,-316.90106602801774
 The5ers,Gold ORB (RBE) + Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7864,0.2136,0.0,17.0,-128.0191441674753
-The5ers,Gold ORB (RBE) + Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9398,0.0602,0.0,10.0,10.91111625966885
+The5ers,Gold ORB (RBE) + Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9398,0.0602,0.0,10.0,10.911116259668855
 The5ers,Gold ORB (RBE) + Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9882,0.0118,0.0,3.0,62.92365632339659
 The5ers,Opening-Shock Continuation + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0042,0.0,,-645.0792349112298
 The5ers,Opening-Shock Continuation + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-495.02445634707846
 The5ers,Opening-Shock Continuation + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0,0.0,0.0,,-245.02445634707794
-The5ers,Opening-Shock Continuation + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.6778,0.0,0.0,120.0,-13.743753065535973
+The5ers,Opening-Shock Continuation + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.6778,0.0,0.0,120.0,-13.743753065535971
 The5ers,Opening-Shock Continuation + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0654,0.0,,-593.1298323474307
 The5ers,Opening-Shock Continuation + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0008,0.0,,-440.0932751788987
-The5ers,Opening-Shock Continuation + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0454,0.0,0.0,218.0,-190.84695813140132
+The5ers,Opening-Shock Continuation + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0454,0.0,0.0,218.0,-190.8469581314013
 The5ers,Opening-Shock Continuation + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.8726,0.0,0.0,60.0,-6.696964621327099
 The5ers,Opening-Shock Continuation + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.1152,0.0,,-570.9900677477577
 The5ers,Opening-Shock Continuation + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0012,0.0042,0.0,238.0,-412.69506878576095
 The5ers,Opening-Shock Continuation + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.136,0.0,0.0,204.0,-166.88307488183492
-The5ers,Opening-Shock Continuation + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9028,0.0,0.0,45.0,-4.7649503735262
+The5ers,Opening-Shock Continuation + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9028,0.0,0.0,45.0,-4.764950373526199
 The5ers,Opening-Shock Continuation + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0662,0.3256,0.0,214.0,-491.26731727920406
 The5ers,Opening-Shock Continuation + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.182,0.0654,0.0,196.0,-295.87469353774486
 The5ers,Opening-Shock Continuation + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5928,0.0042,0.0,138.5,-96.21662512420255
 The5ers,Opening-Shock Continuation + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9534,0.0,0.0,20.0,2.121316015872026
-The5ers,Flash ORB + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7694,0.0764,0.0,174.0,-78.1219497785535
-The5ers,Flash ORB + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.923,0.0044,0.0,144.0,-3.3873757426807125
-The5ers,Flash ORB + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9924,0.0,0.0,78.0,10.867161163064479
-The5ers,Flash ORB + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,12.0,11.568819394895533
-The5ers,Flash ORB + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7886,0.2084,0.0,85.0,-154.89063598871576
-The5ers,Flash ORB + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9518,0.0464,0.0,70.0,-16.440314215587627
-The5ers,Flash ORB + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9954,0.0042,0.0,38.0,20.371909778911082
-The5ers,Flash ORB + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,6.0,23.276368243714284
+The5ers,Flash ORB + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7694,0.0764,0.0,174.0,-78.12194977855351
+The5ers,Flash ORB + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.923,0.0044,0.0,144.0,-3.3873757426807214
+The5ers,Flash ORB + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9924,0.0,0.0,78.0,10.867161163064475
+The5ers,Flash ORB + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,12.0,11.568819394895534
+The5ers,Flash ORB + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7886,0.2084,0.0,85.0,-154.8906359887158
+The5ers,Flash ORB + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9518,0.0464,0.0,70.0,-16.440314215587634
+The5ers,Flash ORB + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9954,0.0042,0.0,38.0,20.37190977891109
+The5ers,Flash ORB + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,6.0,23.276368243714288
 The5ers,Flash ORB + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7368,0.2624,0.0,65.0,-197.3269461749016
 The5ers,Flash ORB + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9242,0.0756,0.0,55.0,-35.70380167915797
-The5ers,Flash ORB + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9902,0.0096,0.0,30.0,21.855012176295226
+The5ers,Flash ORB + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9902,0.0096,0.0,30.0,21.855012176295237
 The5ers,Flash ORB + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9996,0.0004,0.0,5.0,29.463112411055864
-The5ers,Flash ORB + Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.6102,0.3898,0.0,27.0,-307.5220419726683
+The5ers,Flash ORB + Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.6102,0.3898,0.0,27.0,-307.52204197266826
 The5ers,Flash ORB + Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8042,0.1958,0.0,24.0,-122.1677699780497
-The5ers,Flash ORB + Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9388,0.0612,0.0,14.0,0.8251336935945361
+The5ers,Flash ORB + Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9388,0.0612,0.0,14.0,0.8251336935945386
 The5ers,Flash ORB + Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9864,0.0136,0.0,3.0,47.64884178436045
-The5ers,Gold X9 + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7654,0.0634,0.0,175.0,-70.68291964818741
-The5ers,Gold X9 + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9208,0.0026,0.0,145.0,-2.3007128259959178
+The5ers,Gold X9 + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7654,0.0634,0.0,175.0,-70.68291964818742
+The5ers,Gold X9 + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9208,0.0026,0.0,145.0,-2.3007128259959244
 The5ers,Gold X9 + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9926,0.0,0.0,80.0,10.970006617696889
-The5ers,Gold X9 + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,12.0,11.838183717296628
+The5ers,Gold X9 + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,12.0,11.838183717296626
 The5ers,Gold X9 + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7992,0.1976,0.0,86.0,-145.41262853388642
-The5ers,Gold X9 + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9602,0.0368,0.0,72.0,-8.323554963211691
-The5ers,Gold X9 + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9966,0.0026,0.0,39.0,22.12320435522177
+The5ers,Gold X9 + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9602,0.0368,0.0,72.0,-8.323554963211686
+The5ers,Gold X9 + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9966,0.0026,0.0,39.0,22.123204355221777
 The5ers,Gold X9 + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,7.0,23.117237676691914
-The5ers,Gold X9 + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.745,0.254,0.0,67.0,-190.1883528799181
-The5ers,Gold X9 + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9356,0.0634,0.0,56.0,-26.20483372163001
-The5ers,Gold X9 + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9934,0.0064,0.0,31.0,24.485275177145503
+The5ers,Gold X9 + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.745,0.254,0.0,67.0,-190.18835287991809
+The5ers,Gold X9 + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9356,0.0634,0.0,56.0,-26.204833721630003
+The5ers,Gold X9 + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9934,0.0064,0.0,31.0,24.48527517714551
 The5ers,Gold X9 + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9998,0.0002,0.0,5.0,27.941533552720806
-The5ers,Gold X9 + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5842,0.4158,0.0,28.0,-327.68984215679586
-The5ers,Gold X9 + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8142,0.1858,0.0,24.0,-112.56654808113915
+The5ers,Gold X9 + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5842,0.4158,0.0,28.0,-327.6898421567958
+The5ers,Gold X9 + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8142,0.1858,0.0,24.0,-112.56654808113913
 The5ers,Gold X9 + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.95,0.05,0.0,14.0,11.649839511617573
 The5ers,Gold X9 + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9912,0.0088,0.0,3.0,54.30009702214757
 The5ers,Flash ORB + Opening-Shock Continuation,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.006,0.0,,-629.144540934731
@@ -886,15 +886,15 @@ The5ers,Flash ORB + Opening-Shock Continuation,5.0,static-floor recovery to fund
 The5ers,Flash ORB + Opening-Shock Continuation,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0786,0.0,,-563.5433075872884
 The5ers,Flash ORB + Opening-Shock Continuation,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0008,0.002,0.0,245.0,-408.13432013892515
 The5ers,Flash ORB + Opening-Shock Continuation,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.1172,0.0,0.0,210.0,-161.34159305624425
-The5ers,Flash ORB + Opening-Shock Continuation,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.91,0.0,0.0,49.0,-4.225177955393321
+The5ers,Flash ORB + Opening-Shock Continuation,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.91,0.0,0.0,49.0,-4.225177955393323
 The5ers,Flash ORB + Opening-Shock Continuation,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0006,0.1356,0.0,247.0,-537.3089306022185
 The5ers,Flash ORB + Opening-Shock Continuation,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0068,0.006,0.0,226.5,-373.04459692111544
 The5ers,Flash ORB + Opening-Shock Continuation,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.2648,0.0,0.0,193.0,-135.06558522505318
-The5ers,Flash ORB + Opening-Shock Continuation,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9334,0.0,0.0,38.0,-2.532893395130295
-The5ers,Flash ORB + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.1448,0.3562,0.0,201.0,-453.5999899165071
+The5ers,Flash ORB + Opening-Shock Continuation,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9334,0.0,0.0,38.0,-2.532893395130296
+The5ers,Flash ORB + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.1448,0.3562,0.0,201.0,-453.59998991650724
 The5ers,Flash ORB + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.3276,0.0784,0.0,186.0,-243.69435453775404
-The5ers,Flash ORB + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.7002,0.006,0.0,121.0,-69.95040233225362
-The5ers,Flash ORB + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9706,0.0,0.0,16.0,5.00282798222953
+The5ers,Flash ORB + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.7002,0.006,0.0,121.0,-69.95040233225363
+The5ers,Flash ORB + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9706,0.0,0.0,16.0,5.002827982229529
 The5ers,Noise Band Momentum + Overnight Bias ORB,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0068,0.0,,-510.70561324931356
 The5ers,Noise Band Momentum + Overnight Bias ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-360.10243822371143
 The5ers,Noise Band Momentum + Overnight Bias ORB,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.1442,0.0,0.0,217.0,-114.67478771629105
@@ -909,71 +909,71 @@ The5ers,Noise Band Momentum + Overnight Bias ORB,12.5,static-floor recovery to f
 The5ers,Noise Band Momentum + Overnight Bias ORB,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.994,0.0,0.0,20.0,14.01789800910531
 The5ers,Noise Band Momentum + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5872,0.3144,0.0,133.5,-264.2651557574115
 The5ers,Noise Band Momentum + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8388,0.0734,0.0,116.0,-57.54251506330494
-The5ers,Noise Band Momentum + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9638,0.0068,0.0,65.0,16.689134064429563
+The5ers,Noise Band Momentum + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9638,0.0068,0.0,65.0,16.689134064429567
 The5ers,Noise Band Momentum + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9966,0.0002,0.0,10.0,28.28646398012165
-The5ers,Gold X9 + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.798,0.0648,0.0,170.0,-65.64361082446163
-The5ers,Gold X9 + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9376,0.0036,0.0,141.0,-0.033208367789687006
+The5ers,Gold X9 + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.798,0.0648,0.0,170.0,-65.6436108244616
+The5ers,Gold X9 + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9376,0.0036,0.0,141.0,-0.03320836778967828
 The5ers,Gold X9 + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9948,0.0,0.0,76.0,11.278066372225068
 The5ers,Gold X9 + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,12.0,11.54017470105705
-The5ers,Gold X9 + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8038,0.1948,0.0,83.0,-142.77529710459027
-The5ers,Gold X9 + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9646,0.0338,0.0,69.0,-5.357407288013944
+The5ers,Gold X9 + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8038,0.1948,0.0,83.0,-142.77529710459024
+The5ers,Gold X9 + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9646,0.0338,0.0,69.0,-5.357407288013939
 The5ers,Gold X9 + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9962,0.0036,0.0,36.0,21.171817564819094
-The5ers,Gold X9 + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,6.0,24.010656962473504
+The5ers,Gold X9 + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,6.0,24.010656962473508
 The5ers,Gold X9 + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7504,0.2488,0.0,64.0,-186.57416991667714
-The5ers,Gold X9 + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9356,0.0642,0.0,53.0,-26.128199858141215
-The5ers,Gold X9 + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9922,0.0076,0.0,29.0,22.743864531207457
+The5ers,Gold X9 + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9356,0.0642,0.0,53.0,-26.1281998581412
+The5ers,Gold X9 + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9922,0.0076,0.0,29.0,22.74386453120747
 The5ers,Gold X9 + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9996,0.0004,0.0,5.0,30.08766486392193
-The5ers,Gold X9 + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5946,0.4054,0.0,26.0,-318.33638756323313
-The5ers,Gold X9 + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8144,0.1856,0.0,23.0,-112.53081917794186
-The5ers,Gold X9 + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9474,0.0526,0.0,14.0,11.616863544275256
-The5ers,Gold X9 + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9908,0.0092,0.0,3.0,56.26022821860683
-The5ers,FVG Duo + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8294,0.0598,0.0,166.0,-56.13604095406784
-The5ers,FVG Duo + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9532,0.0016,0.0,136.0,4.036491141303855
-The5ers,FVG Duo + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9966,0.0,0.0,74.0,12.030265663507869
-The5ers,FVG Duo + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,12.0,12.128872716451605
-The5ers,FVG Duo + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8118,0.187,0.0,81.0,-135.68415128941902
-The5ers,FVG Duo + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.963,0.0364,0.0,66.0,-5.912364073063477
-The5ers,FVG Duo + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9984,0.0016,0.0,36.0,23.671515367834193
+The5ers,Gold X9 + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5946,0.4054,0.0,26.0,-318.3363875632331
+The5ers,Gold X9 + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8144,0.1856,0.0,23.0,-112.53081917794184
+The5ers,Gold X9 + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9474,0.0526,0.0,14.0,11.61686354427526
+The5ers,Gold X9 + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9908,0.0092,0.0,3.0,56.260228218606834
+The5ers,FVG Duo + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8294,0.0598,0.0,166.0,-56.1360409540678
+The5ers,FVG Duo + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9532,0.0016,0.0,136.0,4.036491141303874
+The5ers,FVG Duo + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9966,0.0,0.0,74.0,12.030265663507873
+The5ers,FVG Duo + Gold X9,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,12.0,12.128872716451607
+The5ers,FVG Duo + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8118,0.187,0.0,81.0,-135.684151289419
+The5ers,FVG Duo + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.963,0.0364,0.0,66.0,-5.912364073063467
+The5ers,FVG Duo + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9984,0.0016,0.0,36.0,23.6715153678342
 The5ers,FVG Duo + Gold X9,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,6.0,25.836167204131996
 The5ers,FVG Duo + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7568,0.2432,0.0,62.0,-179.9072058098327
-The5ers,FVG Duo + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9398,0.0598,0.0,51.0,-21.94975408194892
-The5ers,FVG Duo + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9948,0.0052,0.0,28.0,25.687850066670386
+The5ers,FVG Duo + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9398,0.0598,0.0,51.0,-21.949754081948917
+The5ers,FVG Duo + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9948,0.0052,0.0,28.0,25.687850066670393
 The5ers,FVG Duo + Gold X9,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9996,0.0004,0.0,6.0,33.28096078464498
 The5ers,FVG Duo + Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.6052,0.3948,0.0,26.0,-310.8811394103618
-The5ers,FVG Duo + Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8218,0.1782,0.0,22.0,-107.50478086961792
+The5ers,FVG Duo + Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8218,0.1782,0.0,22.0,-107.50478086961789
 The5ers,FVG Duo + Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9516,0.0484,0.0,13.0,15.516312485279498
 The5ers,FVG Duo + Gold X9,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9928,0.0072,0.0,3.0,52.95756785290147
 The5ers,GotobiFix GBPJPY + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.001,0.0,,-587.023625177499
 The5ers,GotobiFix GBPJPY + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-436.9823201432366
 The5ers,GotobiFix GBPJPY + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0002,0.0,0.0,203.0,-186.9879612742259
-The5ers,GotobiFix GBPJPY + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9268,0.0,0.0,87.0,0.2895974338753782
+The5ers,GotobiFix GBPJPY + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9268,0.0,0.0,87.0,0.28959743387537795
 The5ers,GotobiFix GBPJPY + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0234,0.0,,-477.10876995559175
 The5ers,GotobiFix GBPJPY + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0028,0.0,0.0,246.5,-323.99447593614764
-The5ers,GotobiFix GBPJPY + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.309,0.0,0.0,202.0,-89.23757806959743
+The5ers,GotobiFix GBPJPY + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.309,0.0,0.0,202.0,-89.23757806959742
 The5ers,GotobiFix GBPJPY + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9792,0.0,0.0,40.0,5.121004921140216
 The5ers,GotobiFix GBPJPY + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0012,0.0474,0.0,241.5,-426.2617630023066
 The5ers,GotobiFix GBPJPY + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0424,0.001,0.0,229.0,-268.7369685177973
 The5ers,GotobiFix GBPJPY + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5192,0.0,0.0,183.0,-60.25406190472622
 The5ers,GotobiFix GBPJPY + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9854,0.0,0.0,31.0,6.929391921415601
 The5ers,GotobiFix GBPJPY + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.3526,0.193,0.0,195.0,-267.3940580516141
-The5ers,GotobiFix GBPJPY + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.5952,0.0234,0.0,173.0,-100.55808055110832
-The5ers,GotobiFix GBPJPY + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8906,0.001,0.0,105.0,-7.609657760966115
+The5ers,GotobiFix GBPJPY + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.5952,0.0234,0.0,173.0,-100.55808055110833
+The5ers,GotobiFix GBPJPY + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8906,0.001,0.0,105.0,-7.609657760966116
 The5ers,GotobiFix GBPJPY + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9956,0.0,0.0,13.0,15.43941961560824
-The5ers,Gold X9 + Opening-Shock Continuation,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7196,0.0784,0.0,180.0,-88.9904469736518
+The5ers,Gold X9 + Opening-Shock Continuation,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7196,0.0784,0.0,180.0,-88.99044697365179
 The5ers,Gold X9 + Opening-Shock Continuation,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.905,0.002,0.0,149.0,-4.628694145376104
-The5ers,Gold X9 + Opening-Shock Continuation,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9914,0.0,0.0,83.0,10.753550786629923
+The5ers,Gold X9 + Opening-Shock Continuation,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9914,0.0,0.0,83.0,10.753550786629916
 The5ers,Gold X9 + Opening-Shock Continuation,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,12.0,12.054549919215411
 The5ers,Gold X9 + Opening-Shock Continuation,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.79,0.2062,0.0,88.0,-154.0077597828277
-The5ers,Gold X9 + Opening-Shock Continuation,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9494,0.0474,0.0,73.0,-17.661506938111938
-The5ers,Gold X9 + Opening-Shock Continuation,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.997,0.002,0.0,40.0,21.585695163129397
+The5ers,Gold X9 + Opening-Shock Continuation,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9494,0.0474,0.0,73.0,-17.661506938111945
+The5ers,Gold X9 + Opening-Shock Continuation,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.997,0.002,0.0,40.0,21.585695163129394
 The5ers,Gold X9 + Opening-Shock Continuation,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,7.0,24.568161104867883
 The5ers,Gold X9 + Opening-Shock Continuation,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7382,0.261,0.0,68.0,-197.44045720190323
 The5ers,Gold X9 + Opening-Shock Continuation,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9204,0.0782,0.0,57.0,-39.376023018701744
 The5ers,Gold X9 + Opening-Shock Continuation,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9912,0.0088,0.0,31.0,21.963001791757495
 The5ers,Gold X9 + Opening-Shock Continuation,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9998,0.0002,0.0,6.0,29.154382689027884
-The5ers,Gold X9 + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5948,0.4052,0.0,29.0,-321.49846975732265
+The5ers,Gold X9 + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5948,0.4052,0.0,29.0,-321.4984697573226
 The5ers,Gold X9 + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8048,0.1952,0.0,25.0,-123.56843973298336
-The5ers,Gold X9 + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9346,0.0654,0.0,14.0,-4.499086980361695
+The5ers,Gold X9 + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9346,0.0654,0.0,14.0,-4.499086980361688
 The5ers,Gold X9 + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.989,0.011,0.0,3.0,52.03543504286921
 The5ers,Gold ORB (RBE) + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0476,0.0222,0.0,227.5,-307.47049563841733
 The5ers,Gold ORB (RBE) + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.2014,0.0,0.0,215.0,-163.57342173674616
@@ -1013,7 +1013,7 @@ The5ers,GotobiFix GBPJPY + Noise Band Momentum,5.0,static-floor recovery to fund
 The5ers,GotobiFix GBPJPY + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.959,0.0,0.0,65.0,2.1086643858386984
 The5ers,GotobiFix GBPJPY + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0046,0.0492,0.0,240.0,-408.30786905409593
 The5ers,GotobiFix GBPJPY + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0612,0.0012,0.0,224.0,-249.90125263614314
-The5ers,GotobiFix GBPJPY + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5778,0.0,0.0,176.0,-51.338066266330316
+The5ers,GotobiFix GBPJPY + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5778,0.0,0.0,176.0,-51.33806626633031
 The5ers,GotobiFix GBPJPY + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9858,0.0,0.0,31.0,7.109391941255174
 The5ers,GotobiFix GBPJPY + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0544,0.0826,0.0,225.0,-346.42869074078413
 The5ers,GotobiFix GBPJPY + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.215,0.002,0.0,212.0,-187.09900883280804
@@ -1040,36 +1040,36 @@ The5ers,GotobiFix EURJPY + GotobiFix GBPJPY,25.0,static-floor recovery to funded
 The5ers,GotobiFix EURJPY + GotobiFix GBPJPY,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9584,0.0014,0.0,79.0,30.01758714777145
 The5ers,GotobiFix EURJPY + GotobiFix GBPJPY,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.996,0.0,0.0,12.0,36.446601116521634
 The5ers,Gold X9 + NQ Precision Bot,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7446,0.0776,0.0,176.0,-84.92284746558325
-The5ers,Gold X9 + NQ Precision Bot,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.908,0.004,0.0,146.0,-5.899006587062017
-The5ers,Gold X9 + NQ Precision Bot,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9902,0.0,0.0,81.0,10.468454585783086
-The5ers,Gold X9 + NQ Precision Bot,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,12.0,11.891893488743403
+The5ers,Gold X9 + NQ Precision Bot,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.908,0.004,0.0,146.0,-5.8990065870620105
+The5ers,Gold X9 + NQ Precision Bot,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9902,0.0,0.0,81.0,10.46845458578309
+The5ers,Gold X9 + NQ Precision Bot,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,12.0,11.891893488743404
 The5ers,Gold X9 + NQ Precision Bot,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.775,0.2202,0.0,86.0,-165.04718221651217
-The5ers,Gold X9 + NQ Precision Bot,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9512,0.0446,0.0,72.0,-15.385041855840262
-The5ers,Gold X9 + NQ Precision Bot,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.995,0.004,0.0,39.0,19.910437204292197
-The5ers,Gold X9 + NQ Precision Bot,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,6.0,23.12897668075481
+The5ers,Gold X9 + NQ Precision Bot,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9512,0.0446,0.0,72.0,-15.385041855840255
+The5ers,Gold X9 + NQ Precision Bot,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.995,0.004,0.0,39.0,19.91043720429221
+The5ers,Gold X9 + NQ Precision Bot,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,6.0,23.128976680754814
 The5ers,Gold X9 + NQ Precision Bot,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7254,0.2738,0.0,66.0,-208.5894734457512
-The5ers,Gold X9 + NQ Precision Bot,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9222,0.0772,0.0,56.0,-37.804277183429434
-The5ers,Gold X9 + NQ Precision Bot,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.99,0.0098,0.0,31.0,20.378637188458118
+The5ers,Gold X9 + NQ Precision Bot,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9222,0.0772,0.0,56.0,-37.80427718342942
+The5ers,Gold X9 + NQ Precision Bot,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.99,0.0098,0.0,31.0,20.37863718845812
 The5ers,Gold X9 + NQ Precision Bot,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9996,0.0004,0.0,5.0,29.664471625405398
 The5ers,Gold X9 + NQ Precision Bot,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5746,0.4254,0.0,28.0,-339.90500165425317
-The5ers,Gold X9 + NQ Precision Bot,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7898,0.2102,0.0,24.0,-136.67318090277217
-The5ers,Gold X9 + NQ Precision Bot,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9366,0.0634,0.0,14.0,-2.1432507824569433
+The5ers,Gold X9 + NQ Precision Bot,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7898,0.2102,0.0,24.0,-136.67318090277215
+The5ers,Gold X9 + NQ Precision Bot,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9366,0.0634,0.0,14.0,-2.1432507824569407
 The5ers,Gold X9 + NQ Precision Bot,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9876,0.0124,0.0,3.0,50.31041321963881
-The5ers,Gold X9 + Open Drive,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8164,0.086,0.0,161.0,-76.03186336961564
-The5ers,Gold X9 + Open Drive,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9484,0.0052,0.0,131.0,0.29862460360218274
-The5ers,Gold X9 + Open Drive,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.995,0.0,0.0,71.0,12.343357739750934
-The5ers,Gold X9 + Open Drive,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9998,0.0,0.0,11.0,12.442137171764173
-The5ers,Gold X9 + Open Drive,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7736,0.2252,0.0,76.0,-167.34362663458327
-The5ers,Gold X9 + Open Drive,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9434,0.0558,0.0,63.0,-22.111264202585815
-The5ers,Gold X9 + Open Drive,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9946,0.005,0.0,34.0,20.895758533178068
-The5ers,Gold X9 + Open Drive,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9998,0.0002,0.0,5.0,24.880621883144038
-The5ers,Gold X9 + Open Drive,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.719,0.281,0.0,59.0,-211.35786969190738
-The5ers,Gold X9 + Open Drive,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.914,0.0858,0.0,49.0,-42.840450098130304
-The5ers,Gold X9 + Open Drive,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.986,0.014,0.0,27.0,19.676260468426555
+The5ers,Gold X9 + Open Drive,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.8164,0.086,0.0,161.0,-76.03186336961565
+The5ers,Gold X9 + Open Drive,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9484,0.0052,0.0,131.0,0.2986246036021839
+The5ers,Gold X9 + Open Drive,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.995,0.0,0.0,71.0,12.343357739750939
+The5ers,Gold X9 + Open Drive,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9998,0.0,0.0,11.0,12.442137171764175
+The5ers,Gold X9 + Open Drive,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7736,0.2252,0.0,76.0,-167.34362663458325
+The5ers,Gold X9 + Open Drive,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9434,0.0558,0.0,63.0,-22.111264202585797
+The5ers,Gold X9 + Open Drive,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9946,0.005,0.0,34.0,20.89575853317808
+The5ers,Gold X9 + Open Drive,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9998,0.0002,0.0,5.0,24.880621883144045
+The5ers,Gold X9 + Open Drive,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.719,0.281,0.0,59.0,-211.35786969190744
+The5ers,Gold X9 + Open Drive,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.914,0.0858,0.0,49.0,-42.840450098130326
+The5ers,Gold X9 + Open Drive,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.986,0.014,0.0,27.0,19.676260468426552
 The5ers,Gold X9 + Open Drive,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9992,0.0008,0.0,5.0,31.07351749691564
 The5ers,Gold X9 + Open Drive,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5718,0.4282,0.0,24.0,-340.88911873557873
 The5ers,Gold X9 + Open Drive,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7908,0.2092,0.0,21.0,-133.12873030943
-The5ers,Gold X9 + Open Drive,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9358,0.0642,0.0,12.0,4.136242537935684
+The5ers,Gold X9 + Open Drive,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9358,0.0642,0.0,12.0,4.136242537935679
 The5ers,Gold X9 + Open Drive,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9842,0.0158,0.0,3.0,57.68212455631427
 The5ers,GotobiFix GBPJPY + NQ Precision Bot,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0,0.0,,-596.6287600863467
 The5ers,GotobiFix GBPJPY + NQ Precision Bot,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-446.62876008634663
@@ -1094,13 +1094,13 @@ The5ers,Noise Band Momentum + Vault Break,5.0,static-floor recovery to funded in
 The5ers,Noise Band Momentum + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0032,0.1474,0.0,219.0,-488.2694177804691
 The5ers,Noise Band Momentum + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0408,0.0054,0.0,225.0,-316.84145983213114
 The5ers,Noise Band Momentum + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.4246,0.0,0.0,179.0,-97.16120190908102
-The5ers,Noise Band Momentum + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9578,0.0,0.0,32.0,3.23136326907102
+The5ers,Noise Band Momentum + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9578,0.0,0.0,32.0,3.2313632690710206
 The5ers,Noise Band Momentum + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0344,0.2086,0.0,221.5,-451.15676152096466
 The5ers,Noise Band Momentum + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.141,0.0194,0.0,212.0,-267.121222163296
 The5ers,Noise Band Momentum + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5804,0.0002,0.0,154.0,-74.46676324503862
-The5ers,Noise Band Momentum + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.966,0.0,0.0,25.0,5.904931860254138
+The5ers,Noise Band Momentum + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.966,0.0,0.0,25.0,5.9049318602541385
 The5ers,Noise Band Momentum + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.3712,0.4308,0.0,164.0,-402.75388552059576
-The5ers,Noise Band Momentum + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.6114,0.1472,0.0,143.0,-176.75059973342888
+The5ers,Noise Band Momentum + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.6114,0.1472,0.0,143.0,-176.7505997334289
 The5ers,Noise Band Momentum + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8572,0.019,0.0,85.0,-31.268265379189607
 The5ers,Noise Band Momentum + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9806,0.0012,0.0,11.0,15.271862982984073
 The5ers,FVG Duo + Gold ORB (RBE),5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0728,0.0182,0.0,222.0,-279.08490461775216
@@ -1120,41 +1120,41 @@ The5ers,FVG Duo + Gold ORB (RBE),25.0,static-floor recovery to funded initial ba
 The5ers,FVG Duo + Gold ORB (RBE),25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9808,0.0174,0.0,31.0,30.4999936467932
 The5ers,FVG Duo + Gold ORB (RBE),25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9982,0.0016,0.0,6.0,39.68844639863216
 The5ers,Gold X9 + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7728,0.0718,0.0,171.0,-74.71273123017976
-The5ers,Gold X9 + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.93,0.0034,0.0,140.0,-1.6153447897657993
-The5ers,Gold X9 + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9928,0.0,0.0,77.0,11.204457705043
-The5ers,Gold X9 + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,11.0,11.34942645734105
-The5ers,Gold X9 + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7822,0.2152,0.0,83.0,-161.4528296762486
-The5ers,Gold X9 + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9546,0.0426,0.0,69.0,-12.846615070666576
-The5ers,Gold X9 + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.996,0.0034,0.0,37.0,20.968173613042726
-The5ers,Gold X9 + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9998,0.0002,0.0,6.0,25.363465997717775
-The5ers,Gold X9 + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7326,0.2672,0.0,63.0,-201.8367407650743
-The5ers,Gold X9 + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.928,0.071,0.0,53.0,-31.187775924035535
-The5ers,Gold X9 + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9916,0.0082,0.0,29.0,23.4443306374113
-The5ers,Gold X9 + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,5.0,31.738211454537044
+The5ers,Gold X9 + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.93,0.0034,0.0,140.0,-1.615344789765784
+The5ers,Gold X9 + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9928,0.0,0.0,77.0,11.204457705043009
+The5ers,Gold X9 + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,11.0,11.349426457341051
+The5ers,Gold X9 + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7822,0.2152,0.0,83.0,-161.45282967624857
+The5ers,Gold X9 + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.9546,0.0426,0.0,69.0,-12.846615070666559
+The5ers,Gold X9 + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.996,0.0034,0.0,37.0,20.96817361304274
+The5ers,Gold X9 + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9998,0.0002,0.0,6.0,25.36346599771778
+The5ers,Gold X9 + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.7326,0.2672,0.0,63.0,-201.83674076507427
+The5ers,Gold X9 + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.928,0.071,0.0,53.0,-31.187775924035524
+The5ers,Gold X9 + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9916,0.0082,0.0,29.0,23.444330637411312
+The5ers,Gold X9 + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,1.0,0.0,0.0,5.0,31.73821145453705
 The5ers,Gold X9 + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5898,0.4102,0.0,26.0,-325.7372318122636
 The5ers,Gold X9 + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7958,0.2042,0.0,22.0,-132.47623367990724
-The5ers,Gold X9 + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9408,0.0592,0.0,13.0,5.097701652755266
-The5ers,Gold X9 + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9926,0.0074,0.0,3.0,59.48643377441659
+The5ers,Gold X9 + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9408,0.0592,0.0,13.0,5.097701652755271
+The5ers,Gold X9 + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9926,0.0074,0.0,3.0,59.486433774416604
 The5ers,Flash ORB + Overnight Bias ORB,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0,0.0,,-537.1385453438406
 The5ers,Flash ORB + Overnight Bias ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-387.138545343841
 The5ers,Flash ORB + Overnight Bias ORB,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0238,0.0,0.0,226.0,-137.6262786978306
-The5ers,Flash ORB + Overnight Bias ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9806,0.0,0.0,65.0,2.9471397712604763
+The5ers,Flash ORB + Overnight Bias ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9806,0.0,0.0,65.0,2.9471397712604754
 The5ers,Flash ORB + Overnight Bias ORB,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0054,0.015,0.0,240.0,-377.7505590788742
 The5ers,Flash ORB + Overnight Bias ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0526,0.0,0.0,227.0,-226.47423403505692
 The5ers,Flash ORB + Overnight Bias ORB,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.6368,0.0,0.0,181.0,-33.21174226591713
-The5ers,Flash ORB + Overnight Bias ORB,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9952,0.0,0.0,30.0,6.833531698591111
+The5ers,Flash ORB + Overnight Bias ORB,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9952,0.0,0.0,30.0,6.833531698591109
 The5ers,Flash ORB + Overnight Bias ORB,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.045,0.0292,0.0,227.0,-303.8117395130613
 The5ers,Flash ORB + Overnight Bias ORB,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.2234,0.0,0.0,216.0,-157.14577682401548
-The5ers,Flash ORB + Overnight Bias ORB,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8054,0.0,0.0,153.0,-14.778958135348006
+The5ers,Flash ORB + Overnight Bias ORB,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8054,0.0,0.0,153.0,-14.778958135348008
 The5ers,Flash ORB + Overnight Bias ORB,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9962,0.0,0.0,23.0,8.799979795334457
 The5ers,Flash ORB + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.6308,0.1666,0.0,169.0,-165.8424735550139
-The5ers,Flash ORB + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8464,0.015,0.0,143.0,-25.401140686038953
-The5ers,Flash ORB + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.97,0.0,0.0,80.0,12.439850776900368
-The5ers,Flash ORB + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.998,0.0,0.0,11.0,18.87536182825482
+The5ers,Flash ORB + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8464,0.015,0.0,143.0,-25.40114068603896
+The5ers,Flash ORB + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.97,0.0,0.0,80.0,12.439850776900363
+The5ers,Flash ORB + Overnight Bias ORB,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.998,0.0,0.0,11.0,18.875361828254825
 The5ers,Flash ORB + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.004,0.0,,-558.4615581197496
 The5ers,Flash ORB + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-408.17892903781615
 The5ers,Flash ORB + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.016,0.0,0.0,229.5,-158.40364265605416
-The5ers,Flash ORB + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.947,0.0,0.0,70.0,1.4011848887795724
+The5ers,Flash ORB + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.947,0.0,0.0,70.0,1.4011848887795717
 The5ers,Flash ORB + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0022,0.0524,0.0,241.0,-425.9816191039952
 The5ers,Flash ORB + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0388,0.0018,0.0,229.0,-267.84190276845766
 The5ers,Flash ORB + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.532,0.0,0.0,182.0,-58.936362812280564
@@ -1165,8 +1165,8 @@ The5ers,Flash ORB + Tokyo Coil,12.5,static-floor recovery to funded initial bala
 The5ers,Flash ORB + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9896,0.0,0.0,25.0,8.489446482875332
 The5ers,Flash ORB + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.502,0.2818,0.0,170.0,-272.59096233627116
 The5ers,Flash ORB + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7448,0.0524,0.0,147.0,-78.28334540529687
-The5ers,Flash ORB + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9254,0.004,0.0,83.0,-0.45563833387649666
-The5ers,Flash ORB + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9964,0.0002,0.0,12.0,19.099417083451826
+The5ers,Flash ORB + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9254,0.004,0.0,83.0,-0.4556383338765021
+The5ers,Flash ORB + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9964,0.0002,0.0,12.0,19.099417083451822
 The5ers,Gold ORB (RBE) + NQ Precision Bot,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.019,0.0148,0.0,235.0,-362.68435029962706
 The5ers,Gold ORB (RBE) + NQ Precision Bot,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.1046,0.0,0.0,218.0,-215.16627206205754
 The5ers,Gold ORB (RBE) + NQ Precision Bot,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.6488,0.0,0.0,172.0,-34.97210564494761
@@ -1206,62 +1206,62 @@ The5ers,Noise Band Momentum + Tokyo Coil,5.0,static-floor recovery to funded ini
 The5ers,Noise Band Momentum + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.013,0.0694,0.0,236.0,-385.15708117000685
 The5ers,Noise Band Momentum + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.1092,0.0018,0.0,222.0,-223.65029928196748
 The5ers,Noise Band Momentum + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.6544,0.0,0.0,168.0,-41.00944826190396
-The5ers,Noise Band Momentum + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9878,0.0,0.0,28.0,7.5168621308508605
+The5ers,Noise Band Momentum + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9878,0.0,0.0,28.0,7.516862130850862
 The5ers,Noise Band Momentum + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0944,0.114,0.0,222.0,-327.4387325926144
 The5ers,Noise Band Momentum + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.2994,0.0058,0.0,206.0,-161.4842653605092
 The5ers,Noise Band Momentum + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.7898,0.0,0.0,142.0,-23.099571176322993
 The5ers,Noise Band Momentum + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9908,0.0,0.0,21.0,9.163818221825105
 The5ers,Noise Band Momentum + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5694,0.2876,0.0,151.0,-259.00198236252993
 The5ers,Noise Band Momentum + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.8066,0.0694,0.0,131.0,-69.31198682277294
-The5ers,Noise Band Momentum + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.954,0.0058,0.0,73.0,6.2916288179406115
+The5ers,Noise Band Momentum + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.954,0.0058,0.0,73.0,6.291628817940613
 The5ers,Noise Band Momentum + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.996,0.0002,0.0,10.0,21.17051967251484
 The5ers,Flash ORB + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0228,0.0,,-568.9394886997216
 The5ers,Flash ORB + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-417.44415628193923
 The5ers,Flash ORB + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0398,0.0,0.0,226.0,-168.12457855078674
-The5ers,Flash ORB + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9234,0.0,0.0,64.0,-0.771952132872395
+The5ers,Flash ORB + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9234,0.0,0.0,64.0,-0.7719521328723953
 The5ers,Flash ORB + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0098,0.15,0.0,233.0,-463.1348526775637
-The5ers,Flash ORB + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0672,0.0098,0.0,220.0,-288.8456843530254
-The5ers,Flash ORB + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5056,0.0,0.0,172.0,-79.94523348222243
+The5ers,Flash ORB + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0672,0.0098,0.0,220.0,-288.8456843530253
+The5ers,Flash ORB + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5056,0.0,0.0,172.0,-79.94523348222242
 The5ers,Flash ORB + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.971,0.0,0.0,30.0,4.9314859319811974
 The5ers,Flash ORB + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0592,0.2064,0.0,221.0,-422.4820078468167
 The5ers,Flash ORB + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.1982,0.0228,0.0,203.0,-237.1601248209972
 The5ers,Flash ORB + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.6508,0.0002,0.0,147.5,-58.7639605360753
 The5ers,Flash ORB + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9776,0.0,0.0,22.0,7.035878390386825
 The5ers,Flash ORB + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.4282,0.3972,0.0,155.0,-365.63561831283783
-The5ers,Flash ORB + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.6626,0.1492,0.0,135.0,-159.44176173837974
-The5ers,Flash ORB + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8988,0.0222,0.0,79.0,-20.42615781380025
+The5ers,Flash ORB + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.6626,0.1492,0.0,135.0,-159.44176173837977
+The5ers,Flash ORB + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8988,0.0222,0.0,79.0,-20.426157813800256
 The5ers,Flash ORB + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9876,0.0014,0.0,10.0,16.573802012420124
 The5ers,Flash ORB + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.006,0.0,,-604.9497703780379
 The5ers,Flash ORB + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-454.65691061811503
 The5ers,Flash ORB + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.001,0.0,0.0,242.0,-204.65390838203422
-The5ers,Flash ORB + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.8624,0.0,0.0,86.0,-4.615521720981645
+The5ers,Flash ORB + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.8624,0.0,0.0,86.0,-4.615521720981646
 The5ers,Flash ORB + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0856,0.0,,-518.8359761575663
 The5ers,Flash ORB + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0044,0.0012,0.0,234.5,-359.40998154070155
 The5ers,Flash ORB + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.2604,0.0,0.0,194.0,-121.67220252777965
-The5ers,Flash ORB + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9504,0.0,0.0,38.0,0.8372047978294468
-The5ers,Flash ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0036,0.1416,0.0,236.0,-483.8138434309884
+The5ers,Flash ORB + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9504,0.0,0.0,38.0,0.837204797829446
+The5ers,Flash ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0036,0.1416,0.0,236.0,-483.81384343098847
 The5ers,Flash ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0428,0.006,0.0,227.0,-313.5109725228184
-The5ers,Flash ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.4408,0.0,0.0,176.0,-95.2877131126166
-The5ers,Flash ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9638,0.0,0.0,29.0,2.8420329731811536
+The5ers,Flash ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.4408,0.0,0.0,176.0,-95.28771311261661
+The5ers,Flash ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9638,0.0,0.0,29.0,2.842032973181153
 The5ers,Flash ORB + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.2776,0.3556,0.0,186.5,-397.06939200610213
 The5ers,Flash ORB + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.5026,0.0856,0.0,168.0,-180.7686908689052
-The5ers,Flash ORB + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8132,0.006,0.0,103.0,-38.94669981968966
-The5ers,Flash ORB + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9832,0.0,0.0,12.0,11.88005645022811
+The5ers,Flash ORB + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8132,0.006,0.0,103.0,-38.94669981968968
+The5ers,Flash ORB + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9832,0.0,0.0,12.0,11.880056450228109
 The5ers,Overnight Bias ORB + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0014,0.0,,-549.7939566361654
 The5ers,Overnight Bias ORB + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-399.70838469724254
 The5ers,Overnight Bias ORB + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0198,0.0,0.0,236.0,-149.97458449453129
-The5ers,Overnight Bias ORB + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.966,0.0,0.0,69.0,2.745134448653297
+The5ers,Overnight Bias ORB + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.966,0.0,0.0,69.0,2.7451344486532965
 The5ers,Overnight Bias ORB + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0022,0.0328,0.0,242.0,-406.28572747355753
 The5ers,Overnight Bias ORB + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.043,0.0002,0.0,229.0,-250.91827422495697
-The5ers,Overnight Bias ORB + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5708,0.0,0.0,183.0,-46.91550651667465
+The5ers,Overnight Bias ORB + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5708,0.0,0.0,183.0,-46.915506516674654
 The5ers,Overnight Bias ORB + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9876,0.0,0.0,31.0,7.835330490349128
 The5ers,Overnight Bias ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0376,0.0624,0.0,231.5,-342.9752872873334
 The5ers,Overnight Bias ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.1788,0.0014,0.0,218.0,-185.59990386972513
-The5ers,Overnight Bias ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.746,0.0,0.0,158.0,-25.989945984201228
+The5ers,Overnight Bias ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.746,0.0,0.0,158.0,-25.98994598420123
 The5ers,Overnight Bias ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9918,0.0,0.0,24.0,10.300351998838618
 The5ers,Overnight Bias ORB + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5562,0.2156,0.0,172.0,-218.61812303461824
-The5ers,Overnight Bias ORB + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7856,0.0328,0.0,147.0,-52.65278939391784
-The5ers,Overnight Bias ORB + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9482,0.0014,0.0,83.0,9.499153577477477
+The5ers,Overnight Bias ORB + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7856,0.0328,0.0,147.0,-52.65278939391786
+The5ers,Overnight Bias ORB + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9482,0.0014,0.0,83.0,9.499153577477475
 The5ers,Overnight Bias ORB + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9968,0.0,0.0,11.0,21.6961786557485
 The5ers,GotobiFix USDJPY + Open Drive,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0002,0.0558,0.0,249.0,-499.70299993172495
 The5ers,GotobiFix USDJPY + Open Drive,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0068,0.0004,0.0,237.5,-342.99123997368065
@@ -1282,19 +1282,19 @@ The5ers,GotobiFix USDJPY + Open Drive,25.0,static-floor recovery to funded initi
 The5ers,FVG Duo + Flash ORB,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0052,0.0,,-528.9185076195891
 The5ers,FVG Duo + Flash ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0002,0.0,0.0,218.0,-378.3749698544488
 The5ers,FVG Duo + Flash ORB,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0932,0.0,0.0,223.0,-130.55161552966396
-The5ers,FVG Duo + Flash ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9624,0.0,0.0,59.0,3.341442922409997
+The5ers,FVG Duo + Flash ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9624,0.0,0.0,59.0,3.341442922409996
 The5ers,FVG Duo + Flash ORB,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0262,0.0628,0.0,225.0,-372.95754905671515
 The5ers,FVG Duo + Flash ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.1442,0.0012,0.0,214.0,-215.37212925837483
-The5ers,FVG Duo + Flash ORB,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.671,0.0,0.0,163.0,-39.4710814605932
+The5ers,FVG Duo + Flash ORB,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.671,0.0,0.0,163.0,-39.47108146059321
 The5ers,FVG Duo + Flash ORB,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.988,0.0,0.0,27.0,9.247305524176795
 The5ers,FVG Duo + Flash ORB,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.1302,0.108,0.0,216.0,-314.9493324983002
 The5ers,FVG Duo + Flash ORB,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.3338,0.0052,0.0,199.0,-155.16543149658074
-The5ers,FVG Duo + Flash ORB,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.7934,0.0,0.0,137.0,-22.298560712308525
-The5ers,FVG Duo + Flash ORB,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.992,0.0,0.0,21.0,12.354337373140929
+The5ers,FVG Duo + Flash ORB,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.7934,0.0,0.0,137.0,-22.298560712308532
+The5ers,FVG Duo + Flash ORB,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.992,0.0,0.0,21.0,12.354337373140927
 The5ers,FVG Duo + Flash ORB,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.5626,0.3144,0.0,146.0,-272.8243732274961
-The5ers,FVG Duo + Flash ORB,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.81,0.0628,0.0,126.0,-63.612369753110734
-The5ers,FVG Duo + Flash ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9462,0.0048,0.0,71.0,10.43661419565485
-The5ers,FVG Duo + Flash ORB,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9958,0.0,0.0,9.0,21.980197644208502
+The5ers,FVG Duo + Flash ORB,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.81,0.0628,0.0,126.0,-63.61236975311075
+The5ers,FVG Duo + Flash ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9462,0.0048,0.0,71.0,10.436614195654844
+The5ers,FVG Duo + Flash ORB,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9958,0.0,0.0,9.0,21.9801976442085
 The5ers,FVG Duo + Opening-Shock Continuation,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0028,0.0,,-568.4885623300789
 The5ers,FVG Duo + Opening-Shock Continuation,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-418.29361976292955
 The5ers,FVG Duo + Opening-Shock Continuation,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0218,0.0,0.0,219.0,-168.65746857744142
@@ -1346,7 +1346,7 @@ The5ers,FVG Duo + NQ Precision Bot,25.0,static-floor recovery to funded initial 
 The5ers,GotobiFix USDJPY + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0232,0.0,,-565.2726823640006
 The5ers,GotobiFix USDJPY + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-413.66582632312367
 The5ers,GotobiFix USDJPY + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.046,0.0,0.0,222.0,-164.4457260585733
-The5ers,GotobiFix USDJPY + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9306,0.0,0.0,59.0,0.001805648534670263
+The5ers,GotobiFix USDJPY + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9306,0.0,0.0,59.0,0.0018056485346694899
 The5ers,GotobiFix USDJPY + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0122,0.1504,0.0,229.0,-457.4806850000078
 The5ers,GotobiFix USDJPY + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0774,0.0096,0.0,217.0,-281.7451443419619
 The5ers,GotobiFix USDJPY + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5428,0.0,0.0,167.0,-74.90732864490896
@@ -1357,7 +1357,7 @@ The5ers,GotobiFix USDJPY + Sigma ORB,12.5,static-floor recovery to funded initia
 The5ers,GotobiFix USDJPY + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9824,0.0,0.0,20.0,9.142322537673513
 The5ers,GotobiFix USDJPY + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.4298,0.4422,0.0,145.0,-391.9113878415942
 The5ers,GotobiFix USDJPY + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.6942,0.1498,0.0,127.0,-153.05203832439653
-The5ers,GotobiFix USDJPY + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9054,0.0228,0.0,72.0,-14.892338489968711
+The5ers,GotobiFix USDJPY + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9054,0.0228,0.0,72.0,-14.892338489968713
 The5ers,GotobiFix USDJPY + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9936,0.0012,0.0,8.0,21.287430822819797
 The5ers,FVG Duo + GotobiFix GBPJPY,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0006,0.0,,-509.9925980136956
 The5ers,FVG Duo + GotobiFix GBPJPY,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-359.9484781211166
@@ -1426,10 +1426,10 @@ The5ers,NQ Precision Bot + Tokyo Coil,25.0,static-floor recovery to funded initi
 The5ers,GotobiFix EURJPY + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0114,0.0,,-539.0461452250369
 The5ers,GotobiFix EURJPY + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-387.9698134521467
 The5ers,GotobiFix EURJPY + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.076,0.0,0.0,222.0,-139.5015400731777
-The5ers,GotobiFix EURJPY + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9576,0.0,0.0,55.0,2.16469176883638
+The5ers,GotobiFix EURJPY + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9576,0.0,0.0,55.0,2.1646917688363794
 The5ers,GotobiFix EURJPY + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0214,0.0956,0.0,228.0,-398.4287586873847
 The5ers,GotobiFix EURJPY + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.1334,0.003,0.0,218.0,-232.19218712235164
-The5ers,GotobiFix EURJPY + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.6376,0.0,0.0,163.0,-49.30319618827772
+The5ers,GotobiFix EURJPY + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.6376,0.0,0.0,163.0,-49.303196188277724
 The5ers,GotobiFix EURJPY + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9844,0.0,0.0,25.0,7.5482698177856555
 The5ers,GotobiFix EURJPY + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.1202,0.1494,0.0,220.0,-348.38528442823076
 The5ers,GotobiFix EURJPY + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.3068,0.0114,0.0,200.0,-175.51349951317562
@@ -1437,7 +1437,7 @@ The5ers,GotobiFix EURJPY + Sigma ORB,12.5,static-floor recovery to funded initia
 The5ers,GotobiFix EURJPY + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9888,0.0,0.0,20.0,10.37768792693901
 The5ers,GotobiFix EURJPY + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.52,0.3574,0.0,144.0,-314.89791195791224
 The5ers,GotobiFix EURJPY + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7782,0.0956,0.0,124.0,-93.29866911354722
-The5ers,GotobiFix EURJPY + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9406,0.0112,0.0,67.0,1.0179742608339861
+The5ers,GotobiFix EURJPY + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9406,0.0112,0.0,67.0,1.017974260833985
 The5ers,GotobiFix EURJPY + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9934,0.0006,0.0,8.0,20.511425475338996
 The5ers,Noise Band Momentum + Opening-Shock Continuation,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0188,0.0,,-606.2888828563787
 The5ers,Noise Band Momentum + Opening-Shock Continuation,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-455.7049141621502
@@ -1450,11 +1450,11 @@ The5ers,Noise Band Momentum + Opening-Shock Continuation,10.0,static-floor recov
 The5ers,Noise Band Momentum + Opening-Shock Continuation,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.014,0.2118,0.0,227.0,-499.1301218245565
 The5ers,Noise Band Momentum + Opening-Shock Continuation,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0694,0.0188,0.0,214.0,-319.21250059674594
 The5ers,Noise Band Momentum + Opening-Shock Continuation,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.4628,0.0002,0.0,164.0,-103.77275360720414
-The5ers,Noise Band Momentum + Opening-Shock Continuation,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9504,0.0,0.0,30.0,3.72467371983595
+The5ers,Noise Band Momentum + Opening-Shock Continuation,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9504,0.0,0.0,30.0,3.724673719835951
 The5ers,Noise Band Momentum + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.2814,0.4382,0.0,172.0,-443.71872305698815
 The5ers,Noise Band Momentum + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.5064,0.1442,0.0,154.0,-217.50757903276318
-The5ers,Noise Band Momentum + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.7948,0.0186,0.0,93.0,-49.75608987210528
-The5ers,Noise Band Momentum + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9742,0.002,0.0,13.0,14.180144713506138
+The5ers,Noise Band Momentum + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.7948,0.0186,0.0,93.0,-49.75608987210527
+The5ers,Noise Band Momentum + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9742,0.002,0.0,13.0,14.18014471350614
 The5ers,FVG Duo + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.015,0.0,,-503.2003718095398
 The5ers,FVG Duo + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0016,0.0,0.0,239.0,-351.6058625446659
 The5ers,FVG Duo + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.2236,0.0,0.0,209.0,-110.00212972748939
@@ -1465,7 +1465,7 @@ The5ers,FVG Duo + Noise Band Momentum,10.0,static-floor recovery to funded initi
 The5ers,FVG Duo + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9874,0.0,0.0,23.0,15.3960564476686
 The5ers,FVG Duo + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.2656,0.1978,0.0,199.0,-308.1832816229709
 The5ers,FVG Duo + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.4908,0.015,0.0,179.0,-130.06513704598584
-The5ers,FVG Duo + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.832,0.0,0.0,116.0,-15.941819155284753
+The5ers,FVG Duo + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.832,0.0,0.0,116.0,-15.941819155284751
 The5ers,FVG Duo + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9896,0.0,0.0,19.0,20.174337518549052
 The5ers,FVG Duo + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.525,0.4126,0.0,118.0,-333.8069757254343
 The5ers,FVG Duo + Noise Band Momentum,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7882,0.1362,0.0,102.0,-99.34930944384745
@@ -1490,11 +1490,11 @@ The5ers,NQ Precision Bot + Overnight Bias ORB,25.0,static-floor recovery to fund
 The5ers,NQ Precision Bot + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0128,0.0,,-592.4861230102713
 The5ers,NQ Precision Bot + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-441.99487167342585
 The5ers,NQ Precision Bot + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.007,0.0,0.0,226.0,-192.15488097182686
-The5ers,NQ Precision Bot + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.8832,0.0,0.0,80.0,-3.2585932447182486
+The5ers,NQ Precision Bot + Noise Band Momentum,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.8832,0.0,0.0,80.0,-3.258593244718248
 The5ers,NQ Precision Bot + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.002,0.1048,0.0,247.5,-497.87383303629167
 The5ers,NQ Precision Bot + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0166,0.0042,0.0,223.0,-334.8738635864301
 The5ers,NQ Precision Bot + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.349,0.0,0.0,186.0,-105.94222420423631
-The5ers,NQ Precision Bot + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9538,0.0,0.0,38.0,2.826177063676162
+The5ers,NQ Precision Bot + Noise Band Momentum,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9538,0.0,0.0,38.0,2.8261770636761625
 The5ers,NQ Precision Bot + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0142,0.165,0.0,226.0,-461.44677282329167
 The5ers,NQ Precision Bot + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0866,0.0128,0.0,215.0,-285.6993640550054
 The5ers,NQ Precision Bot + Noise Band Momentum,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5228,0.0,0.0,166.0,-81.23464337390794
@@ -1514,7 +1514,7 @@ The5ers,NQ Precision Bot + Vault Break,10.0,static-floor recovery to funded init
 The5ers,NQ Precision Bot + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0408,0.0,,-526.5601222158674
 The5ers,NQ Precision Bot + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0006,0.0004,0.0,243.0,-372.8002583465916
 The5ers,NQ Precision Bot + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.1706,0.0,0.0,211.0,-128.53760220685132
-The5ers,NQ Precision Bot + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9576,0.0,0.0,45.0,1.0002720290970348
+The5ers,NQ Precision Bot + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9576,0.0,0.0,45.0,1.000272029097035
 The5ers,NQ Precision Bot + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0772,0.2004,0.0,221.0,-402.57489149993035
 The5ers,NQ Precision Bot + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.2442,0.0172,0.0,204.0,-216.3345997639033
 The5ers,NQ Precision Bot + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.7006,0.0004,0.0,143.0,-50.62070638702426
@@ -1558,14 +1558,14 @@ The5ers,Flash ORB + NQ Precision Bot,5.0,static-floor recovery to funded initial
 The5ers,Flash ORB + NQ Precision Bot,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.036,0.0,,-535.184535015196
 The5ers,Flash ORB + NQ Precision Bot,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0004,0.0004,0.0,245.0,-382.0529016029929
 The5ers,Flash ORB + NQ Precision Bot,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.1458,0.0,0.0,212.0,-136.58668167763543
-The5ers,Flash ORB + NQ Precision Bot,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9512,0.0,0.0,49.0,0.011886409761043671
+The5ers,Flash ORB + NQ Precision Bot,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9512,0.0,0.0,49.0,0.011886409761042648
 The5ers,Flash ORB + NQ Precision Bot,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0004,0.0728,0.0,249.5,-499.1758397105906
-The5ers,Flash ORB + NQ Precision Bot,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0088,0.0022,0.0,226.5,-340.32655739863185
+The5ers,Flash ORB + NQ Precision Bot,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0088,0.0022,0.0,226.5,-340.3265573986318
 The5ers,Flash ORB + NQ Precision Bot,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.3164,0.0,0.0,193.0,-107.2385854510595
-The5ers,Flash ORB + NQ Precision Bot,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.965,0.0,0.0,38.0,1.3952285089304657
-The5ers,Flash ORB + NQ Precision Bot,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.1826,0.2602,0.0,204.0,-381.8187740810914
+The5ers,Flash ORB + NQ Precision Bot,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.965,0.0,0.0,38.0,1.3952285089304648
+The5ers,Flash ORB + NQ Precision Bot,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.1826,0.2602,0.0,204.0,-381.81877408109136
 The5ers,Flash ORB + NQ Precision Bot,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.3876,0.036,0.0,186.0,-184.93613248487281
-The5ers,Flash ORB + NQ Precision Bot,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.7746,0.0022,0.0,121.0,-41.93796392979072
+The5ers,Flash ORB + NQ Precision Bot,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.7746,0.0022,0.0,121.0,-41.937963929790726
 The5ers,Flash ORB + NQ Precision Bot,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9854,0.0,0.0,16.0,7.089152385648785
 The5ers,Open Drive + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0002,0.043,0.0,232.0,-480.14672302991943
 The5ers,Open Drive + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0092,0.0004,0.0,233.0,-323.7895791564369
@@ -1634,14 +1634,14 @@ The5ers,NQ Precision Bot + Opening-Shock Continuation,25.0,static-floor recovery
 The5ers,Flash ORB + Open Drive,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.086,0.0,,-514.2497660060117
 The5ers,Flash ORB + Open Drive,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0068,0.0014,0.0,234.0,-354.1344990860125
 The5ers,Flash ORB + Open Drive,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.281,0.0,0.0,196.0,-117.43012102435786
-The5ers,Flash ORB + Open Drive,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9508,0.0,0.0,40.0,2.20077143352129
+The5ers,Flash ORB + Open Drive,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9508,0.0,0.0,40.0,2.2007714335212896
 The5ers,Flash ORB + Open Drive,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.1566,0.271,0.0,203.0,-399.2125264758905
 The5ers,Flash ORB + Open Drive,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.349,0.046,0.0,187.0,-205.45931302855763
 The5ers,Flash ORB + Open Drive,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.7358,0.0014,0.0,124.0,-48.04917825791095
 The5ers,Flash ORB + Open Drive,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9774,0.0,0.0,18.0,10.69137265631177
 The5ers,Flash ORB + Open Drive,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.2964,0.3316,0.0,186.0,-374.9915253096074
 The5ers,Flash ORB + Open Drive,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.509,0.086,0.0,165.0,-176.10931648611697
-The5ers,Flash ORB + Open Drive,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8218,0.006,0.0,102.0,-33.19665288760549
+The5ers,Flash ORB + Open Drive,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8218,0.006,0.0,102.0,-33.19665288760548
 The5ers,Flash ORB + Open Drive,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9822,0.0004,0.0,13.0,14.177421515057963
 The5ers,Flash ORB + Open Drive,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.46,0.5134,0.0,94.0,-411.6653171347107
 The5ers,Flash ORB + Open Drive,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7036,0.2642,0.0,82.0,-200.77854195073132
@@ -1650,7 +1650,7 @@ The5ers,Flash ORB + Open Drive,25.0,static-floor recovery to funded initial bala
 The5ers,Open Drive + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0788,0.0,,-531.922281309255
 The5ers,Open Drive + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0018,0.001,0.0,222.0,-374.0897061154712
 The5ers,Open Drive + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.206,0.0,0.0,202.0,-131.90939252927475
-The5ers,Open Drive + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.945,0.0,0.0,42.0,1.4723090021490943
+The5ers,Open Drive + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.945,0.0,0.0,42.0,1.472309002149094
 The5ers,Open Drive + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.1028,0.2538,0.0,211.0,-419.86581667587785
 The5ers,Open Drive + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.2728,0.0428,0.0,195.0,-228.37892883438795
 The5ers,Open Drive + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.6992,0.001,0.0,133.0,-55.443479157372
@@ -1658,19 +1658,19 @@ The5ers,Open Drive + Vault Break,10.0,static-floor recovery to funded initial ba
 The5ers,Open Drive + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.2336,0.3302,0.0,195.0,-398.6239067721554
 The5ers,Open Drive + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.4492,0.0786,0.0,173.0,-190.61941360939335
 The5ers,Open Drive + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.7948,0.0054,0.0,108.0,-39.07458331924407
-The5ers,Open Drive + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.981,0.0,0.0,14.0,15.420150331759688
+The5ers,Open Drive + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.981,0.0,0.0,14.0,15.420150331759691
 The5ers,Open Drive + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.4262,0.5422,0.0,102.0,-436.8359653800547
-The5ers,Open Drive + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7046,0.248,0.0,91.0,-191.42785339972392
+The5ers,Open Drive + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7046,0.248,0.0,91.0,-191.42785339972386
 The5ers,Open Drive + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9042,0.0714,0.0,50.0,-33.029699335571614
 The5ers,Open Drive + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9854,0.0088,0.0,8.0,31.905985836186634
 The5ers,GotobiFix GBPJPY + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0176,0.0,,-558.9074073980485
 The5ers,GotobiFix GBPJPY + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-407.90953411823347
 The5ers,GotobiFix GBPJPY + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0484,0.0,0.0,218.5,-158.88817580040723
-The5ers,GotobiFix GBPJPY + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9326,0.0,0.0,61.0,0.1281613363774699
+The5ers,GotobiFix GBPJPY + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9326,0.0,0.0,61.0,0.1281613363774694
 The5ers,GotobiFix GBPJPY + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0146,0.1328,0.0,224.0,-443.34682655766494
 The5ers,GotobiFix GBPJPY + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0842,0.0072,0.0,213.0,-270.12695204921494
 The5ers,GotobiFix GBPJPY + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5622,0.0,0.0,165.0,-67.3392972146507
-The5ers,GotobiFix GBPJPY + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9722,0.0,0.0,27.0,5.469864438618274
+The5ers,GotobiFix GBPJPY + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9722,0.0,0.0,27.0,5.469864438618273
 The5ers,GotobiFix GBPJPY + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.073,0.1982,0.0,214.0,-403.5688270549932
 The5ers,GotobiFix GBPJPY + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.2368,0.0176,0.0,204.0,-214.597629044497
 The5ers,GotobiFix GBPJPY + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.6996,0.0,0.0,141.0,-46.8864532278872
@@ -1678,22 +1678,22 @@ The5ers,GotobiFix GBPJPY + Sigma ORB,12.5,static-floor recovery to funded initia
 The5ers,GotobiFix GBPJPY + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.4484,0.4162,0.0,147.0,-367.606925222049
 The5ers,GotobiFix GBPJPY + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7096,0.1326,0.0,129.0,-133.26593634779624
 The5ers,GotobiFix GBPJPY + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.912,0.0174,0.0,73.0,-10.960305890003879
-The5ers,GotobiFix GBPJPY + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9898,0.0016,0.0,9.0,17.166151495005774
+The5ers,GotobiFix GBPJPY + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9898,0.0016,0.0,9.0,17.16615149500577
 The5ers,Sigma ORB + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0118,0.0,,-545.954002521451
 The5ers,Sigma ORB + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0,0.0,,-394.93362925184414
 The5ers,Sigma ORB + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0708,0.0,0.0,220.5,-146.48393838487334
 The5ers,Sigma ORB + Tokyo Coil,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9508,0.0,0.0,58.0,2.510310152061932
 The5ers,Sigma ORB + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0212,0.112,0.0,227.0,-416.3589678417781
-The5ers,Sigma ORB + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.1178,0.0026,0.0,216.0,-245.6867566318829
+The5ers,Sigma ORB + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.1178,0.0026,0.0,216.0,-245.68675663188296
 The5ers,Sigma ORB + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.609,0.0,0.0,163.0,-54.03265476693595
 The5ers,Sigma ORB + Tokyo Coil,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9842,0.0,0.0,26.0,9.312688249206015
 The5ers,Sigma ORB + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.1014,0.18,0.0,217.0,-374.2167601146148
 The5ers,Sigma ORB + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.2852,0.0118,0.0,198.0,-188.96335282925497
-The5ers,Sigma ORB + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.7492,0.0,0.0,138.0,-33.96370382987015
+The5ers,Sigma ORB + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.7492,0.0,0.0,138.0,-33.963703829870155
 The5ers,Sigma ORB + Tokyo Coil,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.987,0.0,0.0,20.0,11.379166181305628
 The5ers,Sigma ORB + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.4844,0.3926,0.0,143.0,-341.3119101123359
-The5ers,Sigma ORB + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7538,0.112,0.0,126.0,-109.536551565881
-The5ers,Sigma ORB + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9282,0.0118,0.0,70.0,1.2841262141060596
+The5ers,Sigma ORB + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7538,0.112,0.0,126.0,-109.53655156588103
+The5ers,Sigma ORB + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9282,0.0118,0.0,70.0,1.284126214106059
 The5ers,Sigma ORB + Tokyo Coil,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9946,0.0008,0.0,9.0,23.656400752282906
 The5ers,Gold ORB (RBE) + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0634,0.0534,0.0,224.0,-334.79909899212765
 The5ers,Gold ORB (RBE) + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.2096,0.0006,0.0,207.0,-185.43900923070316
@@ -1759,10 +1759,10 @@ The5ers,Open Drive + Opening-Shock Continuation,25.0,static-floor recovery to fu
 The5ers,Open Drive + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.6438,0.2996,0.0,92.0,-237.11277097226846
 The5ers,Open Drive + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8644,0.0938,0.0,52.0,-55.93597862229921
 The5ers,Open Drive + Opening-Shock Continuation,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9726,0.0176,0.0,8.0,21.89624779486543
-The5ers,Overnight Bias ORB + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0292,0.0,,-523.4137052060197
-The5ers,Overnight Bias ORB + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0004,0.0,0.0,237.5,-370.3073850952678
+The5ers,Overnight Bias ORB + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0292,0.0,,-523.4137052060198
+The5ers,Overnight Bias ORB + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0004,0.0,0.0,237.5,-370.3073850952679
 The5ers,Overnight Bias ORB + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.1658,0.0,0.0,208.0,-125.41269073776644
-The5ers,Overnight Bias ORB + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.956,0.0,0.0,47.0,3.328274760424359
+The5ers,Overnight Bias ORB + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.956,0.0,0.0,47.0,3.328274760424358
 The5ers,Overnight Bias ORB + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0724,0.1636,0.0,218.0,-388.0419359617083
 The5ers,Overnight Bias ORB + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.2362,0.0114,0.0,203.0,-209.13928293183395
 The5ers,Overnight Bias ORB + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.7036,0.0,0.0,145.0,-43.312402892666626
@@ -1780,13 +1780,13 @@ The5ers,NQ Precision Bot + Sigma ORB,5.0,static-floor recovery to funded initial
 The5ers,NQ Precision Bot + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0152,0.0,0.0,220.0,-202.0619661662517
 The5ers,NQ Precision Bot + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.8638,0.0,0.0,73.0,-4.9781584815848925
 The5ers,NQ Precision Bot + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0044,0.186,0.0,211.5,-528.1135463473424
-The5ers,NQ Precision Bot + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0294,0.0134,0.0,219.0,-355.1840070816113
+The5ers,NQ Precision Bot + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0294,0.0134,0.0,219.0,-355.18400708161136
 The5ers,NQ Precision Bot + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.3438,0.0002,0.0,177.0,-124.08833621457205
-The5ers,NQ Precision Bot + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9388,0.0,0.0,34.0,1.7750003763710431
+The5ers,NQ Precision Bot + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9388,0.0,0.0,34.0,1.7750003763710425
 The5ers,NQ Precision Bot + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0248,0.2596,0.0,218.5,-502.6950938516805
 The5ers,NQ Precision Bot + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.1036,0.0372,0.0,204.5,-313.5273276701873
 The5ers,NQ Precision Bot + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5072,0.0012,0.0,154.0,-99.32320779833806
-The5ers,NQ Precision Bot + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.952,0.0,0.0,27.0,4.5872500065569115
+The5ers,NQ Precision Bot + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.952,0.0,0.0,27.0,4.587250006556911
 The5ers,NQ Precision Bot + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.2972,0.487,0.0,159.5,-461.7717166841843
 The5ers,NQ Precision Bot + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.543,0.1856,0.0,143.0,-223.28670663796282
 The5ers,NQ Precision Bot + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8222,0.0362,0.0,88.0,-48.49943573908179
@@ -1826,23 +1826,23 @@ The5ers,Noise Band Momentum + Sigma ORB,25.0,static-floor recovery to funded ini
 The5ers,Flash ORB + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0396,0.0,,-582.1466376907241
 The5ers,Flash ORB + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0004,0.0,,-429.9569212933635
 The5ers,Flash ORB + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.0466,0.0,0.0,223.0,-180.61107051083587
-The5ers,Flash ORB + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.8956,0.0,0.0,62.0,-2.1047396976341326
+The5ers,Flash ORB + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.8956,0.0,0.0,62.0,-2.104739697634134
 The5ers,Flash ORB + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0122,0.1944,0.0,223.0,-491.02148025798135
-The5ers,Flash ORB + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0792,0.0166,0.0,218.0,-314.1344689462618
+The5ers,Flash ORB + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0792,0.0166,0.0,218.0,-314.13446894626185
 The5ers,Flash ORB + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.469,0.0004,0.0,165.0,-98.84887149996509
-The5ers,Flash ORB + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.954,0.0,0.0,27.0,4.281188049440822
+The5ers,Flash ORB + Sigma ORB,10.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.954,0.0,0.0,27.0,4.2811880494408205
 The5ers,Flash ORB + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0682,0.264,0.0,218.0,-458.23883265457454
 The5ers,Flash ORB + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.1934,0.0396,0.0,199.0,-269.10992596908926
 The5ers,Flash ORB + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.6108,0.0014,0.0,143.0,-77.69074888141009
 The5ers,Flash ORB + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9628,0.0002,0.0,21.0,6.604408979883404
 The5ers,Flash ORB + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.3712,0.4826,0.0,146.0,-430.4419627670152
 The5ers,Flash ORB + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.6204,0.1934,0.0,128.0,-199.4813050813313
-The5ers,Flash ORB + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8598,0.0378,0.0,75.0,-33.96617424815034
+The5ers,Flash ORB + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8598,0.0378,0.0,75.0,-33.966174248150345
 The5ers,Flash ORB + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9806,0.0042,0.0,8.0,17.05569354802105
 The5ers,Sigma ORB + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0,0.0558,0.0,,-593.4954450581168
 The5ers,Sigma ORB + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0,0.0004,0.0,,-440.5204109137688
 The5ers,Sigma ORB + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.033,0.0,0.0,225.0,-190.81250912958114
-The5ers,Sigma ORB + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.8812,0.0,0.0,61.0,-4.446392367895861
+The5ers,Sigma ORB + Vault Break,5.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.8812,0.0,0.0,61.0,-4.446392367895862
 The5ers,Sigma ORB + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.0076,0.2458,0.0,228.0,-519.2594346938843
 The5ers,Sigma ORB + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.061,0.0244,0.0,219.0,-334.6560431986288
 The5ers,Sigma ORB + Vault Break,10.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.4478,0.0004,0.0,166.0,-111.46691333768433
@@ -1850,7 +1850,7 @@ The5ers,Sigma ORB + Vault Break,10.0,static-floor recovery to funded initial bal
 The5ers,Sigma ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.052,0.3174,0.0,221.5,-492.22396722478436
 The5ers,Sigma ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.1688,0.0558,0.0,201.0,-292.8138384898832
 The5ers,Sigma ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.5948,0.0016,0.0,142.0,-89.3627826120998
-The5ers,Sigma ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9608,0.0,0.0,21.0,6.364009106893331
+The5ers,Sigma ORB + Vault Break,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9608,0.0,0.0,21.0,6.364009106893332
 The5ers,Sigma ORB + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.336,0.5398,0.0,143.5,-471.0318261963611
 The5ers,Sigma ORB + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.5882,0.2444,0.0,127.0,-237.88039337786236
 The5ers,Sigma ORB + Vault Break,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.8456,0.0522,0.0,73.0,-52.03375374254181
@@ -1869,7 +1869,7 @@ The5ers,FVG Duo + Sigma ORB,12.5,static-floor recovery to funded initial balance
 The5ers,FVG Duo + Sigma ORB,12.5,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9812,0.0002,0.0,16.0,19.061170533731165
 The5ers,FVG Duo + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.4636,0.4876,0.0,106.0,-392.7445259917068
 The5ers,FVG Duo + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.7302,0.2104,0.0,93.0,-154.498431308829
-The5ers,FVG Duo + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9202,0.047,0.0,53.0,-1.2903677241140412
+The5ers,FVG Duo + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,500.0,0.0,0.9202,0.047,0.0,53.0,-1.2903677241140403
 The5ers,FVG Duo + Sigma ORB,25.0,static-floor recovery to funded initial balance,-800.0,750.0,0.0,0.9894,0.006,0.0,7.0,34.280619090755984
 The5ers,Open Drive + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,100.0,0.0,0.001,0.1098,0.0,237.0,-505.79803477674835
 The5ers,Open Drive + Sigma ORB,5.0,static-floor recovery to funded initial balance,-800.0,250.0,0.0,0.0132,0.0048,0.0,222.0,-342.1622483228448
