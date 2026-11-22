@@ -1,71 +1,71 @@
 {
-  "generated_utc": "2026-11-02T10:27:19.071653+00:00",
+  "generated_utc": "2026-11-22T18:27:42.176302+00:00",
   "monte_carlo_simulations_per_candidate": 5000,
   "horizon_trading_days": 252,
   "block_length_days": 5,
   "platforms": [
     {
       "platform": "NT8",
-      "strategies": 9,
-      "trades": 9192,
+      "strategies": 10,
+      "trades": 10599,
       "selected_books": {
         "live": [
           "Opening-Shock Continuation + Overnight Bias ORB + Sigma ORB + Vault Break",
-          "Gold ORB (RBE) + Opening-Shock Continuation + Overnight Bias ORB + Sigma ORB",
-          "NQ Precision Bot + Opening-Shock Continuation + Overnight Bias ORB + Sigma ORB"
+          "NQ Precision Bot + Opening-Shock Continuation + Sigma ORB + Vault Break",
+          "Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB + Vault Break"
         ],
         "challenge": [
-          "Flash ORB + Gold ORB (RBE) + Sigma ORB + Vault Break",
-          "Flash ORB + Gold ORB (RBE) + Overnight Bias ORB + Sigma ORB",
-          "Flash ORB + Overnight Bias ORB + Sigma ORB + Vault Break"
+          "FVG Duo + Flash ORB + Gold ORB (RBE) + Sigma ORB",
+          "FVG Duo + Gold ORB (RBE) + Sigma ORB + Vault Break",
+          "FVG Duo + Flash ORB + Gold ORB (RBE) + Vault Break"
         ],
         "funded": [
-          "Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB",
           "NQ Precision Bot + Opening-Shock Continuation + Sigma ORB + Vault Break",
-          "Flash ORB + Gold ORB (RBE) + Overnight Bias ORB + Sigma ORB"
+          "Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB",
+          "Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB + Vault Break"
         ],
         "recovery": [
           "Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB",
-          "Gold ORB (RBE) + NQ Precision Bot + Sigma ORB + Vault Break",
-          "Flash ORB + Gold ORB (RBE) + NQ Precision Bot + Sigma ORB"
+          "Opening-Shock Continuation + Overnight Bias ORB + Sigma ORB + Vault Break",
+          "Gold ORB (RBE) + NQ Precision Bot + Sigma ORB + Vault Break"
         ]
       },
-      "validation_start": "2024-02-07",
+      "validation_start": "2023-09-13",
       "validation_end": "2026-10-30"
     },
     {
       "platform": "MT5",
-      "strategies": 10,
-      "trades": 11918,
+      "strategies": 15,
+      "trades": 29462,
       "selected_books": {
         "live": [
-          "Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Overnight Bias ORB",
-          "Flash ORB + Gold ORB (RBE) + Tokyo Coil + Vault Break",
-          "Gold ORB (RBE) + Opening-Shock Continuation + Tokyo Coil + Vault Break"
+          "Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Tokyo Coil",
+          "Flash ORB + Gold ORB (RBE) + GotobiFix EURJPY + GotobiFix USDJPY",
+          "Gold X9 + GotobiFix GBPJPY + GotobiFix USDJPY + Overnight Bias ORB"
         ],
         "challenge": [
-          "Flash ORB + Gold ORB (RBE) + Open Drive + Tokyo Coil",
-          "Gold ORB (RBE) + Open Drive + Tokyo Coil + Vault Break",
-          "Gold ORB (RBE) + Open Drive + Overnight Bias ORB + Tokyo Coil"
+          "Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive",
+          "Flash ORB + Gold X9 + GotobiFix USDJPY + Tokyo Coil",
+          "Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Sigma ORB"
         ],
         "funded": [
-          "Flash ORB + Gold ORB (RBE) + Open Drive + Tokyo Coil",
-          "Gold ORB (RBE) + Noise Band Momentum + Overnight Bias ORB + Tokyo Coil",
-          "Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Tokyo Coil"
+          "Flash ORB + Gold ORB (RBE) + GotobiFix USDJPY + Tokyo Coil",
+          "Flash ORB + GotobiFix USDJPY + Opening-Shock Continuation + Overnight Bias ORB",
+          "Flash ORB + GotobiFix USDJPY + Overnight Bias ORB + Tokyo Coil"
         ],
         "recovery": [
-          "Gold ORB (RBE) + Opening-Shock Continuation + Tokyo Coil + Vault Break",
-          "Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Overnight Bias ORB",
-          "Flash ORB + Gold ORB (RBE) + Noise Band Momentum + Overnight Bias ORB"
+          "Gold ORB (RBE) + GotobiFix EURJPY + Tokyo Coil + Vault Break",
+          "Flash ORB + Gold ORB (RBE) + GotobiFix EURJPY + Tokyo Coil",
+          "Gold ORB (RBE) + GotobiFix USDJPY + Tokyo Coil + Vault Break"
         ]
       },
-      "validation_start": "2024-02-07",
-      "validation_end": "2026-10-30"
+      "validation_start": "2024-02-19",
+      "validation_end": "2026-11-19"
     }
   ],
   "global_limitations": [
     "No tick-level replay was run.",
-    "MT5 RBE is now included; Gold X9 remains missing.",
+    "All 10 NT8 and 15 MT5 exports are included; MT5 cash flows are normalized to per-lot PnL before risk-unit calibration.",
     "Risk units use mean realized loss, not necessarily the initial stop risk.",
     "Prop firm rule boundaries are approximated from exported timestamps."
   ]

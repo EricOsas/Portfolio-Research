@@ -158,6 +158,13 @@ def load_platform_trades(platform):
     out["entry_timestamp"] = pd.to_datetime(out["entry_timestamp"], errors="coerce")
     out["exit_timestamp"] = pd.to_datetime(out["exit_timestamp"], errors="coerce")
     out = out.dropna(subset=["exit_timestamp"]).copy()
+    if platform == "MT5":
+        # Strip position-size compounding. Several MT5 exports size from account
+        # balance (Gold X9 grows from ~0.09 to 50+ lots), so raw dollar PnL is not
+        # comparable across systems or years. Express each trade per 1.00 lot.
+        qty = out["quantity"].where(out["quantity"].abs() > 1e-12)
+        for col in ("native_pnl", "gross_pnl", "commission", "swap"):
+            out[col] = (out[col] / qty).fillna(0.0)
     out["duration_seconds"] = (out["exit_timestamp"] - out["entry_timestamp"]).dt.total_seconds()
     out["entry_date"] = out["entry_timestamp"].dt.normalize()
     out["exit_date"] = out["exit_timestamp"].dt.normalize()
@@ -179,7 +186,7 @@ def load_platform_trades(platform):
             out.loc[idx, "risk_unit_basis"] = "mean absolute losing trade PnL per contract"
         else:
             out.loc[idx, "live_pnl"] = out.loc[idx, "r_multiple"] * 100.0
-            out.loc[idx, "risk_unit_basis"] = "mean absolute losing trade PnL proxy; $100 = 1R"
+            out.loc[idx, "risk_unit_basis"] = "per-lot mean absolute losing trade PnL; $100 = 1R"
     return out.sort_values("exit_timestamp").reset_index(drop=True), quality
 
 def daily_series(trades, value_col, dates=None):
@@ -1039,7 +1046,7 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
                         f'Lowest-exposure active choice: {lowest_exposure["book"]} at USD {float(lowest_exposure["risk_usd_per_book_trade"]):,.2f} risk '
                         f'({float(lowest_exposure["recovery_probability"]):.1%} recovery; {float(lowest_exposure["ruin_probability"]):.1%} breach).')
                 if "FTMO" in title:
-                    non_rbe=active_target[~active_target["book"].astype(str).str.contains("Gold ORB \(RBE\)",regex=True)]
+                    non_rbe=active_target[~active_target["book"].astype(str).str.contains(r"Gold ORB \(RBE\)",regex=True)]
                     if len(non_rbe):
                         nr=non_rbe.sort_values(
                             ["recovery_probability","ruin_probability"],ascending=[False,True]).iloc[0]
@@ -1266,7 +1273,7 @@ def run_platform(platform):
         trades.loc[idx, "risk_unit_basis"] = (
             "training-sample mean absolute losing trade PnL per contract"
             if platform == "NT8" else
-            "training-sample mean absolute losing trade PnL proxy; $100 = 1R"
+            "training-sample per-lot mean absolute losing trade PnL; $100 = 1R"
         )
     dates, rmat, gross_rmat, livemat, activemat = make_matrices(trades)
     combo_df, selected, train_idx, val_idx = build_books(rmat,activemat)
@@ -1431,7 +1438,9 @@ def run_platform(platform):
     ftmo_rows=[]; tradeify_rows=[]; recovery_rows=[]
     ftmo_dir=PROP_ROOT/"FTMO-10K-2Step-CFD"
     tradeify_dir=PROP_ROOT/"Tradeify-50K-Growth-Futures"
-    for cname,combo in prop_candidates.items():
+    for _ci,(cname,combo) in enumerate(prop_candidates.items(),1):
+        if _ci % 100 == 0:
+            print(f"[{platform}] {_ci}/{len(prop_candidates)} candidates", flush=True)
         score_meta=train_score_map[tuple(combo)]
         daily_r=rmat.loc[validation_idx,list(combo)].sum(axis=1)/len(combo)
         active=activemat.loc[validation_idx,list(combo)].any(axis=1)
@@ -1636,7 +1645,7 @@ def run_platform(platform):
         "platform":platform,"trade_count":int(len(trades)),"strategies":all_names,
         "source_timezone":"Preserved as exported; no conversion performed.",
         "mt5_pairing_quality":pairing_quality,
-        "risk_unit":"Mean absolute realized losing-trade PnL calibrated on the first 60% training period, then held fixed for validation. NT8 is first converted to one-contract PnL; MT5 uses exported position-level PnL. This is a reproducible loss-normalization proxy, not guaranteed to equal the strategy's initial stop risk.",
+        "risk_unit":"Mean absolute realized losing-trade PnL calibrated on the first 60% training period, then held fixed for validation. NT8 is converted to one-contract PnL; MT5 cash flows are divided by traded volume to one-lot PnL before the loss unit is computed, which removes balance-based compounding in exports such as Gold X9. This is a reproducible loss-normalization proxy, not guaranteed to equal the strategy's initial stop risk.",
         "risk_unit_full_sample":"Also retained in the trade ledger for comparison; not used for validation sizing.",
         "mt5_standard_deals":"No position ID is present in the standard Deals tables. Entry/exit legs are paired by symbol and opposite side, exact volume match first, FIFO fallback; RBE has overlapping positions and residual pairing uncertainty.",
         "live_sizing":"NT8 = one contract equivalent per strategy. MT5 = $100 per trade at 1R based on the training-sample mean realized loss; that sizing is held fixed across the history.",
@@ -1727,7 +1736,7 @@ def write_readmes(summaries):
 This directory removes the exported starting balances and normalizes strategy exposure.
 
 - NT8: one contract equivalent per strategy. Trade PnL is divided by exported quantity.
-- MT5: fixed $100 risk per trade. 1R is proxied by each strategy's mean absolute realized losing-trade PnL. The export does not provide a complete per-trade initial-stop risk series, so this is explicitly a realized-loss proxy.
+- MT5: fixed $100 risk per trade. Every trade's cash flow is divided by its traded volume first, so 1R is a per-lot realized-loss proxy rather than a balance-scaled dollar amount. That keeps compounding tester runs (Gold X9 grows from ~0.09 to 50+ lots) comparable with fixed-size runs. The export does not provide a complete per-trade initial-stop risk series, so this is explicitly a realized-loss proxy.
 - Equity starts at $0. No account balance is added.
 - The strategy's native exits and stop behavior are preserved. No protective stops or strategy redesign are introduced.
 
@@ -1801,7 +1810,7 @@ Results are conditional on historical export distributions and the assumptions i
             recovery_note = "Recovery curves are balance-only. The $53,000 target does not enforce payout consistency, five $150 winning days or payout processing."
             chart_extra = "\n![Evaluation drawdown breach probability](charts/evaluation_breach_probability.png)\n![Intraday MAE / soft-DLL stress](charts/mae_soft_dll_stress.png)\n![Recovery to $53,000 balance (payout eligibility not enforced)](charts/recovery_payout_threshold_probability.png)\n"
         else:
-            sizing_note = "Risk ladder is USD 25–100 total book risk per trade, allocated equally across sleeves. Sizing is continuous; instrument-specific minimum lots are not enforced."
+            sizing_note = "Risk ladder is USD 25–100 total book risk per trade, allocated equally across sleeves. Sizing is continuous; instrument-specific minimum lots are not enforced. MT5 cash flows are divided by traded volume before the R unit is calibrated, so balance-compounding exports (Gold X9, Tokyo Coil) enter at per-lot risk."
             daily_limit_note = "FTMO equity-based daily and maximum loss limits can be breached by floating losses not visible in closed-trade exports. The model also omits the 1–4 business-day phase review and KYC/activation delays, so time-to-funded estimates may be optimistic."
             pairing_note = "MT5 RBE entry/exit legs use exact-volume matching where possible and FIFO fallback because the Deals export has no position IDs."
             recovery_note = "Recovery curves are balance-only; FTMO recovery measures return to initial equity before the static loss floor, not reward-withdrawal eligibility."
@@ -1846,7 +1855,7 @@ def main():
         "monte_carlo_simulations_per_candidate":N_SIMS,
         "horizon_trading_days":HORIZON,"block_length_days":BLOCK,
         "platforms":summaries,
-        "global_limitations":["No tick-level replay was run.","MT5 RBE is now included; Gold X9 remains missing.",
+        "global_limitations":["No tick-level replay was run.","All 10 NT8 and 15 MT5 exports are included; MT5 cash flows are normalized to per-lot PnL before risk-unit calibration.",
                              "Risk units use mean realized loss, not necessarily the initial stop risk.",
                              "Prop firm rule boundaries are approximated from exported timestamps."]
     })

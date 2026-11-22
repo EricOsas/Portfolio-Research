@@ -196,5 +196,27 @@
       "NQ DEC26"
     ],
     "timezone": "As exported by NinjaTrader; no timezone conversion applied."
+  },
+  {
+    "strategy": "FVG Duo",
+    "status": "parsed",
+    "source_file": "NinjaTrader FVGDuo Trades.csv",
+    "parser": "NT8 Strategy Analyzer CSV",
+    "source_rows": 1407,
+    "parsed_events": 1407,
+    "invalid_or_missing_exit_time_rows": 0,
+    "first_event": "2019-01-02T16:02:00",
+    "last_event": "2026-10-29T16:02:00",
+    "profit_semantics": "Profit is already net of Commission; commission is not deducted again.",
+    "cumulative_net_profit_check": {
+      "export_cumulative_last": 361400.48,
+      "sum_profit_column": 361400.48,
+      "difference": 0.0,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "NQ DEC26"
+    ],
+    "timezone": "As exported by NinjaTrader; no timezone conversion applied."
   }
 ]

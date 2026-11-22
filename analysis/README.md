@@ -4,18 +4,19 @@
 
 `build_equity_reports.py` reads NT8 and MT5 source exports, normalizes realized PnL events, writes platform-separated metrics and charts, and produces a transparent export-level screening shortlist.
 
-Source exports are stored under `Trades/NT8 Trades/` (9 CSV files) and `Trades/MT5 Trades/` (10 XLSX files). Gold X9 remains an intentionally pending MT5 export. The build preflights all required source files and refuses to publish partial or empty reports.
+Source exports are stored under `Trades/NT8 Trades/` (10 CSV files) and `Trades/MT5 Trades/` (15 XLSX files). `analysis/strategies.json` is the single registry: both engines read it, and the build preflights every registered file, then refuses to publish partial results or to ignore an export that is present but unregistered. To add a system, see [ADDING-A-STRATEGY.md](ADDING-A-STRATEGY.md).
 
 - NT8 Profit is used as exported; it is already net of Commission.
 - MT5 standard Strategy Tester reports use deal Profit + Commission + Swap.
-- NQ Precision Bot uses its custom completed-trade ledger.
+- NQ Precision Bot, Gold X9 and GotobiFix use custom completed-trade ledgers.
+- Gold X9 and Tokyo Coil size from account balance (compounding tester runs); the platform README flags them and the normalized layer divides cash flow by traded volume.
 
 ## 2. Normalized live and prop-firm analysis
 
 `build_live_and_prop_reports.py` creates:
 
 - `Normalized-Live/NT8`: one exported contract equivalent per strategy, no starting balance.
-- `Normalized-Live/MT5`: fixed USD 100 risk proxy per completed trade, no starting balance.
+- `Normalized-Live/MT5`: fixed USD 100 risk proxy per completed trade on per-lot PnL (cash flow divided by traded volume), no starting balance.
 - `Prop-Firms/FTMO-10K-2Step-CFD`: FTMO $10k 2-Step CFD account simulation.
 - `Prop-Firms/Tradeify-50K-Growth-Futures`: Tradeify $50k Growth futures account simulation.
 

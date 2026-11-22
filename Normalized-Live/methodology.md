@@ -59,6 +59,7 @@ These are generic screening scores. They do not replace the FTMO- or Tradeify-sp
 - NT8 Profit is already net of Commission.
 - MT5 standard reports use deal Profit + Commission + Swap.
 - MT5 RBE has no position IDs. Matching uses symbol, side and exact volume where possible, with FIFO fallback. Its cashflows reconcile, but duration and trade-level risk pairing retain uncertainty.
+- MT5 cash flows are divided by traded volume before the R unit is computed, so a balance-scaling tester run (Gold X9, Tokyo Coil) is comparable with fixed-size exports.
 
 ## Limits
 

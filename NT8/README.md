@@ -1,20 +1,20 @@
 # NT8 research pack
 
-**9 of 9 exports parsed**
+**10 of 10 registered exports parsed.**
 
 ## Snapshot
 
 | Portfolio | Net PnL | Max drawdown | Daily PF | Daily Sharpe |
 |---|---:|---:|---:|---:|
-| All 9 exports | $1,461,906.64 | $52,279.64 | 1.69 | 2.69 |
-| Core 4 shortlist | $851,931.96 | $32,485.88 | 1.64 | 2.46 |
+| All 10 exports | $2,105,121.32 | $63,391.92 | 1.71 | 2.61 |
+| Core 4 shortlist | $1,133,746.16 | $37,855.28 | 1.69 | 2.71 |
 
 ## Core shortlist
 
 - Overnight Bias ORB
 - Sigma ORB
-- Gold ORB (RBE)
 - Vault Break
+- Gold ORB (RBE)
 
 ## Reports
 
@@ -29,7 +29,9 @@
 - [Selection rationale](reports/recommendations.md)
 - [Build summary](reports/summary.json)
 
-NT8 source is NinjaTrader Strategy Analyzer CSV. The Profit field is net of exported Commission; do not subtract commission again. All 9 exports' summed Profit values match their final Cum. net profit. Curves use exported contract quantities and USD PnL. RBE uses MGC; the other eight exports use NQ. Timestamps are retained as exported.
+NT8 source is the NinjaTrader Strategy Analyzer CSV export. `Profit` is already net of `Commission`; commission is not subtracted twice. Curves use exported contract quantities and USD PnL. Timestamps are retained as exported.
+
+Instrument coverage: GC DEC26; NQ DEC26.
 
 ## Equity curves
 
@@ -56,3 +58,4 @@ NT8 source is NinjaTrader Strategy Analyzer CSV. The Profit field is net of expo
 - [Opening-Shock Continuation](charts/individual/opening-shock-continuation.png)
 - [Sigma ORB](charts/individual/sigma-orb.png)
 - [Flash ORB](charts/individual/flash-orb.png)
+- [FVG Duo](charts/individual/fvg-duo.png)

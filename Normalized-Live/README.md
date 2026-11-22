@@ -3,7 +3,7 @@
 This directory removes the exported starting balances and normalizes strategy exposure.
 
 - NT8: one contract equivalent per strategy. Trade PnL is divided by exported quantity.
-- MT5: fixed $100 risk per trade. 1R is proxied by each strategy's mean absolute realized losing-trade PnL. The export does not provide a complete per-trade initial-stop risk series, so this is explicitly a realized-loss proxy.
+- MT5: fixed $100 risk per trade. Every trade's cash flow is divided by its traded volume first, so 1R is a per-lot realized-loss proxy rather than a balance-scaled dollar amount. That keeps compounding tester runs (Gold X9 grows from ~0.09 to 50+ lots) comparable with fixed-size runs. The export does not provide a complete per-trade initial-stop risk series, so this is explicitly a realized-loss proxy.
 - Equity starts at $0. No account balance is added.
 - The strategy's native exits and stop behavior are preserved. No protective stops or strategy redesign are introduced.
 

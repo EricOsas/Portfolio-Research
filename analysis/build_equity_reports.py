@@ -25,30 +25,16 @@ import pandas as pd
 from openpyxl import load_workbook
 
 ROOT = Path(__file__).resolve().parents[1]
-NT8_FILES = {
-    "Gold ORB (RBE)": "NinjaTrader RBE Trades.csv",
-    "Vault Break": "NinjaTrader VaultBreak Trades.csv",
-    "VWAP Pullback": "NinjaTrader VWAPPullback Trades.csv",
-    "Overnight Bias ORB": "NinjaTrader OvernightBiasRB Trades.csv",
-    "Open Drive": "NinjaTrader OpenDrive Trades.csv",
-    "NQ Precision Bot": "NinjaTrader NQPrecisionBot Trades.csv",
-    "Opening-Shock Continuation": "NinjaTrader OpeningShockCont Trades.csv",
-    "Sigma ORB": "NinjaTrader SigmaORB Trades.csv",
-    "Flash ORB": "NinjaTrader FlashORB Trades.csv",
-}
-MT5_FILES = {
-    "Gold X9": None,
-    "Gold ORB (RBE)": "MT5 RBE Trades.xlsx",
-    "Tokyo Coil": "MT5 TokyoCoil Trades.xlsx",
-    "Vault Break": "MT5 VaultBreak Trades.xlsx",
-    "Overnight Bias ORB": "MT5 OvernightBiasRB Trades.xlsx",
-    "Open Drive": "MT5 OpenDrive Trades.xlsx",
-    "NQ Precision Bot": "MT5 NQPrecisionBot Trades.xlsx",
-    "Opening-Shock Continuation": "MT5 OpeningShockContinuation Trades.xlsx",
-    "Sigma ORB": "MT5 SigmaORB Trades.xlsx",
-    "Flash ORB": "MT5 FlashORB Trades.xlsx",
-    "Noise Band Momentum": "MT5 NoiseBandMomentum Trades.xlsx",
-}
+
+def load_sources(platform: str) -> dict[str, str | None]:
+    """Return strategy -> source filename from the shared registry."""
+    manifest = json.loads((ROOT / "analysis" / "strategies.json").read_text(encoding="utf-8"))
+    if platform not in manifest:
+        raise KeyError(f"Platform {platform!r} missing from analysis/strategies.json")
+    return manifest[platform]
+
+NT8_FILES = load_sources("NT8")
+MT5_FILES = load_sources("MT5")
 EXCLUDED_MT5_TYPES = {"balance", "credit", "charge", "correction", "bonus", "dividend", "tax", "interest"}
 
 def slug(text: str) -> str:
@@ -214,16 +200,20 @@ def parse_mt5(path: Path, strategy: str) -> tuple[pd.DataFrame, dict[str, Any]]:
         if found:
             break
 
-    # The NQ Precision Bot workbook uses a custom completed-trade ledger rather
-    # than the standard MT5 Deals table. Its adjusted PnL is the final cost-aware
-    # value; Broker Net is retained for reconciliation, not added to it.
+    # The NQ Precision Bot and GotobiFix workbooks use custom completed-trade ledgers
+    # rather than standard MT5 Deals tables. Net profit is used as final net PnL.
     if not found:
         custom_aliases = {
-            "entry_time": {"entry_time"}, "exit_time": {"exit_time"},
-            "direction": {"direction", "side"}, "volume": {"volume", "lots"},
-            "entry_price": {"entry_price"}, "exit_price": {"exit_price"},
-            "broker_net": {"broker_net"}, "adjusted_net": {"adj_net_p_l", "adj_net_pnl", "adjusted_net", "adjusted_net_p_l"},
+            "entry_time": {"entry_time", "open_server", "open_utc"},
+            "exit_time": {"exit_time", "close_server", "close_utc"},
+            "direction": {"direction", "side", "leg"},
+            "volume": {"volume", "lots"},
+            "entry_price": {"entry_price", "fill_open", "model_open"},
+            "exit_price": {"exit_price", "fill_close"},
+            "broker_net": {"broker_net", "gross_profit"},
+            "adjusted_net": {"adj_net_p_l", "adj_net_pnl", "adjusted_net", "adjusted_net_p_l", "net_profit"},
             "exit_reason": {"exit", "exit_reason"},
+            "symbol": {"symbol"},
         }
         custom = None
         for ws in wb.worksheets:
@@ -254,9 +244,10 @@ def parse_mt5(path: Path, strategy: str) -> tuple[pd.DataFrame, dict[str, Any]]:
                 adjusted_net = money(row[col["adjusted_net"]] if col["adjusted_net"] < len(row) else 0)
                 direction = str(row[col["direction"]] if col["direction"] < len(row) else "").strip()
                 exit_reason = str(row[col["exit_reason"]] if "exit_reason" in col and col["exit_reason"] < len(row) else "").strip()
+                sym = str(row[col["symbol"]] if "symbol" in col and col["symbol"] < len(row) else settings.get("report_symbol", "USTEC")).strip()
                 events.append(base_event(
                     timestamp=exit_, entry_timestamp=entry, strategy=strategy, platform="MT5",
-                    instrument=str(settings.get("report_symbol", "USTEC")),
+                    instrument=sym or str(settings.get("report_symbol", "USTEC")),
                     side=direction, quantity=number(row[col["volume"]] if col["volume"] < len(row) else 0),
                     net_pnl=adjusted_net, gross_pnl=broker_net,
                     commission=0.0, swap=0.0, cost_adjustment=adjusted_net - broker_net,
@@ -271,11 +262,11 @@ def parse_mt5(path: Path, strategy: str) -> tuple[pd.DataFrame, dict[str, Any]]:
             broker_sum = float(out["gross_pnl"].sum())
             reported = money(settings.get("reported_total_net_profit"))
             info = {
-                "parser": "MT5 custom NQ Precision Bot XLSX completed-trade ledger",
+                "parser": "MT5 custom completed-trade ledger",
                 "sheet": sheet_name, "header_row_1_based": int(header_row),
                 "parsed_trade_rows": int(len(out)), "ignored_rows_after_header": int(ignored),
                 "first_event": out["timestamp"].min().isoformat(), "last_event": out["timestamp"].max().isoformat(),
-                "profit_semantics": "Adj. Net P&L is used as final net PnL; Broker Net is retained for reconciliation.",
+                "profit_semantics": "Net profit is used as final net PnL; gross profit is retained for reconciliation.",
                 "settings": settings,
                 "broker_net_sum_usd": broker_sum, "adjusted_net_sum_usd": adjusted_sum,
                 "modeled_cost_adjustment_sum_usd": adjusted_sum - broker_sum,
@@ -284,7 +275,7 @@ def parse_mt5(path: Path, strategy: str) -> tuple[pd.DataFrame, dict[str, Any]]:
                     "difference": adjusted_sum - reported,
                     "matches_within_5c": abs(adjusted_sum - reported) <= 0.05,
                 } if reported else None,
-                "instruments": [str(settings.get("report_symbol", "USTEC"))],
+                "instruments": sorted(out["instrument"].dropna().astype(str).unique().tolist()),
                 "timezone": "Broker/server timestamps as exported; no timezone conversion applied.",
             }
             return out, info
@@ -488,6 +479,104 @@ def score_and_select(strategy_events: dict[str, pd.DataFrame], metrics_rows: lis
     )
     return selected, eligible.reset_index(), note
 
+def fmt_usd(value: Any) -> str:
+    try:
+        return f"${float(value):,.2f}"
+    except (TypeError, ValueError):
+        return "n/a"
+
+
+def fmt_ratio(value: Any) -> str:
+    try:
+        return f"{float(value):.2f}"
+    except (TypeError, ValueError):
+        return "n/a"
+
+
+def compounding_flags(strategy_events: dict[str, pd.DataFrame]) -> list[tuple[str, float, float]]:
+    """Flag exports whose position size scales with capital instead of staying fixed."""
+    flagged = []
+    for name, ev in strategy_events.items():
+        if ev.empty or "quantity" not in ev.columns:
+            continue
+        ev = ev[ev["quantity"].abs() > 1e-12]
+        if ev.empty:
+            continue
+        yearly = ev.groupby(ev["timestamp"].dt.year)["quantity"].apply(lambda s: float(s.abs().mean()))
+        yearly = yearly[yearly > 0]
+        if len(yearly) >= 2 and float(yearly.iloc[-1]) / float(yearly.iloc[0]) >= 3.0:
+            flagged.append((name, float(yearly.iloc[0]), float(yearly.iloc[-1])))
+    return flagged
+
+
+def write_platform_readme(platform: str, manifest_rows: list[dict[str, Any]], metric_rows: list[dict[str, Any]],
+                          selected: list[str], all_m: dict[str, Any], rec_m: dict[str, Any],
+                          output_dir: Path, compounding: list[tuple[str, float, float]] | None = None) -> None:
+    """Generate the platform README from the current build so it cannot go stale."""
+    parsed = [r for r in manifest_rows if r["status"] == "parsed"]
+    missing = [r for r in manifest_rows if r["status"] != "parsed"]
+    instruments = {r["strategy"]: r.get("instruments", "") for r in metric_rows}
+    distinct = sorted({v for v in instruments.values() if v})
+    lines = [f"# {platform} research pack", "",
+             f"**{len(parsed)} of {len(manifest_rows)} registered exports parsed.**", ""]
+    if missing:
+        lines += ["Unparsed or missing registrations:", ""]
+        lines += [f"- {r['strategy']}: {r['status']} {r.get('source_file', '')}".rstrip() for r in missing]
+        lines += [""]
+    lines += ["## Snapshot", "",
+              "| Portfolio | Net PnL | Max drawdown | Daily PF | Daily Sharpe |",
+              "|---|---:|---:|---:|---:|"]
+    if all_m:
+        lines.append(f"| All {len(parsed)} exports | {fmt_usd(all_m.get('total_net_pnl_usd'))} | "
+                     f"{fmt_usd(all_m.get('max_drawdown_usd'))} | {fmt_ratio(all_m.get('daily_profit_factor'))} | "
+                     f"{fmt_ratio(all_m.get('daily_sharpe_252'))} |")
+    if rec_m:
+        lines.append(f"| Core {len(selected)} shortlist | {fmt_usd(rec_m.get('total_net_pnl_usd'))} | "
+                     f"{fmt_usd(rec_m.get('max_drawdown_usd'))} | {fmt_ratio(rec_m.get('daily_profit_factor'))} | "
+                     f"{fmt_ratio(rec_m.get('daily_sharpe_252'))} |")
+    lines += ["", "## Core shortlist", ""]
+    lines += [f"- {name}" for name in selected] or ["- None. No strategy passed the evidence screen."]
+    lines += ["", "## Reports", "",
+              "- [Strategy metrics](reports/strategy_metrics.csv)",
+              "- [Portfolio metrics](reports/portfolio_metrics.csv)",
+              "- [Daily PnL](reports/daily_pnl.csv)",
+              "- [Daily PnL correlation matrix](reports/correlation_matrix.csv)",
+              "- [Annual PnL](reports/annual_pnl.csv)",
+              "- [Normalized event ledger](reports/normalized_event_ledger.csv)",
+              "- [Strategy manifest](reports/strategy_manifest.csv)",
+              "- [Data-quality checks](reports/data_quality.json)",
+              "- [Selection rationale](reports/recommendations.md)",
+              "- [Build summary](reports/summary.json)", ""]
+    if platform == "NT8":
+        lines.append("NT8 source is the NinjaTrader Strategy Analyzer CSV export. `Profit` is already net of "
+                     "`Commission`; commission is not subtracted twice. Curves use exported contract quantities "
+                     "and USD PnL. Timestamps are retained as exported.")
+    else:
+        lines.append("MT5 standard reports use deal `Profit + Commission + Swap`; custom completed-trade "
+                     "ledgers use their adjusted net PnL. Timestamps are retained as exported broker/server time.")
+    if distinct:
+        lines += ["", "Instrument coverage: " + "; ".join(distinct) + "."]
+    if compounding:
+        lines += ["", "### Position sizing over time", "",
+                  "These exports size from account balance rather than a fixed lot/contract. Their raw dollar "
+                  "curve is a compounding tester run at the reported initial deposit, not a fixed-size strategy "
+                  "comparison; the normalized live and prop-firm layers divide cash flow by traded volume to "
+                  "remove that effect.", "",
+                  "| Strategy | Mean size, first year | Mean size, last year |",
+                  "|---|---:|---:|"]
+        lines += [f"| {name} | {first:,.2f} | {last:,.2f} |" for name, first, last in compounding]
+    lines += ["", "## Equity curves", "", "### Individual-strategy dashboard", "",
+              f"![{platform} strategy dashboard](charts/individual/strategy_dashboard.png)", "",
+              "### All strategies combined", "",
+              f"![All {platform} strategies](charts/portfolios/all_strategies.png)", "",
+              "### Core shortlist", "",
+              f"![{platform} recommended strategies](charts/portfolios/recommended_strategies.png)", "",
+              "### Individual curves", ""]
+    for row in metric_rows:
+        lines.append(f"- [{row['strategy']}](charts/individual/{slug(row['strategy'])}.png)")
+    (output_dir / "README.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def write_platform(platform: str, manifest: dict[str, str | None], input_dir: Path, output_dir: Path) -> dict[str, Any]:
     (output_dir / "charts" / "individual").mkdir(parents=True, exist_ok=True)
     (output_dir / "charts" / "portfolios").mkdir(parents=True, exist_ok=True)
@@ -598,6 +687,8 @@ def write_platform(platform: str, manifest: dict[str, str | None], input_dir: Pa
         "recommended_portfolio_metrics": {k: v for k, v in rec_m.items() if k not in {"daily_pnl", "equity", "drawdown", "yearly_pnl"}},
     }
     (output_dir / "reports" / "summary.json").write_text(json.dumps(summary, indent=2, default=str), encoding="utf-8")
+    write_platform_readme(platform, manifest_rows, metric_rows, selected, all_m, rec_m, output_dir,
+                          compounding_flags(strategy_events))
     return summary
 
 def validate_source_exports(nt8_input: Path, mt5_input: Path) -> None:
@@ -613,6 +704,14 @@ def validate_source_exports(nt8_input: Path, mt5_input: Path) -> None:
             problems.append(
                 f"{platform}: expected {len(filenames)} exports in {folder}, "
                 f"found {len(filenames) - len(missing)}; missing: {', '.join(missing)}"
+            )
+        registered = set(filenames)
+        unregistered = sorted(p.name for p in folder.iterdir()
+                              if p.is_file() and p.name not in registered)
+        if unregistered:
+            problems.append(
+                f"{platform}: exports present in {folder} but absent from analysis/strategies.json: "
+                f"{', '.join(unregistered)}. Register each export so it is analysed."
             )
     if problems:
         raise FileNotFoundError(

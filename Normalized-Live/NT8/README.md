@@ -11,6 +11,7 @@
 
 ### Individual sleeves
 
+![FVG Duo](charts/individual/fvg-duo.png)
 ![Flash ORB](charts/individual/flash-orb.png)
 ![Gold ORB (RBE)](charts/individual/gold-orb-rbe.png)
 ![NQ Precision Bot](charts/individual/nq-precision-bot.png)

@@ -23,7 +23,10 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # The prop-firm engine runs 5,000-path Monte Carlo for every one-to-four-sleeve
+    # book (1,940 MT5 + 385 NT8 combinations), so the job needs far more than the
+    # default 20 minutes now that all 15 MT5 exports are registered.
+    timeout-minutes: 180
     steps:
       - name: Check out latest main
         uses: actions/checkout@v4
@@ -43,6 +46,7 @@ jobs:
       - name: Inspect MT5 export schemas
         run: python analysis/inspect_mt5_headers.py
       - name: Build normalized live and prop-firm research
+        timeout-minutes: 150
         run: python analysis/build_live_and_prop_reports.py
       - name: Commit generated reports
         run: |

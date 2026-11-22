@@ -1,8 +1,37 @@
 [
   {
     "strategy": "Gold X9",
-    "status": "pending_export",
-    "notes": "No source export."
+    "status": "parsed",
+    "source_file": "MT5 X9 Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 44036,
+    "parsed_deal_events": 26872,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T03:00:20",
+    "last_event": "2026-11-19T17:41:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "XAUUSD",
+      "report_period": "M1 (2020.01.01 - 2026.11.20)",
+      "report_currency": "USD",
+      "initial_deposit": 100000.0,
+      "reported_total_net_profit": 80014290.4,
+      "reported_profit_factor": 2.213425,
+      "reported_total_trades": 13436.0
+    },
+    "balance_reconciliation": {
+      "initial_deposit": 100000.0,
+      "final_balance": 80114290.4,
+      "balance_change": 80014290.4,
+      "sum_deal_cashflows": 80014290.4,
+      "difference": 0.0,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "XAUUSD"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
   },
   {
     "strategy": "Gold ORB (RBE)",
@@ -178,14 +207,14 @@
     "strategy": "NQ Precision Bot",
     "status": "parsed",
     "source_file": "MT5 NQPrecisionBot Trades.xlsx",
-    "parser": "MT5 custom NQ Precision Bot XLSX completed-trade ledger",
+    "parser": "MT5 custom completed-trade ledger",
     "sheet": "Trades",
     "header_row_1_based": 1,
     "parsed_trade_rows": 796,
     "ignored_rows_after_header": 0,
     "first_event": "2020-01-06T17:03:40",
     "last_event": "2026-10-30T17:08:20",
-    "profit_semantics": "Adj. Net P&L is used as final net PnL; Broker Net is retained for reconciliation.",
+    "profit_semantics": "Net profit is used as final net PnL; gross profit is retained for reconciliation.",
     "settings": {
       "report_symbol": "USTEC",
       "report_period": "M1",
@@ -343,6 +372,109 @@
     },
     "instruments": [
       "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
+  },
+  {
+    "strategy": "FVG Duo",
+    "status": "parsed",
+    "source_file": "MT5 FVGDuo Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Sheet1",
+    "header_row_1_based": 2605,
+    "parsed_deal_events": 2531,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-06T16:50:00",
+    "last_event": "2026-11-18T23:00:00",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {
+      "report_symbol": "USTEC",
+      "report_period": "M10 (2020.01.01 - 2026.11.20)",
+      "report_currency": "USD",
+      "initial_deposit": 100000.0,
+      "reported_total_net_profit": 154355.94,
+      "reported_profit_factor": 1.299113,
+      "reported_total_trades": 1274.0
+    },
+    "balance_reconciliation": {
+      "initial_deposit": 100000.0,
+      "final_balance": 254355.94,
+      "balance_change": 154355.94,
+      "sum_deal_cashflows": 154355.94,
+      "difference": 0.0,
+      "matches_within_5c": true
+    },
+    "instruments": [
+      "USTEC"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
+  },
+  {
+    "strategy": "GotobiFix EURJPY",
+    "status": "parsed",
+    "source_file": "MT5 GotobiFix EURJPY Trades.xlsx",
+    "parser": "MT5 custom completed-trade ledger",
+    "sheet": "Trades",
+    "header_row_1_based": 1,
+    "parsed_trade_rows": 946,
+    "ignored_rows_after_header": 0,
+    "first_event": "2020-01-10T02:55:00",
+    "last_event": "2026-10-30T04:30:00",
+    "profit_semantics": "Net profit is used as final net PnL; gross profit is retained for reconciliation.",
+    "settings": {},
+    "broker_net_sum_usd": 32551.87,
+    "adjusted_net_sum_usd": 34351.7,
+    "modeled_cost_adjustment_sum_usd": 1799.829999999998,
+    "reported_total_net_profit_usd": 0.0,
+    "adjusted_net_reconciliation": null,
+    "instruments": [
+      "EURJPY"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
+  },
+  {
+    "strategy": "GotobiFix GBPJPY",
+    "status": "parsed",
+    "source_file": "MT5 GotobiFix GBPJPY Trades.xlsx",
+    "parser": "MT5 custom completed-trade ledger",
+    "sheet": "Trades",
+    "header_row_1_based": 1,
+    "parsed_trade_rows": 953,
+    "ignored_rows_after_header": 0,
+    "first_event": "2020-01-10T02:55:00",
+    "last_event": "2026-10-30T04:30:00",
+    "profit_semantics": "Net profit is used as final net PnL; gross profit is retained for reconciliation.",
+    "settings": {},
+    "broker_net_sum_usd": 28433.050000000003,
+    "adjusted_net_sum_usd": 33367.090000000004,
+    "modeled_cost_adjustment_sum_usd": 4934.040000000001,
+    "reported_total_net_profit_usd": 0.0,
+    "adjusted_net_reconciliation": null,
+    "instruments": [
+      "GBPJPY"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
+  },
+  {
+    "strategy": "GotobiFix USDJPY",
+    "status": "parsed",
+    "source_file": "MT5 GotobiFix USDJPY Trades.xlsx",
+    "parser": "MT5 custom completed-trade ledger",
+    "sheet": "Trades",
+    "header_row_1_based": 1,
+    "parsed_trade_rows": 952,
+    "ignored_rows_after_header": 0,
+    "first_event": "2020-01-10T02:55:00",
+    "last_event": "2026-10-30T04:30:00",
+    "profit_semantics": "Net profit is used as final net PnL; gross profit is retained for reconciliation.",
+    "settings": {},
+    "broker_net_sum_usd": 27820.09,
+    "adjusted_net_sum_usd": 31498.109999999997,
+    "modeled_cost_adjustment_sum_usd": 3678.019999999997,
+    "reported_total_net_profit_usd": 0.0,
+    "adjusted_net_reconciliation": null,
+    "instruments": [
+      "USDJPY"
     ],
     "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
   }

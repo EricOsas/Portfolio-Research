@@ -1,5 +1,5 @@
 strategy,status,source_file,note
-Gold X9,pending_export,,No trade export in repository.
+Gold X9,parsed,MT5 X9 Trades.xlsx,Trade export parsed successfully.
 Gold ORB (RBE),parsed,MT5 RBE Trades.xlsx,Trade export parsed successfully.
 Tokyo Coil,parsed,MT5 TokyoCoil Trades.xlsx,Trade export parsed successfully.
 Vault Break,parsed,MT5 VaultBreak Trades.xlsx,Trade export parsed successfully.
@@ -10,3 +10,7 @@ Opening-Shock Continuation,parsed,MT5 OpeningShockContinuation Trades.xlsx,Trade
 Sigma ORB,parsed,MT5 SigmaORB Trades.xlsx,Trade export parsed successfully.
 Flash ORB,parsed,MT5 FlashORB Trades.xlsx,Trade export parsed successfully.
 Noise Band Momentum,parsed,MT5 NoiseBandMomentum Trades.xlsx,Trade export parsed successfully.
+FVG Duo,parsed,MT5 FVGDuo Trades.xlsx,Trade export parsed successfully.
+GotobiFix EURJPY,parsed,MT5 GotobiFix EURJPY Trades.xlsx,Trade export parsed successfully.
+GotobiFix GBPJPY,parsed,MT5 GotobiFix GBPJPY Trades.xlsx,Trade export parsed successfully.
+GotobiFix USDJPY,parsed,MT5 GotobiFix USDJPY Trades.xlsx,Trade export parsed successfully.

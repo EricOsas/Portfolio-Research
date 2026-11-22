@@ -11,8 +11,13 @@
 
 ### Individual sleeves
 
+![FVG Duo](charts/individual/fvg-duo.png)
 ![Flash ORB](charts/individual/flash-orb.png)
 ![Gold ORB (RBE)](charts/individual/gold-orb-rbe.png)
+![Gold X9](charts/individual/gold-x9.png)
+![GotobiFix EURJPY](charts/individual/gotobifix-eurjpy.png)
+![GotobiFix GBPJPY](charts/individual/gotobifix-gbpjpy.png)
+![GotobiFix USDJPY](charts/individual/gotobifix-usdjpy.png)
 ![NQ Precision Bot](charts/individual/nq-precision-bot.png)
 ![Noise Band Momentum](charts/individual/noise-band-momentum.png)
 ![Open Drive](charts/individual/open-drive.png)

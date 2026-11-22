@@ -1,0 +1,31 @@
+{
+  "NT8": {
+    "Gold ORB (RBE)": "NinjaTrader RBE Trades.csv",
+    "Vault Break": "NinjaTrader VaultBreak Trades.csv",
+    "VWAP Pullback": "NinjaTrader VWAPPullback Trades.csv",
+    "Overnight Bias ORB": "NinjaTrader OvernightBiasRB Trades.csv",
+    "Open Drive": "NinjaTrader OpenDrive Trades.csv",
+    "NQ Precision Bot": "NinjaTrader NQPrecisionBot Trades.csv",
+    "Opening-Shock Continuation": "NinjaTrader OpeningShockCont Trades.csv",
+    "Sigma ORB": "NinjaTrader SigmaORB Trades.csv",
+    "Flash ORB": "NinjaTrader FlashORB Trades.csv",
+    "FVG Duo": "NinjaTrader FVGDuo Trades.csv"
+  },
+  "MT5": {
+    "Gold X9": "MT5 X9 Trades.xlsx",
+    "Gold ORB (RBE)": "MT5 RBE Trades.xlsx",
+    "Tokyo Coil": "MT5 TokyoCoil Trades.xlsx",
+    "Vault Break": "MT5 VaultBreak Trades.xlsx",
+    "Overnight Bias ORB": "MT5 OvernightBiasRB Trades.xlsx",
+    "Open Drive": "MT5 OpenDrive Trades.xlsx",
+    "NQ Precision Bot": "MT5 NQPrecisionBot Trades.xlsx",
+    "Opening-Shock Continuation": "MT5 OpeningShockContinuation Trades.xlsx",
+    "Sigma ORB": "MT5 SigmaORB Trades.xlsx",
+    "Flash ORB": "MT5 FlashORB Trades.xlsx",
+    "Noise Band Momentum": "MT5 NoiseBandMomentum Trades.xlsx",
+    "FVG Duo": "MT5 FVGDuo Trades.xlsx",
+    "GotobiFix EURJPY": "MT5 GotobiFix EURJPY Trades.xlsx",
+    "GotobiFix GBPJPY": "MT5 GotobiFix GBPJPY Trades.xlsx",
+    "GotobiFix USDJPY": "MT5 GotobiFix USDJPY Trades.xlsx"
+  }
+}

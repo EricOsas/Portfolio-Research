@@ -1,0 +1,25 @@
+{
+  "purpose": "offline native closeout; only journal namespace and diagnostic prints differ; no trading logic amendment",
+  "sources": {
+    "FVG_Duo.mq5": {
+      "original_sha256": "188148763fa9c3c87ff11a27fd2cb77887517b3180c13d53fed6f3a48d5c5669",
+      "candidate_sha256": "10c43574ac9622c73e9ec90a9938b236f171a048f1c35fe0a9dbe2c36e387252"
+    },
+    "StrategyEngine.mqh": {
+      "original_sha256": "dc8b5055c815d08bff29c8d080ca4069d9f84ff1f5ce0aadd191c4d7ef271857",
+      "candidate_sha256": "d1cbdfbf67bce9ba978fa2ed5886ed15e4cf60305a53d3fc59bfbfae3f4e4158"
+    },
+    "ExecutionRuntime.mqh": {
+      "original_sha256": "a240ec54e2024a59055ab9fcb995bc53cdd9b78f7a5aca9702f6336519180bb9",
+      "candidate_sha256": "8691540bc5ca4c37ba4734efeac482e33c4cfe019b924afdb3c4b3fea29f9ce0"
+    },
+    "ChartVisuals.mqh": {
+      "original_sha256": "62a7a496b6b70eda04994d9cb94933f007671ae39fb36840c7b35c21602a0ae4",
+      "candidate_sha256": "5f4da3b389e9ffae76bc81b4714604b6c9a4ca6dcc676b74ed6f03b9fef50708"
+    },
+    "VisualRecovery.mqh": {
+      "original_sha256": "e714f51f35ee79dedf01d969e8b3e135756af073aee478026f9bbcabde7fd0ae",
+      "candidate_sha256": "752305221b6ec32847bfcc16024ddb0e6b45c35c37ac560bdbea35a477efd9ed"
+    }
+  }
+}

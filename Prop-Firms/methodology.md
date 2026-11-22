@@ -6,9 +6,9 @@
 - 252 trading-day horizon.
 - 5-trading-day block bootstrap aligned to complete Monday-Friday weeks, sampled with replacement from the later 40% chronological validation sample.
 - Book candidates are selected using the earlier 60% training sample. This is one chronological holdout, not a multi-fold rolling walk-forward test.
-- Each sleeve's realized-loss R unit is calibrated on that training sample, then held fixed for the validation sample and all prop position sizing.
+- Each sleeve's realized-loss R unit is calibrated on that training sample, then held fixed for the validation sample and all prop position sizing. MT5 cash flows are divided by traded volume first, so balance-compounding exports (Gold X9, Tokyo Coil) enter at per-lot risk rather than balance-scaled dollars.
 - FTMO book PnL uses the average constituent-sleeve R multiplied by total book risk; Tradeify uses sleeve-specific training R units and whole-micro weights.
-- Every one-to-four-sleeve combination is evaluated by firm-specific Monte Carlo across the full risk ladder: all 385 MT5 books for FTMO and all 255 NT8 books for Tradeify, each with 5,000 paths over 252 trading days. Identical strategy sets are deduplicated.
+- Every one-to-four-sleeve combination is evaluated by firm-specific Monte Carlo across the full risk ladder: all 1,940 MT5 books for FTMO and all 385 NT8 books for Tradeify, each with 5,000 paths over 252 trading days. Identical strategy sets are deduplicated.
 - Primary challenge and funded recommendations are selected using training-only challenge/funded scores, then evaluated on the later validation sample. The best validation-only row is reported as a diagnostic and is not used to choose the winner; this reduces holdout selection bias.
 - RBE-excluded FTMO candidates are included in the full combination universe and separately surfaced as a sensitivity because the MT5 Gold ORB (RBE) export lacks position IDs and requires fallback trade pairing.
 - Challenge pass, evaluation hard breach, funded hard breach conditional on funding, funded survival, payout eligibility, payout amounts and recovery scenarios are reported separately.

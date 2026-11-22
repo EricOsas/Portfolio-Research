@@ -8,3 +8,4 @@ NQ Precision Bot,parsed,NinjaTrader NQPrecisionBot Trades.csv,Trade export parse
 Opening-Shock Continuation,parsed,NinjaTrader OpeningShockCont Trades.csv,Trade export parsed successfully.
 Sigma ORB,parsed,NinjaTrader SigmaORB Trades.csv,Trade export parsed successfully.
 Flash ORB,parsed,NinjaTrader FlashORB Trades.csv,Trade export parsed successfully.
+FVG Duo,parsed,NinjaTrader FVGDuo Trades.csv,Trade export parsed successfully.

@@ -1,7 +1,8 @@
 {
   "platform": "NT8",
-  "trade_count": 9192,
+  "trade_count": 10599,
   "strategies": [
+    "FVG Duo",
     "Flash ORB",
     "Gold ORB (RBE)",
     "NQ Precision Bot",
@@ -14,7 +15,7 @@
   ],
   "source_timezone": "Preserved as exported; no conversion performed.",
   "mt5_pairing_quality": [],
-  "risk_unit": "Mean absolute realized losing-trade PnL calibrated on the first 60% training period, then held fixed for validation. NT8 is first converted to one-contract PnL; MT5 uses exported position-level PnL. This is a reproducible loss-normalization proxy, not guaranteed to equal the strategy's initial stop risk.",
+  "risk_unit": "Mean absolute realized losing-trade PnL calibrated on the first 60% training period, then held fixed for validation. NT8 is converted to one-contract PnL; MT5 cash flows are divided by traded volume to one-lot PnL before the loss unit is computed, which removes balance-based compounding in exports such as Gold X9. This is a reproducible loss-normalization proxy, not guaranteed to equal the strategy's initial stop risk.",
   "risk_unit_full_sample": "Also retained in the trade ledger for comparison; not used for validation sizing.",
   "mt5_standard_deals": "No position ID is present in the standard Deals tables. Entry/exit legs are paired by symbol and opposite side, exact volume match first, FIFO fallback; RBE has overlapping positions and residual pairing uncertainty.",
   "live_sizing": "NT8 = one contract equivalent per strategy. MT5 = $100 per trade at 1R based on the training-sample mean realized loss; that sizing is held fixed across the history.",
