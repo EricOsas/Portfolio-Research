@@ -1,5 +1,5 @@
 {
-  "file_count": 15,
+  "file_count": 19,
   "files": [
     {
       "file": "MT5 FVGDuo Trades.xlsx",
@@ -1148,11 +1148,11 @@
       ]
     },
     {
-      "file": "MT5 X9 Trades.xlsx",
+      "file": "MT5 X9 Extremely low Trades.xlsx",
       "worksheets": [
         {
-          "sheet": "Sheet1",
-          "header_row_1_based": 44036,
+          "sheet": "Trades",
+          "header_row_1_based": 1,
           "headers": [
             "Time",
             "Deal",
@@ -1166,9 +1166,7 @@
             "Swap",
             "Profit",
             "Balance",
-            "Comment",
-            "",
-            ""
+            "Comment"
           ],
           "normalized_headers": [
             "time",
@@ -1183,14 +1181,12 @@
             "swap",
             "profit",
             "balance",
-            "comment",
-            "",
-            ""
+            "comment"
           ],
           "sample_rows": [
             [
               "2020.01.01 00:00:00",
-              1,
+              "1",
               null,
               "balance",
               null,
@@ -1199,62 +1195,458 @@
               null,
               0,
               0,
-              100000.0,
-              100000.0,
-              null,
-              null,
+              100000,
+              100000,
               null
             ],
             [
               "2020.01.06 01:02:00",
-              34,
+              "2",
               "XAUUSD",
               "buy",
               "in",
-              "2.19",
+              4.38,
               1555.77,
-              4,
-              0.0,
-              0.0,
-              0.0,
-              100000.0,
-              "Gold X9 by You_FoundEric_XAUUSD",
+              "4",
+              0,
+              0,
+              0,
+              100000,
+              "Gold X9 by You_FoundEric2"
+            ],
+            [
+              "2020.01.06 01:02:00",
+              "3",
+              "XAUUSD",
+              "buy",
+              "in",
+              1.29,
+              1554.89,
+              "6",
+              0,
+              0,
+              0,
+              100000,
+              "Gold X9 by You_FoundEric1"
+            ],
+            [
+              "2020.01.06 01:02:20",
+              "4",
+              "XAUUSD",
+              "sell",
+              "out",
+              1.29,
+              1566.49,
+              "8",
+              0,
+              0,
+              1496.4,
+              101496.4,
+              "tp 1566.49"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "file": "MT5 X9 High Trades.xlsx",
+      "worksheets": [
+        {
+          "sheet": "Trades",
+          "header_row_1_based": 1,
+          "headers": [
+            "Time",
+            "Deal",
+            "Symbol",
+            "Type",
+            "Direction",
+            "Volume",
+            "Price",
+            "Order",
+            "Commission",
+            "Swap",
+            "Profit",
+            "Balance",
+            "Comment"
+          ],
+          "normalized_headers": [
+            "time",
+            "deal",
+            "symbol",
+            "type",
+            "direction",
+            "volume",
+            "price",
+            "order",
+            "commission",
+            "swap",
+            "profit",
+            "balance",
+            "comment"
+          ],
+          "sample_rows": [
+            [
+              "2020.01.01 00:00:00",
+              "1",
               null,
+              "balance",
+              null,
+              null,
+              null,
+              null,
+              0,
+              0,
+              100000,
+              100000,
               null
+            ],
+            [
+              "2020.01.06 01:02:00",
+              "18",
+              "XAUUSD",
+              "buy",
+              "in",
+              2.34,
+              1555.77,
+              "4",
+              0,
+              0,
+              0,
+              100000,
+              "Gold X9 by You_FoundEric2"
+            ],
+            [
+              "2020.01.02 15:19:40",
+              "2",
+              "XAUUSD",
+              "buy",
+              "in",
+              0.84,
+              1524.64,
+              "8",
+              0,
+              0,
+              0,
+              100000,
+              "Gold X9 by You_FoundEric5"
+            ],
+            [
+              "2020.01.02 15:19:40",
+              "3",
+              "XAUUSD",
+              "buy",
+              "in",
+              0.75,
+              1524.41,
+              "9",
+              0,
+              0,
+              0,
+              100000,
+              "Gold X9 by You_FoundEric8"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "file": "MT5 X9 Low Trades.xlsx",
+      "worksheets": [
+        {
+          "sheet": "Trades",
+          "header_row_1_based": 1,
+          "headers": [
+            "Time",
+            "Deal",
+            "Symbol",
+            "Type",
+            "Direction",
+            "Volume",
+            "Price",
+            "Order",
+            "Commission",
+            "Swap",
+            "Profit",
+            "Balance",
+            "Comment"
+          ],
+          "normalized_headers": [
+            "time",
+            "deal",
+            "symbol",
+            "type",
+            "direction",
+            "volume",
+            "price",
+            "order",
+            "commission",
+            "swap",
+            "profit",
+            "balance",
+            "comment"
+          ],
+          "sample_rows": [
+            [
+              "2020.01.01 00:00:00",
+              "1",
+              null,
+              "balance",
+              null,
+              null,
+              null,
+              null,
+              0,
+              0,
+              100000,
+              100000,
+              null
+            ],
+            [
+              "2020.01.06 01:02:00",
+              "6",
+              "XAUUSD",
+              "buy",
+              "in",
+              3.28,
+              1555.77,
+              "4",
+              0,
+              0,
+              0,
+              100000,
+              "Gold X9 by You_FoundEric2"
+            ],
+            [
+              "2020.01.02 15:19:40",
+              "2",
+              "XAUUSD",
+              "buy",
+              "in",
+              1.18,
+              1524.64,
+              "7",
+              0,
+              0,
+              0,
+              100000,
+              "Gold X9 by You_FoundEric5"
+            ],
+            [
+              "2020.01.02 15:33:40",
+              "3",
+              "XAUUSD",
+              "buy",
+              "in",
+              1.18,
+              1524.63,
+              "8",
+              0,
+              0,
+              0,
+              100000,
+              "Gold X9 by You_FoundEric5"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "file": "MT5 X9 Moderate Trades.xlsx",
+      "worksheets": [
+        {
+          "sheet": "Trades",
+          "header_row_1_based": 1,
+          "headers": [
+            "Time",
+            "Deal",
+            "Symbol",
+            "Type",
+            "Direction",
+            "Volume",
+            "Price",
+            "Order",
+            "Commission",
+            "Swap",
+            "Profit",
+            "Balance",
+            "Comment"
+          ],
+          "normalized_headers": [
+            "time",
+            "deal",
+            "symbol",
+            "type",
+            "direction",
+            "volume",
+            "price",
+            "order",
+            "commission",
+            "swap",
+            "profit",
+            "balance",
+            "comment"
+          ],
+          "sample_rows": [
+            [
+              "2020.01.01 00:00:00",
+              "1",
+              null,
+              "balance",
+              null,
+              null,
+              null,
+              null,
+              0,
+              0,
+              100000,
+              100000,
+              null
+            ],
+            [
+              "2020.01.06 01:02:00",
+              "14",
+              "XAUUSD",
+              "buy",
+              "in",
+              2.63,
+              1555.77,
+              "4",
+              0,
+              0,
+              0,
+              100000,
+              "Gold X9 by You_FoundEric2"
+            ],
+            [
+              "2020.01.02 15:19:40",
+              "2",
+              "XAUUSD",
+              "buy",
+              "in",
+              0.95,
+              1524.64,
+              "7",
+              0,
+              0,
+              0,
+              100000,
+              "Gold X9 by You_FoundEric5"
+            ],
+            [
+              "2020.01.02 15:19:40",
+              "3",
+              "XAUUSD",
+              "buy",
+              "in",
+              0.9,
+              1524.48,
+              "8",
+              0,
+              0,
+              0,
+              100000,
+              "Gold X9 by You_FoundEric7"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "file": "MT5 X9 Very high Trades.xlsx",
+      "worksheets": [
+        {
+          "sheet": "Trades",
+          "header_row_1_based": 1,
+          "headers": [
+            "Time",
+            "Deal",
+            "Symbol",
+            "Type",
+            "Direction",
+            "Volume",
+            "Price",
+            "Order",
+            "Commission",
+            "Swap",
+            "Profit",
+            "Balance",
+            "Comment"
+          ],
+          "normalized_headers": [
+            "time",
+            "deal",
+            "symbol",
+            "type",
+            "direction",
+            "volume",
+            "price",
+            "order",
+            "commission",
+            "swap",
+            "profit",
+            "balance",
+            "comment"
+          ],
+          "sample_rows": [
+            [
+              "2020.01.01 00:00:00",
+              "1",
+              null,
+              "balance",
+              null,
+              null,
+              null,
+              null,
+              0,
+              0,
+              100000,
+              100000,
+              null
+            ],
+            [
+              "2020.01.06 01:02:00",
+              "34",
+              "XAUUSD",
+              "buy",
+              "in",
+              2.19,
+              1555.77,
+              "4",
+              0,
+              0,
+              0,
+              100000,
+              "Gold X9 by You_FoundEric2"
             ],
             [
               "2020.01.02 15:13:20",
-              5,
+              "5",
               "XAUUSD",
               "buy",
               "in",
-              "0.09",
+              0.09,
               1524.1,
-              8,
-              0.0,
-              0.0,
-              0.0,
-              100000.0,
-              "Gold X9 by You_FoundEric_XAUUSD",
-              null,
-              null
+              "8",
+              0,
+              0,
+              0,
+              100000,
+              "Gold X9 by You_FoundEric9"
             ],
             [
               "2020.01.02 03:00:20",
-              2,
+              "2",
               "XAUUSD",
               "sell",
               "in",
-              "0.09",
+              0.09,
               1517.88,
-              10,
-              0.0,
-              0.0,
-              0.0,
-              100000.0,
-              "Gold X9 by You_FoundEric_XAUUSD",
-              null,
-              null
+              "10",
+              0,
+              0,
+              0,
+              100000,
+              "Gold X9 by You_FoundEric9"
             ]
           ]
         }

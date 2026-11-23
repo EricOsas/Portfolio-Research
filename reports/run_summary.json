@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-11-23T13:34:35Z",
+  "generated_utc": "2026-11-23T14:02:29Z",
   "repository": "EricOsas/Portfolio-Research",
   "method": "Export-based cumulative net PnL; original exported sizing; no added costs.",
   "platforms": {
@@ -70,9 +70,9 @@
       "pending_or_missing": [],
       "selected_strategies": [
         "Gold X9 (Very high)",
-        "Gold X9 (Low)",
         "GotobiFix EURJPY",
-        "Gold X9 (Extremely low)"
+        "GotobiFix USDJPY",
+        "Gold ORB (RBE)"
       ],
       "all_portfolio_metrics": {
         "event_count": 79430,
@@ -87,8 +87,8 @@
         "commission_cashflow_sum_usd": 0.0,
         "swap_cashflow_sum_usd": -3751811.1,
         "modeled_cost_adjustment_sum_usd": 10411.89,
-        "daily_profit_factor": 2.9008335371403895,
-        "daily_sharpe_252": 2.5013004704563837,
+        "daily_profit_factor": 2.9008335371403886,
+        "daily_sharpe_252": 2.501300470456383,
         "max_drawdown_usd": 16661015.760000028,
         "net_profit_to_max_drawdown": 17.554547546385585,
         "positive_active_month_share": 0.7590361445783133,
@@ -99,28 +99,28 @@
         "daily_pnl_std_usd": 1034096.5000792709
       },
       "recommended_portfolio_metrics": {
-        "event_count": 32610,
-        "closed_trade_or_exit_deal_count": 16778,
-        "active_days": 1672,
+        "event_count": 31032,
+        "closed_trade_or_exit_deal_count": 16465,
+        "active_days": 1707,
         "first_date": "2020-01-02",
         "last_date": "2026-10-30",
         "calendar_span_days": 2494,
-        "total_net_pnl_usd": 140670006.82,
-        "average_event_net_pnl_usd": 4313.707660840233,
-        "gross_profit_column_sum_usd": 142441339.13000003,
+        "total_net_pnl_usd": 85381229.66,
+        "average_event_net_pnl_usd": 2751.3930671564835,
+        "gross_profit_column_sum_usd": 86433865.99000001,
         "commission_cashflow_sum_usd": 0.0,
-        "swap_cashflow_sum_usd": -1773132.14,
-        "modeled_cost_adjustment_sum_usd": 1799.8300000000004,
-        "daily_profit_factor": 2.9574158509662487,
-        "daily_sharpe_252": 2.500059072795713,
-        "max_drawdown_usd": 6478016.179999992,
-        "net_profit_to_max_drawdown": 21.714982320405404,
-        "positive_active_month_share": 0.7560975609756098,
+        "swap_cashflow_sum_usd": -1058114.18,
+        "modeled_cost_adjustment_sum_usd": 5477.849999999999,
+        "daily_profit_factor": 2.6389262012070978,
+        "daily_sharpe_252": 2.476078966366851,
+        "max_drawdown_usd": 5194033.520000003,
+        "net_profit_to_max_drawdown": 16.43832858052097,
+        "positive_active_month_share": 0.7804878048780488,
         "positive_active_year_share": 1.0,
-        "positive_days_share": 0.7667464114832536,
-        "best_day_usd": 5718454.47,
-        "worst_day_usd": -4183486.2,
-        "daily_pnl_std_usd": 501237.792518137
+        "positive_days_share": 0.7252489748096075,
+        "best_day_usd": 2564963.81,
+        "worst_day_usd": -2307883.8499999996,
+        "daily_pnl_std_usd": 307178.26631692116
       }
     }
   }
