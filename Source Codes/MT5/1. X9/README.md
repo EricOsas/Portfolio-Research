@@ -165,6 +165,20 @@ Validated on live broker real tick stream (`Model = 0`) against the creator's Yo
 | :--- | :--- | :--- |
 | `InpMagic` | `647873` | Magic number identifying orders placed by Strategy 9. |
 | `TradeComment` | `"Gold X9 by MrCapFree"` | Broker order comment. |
+
+### TradeFrequency presets
+
+`TradeFrequency` selects how many of the nine internal strategies run:
+`0 Extremely_Low` (1-3), `1 Low` (1-5), `2 Moderate` (1-7), `3 High` (1-8),
+`4 Very_High` (1-9), `5 Manual_Strategy_Selection` (use the `RunStrat1..9` flags).
+The repository treats the five ladder positions as one mutually exclusive family:
+a book holds at most one preset, because they are the same trade stream at
+different frequencies. `Low` is the standard preset in the prop plans, chosen
+because R/day grows about 4x from Extremely low to Very high while the worst
+validation day goes from -9.6R to -30.1R. Set `Lotsizing_Method=0`
+(`Manual_Lotsize`), `FixedLots` to the per-trade size and `SepLotSize=false` so
+every enabled strategy uses that one size; the generated `.set` files in
+`Set-Files/` already carry `TradeFrequency`, `FixedLots` and the magics.
 | `Lotsizing_Method`| `1 (Tiered)` | `0` = Fixed Lots, `1` = Tiered Risk Meter, `2` = Risk Scaling %. |
 | `TieredLot` | `30.0` | Risk dial meter (clamped 1 to 100). |
 | `FixedLots` | `0.01` | Fixed lot size used when `Lotsizing_Method = 0`. |

@@ -84,7 +84,7 @@ Tradeify Growth evaluation has no consistency rule. The funded model applies the
 ## Validation and data quality
 
 - All 10 NT8 exports parsed. Each file's Profit sum reconciles to its final exported cumulative net profit.
-- All 15 MT5 exports parsed. Standard Strategy Tester reports reconcile deal Profit + Commission + Swap to final balance minus initial deposit; the custom ledgers (NQ Precision Bot, GotobiFix) reconcile adjusted net PnL to their reported totals.
+- All 19 MT5 exports parsed (the five Gold X9 presets included). Standard Strategy Tester reports reconcile deal Profit + Commission + Swap to final balance minus initial deposit; the custom ledgers (NQ Precision Bot, GotobiFix) reconcile adjusted net PnL to their reported totals.
 - MT5 NQ Precision Bot uses its custom completed-trade ledger; Adj. Net P&L reconciles to the report's Total Net Profit.
 - The MT5 RBE Deals table has no position ID and contains overlapping positions. Entry/exit legs are paired by symbol/side and exact volume where possible, with FIFO fallback. Cashflows reconcile, but RBE duration and trade-level risk estimates retain pairing uncertainty.
 - Export history spans 2020 through 30 October 2026 on NT8 and 19 November 2026 on MT5. The separate NQ M1 archive has now been decoded and audited, but the normalized/prop reports remain export-based; no independent strategy replay from M1 bars has yet been run. Raw market data and converted bars are not committed to this public repository.
@@ -127,6 +127,6 @@ GitHub Actions rebuilds the reports when source exports or analysis code change.
 
 ![MT5 individual strategy dashboard](MT5/charts/individual/strategy_dashboard.png)
 
-- [All 15 MT5 strategies combined](MT5/charts/portfolios/all_strategies.png)
+- [All 19 MT5 strategies combined](MT5/charts/portfolios/all_strategies.png)
 - [MT5 core 4 shortlist](MT5/charts/portfolios/recommended_strategies.png)
 - [All individual MT5 curves](MT5/charts/individual/)

@@ -128,7 +128,7 @@ bot commits the regenerated reports as `chore: refresh platform equity reports`.
   (`GOLD_X9` in `analyze_the5ers_sizing.py`) and let the set-file builder write the
   matching parameter (`TradeFrequency` for X9).
 - **New prop firm / account model:** firm rules live in code
-  (`simulate_ftmo`, `simulate_tradeify`, `write_rule_docs`), not in the registry.
+  (`simulate_the5ers`, `simulate_moneta`, `simulate_tradeify`, `write_rule_docs`), not in the registry.
   Add a simulator, a `Prop-Firms/<Firm>-<Account>/` output path, and a README block
   in `write_readmes()`; then rerun the prop build.
 - **New platform:** add a top-level `Trades/<Platform> Trades/` folder, a registry

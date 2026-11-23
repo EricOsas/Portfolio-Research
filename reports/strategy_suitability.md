@@ -1,7 +1,7 @@
 # Strategy and book suitability report
 
 **Updated:** 2026-11-22  
-**Scope:** 10 NT8 and 15 MT5 registered exports; all one-to-four-sleeve books re-screened.  
+**Scope:** 10 NT8 and 19 MT5 registered exports (Gold X9 is one EA at five mutually exclusive `TradeFrequency` presets); all one-to-four-sleeve books re-screened.  
 **Purpose:** classify sleeves and portfolios for standard live accounts, prop-firm challenges, funded accounts, and near-drawdown recovery. This is a historical research screen, not a live-deployment approval.
 
 ## Plain assignments
@@ -37,7 +37,7 @@ These are the actual strategy combinations selected by the research. A plus sign
 
 These are generic portfolio-screening categories. They are not fixed labels attached to a strategy. The firm-specific simulations produce separate recommendations:
 
-- **The5ers $20k Bootcamp:** training-selected challenge book Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive at USD 25 total risk reaches the funded account in 86.62% of paths and a first payout in 76.34% in the continuous-sizing model. That model ignores broker minimum lots; sized to a USD 50 target in whole lots the same book reaches funding in 77.6% of paths (22.3% evaluation breach), and the funded book breaches in about 12% of paths if Gold X9 stays in it. Switching the funded stage to Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB at a USD 100 target gives a 99.5% conditional first payout with a 0.4% funded breach and 77.3% first payout from challenge start.
+- **The5ers $20k Bootcamp:** challenge book Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive at a USD 50 target (**USD 46.83**) reaches the funded account in **90.0%** of paths with a **5.6%** evaluation breach. Switching to Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB at a USD 100 target when funded gives **91.0%** conditional first payout, a **0.2%** funded breach and **81.8%** first payout from challenge start (175 median trading days, USD 185 expected).
 - **Tradeify $50k Growth:** the overall training-score challenge leader is FVG Duo + Flash ORB + Gold ORB (RBE) + Sigma ORB; the funded leader is Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB. Their USD 100 requests require about USD 511.97 and USD 475.65 effective risk after minimum-micro sizing. A lower-risk, two-sleeve alternative is Flash ORB + Overnight Bias ORB at USD 237.63 effective risk; it is slower but has stronger validation survival.
 
 **Near-floor recovery:** The5ers is recoverable from a USD 250 cushion upward, but at the strict USD 100 cushion the best pair still carries 7.3% breach risk. Tradeify's best eligible active recovery book carries roughly a third to a half modeled breach risk. Neither firm has a recovery book that is both high-probability and low-breach at the strictest cushion.
@@ -197,14 +197,21 @@ The figures below are from the normalized live equity reports. Daily PF and Shar
 The MT5 figures are computed on **per-lot** PnL: each trade's cash flow is divided
 by its traded volume before the 1R unit is calibrated. This removes the
 balance-based compounding in the Gold X9 and Tokyo Coil exports, so the sleeves
-are comparable to each other and to the NT8 one-contract sleeve.
+are comparable to each other and to the NT8 one-contract sleeve. Gold X9 appears
+once per preset; the five are the same EA at different frequencies, and the net
+and drawdown columns are in risk units (R) so the presets can be compared without
+the compounding run's dollar scale.
 
 | Strategy | Trades | 1R loss proxy | Expectancy/trade | Win rate | Net PnL | Max DD | Daily PF | Daily Sharpe |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | FVG Duo | 1,257 | $87.62 | 0.161R | 51.9% | $20,297 | $1,825 | 1.317 | 1.247 |
 | Flash ORB | 1,280 | $65.37 | 0.111R | 55.9% | $14,165 | $1,718 | 1.247 | 1.207 |
 | Gold ORB (RBE) | 1,164 | $823.38 | 0.405R | 48.0% | $47,186 | $4,709 | 1.579 | 1.721 |
-| Gold X9 | 13,436 | $1,295.70 | 0.128R | 86.1% | $171,524 | $9,186 | 2.024 | 3.114 |
+| Gold X9 (Extremely low) | 558 | $1,015.47 | 0.614R | 76.5% | $342.58R | $16.79R | 3.631 | 1.916 |
+| Gold X9 (Low) | 1,871 | $989.96 | 0.396R | 79.7% | $741.48R | $18.94R | 2.904 | 2.860 |
+| Gold X9 (Moderate) | 4,147 | $1,165.35 | 0.250R | 82.3% | $1,035.83R | $64.44R | 2.387 | 2.904 |
+| Gold X9 (High) | 5,525 | $1,102.11 | 0.235R | 82.3% | $1,299.30R | $79.99R | 2.279 | 2.842 |
+| Gold X9 (Very high) | 13,403 | $1,309.00 | 0.128R | 86.3% | $1,720.56R | $90.94R | 2.056 | 3.145 |
 | GotobiFix EURJPY | 946 | $104.11 | 0.349R | 61.7% | $32,994 | $1,196 | 2.320 | 2.345 |
 | GotobiFix GBPJPY | 953 | $147.63 | 0.237R | 61.2% | $22,602 | $1,541 | 1.890 | 1.821 |
 | GotobiFix USDJPY | 952 | $102.61 | 0.322R | 63.4% | $30,698 | $2,024 | 2.185 | 2.253 |
@@ -296,118 +303,22 @@ Both firms use 5,000 Monte Carlo paths over 252 trading days, with five-day bloc
 
 ### The5ers — USD 20,000 Bootcamp
 
-Modeled account structure (The5ers Bootcamp, checked 2026-11-22): three sequential evaluation steps on $5,000, $10,000 and $15,000, each with a 6% target and a 5% static max loss; no daily loss limit and no time limit. The funded account is $20,000 with a 4% static max loss ($19,200 floor), a 3% daily pause, a 50% starting split, and payouts every 14 calendar days (modeled as 10 trading days). Bootcamp has no consistency rule. The 5% funded scale-up ladder is not modeled.
+Modeled account structure (The5ers Bootcamp, checked 2026-11-22): three sequential evaluation steps on $5,000, $10,000 and $15,000, each with a 6% target and a 5% static max loss; no daily loss limit and no time limit. The funded account is $20,000 with a 4% static max loss ($19,200 floor), a 3% daily pause, a 50% split, and payouts every 14 calendar days (modeled as 10 trading days) with a USD 300 gross minimum per payout. Bootcamp has no consistency rule. The 5% funded scale-up ladder is not modeled.
 
-**Training-selected challenge book:** Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive.  
-**Training-selected funded-stage book:** Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil (highest training-funded score among the ten best training challenge books).  
-**Risk:** USD 25 total per book trade, split equally across four sleeves. Continuous sizing; minimum CFD lots are not enforced.
+**Execution plan (whole lots, `Gold X9 (Low)`):**
 
-| Metric | Challenge book | Funded-stage book |
-|---|---:|---:|
-| Step 1 pass rate | 93.38% | 95.14% |
-| Step 2 pass, conditional on Step 1 | 99.10% | 99.54% |
-| Step 3 pass, conditional on Step 2 | 93.60% | 92.04% |
-| Reach the funded account | 86.62% | 87.16% |
-| First payout from challenge start | 76.34% | 76.34% |
-| Evaluation hard-breach probability | 7.46% | 5.24% |
-| Funded hard-breach probability, conditional on funding | 0.05% | 0.05% |
-| Median trading days to Step 1 pass | 22 | 25 |
-| Median trading days through all steps | 152 | 161 |
-| Median trading days to first payout | 180 | 190 |
-| Expected first payout across all paths | USD 159.47 | USD 151.86 |
-| Median payout on successful paths | USD 197.66 | USD 190.00 |
-| Expected total payout cash | USD 429.62 | USD 405.76 |
-| Mean payout count | 2.06 | 1.78 |
-| 90-trading-day funded survival | 99.95% | 100.0% |
+| Stage | Sleeves | Lots | Risk | % of stage |
+|---|---|---|---:|---:|
+| Steps 1-3 | Gold X9 (Low) / GotobiFix EURJPY / GotobiFix USDJPY / Open Drive | 0.01 / 0.12 / 0.12 / 0.32 | $46.83 | 0.94% of $5k |
+| Funded | Flash ORB / GotobiFix EURJPY / Tokyo Coil / Overnight Bias ORB | 0.38 / 0.24 / 0.14 / 0.40 | $97.68 | 0.49% of $20k |
 
-The funded-stage book is chosen for payout survival rather than speed: its conditional first-payout rate after funding is 85.7%, and its funded-breach rate is 0.0%. The 74.3% combined estimate multiplies the challenge book's 86.62% reach-funded rate by that 85.7%, and does not replay a mid-account switch.
+- Reach the funded account: **90.0%**. Evaluation hard breach: **5.6%**.
+- First payout from a challenge start: **81.8%**; conditional on funding **91.0%**; funded hard breach **0.2%**.
+- Median time to first payout: **175 trading days**; expected first payout **USD 185**.
+- Presets: [The5ers set files](../Set-Files/The5ers-20K-Bootcamp/README.md).
 
-**Minimum-lot reality (this supersedes the risk ladder for execution).** The ladder above allocates USD 25 equally, which is USD 6.25 per sleeve. On XAUUSD the smallest position is 0.01 lot, whose mean losing trade is about **USD 20**, so Gold X9 cannot be sized down to its share. The book is therefore gold-heavy at minimum size and the stage percentages are not chosen, they are forced:
+**Why there is no single headline "pass rate" any more.** The old USD 25-equal-split ladder (86.62% reach, 7.46% breach, 76.34% first payout) was built on the legacy single X9 export — the Very-high frequency run — and on continuous sizing that cannot be placed on XAUUSD. It is kept in the generated CSVs for comparison with earlier work, but it describes neither the current export set nor an executable book. The lot-floor plan above is the execution estimate; the training-score book rankings are a shortlist, not odds.
 
-| Stage | Balance | Real book risk at minimum lots | % of stage | Reach-funded odds |
-|---|---:|---:|---:|---:|
-| Step 1 | $5,000 | ~$31-50 per trade | 0.63-1.00% | 75-78% over all three steps |
-| Step 2 | $10,000 | same lots, ~$31-50 | 0.31-0.50% | — |
-| Step 3 | $15,000 | same lots, ~$31-50 | 0.21-0.33% | — |
-| Funded | $20,000 | switch book, ~$98 (0.49%) | 0.49% | 99.5% conditional payout, 0.4% breach |
-
-**Two-sleeve pairs, and why 0.01 lot is not the right test.** Sized at the broker floor, the cheap pairs risk USD 1.27-2.71 per trade (0.03-0.05% of the $5k step), which needs hundreds of R to reach a 6% target, so they show 0% at minimum size. That is a sizing artefact, not a property of the pair: sized to USD 50 they pass Step 1 ~97% of the time, and sized to USD 100 the Flash + Overnight pair reaches funding in 62.1% of paths with 56.7% first payout. The limit for cheap books is time, not risk. Gold-anchored pairs still dominate at small size: Gold X9 + Overnight Bias ORB is USD 13.57 at 0.01 lot (96% / 4% split), reaching funding in 74.8% of paths with 72.9% first payout, and Gold ORB (RBE) + Gold X9 is USD 21.19 (61% / 39%) with 75.1% and 73.5%. The full per-pair and per-book tables are in [stage sizing with real lot floors](../Prop-Firms/The5ers-20K-Bootcamp/reports/stage_sizing.md).
-
-At the minimum lot the evaluation hard-breach rate is about **22-23%**, not 7.5%, because one bad Gold X9 day at 0.01 lot can be 2-5% of a $5k step. Scaling the percentage with the balance makes it worse, not better: 0.125%/sleeve reaches funding in 74.6% of paths but breaches the funded account in 51.7%; 0.25%/sleeve gives 62.0% and 86.8%. The funded book must not carry Gold X9 and must not scale to USD 200 per trade. Full tables, lot-level evidence and the exact EA inputs are in [stage sizing with real lot floors](../Prop-Firms/The5ers-20K-Bootcamp/reports/stage_sizing.md).
-
-**Challenge book risk ladder** (USD 10 / 25 / 50 / 100):
-
-| Requested risk | Reach funded | Evaluation breach | Challenge-to-payout | Funded breach, conditional | 90-day survival | Median payout days | Expected first payout |
-|---:|---:|---:|---:|---:|---:|---:|---:|
-| USD 10 | 1.5% | 0.3% | 0.0% | 0.0% | — | 238 | USD 0.07 |
-| USD 25 | 86.6% | 7.5% | 76.3% | 0.0% | 100.0% | 180 | USD 159.47 |
-| USD 50 | 78.0% | 21.9% | 76.9% | 11.4% | 94.1% | 96 | USD 208.36 |
-| USD 100 | 57.9% | 42.1% | 53.7% | 66.6% | 63.5% | 48 | USD 226.76 |
-
-**Funded-stage book risk ladder:**
-
-| Requested risk | Reach funded | Evaluation breach | Challenge-to-payout | Funded breach, conditional | 90-day survival | Median payout days | Expected first payout |
-|---:|---:|---:|---:|---:|---:|---:|---:|
-| USD 25 | 87.2% | 5.2% | 74.7% | 0.0% | 100.0% | 190 | USD 151.86 |
-| USD 50 | 80.5% | 19.5% | 79.4% | 6.1% | 96.8% | 102 | USD 208.08 |
-| USD 100 | 61.3% | 38.7% | 57.7% | 56.2% | 71.0% | 52 | USD 227.56 |
-
-At USD 10 the three 6% step targets require too many R over the 252-day horizon, so almost no path funds; the ladder is informative from USD 25 upward. Above USD 25 the expected first payout keeps rising, but breach risk rises faster: the USD 50 rung carries 11.4% conditional funded breach and USD 100 carries 66.6%.
-
-**Holdout validation leader — diagnostic only:** FVG Duo + Gold ORB (RBE) + Gold X9 + GotobiFix EURJPY records 91.9% reach-funded, 88.2% challenge-to-payout and 6.7% evaluation breach at USD 25 risk. It is not the primary selection because it was identified as the validation leader after the training-only selection.
-
-**RBE-excluded sensitivity:** the training-selected challenge and funded books already exclude MT5 Gold ORB (RBE), so the RBE-pairing caveat does not affect either primary selection.
-
-The full risk ladders are in [The5ers book recommendations](../Prop-Firms/The5ers-20K-Bootcamp/reports/book_recommendations.md) and [the Monte Carlo CSV](../Prop-Firms/The5ers-20K-Bootcamp/reports/monte_carlo_challenge_payout.csv). The simulation is close-only: the funded 3% daily pause is a closed-PnL clip, floating-loss breaches are invisible in the MT5 exports, and the funded scale-up ladder and account fees are excluded. The 76% first-payout rate should therefore be treated as an upper bound.
-
-### Tradeify — USD 50,000 Growth futures
-
-Modeled Growth rules: USD 3,000 evaluation target, no evaluation consistency rule, USD 2,000 EOD trailing drawdown with a USD 50,100 funded locked floor after the USD 52,100 threshold, USD 1,250 initial soft daily-loss limit, and a funded DLL increase to USD 2,000 from the next session after the balance reaches USD 53,000. This assumes current non-legacy rules for accounts purchased on or after September 12, 2025; older accounts have different DLL and payout thresholds. Funded payout modeling applies 35% consistency, five winning days above USD 150, the USD 53,000 balance threshold, the 90% payout share, payout caps and two trading days for processing. **The 35% consistency test uses gross daily PnL before commissions; account balance, drawdown, DLL and the $150 winning-day test use net closed PnL.** Weekly activity and microscalping are eligibility screens; position-limit compliance is required for executable sizing.
-
-**Overall training-score challenge candidate:** FVG Duo + Flash ORB + Gold ORB (RBE) + Sigma ORB.
-
-- USD 100 requested risk; **USD 511.97 effective risk** after one micro per active sleeve.
-- Eligible evaluation pass: **66.80%**; evaluation hard-breach: **33.20%**.
-- Challenge-to-first-payout: **46.12%**.
-- Funded first-payout rate conditional on funding: **69.04%**.
-- Funded hard-breach, conditional on funding: **38.38%**.
-- Approximate 90-trading-day funded survival: **64.55%**.
-- Median evaluation pass: **20 trading days**; median first payout: **57 trading days**.
-- Expected first net payout across all paths: **USD 622.62**; expected total net payout cash: **USD 3,721.13** (1.80 payouts on average).
-
-**Overall training-score funded candidate:** Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB.
-
-- USD 100 requested risk; **USD 475.65 effective risk** after one micro per active sleeve.
-- Eligible evaluation pass: **75.04%**; evaluation hard-breach: **24.96%**.
-- Challenge-to-first-payout: **58.10%**.
-- Conditional first-payout rate after funding: **77.43%**.
-- Funded hard-breach, conditional on funding: **34.78%**.
-- Approximate 90-trading-day funded survival: **72.16%**.
-- Median evaluation pass: **30 trading days**; median first payout: **73 trading days**.
-- Expected first net payout across all paths: **USD 784.35**; expected total net payout cash: **USD 4,585.71** (2.23 payouts on average).
-
-**Lower-risk two-sleeve alternative:** Flash ORB + Overnight Bias ORB. This is the top training-funded-score candidate within the eligible two-sleeve subset, not the overall training-score winner.
-
-| Requested risk/book trade | Effective risk | Evaluation pass | Evaluation breach | Challenge-to-first-payout | Funded breach, conditional | 90-day funded survival | Expected first net payout | Median days to first payout |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| USD 100 | USD 237.63 | 86.58% | 12.76% | 64.68% | 18.50% | 91.16% | USD 873.18 | 164 |
-
-The USD 100 request produces USD 237.63 effective risk because both sleeves are already at the minimum one micro. It is slower than the four-sleeve score leaders (79 trading days median to evaluation pass and 164 days to first payout) but shows lower funded breach and higher 90-day survival. It was included based on its training-funded score within the two-sleeve subset; do not treat its stronger holdout result as proof that it is superior. Expected total net payout cash across all paths during the 252-day horizon is **USD 2,168.67**, with a mean of **1.29 payouts**. Weekly activity, position-limit and microscalping screens all pass for this pair.
-
-**Challenge and funded risk ladders:**
-
-| Book | Requested risk | Effective risk | Pass both | Evaluation breach | Challenge-to-payout | Funded breach, conditional | 90-day survival | Median payout days | Expected first payout |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Challenge | USD 100–500 | USD 511.97 | 66.8% | 33.2% | 46.1% | 38.4% | 64.6% | 57 | USD 622.62 |
-| Challenge | USD 750 | USD 593.28 | 62.5% | 37.5% | 39.3% | 44.1% | 57.9% | 45 | USD 531.09 |
-| Funded | USD 100–500 | USD 475.65 | 75.0% | 25.0% | 58.1% | 34.8% | 72.2% | 73 | USD 784.35 |
-| Funded | USD 750 | USD 556.96 | 65.7% | 34.3% | 42.0% | 43.9% | 58.7% | 53 | USD 567.00 |
-
-**Holdout validation leader — diagnostic only:** Flash ORB + NQ Precision Bot + Overnight Bias ORB + VWAP Pullback shows 87.3% evaluation pass, 12.5% evaluation breach and 71.7% challenge-to-payout. It is not a recommendation: NQ Precision Bot fails the funded microscalping eligibility screen, so this book could not be paid out as modeled.
-
-The full risk ladders for the challenge and funded score leaders, plus the two-sleeve alternative, are in [Tradeify book recommendations](../Prop-Firms/Tradeify-50K-Growth-Futures/reports/book_recommendations.md) and [the Monte Carlo CSV](../Prop-Firms/Tradeify-50K-Growth-Futures/reports/monte_carlo_evaluation_funded_payout.csv).
-
-The USD 2,000 DLL step-up is modeled as persistent once unlocked. Daily loss clipping is an approximation: intraday trigger timing, trade order, floating equity, slippage and overshoot are not reconstructable from closed-trade exports. Same-entry-day MAEs are stacked conservatively in the separate MAE report; this is not a synchronized intraday replay.
 
 ## Near-floor recovery
 

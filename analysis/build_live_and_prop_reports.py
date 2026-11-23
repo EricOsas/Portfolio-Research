@@ -2125,7 +2125,7 @@ Results are conditional on historical export distributions and the assumptions i
         else:
             sizing_note = ("Risk ladder is USD 10–100 total book risk per trade, allocated equally across sleeves. "
                 "That ladder is a continuous-sizing idealization: it does not enforce broker minimum lots. "
-                "At 0.01 lot Gold X9 already risks about USD 20 per trade (0.4% of the $5k Step 1), so the real "
+                "At 0.01 lot Gold X9 (Low) already risks about USD 9.90 per trade (0.20% of the $5k Step 1), so the real "
                 "stage risk is set by that floor, not by the ladder. [Stage sizing with real lot floors]"
                 "(reports/stage_sizing.md) models the book with minimum-lot floors, the mid-account switch to the "
                 "funded book, and per-sleeve percent sizing; [underlying CSV](reports/stage_sizing.csv). "
@@ -2175,7 +2175,7 @@ def main():
         "monte_carlo_simulations_per_candidate":N_SIMS,
         "horizon_trading_days":HORIZON,"block_length_days":BLOCK,
         "platforms":summaries,
-        "global_limitations":["No tick-level replay was run.","All 10 NT8 and 15 MT5 exports are included; MT5 cash flows are normalized to per-lot PnL before risk-unit calibration.",
+        "global_limitations":["No tick-level replay was run.","All 10 NT8 and 19 MT5 exports are included (Gold X9 is registered at five mutually exclusive TradeFrequency presets); MT5 cash flows are normalized to per-lot PnL before risk-unit calibration.",
                              "Risk units use mean realized loss, not necessarily the initial stop risk.",
                              "Prop firm rule boundaries are approximated from exported timestamps."]
     })
