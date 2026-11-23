@@ -1469,6 +1469,19 @@ def run_platform(platform):
         )
     dates, rmat, gross_rmat, livemat, activemat = make_matrices(trades)
     combo_df, selected, train_idx, val_idx = build_books(rmat,activemat)
+    if platform == "MT5":
+        # The five Gold X9 exports are one EA at five TradeFrequency settings.
+        # Screening them all would let the raw-score ranking shortlist a preset
+        # (Very high) that the lot-floor execution study rejects on breach risk.
+        # Keep only the standard preset in the prop ladder; the other presets
+        # stay registered and appear in the per-sleeve and live reports.
+        standard = "Gold X9 (Low)"
+        def _keeps_standard(strategies):
+            parts = [x.strip() for x in str(strategies).split(" | ")]
+            return all((not x.startswith("Gold X9 (")) or x == standard for x in parts)
+        combo_df = combo_df[combo_df["strategies"].map(_keeps_standard)].reset_index(drop=True)
+        selected = {k: [c for c in v if _keeps_standard(" | ".join(c))]
+                    for k, v in selected.items()}
     out = LIVE_ROOT / platform
     (out/"charts"/"individual").mkdir(parents=True,exist_ok=True)
     (out/"charts"/"portfolios").mkdir(parents=True,exist_ok=True)
