@@ -104,7 +104,18 @@ void OBRInitVisual()
    ChartSetInteger(gtVisualChart,CHART_AUTOSCROLL,true);ChartSetInteger(gtVisualChart,CHART_SHIFT,true);
    if(Model==OvernightBiasRangeBreakout)
    {
+      // One pane per chart, ever. The visual init runs again while history is still arriving; without this
+      // latch every retry added another ADX subwindow, which is what looked like the EA "spasming" on a
+      // fresh terminal.
+      // One pane per chart per init, but a pane the terminal dropped (timeframe change, template reload)
+      // must come back: the latch is released when the pane is no longer on the chart.
       gtPaneName=OBROutputFamily+" ADX "+IntegerToString((long)Magic);
+      bool present=false;
+      for(int window=(int)ChartGetInteger(gtVisualChart,CHART_WINDOWS_TOTAL)-1;window>=1;window--)
+         for(int index=ChartIndicatorsTotal(gtVisualChart,window)-1;index>=0;index--)
+            if(ChartIndicatorName(gtVisualChart,window,index)==gtPaneName) present=true;
+      if(present) return;
+      gtPane=INVALID_HANDLE;   // recreate below
       for(int window=(int)ChartGetInteger(gtVisualChart,CHART_WINDOWS_TOTAL)-1;window>=1;window--)
          for(int index=ChartIndicatorsTotal(gtVisualChart,window)-1;index>=0;index--)
             if(ChartIndicatorName(gtVisualChart,window,index)==gtPaneName) ChartIndicatorDelete(gtVisualChart,window,gtPaneName);

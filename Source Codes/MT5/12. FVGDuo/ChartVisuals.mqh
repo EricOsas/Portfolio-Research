@@ -1,4 +1,4 @@
-//+------------------------------------------------------------------+
+﻿//+------------------------------------------------------------------+
 //|                                             ChartVisuals.mqh     |
 //| Chart dashboard, FVG zone and trade markers for FVG Duo           |
 //| Developed by Osamwonyi Eric (@You_FoundEric)                     |

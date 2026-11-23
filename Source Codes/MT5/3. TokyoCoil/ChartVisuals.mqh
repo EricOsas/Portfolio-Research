@@ -137,7 +137,7 @@ void TcPanelRefresh()
    {for(int i=0;i<ArraySize(rows);i++)TcVisualDelete(tcPanelPrefix+rows[i]);}
    else
    {
-      datetime ny=TcServerToNY(now);double high=0,low=0;int count=0;
+      datetime ny=NewYorkFromServer(now);double high=0,low=0;int count=0;
       MqlDateTime local;TimeToStruct(ny,local);
       datetime day=ny-local.hour*3600-local.min*60-local.sec;
       bool started=local.day_of_week<=4 && ny>=day+20*3600;
@@ -146,8 +146,8 @@ void TcPanelRefresh()
       if(started)
       {
          MqlRates bars[];
-         count=CopyRates(_Symbol,PERIOD_M5,TcNYToServer(day+20*3600),
-                         MathMin(now,TcNYToServer(day+22*3600+55*60)),bars);
+         count=CopyRates(_Symbol,PERIOD_M5,ServerFromNewYork(day+20*3600),
+                         MathMin(now,ServerFromNewYork(day+22*3600+55*60)),bars);
          if(count>0)
          {
             high=bars[0].high;low=bars[0].low;
@@ -161,7 +161,7 @@ void TcPanelRefresh()
       for(int i=0;i<OrdersTotal();i++)
          if(OrderGetTicket(i)>0 && OrderGetString(ORDER_SYMBOL)==_Symbol && OrderGetInteger(ORDER_MAGIC)==MagicC1)pending=true;
       int buys=0,sells=0;ulong positions[];
-      bool historyReady=HistorySelect(TcNYToServer(day),now);
+      bool historyReady=HistorySelect(ServerFromNewYork(day),now);
       if(historyReady)
          for(int i=0;i<HistoryDealsTotal();i++)
          {
@@ -254,7 +254,7 @@ void TcRangeDraw(datetime session)
    // A forming range uses only bars available now. No future high/low is read.
    datetime lastNY=MathMin(now,endNY-1);
    MqlRates bars[];
-   int count=CopyRates(_Symbol,PERIOD_M5,TcNYToServer(startNY),TcNYToServer(lastNY),bars);
+   int count=CopyRates(_Symbol,PERIOD_M5,ServerFromNewYork(startNY),ServerFromNewYork(lastNY),bars);
    if(count<=0) return;
    double high=-DBL_MAX,low=DBL_MAX;datetime highTime=bars[0].time,lowTime=bars[0].time;
    for(int i=0;i<count;i++)
@@ -262,8 +262,8 @@ void TcRangeDraw(datetime session)
       if(bars[i].high>high) {high=bars[i].high;highTime=bars[i].time;}
       if(bars[i].low<low) {low=bars[i].low;lowTime=bars[i].time;}
    }
-   datetime left=TcRangeAnchor(TcNYToServer(startNY));
-   datetime right=TcRangeAnchor(TcNYToServer(endNY-1));
+   datetime left=TcRangeAnchor(ServerFromNewYork(startNY));
+   datetime right=TcRangeAnchor(ServerFromNewYork(endNY-1));
    if(right<=left) right=left+MathMax(1,PeriodSeconds());
    string key=TimeToString(session,TIME_DATE),name=tcRangePrefix+key+".box";
    if(ObjectFind(0,name)<0)
@@ -278,7 +278,7 @@ void TcRangeDraw(datetime session)
    string tip=StringFormat("Tokyo box %s NY 20:00-23:00 | high %.*f low %.*f | %s",
                            key,_Digits,high,_Digits,low,now<endNY?"developing":"complete");
    TcVisualString(name,OBJPROP_TOOLTIP,tip);
-   datetime until=MathMin(TcRangeAnchor(TcNYToServer(session+86400+12*3600+59)),
+   datetime until=MathMin(TcRangeAnchor(ServerFromNewYork(session+86400+12*3600+59)),
                           TcRangeAnchor(TimeCurrent())+2*MathMax(1,PeriodSeconds()));
    if(until<=left) until=left+MathMax(1,PeriodSeconds());
    int period=MathMax(1,PeriodSeconds());
@@ -377,7 +377,7 @@ bool tcSyntheticPending=false;
 bool TcExecutionVisual() { return ShowExecutionObjects && (!MQLInfoInteger(MQL_TESTER) || MQLInfoInteger(MQL_VISUAL_MODE)); }
 void TcExecutionHistory(datetime session)
 {
-   if(!HistorySelect(TcNYToServer(session-2*86400+17*3600),TimeCurrent())) return;
+   if(!HistorySelect(ServerFromNewYork(session-2*86400+17*3600),TimeCurrent())) return;
    ulong ids[];
    for(int i=0;i<HistoryDealsTotal();i++)
    {
@@ -408,9 +408,9 @@ void TcExecutionHistory(datetime session)
          if(HistoryDealGetInteger(deal,DEAL_ENTRY)==DEAL_ENTRY_OUT || HistoryDealGetInteger(deal,DEAL_ENTRY)==DEAL_ENTRY_OUT_BY)
             expertExit=HistoryDealGetInteger(deal,DEAL_REASON)==DEAL_REASON_EXPERT;
       }
-      v.session=SessionOf(TcServerToNY(v.fill));
+      v.session=SessionOf(NewYorkFromServer(v.fill));
       if(!TcVisibleSession(v.session,session)) continue;
-      v.reference=TcNYToServer(v.session+86400+12*3600);
+      v.reference=ServerFromNewYork(v.session+86400+12*3600);
       v.scheduled=expertExit && !stopped && v.exit>=v.reference && v.exit<v.reference+60;
       int n=ArraySize(tcExecutions);ArrayResize(tcExecutions,n+1);tcExecutions[n]=v;
    }
@@ -483,13 +483,13 @@ void TcExecutionDraw(TcExecution &v)
 }
 double TcHindsightWidth(datetime session,double width)
 {
-   int shift=iBarShift(_Symbol,PERIOD_D1,TcNYToServer(session+23*3600),false);
+   int shift=iBarShift(_Symbol,PERIOD_D1,ServerFromNewYork(session+23*3600),false);
    if(shift<0) return -1;
    datetime daily[];int n=CopyTime(_Symbol,PERIOD_D1,shift+1,20,daily);
    double widths[];
    for(int i=0;i<n;i++)
    {
-      datetime previous=SessionOf(TcServerToNY(daily[i]));double high,low;int count;
+      datetime previous=SessionOf(NewYorkFromServer(daily[i]));double high,low;int count;
       if(BoxOf(previous,high,low,count) && BoxValid(previous,high,low,count))
       {int k=ArraySize(widths);ArrayResize(widths,k+1);widths[k]=high-low;}
    }
@@ -521,8 +521,8 @@ void TcRefineHindsightTouch(TcExecution &v,datetime minute,double buy,double sel
 int TcReplaySession(datetime session,datetime now,TcExecution &v)
 {
    ZeroMemory(v);v.synthetic=true;v.session=session;
-   datetime lock=TcNYToServer(session+23*3600),expiry=TcNYToServer(session+86400+3*3600);
-   datetime scheduled=TcNYToServer(session+86400+12*3600);
+   datetime lock=ServerFromNewYork(session+23*3600),expiry=ServerFromNewYork(session+86400+3*3600);
+   datetime scheduled=ServerFromNewYork(session+86400+12*3600);
    if(now<lock) return TC_REPLAY_NO_SIGNAL;
    MqlDateTime date;TimeToStruct(session,date);
    if(date.day_of_week==5 || date.day_of_week==6) return TC_REPLAY_NO_SIGNAL;

@@ -260,6 +260,10 @@ bool clkRefPending=false;   // true: some candidate had no history yet, so waiti
 int ClkAnchorBase(int &rule,int &modeOpen,int &modeClose,int &openNY,string &usedSym)
 {
    openNY=0; usedSym=""; clkRefPending=false;
+   // In the Strategy Tester, touching another symbol makes the agent try to synchronise it; when that fails
+   // the whole test ends ("symbol EURUSD synchronization error ... unexpected end of testing"). So the tester
+   // proves the clock from the traded feed only, or from a profile / clock_profiles.csv / a source pin.
+   if(MQLInfoInteger(MQL_TESTER)) return CLK_BASE_INVALID;
    bool anyHistory=false;
    for(int tried=0;tried<8;tried++)
    {
@@ -1097,7 +1101,33 @@ void EvaluateNewsControls() {
 //+------------------------------------------------------------------+
 //| Drawdown Controls & Actions Engine                               |
 //+------------------------------------------------------------------+
+//+------------------------------------------------------------------+
+//| Market session gate                                              |
+//| A closed market is not a failed order. Management and entries     |
+//| refuse quietly - one line per session change, never per ticket - |
+//| and the intent survives: the next tick after the open acts again.|
+//+------------------------------------------------------------------+
+datetime g_mktClosedLoggedDate = 0;
+bool X9MarketOpen() {
+    MqlDateTime dt;
+    TimeToStruct(TimeTradeServer(), dt);
+    datetime from = 0, to = 0;
+    if(!SymbolInfoSessionTrade(TradeSym, (ENUM_DAY_OF_WEEK)dt.day_of_week, 0, from, to))
+        return false;                                  // no session declared today
+    long sec = (long)dt.hour * 3600 + dt.min * 60 + dt.sec;
+    return (sec >= (long)from && sec <= (long)to);
+}
+void X9NoteClosed(string what, int pending) {
+    MqlDateTime dt;
+    TimeToStruct(TimeTradeServer(), dt);
+    datetime day = (datetime)dt.year * 10000 + dt.mon * 100 + dt.day;
+    if(g_mktClosedLoggedDate == day) return;            // one line per day, not per attempt
+    g_mktClosedLoggedDate = day;
+    PrintFormat("[X9_SESSION] market closed: %s deferred, %d item(s) retained; retried after the open", what, pending);
+}
+
 void CancelAllX9PendingOrders() {
+    if (!X9MarketOpen()) { X9NoteClosed("pending cancel", OrdersTotal()); return; }
     for (int i = OrdersTotal() - 1; i >= 0; i--) {
         if (ordinfo.SelectByIndex(i)) {
             if (IsX9Magic(ordinfo.Magic()) && ordinfo.Symbol() == TradeSym) {
@@ -1114,6 +1144,7 @@ void CancelAllX9PendingOrders() {
 }
 
 void CloseAllX9OpenPositions() {
+    if (!X9MarketOpen()) { X9NoteClosed("position close", PositionsTotal()); return; }
     // Netting merges symbol exposure: a position magic cannot prove ownership.
     if (AccountInfoInteger(ACCOUNT_MARGIN_MODE) != ACCOUNT_MARGIN_MODE_RETAIL_HEDGING) {
         if (!g_nettingCloseLogged) {
@@ -1224,6 +1255,7 @@ void EvaluateDrawdownControls() {
 //| Master Entry Permission Gate                                     |
 //+------------------------------------------------------------------+
 bool CanPlaceNewX9Entries() {
+    if (!X9MarketOpen()) { X9NoteClosed("new entries", 0); return false; }
     RefreshNewsFeed();
     EvaluateNewsControls();
     EvaluateDrawdownControls();

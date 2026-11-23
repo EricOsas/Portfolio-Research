@@ -155,8 +155,8 @@ void RBERender(datetime now)
         if(g_view[slot].high<=g_view[slot].low) continue;
         datetime right=g_view[slot].locked ? g_view[slot].lock+59 : RBEAnchorBarEnd(now);
         RBEBox(keep[slot]+"BOX",g_view[slot].open,right,g_view[slot].high,g_view[slot].low,Range_Color);
-        RBETip(keep[slot]+"BOX","NY range "+TimeToString(ServerToNY(g_view[slot].open),TIME_MINUTES)+
-               " to "+TimeToString(ServerToNY(g_view[slot].lock),TIME_MINUTES)+
+        RBETip(keep[slot]+"BOX","NY range "+TimeToString(ServerToNewYork(g_view[slot].open),TIME_MINUTES)+
+               " to "+TimeToString(ServerToNewYork(g_view[slot].lock),TIME_MINUTES)+
                " | broker "+TimeToString(g_view[slot].open,TIME_MINUTES)+
                " to "+TimeToString(g_view[slot].lock,TIME_MINUTES)+" | high "+DoubleToString(g_view[slot].high,_Digits)+
                " | low "+DoubleToString(g_view[slot].low,_Digits));
@@ -260,15 +260,16 @@ void Rect(string name, int x, int y, int w, int h, color bg, color bdr)
         ObjectSetInteger(0, name, OBJPROP_SELECTABLE, false);
         ObjectSetInteger(0, name, OBJPROP_HIDDEN,     true);
         ObjectSetInteger(0, name, OBJPROP_BACK,       false);  // foreground — blocks chart
+        ObjectSetInteger(0, name, OBJPROP_ZORDER,     10000);
+        ObjectSetInteger(0, name, OBJPROP_BORDER_TYPE, BORDER_FLAT);
     }
-    ObjectSetInteger(0, name, OBJPROP_ZORDER,     10000);
-    ObjectSetInteger(0, name, OBJPROP_XDISTANCE,   x);
-    ObjectSetInteger(0, name, OBJPROP_YDISTANCE,   y);
-    ObjectSetInteger(0, name, OBJPROP_XSIZE,       w);
-    ObjectSetInteger(0, name, OBJPROP_YSIZE,       h);
-    ObjectSetInteger(0, name, OBJPROP_BGCOLOR,     (long)bg);
-    ObjectSetInteger(0, name, OBJPROP_COLOR,       (long)bdr);
-    ObjectSetInteger(0, name, OBJPROP_BORDER_TYPE, BORDER_FLAT);
+    // Only write what changed: each ObjectSetInteger repaints the object.
+    if((int)ObjectGetInteger(0, name, OBJPROP_XDISTANCE) != x) ObjectSetInteger(0, name, OBJPROP_XDISTANCE, x);
+    if((int)ObjectGetInteger(0, name, OBJPROP_YDISTANCE) != y) ObjectSetInteger(0, name, OBJPROP_YDISTANCE, y);
+    if((int)ObjectGetInteger(0, name, OBJPROP_XSIZE)     != w) ObjectSetInteger(0, name, OBJPROP_XSIZE, w);
+    if((int)ObjectGetInteger(0, name, OBJPROP_YSIZE)     != h) ObjectSetInteger(0, name, OBJPROP_YSIZE, h);
+    if(ObjectGetInteger(0, name, OBJPROP_BGCOLOR) != (long)bg)  ObjectSetInteger(0, name, OBJPROP_BGCOLOR, (long)bg);
+    if(ObjectGetInteger(0, name, OBJPROP_COLOR)   != (long)bdr) ObjectSetInteger(0, name, OBJPROP_COLOR,   (long)bdr);
 }
 
 void Lbl(string name, int x, int y, string text, int fs, color clr)
@@ -307,18 +308,20 @@ void DrawPanel()
         ObjectSetInteger(0,button,OBJPROP_CORNER,CORNER_LEFT_UPPER);
         ObjectSetInteger(0,button,OBJPROP_HIDDEN,true);
         ObjectSetString(0,button,OBJPROP_FONT,"Segoe UI Semibold");
+        ObjectSetInteger(0,button,OBJPROP_ZORDER,10002);
+        ObjectSetInteger(0,button,OBJPROP_XSIZE,22);
+        ObjectSetInteger(0,button,OBJPROP_YSIZE,22);
+        ObjectSetInteger(0,button,OBJPROP_FONTSIZE,12);
+        ObjectSetInteger(0,button,OBJPROP_COLOR,(long)C'190,210,236');
+        ObjectSetInteger(0,button,OBJPROP_BGCOLOR,(long)C'18,22,28');
+        ObjectSetInteger(0,button,OBJPROP_BORDER_COLOR,(long)C'52,68,92');
     }
-    ObjectSetInteger(0,button,OBJPROP_XDISTANCE,PX+PW-29);
-    ObjectSetInteger(0,button,OBJPROP_ZORDER,10002);
-    ObjectSetInteger(0,button,OBJPROP_YDISTANCE,PY+5);
-    ObjectSetInteger(0,button,OBJPROP_XSIZE,22);
-    ObjectSetInteger(0,button,OBJPROP_YSIZE,22);
-    ObjectSetInteger(0,button,OBJPROP_FONTSIZE,12);
-    ObjectSetInteger(0,button,OBJPROP_COLOR,(long)C'190,210,236');
-    ObjectSetInteger(0,button,OBJPROP_BGCOLOR,(long)C'18,22,28');
-    ObjectSetInteger(0,button,OBJPROP_BORDER_COLOR,(long)C'52,68,92');
-    ObjectSetInteger(0,button,OBJPROP_STATE,false);
-    ObjectSetString(0,button,OBJPROP_TEXT,g_panelCollapsed ? "+" : "-");
+    int bxr = PX+PW-29;
+    if((int)ObjectGetInteger(0,button,OBJPROP_XDISTANCE)!=bxr) ObjectSetInteger(0,button,OBJPROP_XDISTANCE,bxr);
+    if((int)ObjectGetInteger(0,button,OBJPROP_YDISTANCE)!=PY+5) ObjectSetInteger(0,button,OBJPROP_YDISTANCE,PY+5);
+    if(ObjectGetInteger(0,button,OBJPROP_STATE)!=0) ObjectSetInteger(0,button,OBJPROP_STATE,false);
+    string btxt = g_panelCollapsed ? "+" : "-";
+    if(ObjectGetString(0,button,OBJPROP_TEXT)!=btxt) ObjectSetString(0,button,OBJPROP_TEXT,btxt);
     if(g_panelCollapsed)
     {
         string rows[]={"SRV","HI","LO","SZ","BUY","SEL","CST","COV","SL"};
@@ -338,9 +341,9 @@ void RBERestackPanel(datetime now)
 
 string RBENYClock(datetime serverNow)
 {
-    if((bool)MQLInfoInteger(MQL_TESTER) && TesterWeekAnchorOffsetSec()==-999999)
+    if(false)   // the standard clock always has an answer; kept as a guard so the branch stays obvious
         return "Waiting for NY clock history";
-    return TimeToString(ServerToNY(serverNow),TIME_SECONDS);
+    return TimeToString(ServerToNewYork(serverNow),TIME_SECONDS);
 }
 
 

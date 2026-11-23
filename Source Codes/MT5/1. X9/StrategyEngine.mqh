@@ -1072,7 +1072,16 @@ double X9CashPerUSD() {
     double rate = tickVal / (tickSz * contract);
     return ( MathIsValidNumber(rate) && rate > 0.0 ) ? rate : 0.0;
 }
-double X9CurrencyFactor(const string symbol) { return X9CashPerUSD(); }
+// The Part 3 formula already assumes 100 cash units per price unit per lot.
+// Convert that anchor using THIS symbol's cash-per-price-unit-per-lot, not
+// X9CashPerUSD(): contract size varies independently of account denomination.
+double X9CurrencyFactor(const string symbol) {
+    double tickVal = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_VALUE);
+    double tickSz = SymbolInfoDouble(symbol, SYMBOL_TRADE_TICK_SIZE);
+    if (!MathIsValidNumber(tickVal) || !MathIsValidNumber(tickSz) || tickVal <= 0.0 || tickSz <= 0.0) return 0.0;
+    double factor = (tickVal / tickSz) / 100.0;
+    return (MathIsValidNumber(factor) && factor > 0.0) ? factor : 0.0;
+}
 
 //+------------------------------------------------------------------+
 //| CalculateLotSize (Part 3 Multi-Strategy Weighted Sizing)         |
@@ -1106,17 +1115,20 @@ void CalculateLotSize() {
         calculatedLots = riskDivisorValue * effectiveBalance * 0.0001 * RiskWeight / slDollars;
     }
 
-    double currencyFactor = X9CashPerUSD();
+    double currencyFactor = X9CurrencyFactor(TradeSym);
     if ( currencyFactor > 0.0 ) {
         calculatedLots /= currencyFactor;
     }
-    else if ( !g_unitUnknownLogged ) {
-        // Fail loud, not silent: without a denomination scale the cash risk cannot be sized. The lot path continues so
-        // that owned-position management keeps working, but every sizing audit line is tagged.
-        g_unitUnknownLogged = true;
-        PrintFormat("[X9_SIZE] ACCOUNT_UNIT_UNKNOWN: no symbol with a USD profit currency in Market Watch; "
-                    "cash sizing is unscaled on %s %s", AccountInfoString(ACCOUNT_CURRENCY), AccountInfoString(ACCOUNT_SERVER));
+    else {
+        StrategyLots[StrategyIdx] = 0.0;
+        if ( !g_unitUnknownLogged ) {
+            g_unitUnknownLogged = true;
+            PrintFormat("[X9_SIZE] LOT_VALUE_UNKNOWN: invalid tick value/size on %s; new entry sizing blocked (%s)",
+                        TradeSym, AccountInfoString(ACCOUNT_CURRENCY));
+        }
+        return; // Sizing failure must not invent unscaled volume; owned management is separate.
     }
+    double rawLots = calculatedLots;
 
     if ( calculatedLots < SymbolInfoDouble(TradeSym, SYMBOL_VOLUME_STEP) ){
         calculatedLots = SymbolInfoDouble(TradeSym, SYMBOL_VOLUME_STEP);
@@ -1161,13 +1173,18 @@ void CalculateLotSize() {
 
     if ( InpEnableAuditLog ){
         ulong nowMs = GetTickCount64();
-        ulong lastAuditLogMs = 0;
-        if ( nowMs - lastAuditLogMs >= 1000 ){
-            lastAuditLogMs = nowMs;
+        // Per strategy, or the nine strategies share one clock and the first one starves the rest.
+        // Static, because the throttle was a local variable: it reset to 0 on every call, so the log
+        // printed several times per tick per strategy instead of once every few seconds.
+        static ulong lastAuditLogMs[16];
+        int auditSlot = (StrategyIdx >= 0 && StrategyIdx < 16) ? StrategyIdx : 0;
+        if ( nowMs - lastAuditLogMs[auditSlot] >= 5000 ){
+            lastAuditLogMs[auditSlot] = nowMs;
             double effBal = (InpFixedBalance > 0.0) ? InpFixedBalance : AccountInfoDouble(ACCOUNT_BALANCE);
-            PrintFormat("[LOT_AUDIT] Strat %d | Bal=%.2f | SLDist=%.2f | RawLots=%.4f | Lots=%.2f | RiskWeight=%.4f | ImpliedRisk=%.2f",
-                        StrategyIdx + 1, effBal, slDollars, calculatedLots, StrategyLots[StrategyIdx], RiskWeight,
-                        StrategyLots[StrategyIdx] * slDollars);
+            PrintFormat("[LOT_AUDIT] Strat %d | Bal=%.2f %s | Tiered=%.2f | PortfolioDiv=%.2f | SLDist=%.2f | CashPerPriceLot=%.6f | RawLots=%.8f | Lots=%.2f | MinLot=%.2f | RiskWeight=%.4f | ImpliedRisk=%.2f %s",
+                        StrategyIdx + 1, effBal, AccountInfoString(ACCOUNT_CURRENCY), TieredLotEff, DDTierDivisor,
+                        slDollars, currencyFactor * 100.0, rawLots, StrategyLots[StrategyIdx], brokerMinLot, RiskWeight,
+                        StrategyLots[StrategyIdx] * slDollars * currencyFactor * 100.0, AccountInfoString(ACCOUNT_CURRENCY));
         }
     }
 }

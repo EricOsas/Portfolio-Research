@@ -36,7 +36,7 @@ These are the actual strategy combinations selected by the research. A plus sign
 
 These are generic portfolio-screening categories. They are not fixed labels attached to a strategy. The firm-specific simulations produce separate recommendations:
 
-- **The5ers $20k Bootcamp:** training-selected challenge book Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive at USD 25 total risk reaches the funded account in 86.62% of paths and a first payout in 83.96% in the continuous-sizing model. That model ignores broker minimum lots; at the real 0.01-lot floor the same book reaches funding in about 63-65% of paths and the funded book breaches in about 45% of paths if Gold X9 stays in it. Dropping Gold X9 from the funded book and running Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB at 0.125%/sleeve gives a 99.8% conditional first payout with a 1.0% funded breach.
+- **The5ers $20k Bootcamp:** training-selected challenge book Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive at USD 25 total risk reaches the funded account in 86.62% of paths and a first payout in 76.34% in the continuous-sizing model. That model ignores broker minimum lots; at the real 0.01-lot floor the same book reaches funding in about 63-65% of paths and the funded book breaches in about 45% of paths if Gold X9 stays in it. Dropping Gold X9 from the funded book and running Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB at 0.125%/sleeve gives a 99.7% conditional first payout with a 0.8% funded breach.
 - **Tradeify $50k Growth:** the overall training-score challenge leader is FVG Duo + Flash ORB + Gold ORB (RBE) + Sigma ORB; the funded leader is Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB. Their USD 100 requests require about USD 511.97 and USD 475.65 effective risk after minimum-micro sizing. A lower-risk, two-sleeve alternative is Flash ORB + Overnight Bias ORB at USD 237.63 effective risk; it is slower but has stronger validation survival.
 
 **Near-floor recovery:** The5ers is recoverable from a USD 250 cushion upward, but at the strict USD 100 cushion the best pair still carries 7.3% breach risk. Tradeify's best eligible active recovery book carries roughly a third to a half modeled breach risk. Neither firm has a recovery book that is both high-probability and low-breach at the strictest cushion.
@@ -53,17 +53,17 @@ All probabilities below are 5,000-path, 252-trading-day estimates. Breach means 
 - Step 1 pass: **93.38%**; Step 2 conditional: **99.10%**; Step 3 conditional: **93.60%**.
 - Reach the $20k funded account: **86.62%**.
 - Evaluation hard breach (any of the three steps): **7.46%**.
-- Funded hard breach, conditional on funding: **0.14%**.
-- First-payout probability from challenge start with the challenge book: **83.96%**.
-- First-payout probability with the funded-stage book, conditional on funding: **96.3%**.
-- Approximate first-payout probability per challenge start when switching to the funded-stage book: **83.4%**.
-- Expected first payout across all paths: **USD 69.08**; median payout on successful paths: **USD 72.77**.
-- Expected total payout cash: **USD 472.55** across **5.81** payouts on average.
-- Median time to Step 1 pass: **22 trading days**; through all three steps: **152**; first payout: **164**.
+- Funded hard breach, conditional on funding: **0.05%**.
+- First-payout probability from challenge start with the challenge book: **76.34%**.
+- First-payout probability with the funded-stage book, conditional on funding: **85.7%**.
+- Approximate first-payout probability per challenge start when switching to the funded-stage book: **74.3%**.
+- Expected first payout across all paths: **USD 159.47**; median payout on successful paths: **USD 197.66**.
+- Expected total payout cash: **USD 429.62** across **2.06** payouts on average (USD 300 gross minimum per payout).
+- Median time to Step 1 pass: **22 trading days**; through all three steps: **152**; first payout: **180**.
 - Approximate 90-trading-day funded survival: **99.88%**.
-- Geometric repeat estimate: **1.20 challenge accounts** and **1.04 funded accounts** per first payout.
+- Geometric repeat estimate: **1.35 challenge accounts** and **1.17 funded accounts** per first payout.
 
-The challenge book's edge is concentrated in Gold X9 and the GotobiFix pairs. At USD 100 risk it still reaches funding in 57.9% of paths, but evaluation breach rises to 42.1% and funded breach to 69.0%; USD 25 is the only rung that keeps both sides acceptable.
+The challenge book's edge is concentrated in Gold X9 and the GotobiFix pairs. At USD 100 risk it still reaches funding in 57.9% of paths, but evaluation breach rises to 42.1% and conditional funded breach to 66.6%; USD 25 is the only rung that keeps both sides acceptable.
 
 ### Tradeify $50k Growth — higher-return four-sleeve route
 
@@ -90,7 +90,7 @@ The challenge book's edge is concentrated in Gold X9 and the GotobiFix pairs. At
 - Approximate combined hard-breach probability across both stages: **28.78%**.
 - Approximate 90-trading-day funded survival: **91.16%**.
 - Expected first payout across all paths: **USD 873.18**; median payout on successful paths: **USD 1,350**.
-- Median time to first payout: **164 trading days**.
+- Median time to first payout: **180 trading days**.
 - Geometric repeat estimate: **1.55 challenge accounts** and **1.34 funded accounts** per first payout.
 
 **Minimum contract reality (this is the size you actually place).** NT8 sizing is whole contracts, and one contract on MNQ or MGC is already one micro. 1R per micro in the exports is USD 127-182 depending on the sleeve (FVG Duo 168, Sigma ORB 182, Overnight Bias 139, Gold ORB RBE 134, Opening-Shock 130, Flash ORB 127), which makes the broker minimum a large position on this account:
@@ -292,19 +292,19 @@ Modeled account structure (The5ers Bootcamp, checked 2026-11-22): three sequenti
 | Step 2 pass, conditional on Step 1 | 99.10% | 99.54% |
 | Step 3 pass, conditional on Step 2 | 93.60% | 92.04% |
 | Reach the funded account | 86.62% | 87.16% |
-| First payout from challenge start | 83.96% | 83.96% |
+| First payout from challenge start | 76.34% | 76.34% |
 | Evaluation hard-breach probability | 7.46% | 5.24% |
-| Funded hard-breach probability, conditional on funding | 0.14% | 0.05% |
+| Funded hard-breach probability, conditional on funding | 0.05% | 0.05% |
 | Median trading days to Step 1 pass | 22 | 25 |
 | Median trading days through all steps | 152 | 161 |
-| Median trading days to first payout | 164 | 172 |
-| Expected first payout across all paths | USD 69.08 | USD 63.46 |
-| Median payout on successful paths | USD 72.77 | USD 68.54 |
-| Expected total payout cash | USD 472.55 | USD 405.76 |
-| Mean payout count | 5.81 | 5.45 |
-| 90-trading-day funded survival | 99.88% | 99.96% |
+| Median trading days to first payout | 180 | 190 |
+| Expected first payout across all paths | USD 159.47 | USD 151.86 |
+| Median payout on successful paths | USD 197.66 | USD 190.00 |
+| Expected total payout cash | USD 429.62 | USD 405.76 |
+| Mean payout count | 2.06 | 1.78 |
+| 90-trading-day funded survival | 99.95% | 100.0% |
 
-The funded-stage book is chosen for payout survival rather than speed: its conditional first-payout rate after funding is 96.3%, and its funded-breach rate is 0.05%. The 83.4% combined estimate multiplies the challenge book's 86.62% reach-funded rate by that 96.3%, and does not replay a mid-account switch.
+The funded-stage book is chosen for payout survival rather than speed: its conditional first-payout rate after funding is 85.7%, and its funded-breach rate is 0.0%. The 74.3% combined estimate multiplies the challenge book's 86.62% reach-funded rate by that 85.7%, and does not replay a mid-account switch.
 
 **Minimum-lot reality (this supersedes the risk ladder for execution).** The ladder above allocates USD 25 equally, which is USD 6.25 per sleeve. On XAUUSD the smallest position is 0.01 lot, whose mean losing trade is about **USD 20**, so Gold X9 cannot be sized down to its share. The book is therefore gold-heavy at minimum size and the stage percentages are not chosen, they are forced:
 
@@ -313,7 +313,7 @@ The funded-stage book is chosen for payout survival rather than speed: its condi
 | Step 1 | $5,000 | ~$22-30 per trade | 0.44-0.55% | 63-65% over all three steps |
 | Step 2 | $10,000 | same lots, ~$22-30 | 0.22-0.28% | — |
 | Step 3 | $15,000 | same lots, ~$22-30 | 0.15-0.18% | — |
-| Funded | $20,000 | switch book, ~$100 (0.5%) | 0.5% | 99.8% conditional payout, 1.0% breach |
+| Funded | $20,000 | switch book, ~$100 (0.5%) | 0.5% | 99.7% conditional payout, 0.8% breach |
 
 At the minimum lot the evaluation hard-breach rate is about **35%**, not 7.5%, because one bad Gold X9 day at 0.01 lot can be 2-5% of a $5k step. Scaling the percentage with the balance makes it worse, not better: 0.125%/sleeve reaches funding in 65% of paths but breaches the funded account in 58%; 0.25%/sleeve gives 57% and 88%. The funded book must not carry Gold X9 and must not scale to USD 200 per trade. Full tables, lot-level evidence and the exact EA inputs are in [stage sizing with real lot floors](../Prop-Firms/The5ers-20K-Bootcamp/reports/stage_sizing.md).
 
@@ -321,26 +321,26 @@ At the minimum lot the evaluation hard-breach rate is about **35%**, not 7.5%, b
 
 | Requested risk | Reach funded | Evaluation breach | Challenge-to-payout | Funded breach, conditional | 90-day survival | Median payout days | Expected first payout |
 |---:|---:|---:|---:|---:|---:|---:|---:|
-| USD 10 | 1.5% | 0.3% | 0.8% | 0.0% | — | 238 | USD 0.23 |
-| USD 25 | 86.6% | 7.5% | 84.0% | 0.1% | 99.9% | 164 | USD 69.08 |
-| USD 50 | 78.0% | 21.9% | 77.3% | 13.8% | 93.0% | 87 | USD 128.11 |
-| USD 100 | 57.9% | 42.1% | 54.4% | 69.0% | 61.9% | 45 | USD 182.80 |
+| USD 10 | 1.5% | 0.3% | 0.0% | 0.0% | — | 238 | USD 0.07 |
+| USD 25 | 86.6% | 7.5% | 76.3% | 0.0% | 100.0% | 180 | USD 159.47 |
+| USD 50 | 78.0% | 21.9% | 76.9% | 11.4% | 94.1% | 96 | USD 208.36 |
+| USD 100 | 57.9% | 42.1% | 53.7% | 66.6% | 63.5% | 48 | USD 226.76 |
 
 **Funded-stage book risk ladder:**
 
 | Requested risk | Reach funded | Evaluation breach | Challenge-to-payout | Funded breach, conditional | 90-day survival | Median payout days | Expected first payout |
 |---:|---:|---:|---:|---:|---:|---:|---:|
-| USD 25 | 87.2% | 5.2% | 84.0% | 0.0% | 100.0% | 172 | USD 63.46 |
-| USD 50 | 80.5% | 19.5% | 79.7% | 7.6% | 96.2% | 93 | USD 123.19 |
-| USD 100 | 61.3% | 38.7% | 58.1% | 59.1% | 69.2% | 49 | USD 183.51 |
+| USD 25 | 87.2% | 5.2% | 74.7% | 0.0% | 100.0% | 190 | USD 151.86 |
+| USD 50 | 80.5% | 19.5% | 79.4% | 6.1% | 96.8% | 102 | USD 208.08 |
+| USD 100 | 61.3% | 38.7% | 57.7% | 56.2% | 71.0% | 52 | USD 227.56 |
 
-At USD 10 the three 6% step targets require too many R over the 252-day horizon, so almost no path funds; the ladder is informative from USD 25 upward. Above USD 25 the expected first payout keeps rising, but breach risk rises faster: the USD 50 rung carries 13.8% conditional funded breach and USD 100 carries 69.0%.
+At USD 10 the three 6% step targets require too many R over the 252-day horizon, so almost no path funds; the ladder is informative from USD 25 upward. Above USD 25 the expected first payout keeps rising, but breach risk rises faster: the USD 50 rung carries 11.4% conditional funded breach and USD 100 carries 66.6%.
 
-**Holdout validation leader — diagnostic only:** Gold ORB (RBE) + Gold X9 + GotobiFix EURJPY + Overnight Bias ORB records 92.5% reach-funded, 91.5% challenge-to-payout and 5.8% evaluation breach at USD 25 risk. It is not the primary selection because it was identified as the validation leader after the training-only selection.
+**Holdout validation leader — diagnostic only:** FVG Duo + Gold ORB (RBE) + Gold X9 + GotobiFix EURJPY records 91.9% reach-funded, 88.2% challenge-to-payout and 6.7% evaluation breach at USD 25 risk. It is not the primary selection because it was identified as the validation leader after the training-only selection.
 
 **RBE-excluded sensitivity:** the training-selected challenge and funded books already exclude MT5 Gold ORB (RBE), so the RBE-pairing caveat does not affect either primary selection.
 
-The full risk ladders are in [The5ers book recommendations](../Prop-Firms/The5ers-20K-Bootcamp/reports/book_recommendations.md) and [the Monte Carlo CSV](../Prop-Firms/The5ers-20K-Bootcamp/reports/monte_carlo_challenge_payout.csv). The simulation is close-only: the funded 3% daily pause is a closed-PnL clip, floating-loss breaches are invisible in the MT5 exports, and the funded scale-up ladder and account fees are excluded. The 84% first-payout rate should therefore be treated as an upper bound.
+The full risk ladders are in [The5ers book recommendations](../Prop-Firms/The5ers-20K-Bootcamp/reports/book_recommendations.md) and [the Monte Carlo CSV](../Prop-Firms/The5ers-20K-Bootcamp/reports/monte_carlo_challenge_payout.csv). The simulation is close-only: the funded 3% daily pause is a closed-PnL clip, floating-loss breaches are invisible in the MT5 exports, and the funded scale-up ladder and account fees are excluded. The 76% first-payout rate should therefore be treated as an upper bound.
 
 ### Tradeify — USD 50,000 Growth futures
 

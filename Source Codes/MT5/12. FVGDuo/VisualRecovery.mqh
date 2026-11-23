@@ -146,7 +146,7 @@ string VisualRecordFile()
 {
    string symbol = _Symbol;
    StringReplace(symbol, "/", "_"); StringReplace(symbol, "\\", "_");
-   return StringFormat("FVG_Duo_Closeout_20261120/visuals_%I64d_%I64u_%s.csv", AccountInfoInteger(ACCOUNT_LOGIN), InpMagic, symbol);
+   return StringFormat("FVG_Duo/visuals_%I64d_%I64u_%s.csv", AccountInfoInteger(ACCOUNT_LOGIN), InpMagic, symbol);
 }
 
 void LoadVisualRecords()
@@ -308,7 +308,22 @@ void MaintainFvgVisuals(datetime serverNow)
    }
    MqlRates m1[], m15[];
    ArraySetAsSeries(m1, false); ArraySetAsSeries(m15, false);
-   if(CopyRates(_Symbol, PERIOD_M1, bar - 21 * 86400, bar - 1, m1) <= 0) return;
+   // Bounded retries: a fresh attach frequently holds fewer than 21 days of M1,
+   // and one failed pull used to drop the session range and the averages together.
+   int spans[] = {21, 7, 3};
+   int got = 0;
+   for(int s = 0; s < ArraySize(spans) && got <= 0; s++)
+      got = CopyRates(_Symbol, PERIOD_M1, bar - spans[s] * 86400, bar - 1, m1);
+   if(got <= 0)
+   {
+      // Last resort: the chart's own series still carries observed cash-session bars,
+      // so the range reflects real prints instead of disappearing for the day.
+      got = CopyRates(_Symbol, (ENUM_TIMEFRAMES)_Period, bar - 3 * 86400, bar - 1, m1);
+      if(got > 0)
+         PrintFormat("FVG Duo: M1 history unavailable, session ranges rebuilt from %s bars (%d)",
+                     EnumToString((ENUM_TIMEFRAMES)_Period), got);
+   }
+   if(got <= 0) return;
    LoadVisualRecords();
    RebuildSessionRanges(m1, ny);
    if(CopyRates(_Symbol, PERIOD_M15, bar - 400 * 86400, bar - 1, m15) > 0)

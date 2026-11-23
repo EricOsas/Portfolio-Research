@@ -2,38 +2,168 @@
 #define RBE_STRATEGY_ENGINE
 #ifndef RBE_NEWS_FEED
 #define RBE_NEWS_FEED
-// Embedded in EX5. Each RBE instance keeps its own calendar in memory.
+// ===== NEWS-FEED 1.0 BEGIN ===================================================================================
+#define NF_VERSION        "1.0"
+#define NF_TTL_FRESH      3600        // seconds a payload is considered current
+#define NF_RETRY          300         // seconds between failed attempts
+#define NF_STALE_MAX      604800      // one week: the calendar itself is weekly
+#define NF_URL            "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
+#define NF_BODY           "NewsFeed_ff_weekly.json"
+#define NF_META           "NewsFeed_ff_weekly.meta"
+
+// Reads the shared snapshot. Returns true when a payload no older than NF_STALE_MAX is present.
+bool NewsFeedReadCache(string &json, datetime &fetchedUtc, long &retryUntil)
+{
+   json = "";
+   fetchedUtc = 0;
+   retryUntil = 0;
+   int meta = FileOpen(NF_META, FILE_READ | FILE_TXT | FILE_COMMON);
+   if(meta != INVALID_HANDLE)
+   {
+      string line = FileReadString(meta);
+      FileClose(meta);
+      long stamp = (long)StringToInteger(line);
+      if(stamp > 0) fetchedUtc = (datetime)stamp;
+   }
+   int body = FileOpen(NF_BODY, FILE_READ | FILE_BIN | FILE_COMMON);
+   if(body != INVALID_HANDLE)
+   {
+      ulong size = FileSize(body);
+      if(size > 8 && size < 4000000)
+      {
+         uchar raw[];
+         ArrayResize(raw, (int)size);
+         if(FileReadArray(body, raw, 0, (int)size) == (int)size)
+            json = CharArrayToString(raw, 0, (int)size, CP_UTF8);
+      }
+      FileClose(body);
+   }
+   if(StringLen(json) < 8)
+   {
+      json = "";
+      return false;
+   }
+   return(fetchedUtc > 0 && TimeGMT() >= fetchedUtc && TimeGMT() - fetchedUtc <= NF_STALE_MAX);
+}
+
+// Stores a payload plus its fetch time. Best effort: a read-only sandbox must not break the EA.
+void NewsFeedWriteCache(const string json, const datetime fetchedUtc)
+{
+   if(StringLen(json) < 8) return;
+   int body = FileOpen(NF_BODY, FILE_WRITE | FILE_BIN | FILE_COMMON);
+   if(body == INVALID_HANDLE) return;
+   uchar raw[];
+   int len = StringToCharArray(json, raw, 0, -1, CP_UTF8);
+   if(len > 1) FileWriteArray(body, raw, 0, len - 1);   // drop the terminating zero
+   FileClose(body);
+   int meta = FileOpen(NF_META, FILE_WRITE | FILE_TXT | FILE_COMMON);
+   if(meta == INVALID_HANDLE) return;
+   FileWriteString(meta, IntegerToString((long)fetchedUtc));
+   FileClose(meta);
+}
+
+// One accessor for every EA. Never halts, never blocks longer than the request timeout.
+int NewsFeedGet(string &json, datetime &fetchedUtc, bool &fromCache, bool allowCacheInTester)
+{
+   json = "";
+   fromCache = false;
+   long retryUntil = 0;
+   bool haveCache = NewsFeedReadCache(json, fetchedUtc, retryUntil);
+
+   bool tester = (bool)MQLInfoInteger(MQL_TESTER) || (bool)MQLInfoInteger(MQL_OPTIMIZATION);
+   if(tester)
+   {
+      // The tester forbids WebRequest. Only an explicit opt-in makes backtests news-aware, and then
+      // the snapshot is a fixed input: same file, same result, every run.
+      if(haveCache && allowCacheInTester)
+      {
+         fromCache = true;
+         return(200);
+      }
+      json = "";
+      return(0);
+   }
+
+   datetime now = TimeGMT();
+   if(haveCache && now >= fetchedUtc && now - fetchedUtc < NF_TTL_FRESH)
+      return(200);                                   // current: no request at all
+   if(now < retryUntil)
+   {
+      if(haveCache)
+      {
+         fromCache = true;
+         return(200);
+      }
+      return(-1);
+   }
+
+   if(!(bool)TerminalInfoInteger(TERMINAL_CONNECTED))
+   {
+      if(haveCache)
+      {
+         fromCache = true;
+         return(200);
+      }
+      return(0);
+   }
+
+   char request[], response[];
+   string headers;
+   ResetLastError();
+   int status = WebRequest("GET", NF_URL, "User-Agent: Mozilla/5.0\r\nAccept: application/json\r\n",
+                           5000, request, response, headers);
+   int requestError = GetLastError();
+   if(status == 200 && ArraySize(response) > 8)
+   {
+      string payload = CharArrayToString(response, 0, -1, CP_UTF8);
+      if(StringLen(payload) > 8)
+      {
+         json = payload;
+         fetchedUtc = TimeGMT();
+         NewsFeedWriteCache(payload, fetchedUtc);
+         return(200);
+      }
+   }
+
+   // Failure: back off, and serve the snapshot if there is one. A stale-but-real calendar is better
+   // than no calendar, and the EA's own policy decides what to do with it.
+   int backoff = FileOpen(NF_META, FILE_WRITE | FILE_TXT | FILE_COMMON);
+   if(backoff != INVALID_HANDLE)
+   {
+      FileWriteString(backoff, IntegerToString((long)(haveCache && fetchedUtc > 0 ? fetchedUtc : now)));
+      FileClose(backoff);
+   }
+   if(haveCache)
+   {
+      fromCache = true;
+      return(200);
+   }
+   json = "";
+   return(status > 0 ? status : -requestError);
+}
+// ===== NEWS-FEED 1.0 END =====================================================================================
+
+// The payload acquisition is owned by the standard feed block (verbatim, above). The parse and the
+// week/policy logic stay here, so behaviour is unchanged; the feed adds a shared snapshot and never
+// calls WebRequest in the tester.
 string g_rbeFeedJson="";
 datetime g_rbeFeedFetched=0,g_rbeFeedRetry=0;
 int g_rbeFeedStatus=0;
+// Set from InpNewsCacheInTester in OnInit (the input is declared further down, after this function).
+bool RBEUseCacheInTester=false;
 
 int RBEFeedGet(string &json,datetime &fetched,int &requestError)
 {
-   json="";fetched=g_rbeFeedFetched;requestError=0;
-   datetime now=TimeGMT();
-   bool fresh=fetched>0 && now>=fetched && now-fetched<3600 && g_rbeFeedJson!="";
-   if((fresh && now-fetched<1800) || now<g_rbeFeedRetry)
-   {
-      if(fresh){json=g_rbeFeedJson;return 200;}
-      return g_rbeFeedStatus;
-   }
-   char request[],response[];string headers;ResetLastError();
-   int result=WebRequest("GET","https://nfs.faireconomy.media/ff_calendar_thisweek.json",
-      "User-Agent: Mozilla/5.0\r\nAccept: application/json\r\n",5000,request,response,headers);
-   requestError=GetLastError();
-   string payload=result==200?CharArrayToString(response,0,-1,CP_UTF8):"";
+   json="";fetched=0;requestError=0;
+   string payload="";datetime stamp=0;bool cached=false;
+   int status=NewsFeedGet(payload,stamp,cached,RBEUseCacheInTester);
+   g_rbeFeedStatus=status;
+   if(status!=200 || StringLen(payload)<2) return status;
    StringTrimLeft(payload);StringTrimRight(payload);
-   if(result==200 && (StringLen(payload)<2 || StringSubstr(payload,0,1)!="[" || StringSubstr(payload,StringLen(payload)-1,1)!="]"))result=-3;
-   g_rbeFeedStatus=result;
-   if(result==200)
-   {
-      g_rbeFeedJson=payload;g_rbeFeedFetched=now;g_rbeFeedRetry=now+1800;
-      json=payload;fetched=now;return 200;
-   }
-   g_rbeFeedRetry=now+(result==429?900:300);
-   // Failed refreshes retain the original timestamp; stale data is never freshened.
-   if(fresh){json=g_rbeFeedJson;return 200;}
-   return result;
+   if(StringSubstr(payload,0,1)!="[" || StringSubstr(payload,StringLen(payload)-1,1)!="]"){g_rbeFeedStatus=-3;return -3;}
+   fetched=stamp>0?stamp:TimeGMT();
+   json=payload;g_rbeFeedJson=payload;g_rbeFeedFetched=fetched;g_rbeFeedRetry=fetched+1800;
+   return 200;
 }
 #endif
 
@@ -45,6 +175,390 @@ int RBEFeedGet(string &json,datetime &fetched,int &requestError)
 #property copyright "2026"
 #property version   "1.17"
 #property strict
+
+// ===== CLK-CORE 1.2 BEGIN ===================================================================================
+// STANDARD BLOCK - paste verbatim. Do not edit per EA. Changes happen only in the standard, then re-splice every EA.
+//
+// Broker clock core. PURE: every function depends only on its arguments. No terminal, file, chart or market access,
+// no static caches, no hidden "now". Same inputs give the same outputs in tester and live, at any call time.
+//
+// Model:   server = UTC + baseMin*60 + dst(rule, utc)
+//   baseMin  server-minus-UTC in STANDARD (non-DST) time, minutes, multiple of 15, within [-720, +840]
+//   rule     CLK_RULE_NONE (fixed offset) | CLK_RULE_US (server follows US DST) | CLK_RULE_EU (server follows EU DST)
+//   DST dates: US 2nd Sun Mar 07:00 UTC -> 1st Sun Nov 06:00 UTC; EU last Sun Mar 01:00 UTC -> last Sun Oct 01:00 UTC
+//   (valid 2007 onward; earlier years need historical rules and are out of scope).
+//
+// A broker can change its server offset or its DST behaviour during a sample. One (rule, base) cannot describe
+// that history, so the core also carries a DATED SCHEDULE: an ordered list of segments, each a (rule, base) in
+// force from a UTC instant. A one-segment schedule is identical to the single model, so nothing is special-cased.
+//
+// Internal time domain is UTC. Server time exists only at the boundary: ticks, bar and position stamps in, chart
+// objects and order expirations out. Convert once at the boundary, then compare and schedule in UTC.
+//
+// Server wall time -> UTC is not always one-to-one. It is resolved, never halted:
+//   FOLD  (clock falls back, wall time occurs twice): the caller supplies lowerBoundUtc, a known lower bound on the true
+//         instant (previous resolved UTC in a tick stream, or the PC clock). The smallest candidate >= lowerBoundUtc
+//         is returned. With no bound (<=0) the FIRST occurrence is returned. conv reports which rule applied.
+//   GAP   (clock jumps forward, wall time never occurs): the wall time is read with the pre-transition offset, which
+//         shifts it forward by the gap, the usual convention. conv = CLK_CONV_GAP. Real server stamps never fall in a gap.
+#define CLK_CORE_VERSION   "1.2"
+#define CLK_BASE_INVALID   (-999999)
+#define CLK_MIN_WEEKS      40
+#define CLK_MIN_MARGIN     3
+#define CLK_MAX_WEEKS      256
+
+enum ENUM_CLK_RULE { CLK_RULE_NONE=0, CLK_RULE_US=1, CLK_RULE_EU=2 };
+enum ENUM_CLK_MODE { CLK_MODE_AUTO=0, CLK_MODE_MANUAL=1 };
+enum ENUM_CLK_CONV { CLK_CONV_EXACT=0, CLK_CONV_FOLD_BOUND=1, CLK_CONV_FOLD_FIRST=2, CLK_CONV_GAP=3 };
+enum ENUM_CLK_ANCHOR { CLK_ANCHOR_OFF=0, CLK_ANCHOR_AUTO=1, CLK_ANCHOR_OPEN17=2, CLK_ANCHOR_OPEN18=3 };
+
+// ---- civil date arithmetic (proleptic Gregorian, integers only; days since 1970-01-01; years >= 1970) -------------------
+int ClkDaysFromCivil(int y,int m,int d)
+{
+   if(m<=2) y--;
+   int era=y/400;
+   int yoe=y-era*400;
+   int doy=(153*(m>2?m-3:m+9)+2)/5+d-1;
+   int doe=yoe*365+yoe/4-yoe/100+doy;
+   return era*146097+doe-719468;
+}
+void ClkCivilFromDays(int z,int &y,int &m,int &d)
+{
+   z+=719468;
+   int era=z/146097;
+   int doe=z-era*146097;
+   int yoe=(doe-doe/1460+doe/36524-doe/146096)/365;
+   y=yoe+era*400;
+   int doy=doe-(365*yoe+yoe/4-yoe/100);
+   int mp=(5*doy+2)/153;
+   d=doy-(153*mp+2)/5+1;
+   m=mp<10?mp+3:mp-9;
+   if(m<=2) y++;
+}
+int ClkDayOfWeek(int days) { return ((days%7)+7+4)%7; }          // 0=Sunday ... 6=Saturday
+int ClkDow(int y,int m,int d) { return ClkDayOfWeek(ClkDaysFromCivil(y,m,d)); }
+int ClkDaysInMonth(int y,int m)
+{
+   int ny=(m==12)?y+1:y, nm=(m==12)?1:m+1;
+   return ClkDaysFromCivil(ny,nm,1)-ClkDaysFromCivil(y,m,1);
+}
+int ClkNthWeekday(int y,int m,int nth,int dow)                   // day of month of the nth given weekday (nth 1..5)
+{
+   int first=ClkDow(y,m,1);
+   return 1+(dow-first+7)%7+7*(nth-1);
+}
+datetime ClkUtcAt(int y,int m,int d,int hour) { return (datetime)((long)ClkDaysFromCivil(y,m,d)*86400+hour*3600); }
+
+// ---- DST rules -------------------------------------------------------------------------------------------------------
+int ClkNyUtcOffset(datetime utc)                                  // America/New_York: -4h in US DST, else -5h
+{
+   int y,m,d; ClkCivilFromDays((int)(utc/86400),y,m,d);
+   datetime start=ClkUtcAt(y,3,ClkNthWeekday(y,3,2,0),7);
+   datetime end  =ClkUtcAt(y,11,ClkNthWeekday(y,11,1,0),6);
+   return (utc>=start && utc<end) ? -4*3600 : -5*3600;
+}
+int ClkEuUtcOffset(datetime utc)                                  // EU summer-time delta: 3600 in EU DST, else 0
+{
+   int y,m,d; ClkCivilFromDays((int)(utc/86400),y,m,d);
+   int ms=ClkNthWeekday(y,3,5,0);  if(ms>ClkDaysInMonth(y,3))  ms-=7;
+   int os=ClkNthWeekday(y,10,5,0); if(os>ClkDaysInMonth(y,10)) os-=7;
+   return (utc>=ClkUtcAt(y,3,ms,1) && utc<ClkUtcAt(y,10,os,1)) ? 3600 : 0;
+}
+int ClkDstDelta(datetime utc,int rule)                            // seconds the server clock is ahead of its standard time
+{
+   if(rule==CLK_RULE_US) return ClkNyUtcOffset(utc)==-4*3600 ? 3600 : 0;
+   if(rule==CLK_RULE_EU) return ClkEuUtcOffset(utc);
+   return 0;
+}
+bool ClkNearTransition(datetime utc,int rule,int hours)           // a DST change of this rule lies within +-hours of utc
+{
+   return ClkDstDelta(utc-hours*3600,rule)!=ClkDstDelta(utc+hours*3600,rule);
+}
+
+// ---- broker server clock <-> UTC ----------------------------------------------------------------------------------
+datetime ClkUtcToServer(datetime utc,int rule,int baseMin) { return utc+baseMin*60+ClkDstDelta(utc,rule); }   // always unique
+datetime ClkServerToUtc(datetime server,int rule,int baseMin,datetime lowerBoundUtc,int &conv)
+{
+   conv=CLK_CONV_EXACT;
+   datetime a=server-baseMin*60;                                   // read as standard time (later instant in a fold)
+   if(rule==CLK_RULE_NONE) return a;
+   datetime b=a-3600;                                              // read as DST (earlier instant in a fold)
+   bool va=(ClkUtcToServer(a,rule,baseMin)==server);
+   bool vb=(ClkUtcToServer(b,rule,baseMin)==server);
+   if(va && !vb) return a;
+   if(vb && !va) return b;
+   if(va && vb)                                                     // fold
+   {
+      if(lowerBoundUtc<=0) { conv=CLK_CONV_FOLD_FIRST; return b; }
+      conv=CLK_CONV_FOLD_BOUND;
+      return (b>=lowerBoundUtc) ? b : a;
+   }
+   conv=CLK_CONV_GAP;                                              // gap
+   return a;
+}
+
+// ---- America/New_York wall time <-> UTC (for strategies defined in New York time) -------------------------------------
+datetime ClkUtcToNy(datetime utc) { return utc+ClkNyUtcOffset(utc); }
+// nyWall = New York wall clock encoded as a datetime (as if UTC). Fold -> first occurrence. Gap -> shifted forward.
+datetime ClkNyToUtc(datetime nyWall,int &conv)
+{
+   conv=CLK_CONV_EXACT;
+   datetime d=nyWall+4*3600, s=nyWall+5*3600;                      // EDT reading is the earlier instant
+   bool vd=(ClkNyUtcOffset(d)==-4*3600), vs=(ClkNyUtcOffset(s)==-5*3600);
+   if(vd && !vs) return d;
+   if(vs && !vd) return s;
+   if(vd && vs) { conv=CLK_CONV_FOLD_FIRST; return d; }
+   conv=CLK_CONV_GAP;
+   return s;
+}
+
+int ClkNyYmd(datetime utc)                                         // New York calendar date of a UTC instant, YYYYMMDD
+{
+   int y,m,d; ClkCivilFromDays((int)(ClkUtcToNy(utc)/86400),y,m,d);
+   return y*10000+m*100+d;
+}
+int ClkNyMinute(datetime utc) { return (int)((ClkUtcToNy(utc)%86400)/60); }          // New York minute-of-day 0..1439
+// UTC instant of "minuteOfDay on New York date ymd" (e.g. 09:30 -> 570). Fold -> first occurrence, gap -> shifted forward.
+datetime ClkNyYmdToUtc(int ymd,int minuteOfDay,int &conv)
+{
+   return ClkNyToUtc((datetime)((long)ClkDaysFromCivil(ymd/10000,(ymd/100)%100,ymd%100)*86400+minuteOfDay*60),conv);
+}
+
+// ---- weekly open/close evidence: infer a broker's DST rule (and, under one stated assumption, its base) ----------------
+// The FX week opens and closes at fixed New York times, so the SERVER stamps of the first and last M15 bar of each week
+// reveal how the server clock moves against New York. With r_w = Sunday 17:00 NY (opens) or Friday 16:45 NY (start of the
+// last M15 bar before the 17:00 NY close), in UTC, and a hypothesised rule R:
+//      dev_w(R) = stamp_w - r_w - dst(R, r_w)
+// is constant across weeks iff R is the true rule. The constant is base plus the feed's convention; late holiday opens
+// only add sporadic positive noise; a wrong rule leaves +-1h steps. Opens and closes are scored together (twice the
+// evidence in the same history). The RULE is therefore provable from history alone.
+// The absolute BASE is not: a feed shifted by one hour looks identical to a server shifted by one hour. Sources of the
+// base, strongest first: live observation (TimeTradeServer-TimeGMT), a registry or learned profile, then - tester only -
+// the CLOSE ANCHOR below, which rests on ONE stated assumption: the weekly close is Friday 17:00 NY (last M15 bar 16:45 NY).
+// Use symbols that follow the global FX week (FX pairs, metals, US-hours indices); others fail the quality gates.
+datetime ClkWeekRefUtc(datetime stamp)                            // Sunday 17:00 New York, UTC
+{
+   int z=(int)(stamp/86400), dw=ClkDayOfWeek(z);
+   int sun=(dw>=4)?z+(7-dw):z-dw;
+   datetime approx=(datetime)((long)sun*86400+22*3600);
+   return (datetime)((long)sun*86400+17*3600-ClkNyUtcOffset(approx));
+}
+datetime ClkWeekCloseRefUtc(datetime stamp)                       // Friday 16:45 New York, UTC (start of the last M15 bar of the week)
+{
+   int z=(int)(stamp/86400), dw=ClkDayOfWeek(z);
+   int fri=(dw==6)?z-1:z;
+   datetime approx=(datetime)((long)fri*86400+21*3600);
+   return (datetime)((long)fri*86400+16*3600+45*60-ClkNyUtcOffset(approx));
+}
+// First/last-bar-of-week stamps from ascending M15 bar stamps: a >=40h hole, last bar before on Fri/Sat, first after on Sun/Mon.
+int ClkWeekOpens(datetime &bars[],int n,datetime &opens[])
+{
+   int c=0;
+   for(int i=1;i<n;i++)
+   {
+      if(bars[i]-bars[i-1]<40*3600) continue;
+      int dp=ClkDayOfWeek((int)(bars[i-1]/86400)), dn=ClkDayOfWeek((int)(bars[i]/86400));
+      if((dp!=5 && dp!=6) || (dn!=0 && dn!=1)) continue;
+      ArrayResize(opens,c+1); opens[c++]=bars[i];
+   }
+   return c;
+}
+int ClkWeekCloses(datetime &bars[],int n,datetime &closes[])
+{
+   int c=0;
+   for(int i=1;i<n;i++)
+   {
+      if(bars[i]-bars[i-1]<40*3600) continue;
+      int dp=ClkDayOfWeek((int)(bars[i-1]/86400)), dn=ClkDayOfWeek((int)(bars[i]/86400));
+      if((dp!=5 && dp!=6) || (dn!=0 && dn!=1)) continue;
+      ArrayResize(closes,c+1); closes[c++]=bars[i-1];
+   }
+   return c;
+}
+// How many weeks of one series sit on a single constant under rule r (tolerance 15 min); mode = that constant (seconds).
+int ClkSeriesHits(datetime &st[],int n,int rule,bool isClose,long &mode)
+{
+   mode=0;
+   if(n<=0) return 0;
+   if(n>CLK_MAX_WEEKS) n=CLK_MAX_WEEKS;
+   long dev[CLK_MAX_WEEKS];
+   for(int w=0;w<n;w++)
+   {
+      datetime ref=isClose ? ClkWeekCloseRefUtc(st[w]) : ClkWeekRefUtc(st[w]);
+      dev[w]=(long)st[w]-(long)ref-ClkDstDelta(ref,rule);
+   }
+   int h=0;
+   for(int w=0;w<n;w++)
+   {
+      int c=0;
+      for(int j=0;j<n;j++) if(MathAbs(dev[j]-dev[w])<=900) c++;
+      if(c>h) { h=c; mode=dev[w]; }
+   }
+   return h;
+}
+// status: 1 resolved | 0 ambiguous | -1 insufficient history (<40 weekly opens). Resolved needs >=85% of all open+close
+// observations on one constant per series, and the winner beating the runner-up by >=3 observations.
+// nClose may be 0 (opens only). modeOpen/modeClose are the winning rule's constants in seconds.
+int ClkInferRule(datetime &opens[],int nOpen,datetime &closes[],int nClose,int &rule,int &hits,int &margin,int &modeOpen,int &modeClose)
+{
+   rule=-1; hits=0; margin=0; modeOpen=0; modeClose=0;
+   if(nOpen<CLK_MIN_WEEKS) return -1;
+   if(nOpen>CLK_MAX_WEEKS) nOpen=CLK_MAX_WEEKS;
+   if(nClose>CLK_MAX_WEEKS) nClose=CLK_MAX_WEEKS;
+   int bestH=-1, secondH=-1, bestR=0; long bestMO=0, bestMC=0;
+   for(int r=0;r<3;r++)
+   {
+      long mo=0, mc=0;
+      int h=ClkSeriesHits(opens,nOpen,r,false,mo)+ClkSeriesHits(closes,nClose,r,true,mc);
+      if(h>bestH) { secondH=bestH; bestH=h; bestR=r; bestMO=mo; bestMC=mc; }
+      else if(h>secondH) secondH=h;
+   }
+   int total=nOpen+nClose;
+   rule=bestR; hits=bestH; margin=bestH-(secondH<0?0:secondH); modeOpen=(int)bestMO; modeClose=(int)bestMC;
+   return (bestH*100>=total*85 && margin>=CLK_MIN_MARGIN) ? 1 : 0;
+}
+// Base (minutes) implied by a live server-minus-UTC observation (seconds, rounded to 15 min) under a rule.
+int ClkBaseFromLive(int observedSec,int rule,datetime utcNow)
+{
+   int adj=observedSec-ClkDstDelta(utcNow,rule);
+   if(adj%900!=0) return CLK_BASE_INVALID;
+   int m=adj/60;
+   return (m<-720 || m>840) ? CLK_BASE_INVALID : m;
+}
+// Base from a weekly-open constant ONLY under an assumed feed open hour (17 or 18 NY). An assumption, not a proof.
+int ClkBaseFromAnchor(int modeSec,int openNYHour)
+{
+   int adj=modeSec-(openNYHour-17)*3600;
+   int r=(adj>=0) ? ((adj+450)/900)*900 : ((adj-450)/900)*900;
+   if(MathAbs(adj-r)>300) return CLK_BASE_INVALID;
+   int m=r/60;
+   return (m<-720 || m>840) ? CLK_BASE_INVALID : m;
+}
+// CLOSE ANCHOR (tester): base from the weekly-close constant, assuming the weekly close is Friday 17:00 NY, accepted ONLY
+// when the open constant agrees under a 17:00 or 18:00 NY open (that agreement is the consistency check) and the base is
+// on the 15-minute grid. openNY returns 17 or 18. The accepted feed shapes are exactly (open=close) and (open=close+1h), so
+// the single residual assumption is close = 17:00 NY: a feed whose close is at c NY is read as a server shifted by (c-17)h.
+// That is why the result is labelled and a live/registry/learned profile always outranks it.
+int ClkBaseFromCloseAnchor(int modeOpenSec,int modeCloseSec,int &openNY)
+{
+   openNY=0;
+   int bc=ClkBaseFromAnchor(modeCloseSec,17);
+   if(bc==CLK_BASE_INVALID) return CLK_BASE_INVALID;
+   if(bc==ClkBaseFromAnchor(modeOpenSec,17)) { openNY=17; return bc; }
+   if(bc==ClkBaseFromAnchor(modeOpenSec,18)) { openNY=18; return bc; }
+   return CLK_BASE_INVALID;
+}
+
+// OPEN ANCHOR (tester): base from the weekly-open constant under an assumed feed open hour. Same class of assumption,
+// independent of the close. Used when the close geometry does not validate, so a feed whose close is not 17:00 NY
+// resolves with a labelled assumption instead of refusing to run.
+int ClkBaseFromOpenAnchor(int modeOpenSec,int openNYHour) { return ClkBaseFromAnchor(modeOpenSec,openNYHour); }
+
+// ---- dated schedule: (fromUtc, rule, baseMin) segments --------------------------------------------------------------
+// A one-segment schedule reproduces the single model exactly. Segments are ordered by fromUtc and cover all instants:
+// the first segment applies to everything before fromUtc[1].
+#define CLK_SEG_MAX        64
+#define CLK_SEG_MIN_WEEKS  8
+int ClkSegIndex(datetime utc,datetime &from[],int n)
+{
+   if(n<=0) return -1;
+   int i=n-1;
+   while(i>0 && utc<from[i]) i--;
+   return i;
+}
+datetime ClkUtcToServerSeg(datetime utc,datetime &from[],int &rule[],int &baseMin[],int n)
+{
+   int i=ClkSegIndex(utc,from,n);
+   if(i<0) return 0;
+   return ClkUtcToServer(utc,rule[i],baseMin[i]);
+}
+// Server stamp -> UTC against a schedule. The reading must be self-consistent: the instant it produces has to fall in
+// the same segment that produced it, otherwise the next older segment is tried. Deterministic, no state.
+datetime ClkServerToUtcSeg(datetime server,datetime &from[],int &rule[],int &baseMin[],int n,datetime lowerBoundUtc,int &conv)
+{
+   conv=CLK_CONV_EXACT;
+   if(n<=0) return 0;
+   for(int i=n-1;i>=0;i--)
+   {
+      int c;
+      datetime u=ClkServerToUtc(server,rule[i],baseMin[i],lowerBoundUtc,c);
+      if(ClkSegIndex(u,from,n)!=i) continue;
+      if(ClkUtcToServerSeg(u,from,rule,baseMin,n)!=server) continue;
+      conv=c;
+      return u;
+   }
+   return 0;
+}
+// Per-range fit: does ONE (rule, base) describe this slice of weeks, proven by ClkInferRule?
+// The base comes from the close anchor when that anchor validates, otherwise from the labelled open-hour assumption.
+bool ClkFitRange(datetime &opens[],int oStart,int count,datetime &closes[],int openNYHour,
+                 int &rule,int &baseMin,int &hits)
+{
+   if(count<CLK_SEG_MIN_WEEKS) return false;
+   datetime o[CLK_MAX_WEEKS]; datetime c[CLK_MAX_WEEKS];
+   int nc=(count<=CLK_MAX_WEEKS)?count:CLK_MAX_WEEKS;
+   for(int i=0;i<nc;i++) { o[i]=opens[oStart+i]; c[i]=closes[oStart+i]; }
+   int margin=0, mo=0, mc=0;
+   if(ClkInferRule(o,nc,c,nc,rule,hits,margin,mo,mc)!=1) return false;
+   int on=0;
+   int b=ClkBaseFromCloseAnchor(mo,mc,on);
+   if(b==CLK_BASE_INVALID) b=ClkBaseFromAnchor(mo,openNYHour);
+   if(b==CLK_BASE_INVALID) return false;
+   baseMin=b;
+   return true;
+}
+// Recursive dated schedule. A range that one (rule, base) explains becomes one segment; otherwise the split that lets
+// both halves be proven independently wins. Depth is bounded, so a pathological history returns 0 segments instead of
+// inventing many.
+int ClkSchedRange(datetime &opens[],int oStart,int count,datetime &closes[],int openNYHour,int depth,
+                  datetime &from[],int &rule[],int &baseMin[],int &segWeeks[],int &covered)
+{
+   int r=0,h=0,b=0;
+   if(ClkFitRange(opens,oStart,count,closes,openNYHour,r,b,h))
+   {
+      int n=ArraySize(from);
+      ArrayResize(from,n+1); ArrayResize(rule,n+1); ArrayResize(baseMin,n+1); ArrayResize(segWeeks,n+1);
+      from[n]=(n==0) ? 0 : ClkWeekRefUtc(opens[oStart]);
+      rule[n]=r; baseMin[n]=b; segWeeks[n]=count;
+      covered+=count;
+      return n+1;
+   }
+   if(depth<=0 || count<2*CLK_SEG_MIN_WEEKS) return 0;
+   int bestK=0,bestScore=-1;
+   for(int k=CLK_SEG_MIN_WEEKS;k<=count-CLK_SEG_MIN_WEEKS;k++)
+   {
+      int r1=0,h1=0,b1=0,r2=0,h2=0,b2=0;
+      if(!ClkFitRange(opens,oStart,k,closes,openNYHour,r1,b1,h1)) continue;
+      if(!ClkFitRange(opens,oStart+k,count-k,closes,openNYHour,r2,b2,h2)) continue;
+      if(b1==b2 && r1==r2) continue;                        // same clock on both sides: not a change point
+      int score=h1+h2-(count-(h1+h2))*4;                    // prefer splits where both halves fit well
+      if(score>bestScore) { bestScore=score; bestK=k; }
+   }
+   if(bestK==0) return 0;
+   int a=ClkSchedRange(opens,oStart,bestK,closes,openNYHour,depth-1,from,rule,baseMin,segWeeks,covered);
+   if(a<=0) return 0;
+   int c2=ClkSchedRange(opens,oStart+bestK,count-bestK,closes,openNYHour,depth-1,from,rule,baseMin,segWeeks,covered);
+   if(c2<=a) return 0;
+   return c2;
+}
+// Build a dated schedule from weekly open/close evidence. openNYHour is the assumed feed open hour (17 or 18).
+// The RULE and every CHANGE are proven by the same weekly-constant test the single model uses; only the absolute base
+// rests on the labelled feed-geometry assumption. covered reports how many weeks the schedule actually explains.
+int ClkScheduleFromEvidence(datetime &opens[],int nOpen,datetime &closes[],int nClose,int openNYHour,
+                            datetime &from[],int &rule[],int &baseMin[],int &segWeeks[],int &covered)
+{
+   covered=0;
+   ArrayResize(from,0); ArrayResize(rule,0); ArrayResize(baseMin,0); ArrayResize(segWeeks,0);
+   if(nOpen<CLK_SEG_MIN_WEEKS) return 0;
+   if(nClose<nOpen) nOpen=nClose;                      // opens and closes are produced in parallel
+   if(nOpen>CLK_MAX_WEEKS) nOpen=CLK_MAX_WEEKS;
+   int n=ClkSchedRange(opens,0,nOpen,closes,openNYHour,3,from,rule,baseMin,segWeeks,covered);
+   if(n<=0) return 0;
+   if(n>CLK_SEG_MAX) return 0;
+   from[0]=0;                                          // the first segment covers the whole earlier history
+   return n;
+}
+// ===== CLK-CORE 1.2 END =====================================================================================
 
 // Embedded installed platform trade implementation; no external include dependency.
 // BEGIN EMBEDDED SDK: Trade/Trade.mqh
@@ -3646,7 +4160,6 @@ bool CTrade::SelectPosition(const string symbol)
 #ifndef RBE_TIME_MQH
 #define RBE_TIME_MQH
 // ORB_Scalper clock port: compile-time helper, no runtime file dependency.
-#define ORB_TESTER_DEFAULT_SERVER_UTC 8
 
 datetime MakeDateTime(int year,int mon,int day,int hour,int minute,int sec)
 {
@@ -3661,199 +4174,37 @@ datetime MakeDateTime(int year,int mon,int day,int hour,int minute,int sec)
     return StructToTime(dt);
 }
 
-int NthSundayOfMonthUTC(int year,int month,int nth)
+
+
+
+int ServerAheadOfNewYork(datetime atServer)
 {
-    if(nth < 1) return 1;
-    MqlDateTime dt; ZeroMemory(dt);
-    dt.year=year; dt.mon=month; dt.day=1;
-    datetime firstDay=StructToTime(dt);
-    TimeToStruct(firstDay,dt);
-    int firstDow=dt.day_of_week;            // 0=Sunday
-    int firstSunday=1 + ((7-firstDow)%7);
-    return firstSunday + (nth-1)*7;
+    // The standard clock owns every conversion: the adapter maps this server stamp to UTC and the
+    // clock core supplies New York. Seconds by which the server is ahead of New York, which is the
+    // single input of every session, news and scheduling decision in this EA.
+    datetime utc = ClkStampToUtc(atServer);
+    if(utc > 0) return (int)((long)atServer - (long)ClkUtcToNy(utc));
+    return 7*3600;   // no mapping yet (first ticks, no history): the documented shape of this feed
 }
 
-int NYUTCOffsetSec(datetime utcTime)
-{
-    if(!true) return -5*3600;
-    MqlDateTime utc; TimeToStruct(utcTime,utc);
-    int year=utc.year;
-
-    int marchSunday    = NthSundayOfMonthUTC(year,3,2);
-    int novemberSunday = NthSundayOfMonthUTC(year,11,1);
-
-    MqlDateTime startUtc; ZeroMemory(startUtc);
-    startUtc.year=year; startUtc.mon=3;  startUtc.day=marchSunday;    startUtc.hour=7;
-    MqlDateTime endUtc;   ZeroMemory(endUtc);
-    endUtc.year=year;   endUtc.mon=11; endUtc.day=novemberSunday;   endUtc.hour=6;
-
-    datetime dstStart=StructToTime(startUtc);
-    datetime dstEnd  =StructToTime(endUtc);
-    return (utcTime>=dstStart && utcTime<dstEnd) ? -4*3600 : -5*3600;
-}
-
-int TesterWeekAnchorOffsetSec(datetime atServer=0)
-{
-    if(atServer==0) atServer=TimeCurrent();
-    static datetime cachedWeekOpen[6];
-    static int cachedOffset[6];
-    static int nextCache=0;
-    for(int c=0;c<6;c++)
-        if(cachedWeekOpen[c]>0 && atServer>=cachedWeekOpen[c] && atServer<cachedWeekOpen[c]+7*86400)
-            return cachedOffset[c];
-
-    // History may not be loaded on the very first call (OnInit) - retry later.
-    int first=iBarShift(_Symbol,PERIOD_H1,atServer,false);
-    if(first<0 || iTime(_Symbol,PERIOD_H1,first)<=0) return -999999;
-
-    datetime newer = 0;
-    for(int i = first; i < first+500; i++)
-    {
-        datetime t = iTime(_Symbol, PERIOD_H1, i);
-        if(t <= 0) break;
-        if(newer > 0 && (newer - t) >= 40*3600)      // candidate weekend gap
-        {
-            datetime weekOpenServer = newer;          // first bar of the new week
-            datetime weekCloseServer = t;             // last bar of the prior week
-
-            // EXNESS +1h REGRESSION FIX: validate the gap is a TRUE Fri->Sun
-            // weekend, not a holiday hole or a data gap. The bar BEFORE the gap
-            // must fall on a Friday (server time, dow 5) and the bar AFTER it on
-            // a Sunday or Monday (dow 0/1). A few hours of offset skew can never
-            // move a Friday-evening bar off Friday, so the day-of-week test is
-            // safe before the offset is even known. Reject anything else and
-            // keep scanning for the next gap.
-            MqlDateTime co; TimeToStruct(weekCloseServer, co);
-            MqlDateTime op; TimeToStruct(weekOpenServer,  op);
-            bool closeIsFri = (co.day_of_week == 5);
-            bool openIsSunMon = (op.day_of_week == 0 || op.day_of_week == 1);
-            if(!closeIsFri || !openIsSunMon) { newer = t; continue; }
-
-            // The market week ALWAYS opens at 17:00 New York. Derive the
-            // broker's FIXED server->UTC offset from this anchor, then let
-            // NYUTCOffsetSec apply NY DST once on top (the correct model).
-            //
-            // CORRECT MODEL (evidence: Exness runs a FIXED UTC offset, NOT a
-            // DST-following clock - a 09:30 NY range fires at 14:30 server in
-            // summer and 15:30 in winter on the same UTC+1 feed). So:
-            //   serverUTCoffset = weekendServerSecOfDay - weekendUTCSecOfDay
-            // where the weekend's UTC second-of-day is 17:00 NY converted via
-            // that weekend's OWN DST: summer (EDT,-4h) -> 21:00 UTC,
-            // winter (EST,-5h) -> 22:00 UTC. The weekend DST is resolved from
-            // its NY wall-clock (17:00), which is unambiguous.
-            // The server stamp of the weekly-open bar IS the server->NY offset
-            // directly. On FundingPips the first bar of the week is stamped
-            // server 02:00 = 18:00 NY (Sunday), so server->NY = 02:00 - 18:00
-            // wrapped = +8h. DST is already baked into the server clock
-            // (DST-following feed), so we DO NOT re-apply NY DST on top - that
-            // double-count was the 1h summer error. For a fixed-UTC feed
-            // (Exness) the open bar sits at a different season-dependent server
-            // time and the anchor re-derives the correct server->NY per season.
-            //
-            // WEEKLY-OPEN REFERENCE = 18:00 NY (not 17:00): this feed's first
-            // post-weekend bar lands at 18:00 NY. Using 17:00 over-counted the
-            // offset by 1h (Dec resolved 9h -> 18:30 instead of 8h -> 17:30).
-            int srvSecDay     = (int)((long)weekOpenServer % 86400);
-            int nyOpenSecDay  = 18*3600;                          // 18:00 NY open
-            int diff          = srvSecDay - nyOpenSecDay;         // server->NY offset
-            while(diff >  12*3600) diff -= 86400;
-            while(diff < -12*3600) diff += 86400;
-            int off = (int)(MathRound((double)diff/3600.0)*3600.0);  // snap to hour
-
-            // PLAUSIBILITY GATE: server->NY for real feeds is roughly -2..+10.
-            if(off < -2*3600 || off > 10*3600) { newer = t; continue; }
-
-            cachedWeekOpen[nextCache]=weekOpenServer;
-            cachedOffset[nextCache]=off;
-            nextCache=(nextCache+1)%6;
-            // DIAGNOSTIC: surface what the anchor resolved so the tester time
-            // can be verified directly (weekend bar + derived offset).
-            return off;
-        }
-        newer = t;
-    }
-    // History can arrive after OnInit. Retry rather than freezing a fallback.
-    return -999999;
-}
-
-int ServerNYOffsetSec(datetime atServer)
-{
-    int correction = 0 * 3600;   // +/- nudge on auto value
-    int autoOff;
-
-    // TESTER: TimeGMT() is simulated (~= server clock), so the live
-    // TimeTradeServer()-vs-TimeGMT() method collapses to 0. Use the weekly-open
-    // anchor instead (Sunday 17:00 NY), which yields server->NY directly,
-    // guarded by a Fri->Sun day-of-week check + plausibility gate. Falls back to
-    // a sane default only if no valid weekend gap is in the loaded history (a
-    // sub-week window or a 24/7 crypto feed); pin it with the correction input.
-    if((bool)MQLInfoInteger(MQL_TESTER))
-    {
-        int anchored = TesterWeekAnchorOffsetSec(atServer);
-        if(anchored != -999999)
-            autoOff = anchored;
-        else
-            // No weekend in range (sub-week window or 24/7 feed): use the
-            // default DIRECTLY - it is already a server->NY value (flat NY+8h
-            // for FundingPips), so it is correct in both seasons with no DST
-            // term. Adding NYUTCOffsetSec here was the leftover double-count
-            // that pushed summer to 12h/21:30.
-            autoOff = ORB_TESTER_DEFAULT_SERVER_UTC*3600;
-        return autoOff + correction;
-    }
-
-    // LIVE: server->UTC from the live trade-server clock vs GMT, then add NY's
-    // UTC offset to express it as server->NY (server is AHEAD of NY by this).
-    datetime serverNow = TimeCurrent();
-    datetime tradeNow  = TimeTradeServer();
-    datetime gmtNow    = TimeGMT();
-
-    int currentOff = (int)(serverNow - gmtNow);
-    int tradeOff   = (tradeNow > 0) ? (int)(tradeNow - gmtNow) : 0;
-
-    int rawUTC = 0;
-    if(tradeNow > 0)                   rawUTC = tradeOff;
-    else if(MathAbs(currentOff) >= 60) rawUTC = currentOff;
-    int serverUTC = (int)(MathRound((double)rawUTC / 3600.0) * 3600.0);
-
-    // server->NY = server->UTC - NY->UTC  (NYUTCOffsetSec is negative, so this
-    // adds the 4h/5h; e.g. UTC+0 server in winter = NY+5h).
-    // Rebuilding a prior day must use that day's NY DST, not today's.
-    // Retain ORB's live server/GMT calibration. For older broker dates,
-    // use its weekly anchor only when today's anchor agrees with the live
-    // clock; feeds whose weekly opening differs from 18:00 NY keep the
-    // calibrated conversion instead of inheriting an unvalidated anchor.
-    autoOff = serverUTC - NYUTCOffsetSec(atServer-serverUTC);
-    if((long)atServer/86400!=(long)serverNow/86400)
-    {
-        int liveAnchor=TesterWeekAnchorOffsetSec(serverNow);
-        if(liveAnchor==serverUTC-NYUTCOffsetSec(gmtNow))
-        {
-            int datedAnchor=TesterWeekAnchorOffsetSec(atServer);
-            if(datedAnchor!=-999999) autoOff=datedAnchor;
-        }
-    }
-    return autoOff + correction;
-}
-
-datetime ServerToNY(datetime serverTime)
+datetime ServerToNewYork(datetime serverTime)
 {
     // Server clock already carries DST (DST-following feed) or the anchor has
     // resolved the correct per-season offset (fixed-UTC feed). Convert directly.
-    return serverTime - ServerNYOffsetSec(serverTime);
+    return serverTime - ServerAheadOfNewYork(serverTime);
 }
 
-datetime NYLocalToServer(int year,int mon,int day,int hour,int minute,int sec)
+datetime NewYorkLocalToServer(int year,int mon,int day,int hour,int minute,int sec)
 {
-    // Exact inverse of ServerToNY: the server clock is AHEAD of NY wall time by
-    // ServerNYOffsetSec (DST already baked into the server clock, or resolved
+    // Exact inverse of ServerToNewYork: the server clock is AHEAD of NY wall time by
+    // ServerAheadOfNewYork (DST already baked into the server clock, or resolved
     // per-season by the anchor). So server = NY wall + offset, directly. No
     // UTC round trip and no second DST application - that double-count was the
     
 // old 1h summer error.
     datetime nyWall = MakeDateTime(year,mon,day,hour,minute,sec);
-    datetime candidate=nyWall + ServerNYOffsetSec(TimeCurrent());
-    return nyWall + ServerNYOffsetSec(candidate);
+    datetime candidate=nyWall + ServerAheadOfNewYork(TimeCurrent());
+    return nyWall + ServerAheadOfNewYork(candidate);
 }
 #endif
 
@@ -3940,8 +4291,8 @@ input(name="Trade direction") ENUM_RBE_DIRECTION Trade_Direction=RBE_BOTH;
 const int              Max_Trades       = 2;            // Max total trades per day
 
 input group "==========  News Guard  =========="
-input(name="WebRequest URL (copy to MT5 Options)") string News_WebRequest_URL = "https://nfs.faireconomy.media";
 input(name="News impact (USD)") ENUM_NEWS_IMPACT News_Impact = NEWS_RED_ONLY;
+input(name="Use saved calendar in tester") bool InpNewsCacheInTester = false;
 input(name="Blackout around release") ENUM_NEWS_WINDOW News_Window = NEWS_WINDOW_10;
 input(name="Move stop to cost-covered BE") bool News_Cost_Covered_BE = true;
 input(name="Close position before news") bool News_Flatten_Before = false;
@@ -4046,14 +4397,14 @@ long g_liveAfterMsc=0;
 
 datetime RBENYDay(datetime server)
 {
-    datetime ny=ServerToNY(server);
+    datetime ny=ServerToNewYork(server);
     datetime day=(datetime)((long)ny/86400*86400);
     return ny-day>=17*3600 ? day+86400 : day;
 }
 datetime RBESessionTime(datetime day,int hour,int minute,bool previous=false)
 {
     MqlDateTime d; TimeToStruct(previous ? day-86400 : day,d);
-    return NYLocalToServer(d.year,d.mon,d.day,hour,minute,0);
+    return NewYorkLocalToServer(d.year,d.mon,d.day,hour,minute,0);
 }
 bool RBERangeAccepted(const RBEViewDay &d)
 {
@@ -4112,7 +4463,7 @@ void RBEQuote(RBEViewDay &d,double bid,double ask,datetime time)
 }
 void RBEReplay(datetime now)
 {
-    if((bool)MQLInfoInteger(MQL_TESTER) && TesterWeekAnchorOffsetSec()==-999999)
+    if(false)   // the standard clock always answers; the branch is kept only to keep the shape obvious
     { g_replayReady=false; return; }
     datetime key=RBENYDay(now);
     bool currentReady=false;
@@ -4193,6 +4544,9 @@ void RBEReplay(datetime now)
 #include "ExecutionRuntime.mqh"
 int OnInit()
 {
+   { int clockInit=ClkInit(); if(clockInit!=INIT_SUCCEEDED) return clockInit; }
+   ClkRefresh(ClkNowServer());
+    RBEUseCacheInTester = InpNewsCacheInTester;
     if(CanPanel())
     {
         g_savedForeground=ChartGetInteger(0,CHART_FOREGROUND);
@@ -4247,6 +4601,7 @@ void OnTradeTransaction(const MqlTradeTransaction &trans,
     if(trans.type==TRADE_TRANSACTION_REQUEST && request.magic==(ulong)Magic && request.symbol==_Symbol)
         RBELatchRestriction(result.retcode);
     if(trans.type != TRADE_TRANSACTION_DEAL_ADD || trans.symbol != _Symbol) return;
+    g_recoveryCountsDirty=true; // set before HistoryDealSelect, which can fail right at DEAL_ADD
     ulong deal = trans.deal;
     if(deal == 0 || !HistoryDealSelect(deal)) return;
     if(HistoryDealGetInteger(deal, DEAL_MAGIC) != Magic) return;
@@ -4398,8 +4753,12 @@ void BuildRange(datetime now)
 
 void OnChartEvent(const int id,const long &lparam,const double &dparam,const string &sparam)
 {
+    // Only terminal trade-history objects ("#...") need the recreate-to-restack
+    // treatment. Restacking for every created object made the panel flash on
+    // chart open, timeframe changes and any other EA drawing on the chart.
     if(id==CHARTEVENT_OBJECT_CREATE && CanPanel()
-       && StringFind(sparam,PFX)!=0 && StringFind(sparam,PPFX)!=0)
+       && StringFind(sparam,PFX)!=0 && StringFind(sparam,PPFX)!=0
+       && StringGetCharacter(sparam,0)=='#')
     {
         // ZORDER governs click priority, not foreground drawing priority.
         // Recreate the panel after newly drawn terminal/history objects.
