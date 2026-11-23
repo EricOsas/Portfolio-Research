@@ -14,10 +14,14 @@ input group "==========  1 - Trading  =========="
 input bool   EnableTrading   = true;            // Enable trading (false = manage/flatten only)
 input group " "
 input group "==========  2 - Legs & Size  =========="
-enum GF_LEGS { GF_LEGS_BOTH=0, GF_LEGS_LONG=1, GF_LEGS_SHORT=2 };
-input GF_LEGS Legs            = GF_LEGS_BOTH;  // Legs: both / long into the fix / short after it
-input double Lots            = 0.10;            // Fixed lots per pair (PDF reference: 1.00 on a 100k account)
-input double MaxExposureLots = 1.00;            // Exposure guard: owned lots + new entry may not exceed this
+enum GF_LEGS
+  {
+   GF_LEGS_BOTH  = 0,   // Both legs
+   GF_LEGS_LONG  = 1,   // Long only
+   GF_LEGS_SHORT = 2    // Short only
+  };
+input GF_LEGS Legs            = GF_LEGS_BOTH;  // Tradeable legs
+input double Lots            = 0.10;            // Fixed lots per leg (the only risk sizing: one position at a time)
 input group "  "
 input group "==========  3 - Broker Clock  =========="
 input string ExtraHolidays   = "";              // Official extra Japanese bank holidays, YYYYMMDD comma-separated

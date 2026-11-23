@@ -4281,7 +4281,9 @@ int clkConvDummy=0;   // fold/gap report of the NY->UTC conversions (unused)
 
 bool ClockInitOnce()
 {
-   return (ClkInit()==INIT_SUCCEEDED);   // the standard clock owns the broker's offset; it needs no input
+   if(ClkInit()!=INIT_SUCCEEDED) return false;
+   ClkRefresh(ClkNowServer()); // Seed live mapping before any startup/session conversion.
+   return true;
 }
 
 datetime TcDate(int year,int month,int day,int hour=0)
@@ -4548,6 +4550,7 @@ datetime EventOn(datetime day)
 }
 // ---------------- clock ----------------------------------------------------------------------------
 datetime NYNow() { return NewYorkFromServer(TimeCurrent()); }
+bool TcDeadlineReached(datetime now, datetime deadline) { return now>0 && deadline>0 && now>=deadline; }
 int      MinOfDay(datetime t) { return (int)((t % 86400) / 60); }
 datetime DayOf(datetime t) { return t - (t % 86400); }
 // the NY session (17:00 NY on date D .. 16:55 NY on D+1) containing NY time t -> D (00:00)
@@ -4733,6 +4736,11 @@ void OnDeinit(const int reason)
 void OnTick()
 {
    datetime ny = NYNow();
+   if(ny<=0 || !ClkOK())
+   {
+      Reconcile(S1, "sl"); Reconcile(S3, "sl"); // Non-time-based owned settlement stays active.
+      return; // No guessed session reset, expiry or new signal on an unresolved clock.
+   }
    datetime session = SessionOf(ny);
    int mod = MinOfDay(ny);
    // new session: reset
@@ -4750,7 +4758,8 @@ void OnTick()
       if(is1 ? S1.pos_id == 0 : S3.pos_id == 0) continue;
       datetime fl = is1 ? S1.flat_srv : S3.flat_srv;
       datetime entry_srv=is1?S1.entry_srv:S3.entry_srv;
-      bool noon = TimeCurrent()>=ServerFromNewYork(SessionOf(NewYorkFromServer(entry_srv))+86400+12*3600);
+      datetime entryNY=NewYorkFromServer(entry_srv);
+      bool noon = entryNY>0 && TcDeadlineReached(TimeCurrent(),ServerFromNewYork(SessionOf(entryNY)+86400+12*3600));
       if(fl > 0 && TimeCurrent() >= fl) { if(is1) CloseSleeve(S1, "event"); else CloseSleeve(S3, "event"); continue; }
       if(noon) { if(is1) CloseSleeve(S1, "time"); else CloseSleeve(S3, "time"); }
    }
@@ -5031,9 +5040,13 @@ int TcPendingFillState(datetime session,datetime now)
 void TcLivePendingReconcile()
 {
    if(MQLInfoInteger(MQL_TESTER) || !TerminalInfoInteger(TERMINAL_CONNECTED))return;
+   if(!ClkOK()) return;
    MqlTick quote;if(!SymbolInfoTick(_Symbol,quote))return;
-   datetime session=SessionOf(NewYorkFromServer(quote.time));
+   datetime quoteNY=NewYorkFromServer(quote.time);
+   if(quoteNY<=0) return;
+   datetime session=SessionOf(quoteNY);
    datetime lock=ServerFromNewYork(session+23*3600),expiry=ServerFromNewYork(session+86400+3*3600);
+   if(lock<=0 || expiry<=0) return;
    if(tcPendingSession!=session)
    {
       tcPendingSession=session;tcPendingConsumed=GlobalVariableCheck(TcConsumedKey(session));tcPendingDirty=true;
@@ -5142,11 +5155,21 @@ void TcLivePendingReconcile()
    }
    tcPendingDirty=false;tcResumePending=false;done23=true;
 }
+bool tcStartupClockWait=false;
 void TcStartupReplay()
 {
    if(MQLInfoInteger(MQL_TESTER)) return;
+   ClkRefresh(ClkNowServer());
+   datetime startupNY=NYNow();
+   if(!ClkOK() || startupNY<=0)
+   {
+      if(!tcStartupClockWait) Print("TC_STARTUP_CLOCK_WAIT mapping unresolved; replay deferred, broker protection retained");
+      tcStartupClockWait=true;
+      return;
+   }
+   tcStartupClockWait=false;
    tcPendingDirty=true;
-   tcResumePending=false;tcResumeSession=SessionOf(NYNow());
+   tcResumePending=false;tcResumeSession=SessionOf(startupNY);
    TcSessionReset(tcResumeSession); // An old done23 flag must not bypass replay after a session gap.
    tcLiveActiveSince=MathMax(TimeCurrent(),TimeTradeServer());
    datetime lock=ServerFromNewYork(tcResumeSession+23*3600);
@@ -5191,6 +5214,7 @@ int OnInit()
 void OnTick()
 {
    ClkRefresh(ClkNowServer());           // resolve/cross-check the broker's offset before any time decision
+   if(tcStartupClockWait && ClkOK()) TcStartupReplay();
    if(!MQLInfoInteger(MQL_TESTER))
    {
       MqlTick liveQuote;if(!SymbolInfoTick(_Symbol,liveQuote))return;
@@ -5224,17 +5248,22 @@ void TcLiveDeadlines()
    if(MQLInfoInteger(MQL_TESTER) || !TerminalInfoInteger(TERMINAL_CONNECTED)) return;
    trade.SetExpertMagicNumber(MagicC1);
    datetime now=(datetime)MathMax(TimeCurrent(),TimeTradeServer());
-   Adopt(S1,SessionOf(NewYorkFromServer(now)));
+   datetime nowNY=NewYorkFromServer(now);
+   if(nowNY>0 && ClkOK()) Adopt(S1,SessionOf(nowNY));
    // Original order/entry date owns the deadline, even after NY session rollover.
    for(int i=OrdersTotal()-1;i>=0;i--)
    {
+      if(nowNY<=0 || !ClkOK()) break; // No clock-derived pending changes; protection below still runs.
       ulong ticket=OrderGetTicket(i);
       if(ticket==0 || OrderGetString(ORDER_SYMBOL)!=_Symbol || OrderGetInteger(ORDER_MAGIC)!=MagicC1) continue;
       long type=OrderGetInteger(ORDER_TYPE);
       if(type!=ORDER_TYPE_BUY_STOP && type!=ORDER_TYPE_SELL_STOP)continue;
       datetime setup=(datetime)OrderGetInteger(ORDER_TIME_SETUP);
-      datetime expiry=ServerFromNewYork(SessionOf(NewYorkFromServer(setup))+86400+3*3600);
-      if(now>=expiry) trade.OrderDelete(ticket);
+      datetime setupNY=NewYorkFromServer(setup);
+      if(setupNY<=0) continue;
+      datetime expiry=ServerFromNewYork(SessionOf(setupNY)+86400+3*3600);
+      if(expiry<=0) continue;
+      if(TcDeadlineReached(now,expiry)) trade.OrderDelete(ticket);
       else if(OrderGetInteger(ORDER_TYPE_TIME)!=ORDER_TIME_SPECIFIED &&
               (SymbolInfoInteger(_Symbol,SYMBOL_EXPIRATION_MODE)&SYMBOL_EXPIRATION_SPECIFIED)!=0)
          trade.OrderModify(ticket,OrderGetDouble(ORDER_PRICE_OPEN),OrderGetDouble(ORDER_SL),
@@ -5242,15 +5271,16 @@ void TcLiveDeadlines()
    }
    if(S1.pos_id>0)
    {
-      datetime deadline=ServerFromNewYork(SessionOf(NewYorkFromServer(S1.entry_srv))+86400+12*3600);
-      if(UseNewsFlatten)
+      datetime entryNY=NewYorkFromServer(S1.entry_srv);
+      datetime deadline=(entryNY>0 && ClkOK()) ? ServerFromNewYork(SessionOf(entryNY)+86400+12*3600) : 0;
+      if(UseNewsFlatten && nowNY>0 && entryNY>0 && ClkOK())
       {
          if(!TcNativeNewsValid()) {CloseSleeve(S1,"calendar_unavailable");return;}
-         datetime event=EventOn(SessionOf(NewYorkFromServer(S1.entry_srv))+86400);
-         if(event>0 && event>NewYorkFromServer(S1.entry_srv)) S1.flat_srv=ServerFromNewYork(event-NewsExitLeadMinutes*60);
+         datetime event=EventOn(SessionOf(entryNY)+86400);
+         if(event>0 && event>entryNY) S1.flat_srv=ServerFromNewYork(event-NewsExitLeadMinutes*60);
       }
-      if(S1.flat_srv>0 && now>=S1.flat_srv) CloseSleeve(S1,"event");
-      else if(now>=deadline) CloseSleeve(S1,"time");
+      if(TcDeadlineReached(now,S1.flat_srv)) CloseSleeve(S1,"event");
+      else if(TcDeadlineReached(now,deadline)) CloseSleeve(S1,"time");
       else
       {
          ulong position;
@@ -5269,6 +5299,8 @@ void TcLiveDeadlines()
 }
 void OnTimer()
 {
+   ClkRefresh(ClkNowServer());
+   if(tcStartupClockWait && ClkOK()) TcStartupReplay();
    TcLiveDeadlines();TcNativeNewsRefresh();TcLiveDeadlines();
    if(!MQLInfoInteger(MQL_TESTER) && TerminalInfoInteger(TERMINAL_CONNECTED))
    {
@@ -5283,7 +5315,8 @@ void OnTimer()
             ready=TcHistoryRisk(S1.pos_id,entry,stop,direction,exit_price,exit_time);
             if(ready){S1.stop=stop;if(exit_time>0)S1.pos_id=0;} // Restored closed history already includes this trade.
          }
-         int historyState=ready?TcPendingFillState(SessionOf(NewYorkFromServer(now)),now):-1;
+         datetime recoveryNY=NewYorkFromServer(now);
+         int historyState=(ready && ClkOK() && recoveryNY>0)?TcPendingFillState(SessionOf(recoveryNY),now):-1;
          if(historyState>=0)
          {tcRecoveryReady=true;done23=historyState>0;TcStartupReplay();Print("TC_RECOVERY_READY owned history verified; normal entry checks resumed");}
       }

@@ -1083,6 +1083,29 @@ double X9CurrencyFactor(const string symbol) {
     return (MathIsValidNumber(factor) && factor > 0.0) ? factor : 0.0;
 }
 
+string g_x9SizingAuditKey[9];
+ulong g_x9SizingAuditMs[9];
+
+// Audit decisions, not each quote-derived stop-distance fluctuation. Keep each
+// strategy independent; rapid changes are coalesced until its next calculation.
+bool X9SizingAuditChanged(double effectiveBalance, double rawLots, double currencyFactor) {
+    if (StrategyIdx < 0 || StrategyIdx >= 9) return false;
+    double minLot = SymbolInfoDouble(TradeSym, SYMBOL_VOLUME_MIN);
+    string key = TradeSym + "|" + AccountInfoString(ACCOUNT_CURRENCY) + "|" +
+        IntegerToString((int)Lotsizing_Method) + "|" + DoubleToString(effectiveBalance, 2) + "|" +
+        DoubleToString(TieredLotEff, 8) + "|" + DoubleToString(DDTierDivisor, 8) + "|" +
+        DoubleToString(RiskScaling, 8) + "|" + DoubleToString(RiskWeight, 8) + "|" +
+        DoubleToString(currencyFactor, 8) + "|" + DoubleToString(StrategyLots[StrategyIdx], 8) + "|" +
+        DoubleToString(minLot, 8) + "|" + DoubleToString(MaxLotCap, 8) + "|" +
+        ((rawLots < minLot) ? "MIN" : "SIZED");
+    if (g_x9SizingAuditKey[StrategyIdx] == key) return false;
+    ulong nowMs = GetTickCount64();
+    if (g_x9SizingAuditKey[StrategyIdx] != "" && nowMs - g_x9SizingAuditMs[StrategyIdx] < 10000) return false;
+    g_x9SizingAuditKey[StrategyIdx] = key;
+    g_x9SizingAuditMs[StrategyIdx] = nowMs;
+    return true;
+}
+
 //+------------------------------------------------------------------+
 //| CalculateLotSize (Part 3 Multi-Strategy Weighted Sizing)         |
 //+------------------------------------------------------------------+
@@ -1172,15 +1195,8 @@ void CalculateLotSize() {
     }
 
     if ( InpEnableAuditLog ){
-        ulong nowMs = GetTickCount64();
-        // Per strategy, or the nine strategies share one clock and the first one starves the rest.
-        // Static, because the throttle was a local variable: it reset to 0 on every call, so the log
-        // printed several times per tick per strategy instead of once every few seconds.
-        static ulong lastAuditLogMs[16];
-        int auditSlot = (StrategyIdx >= 0 && StrategyIdx < 16) ? StrategyIdx : 0;
-        if ( nowMs - lastAuditLogMs[auditSlot] >= 5000 ){
-            lastAuditLogMs[auditSlot] = nowMs;
-            double effBal = (InpFixedBalance > 0.0) ? InpFixedBalance : AccountInfoDouble(ACCOUNT_BALANCE);
+        double effBal = (InpFixedBalance > 0.0) ? InpFixedBalance : AccountInfoDouble(ACCOUNT_BALANCE);
+        if ( X9SizingAuditChanged(effBal, rawLots, currencyFactor) ){
             PrintFormat("[LOT_AUDIT] Strat %d | Bal=%.2f %s | Tiered=%.2f | PortfolioDiv=%.2f | SLDist=%.2f | CashPerPriceLot=%.6f | RawLots=%.8f | Lots=%.2f | MinLot=%.2f | RiskWeight=%.4f | ImpliedRisk=%.2f %s",
                         StrategyIdx + 1, effBal, AccountInfoString(ACCOUNT_CURRENCY), TieredLotEff, DDTierDivisor,
                         slDollars, currencyFactor * 100.0, rawLots, StrategyLots[StrategyIdx], brokerMinLot, RiskWeight,

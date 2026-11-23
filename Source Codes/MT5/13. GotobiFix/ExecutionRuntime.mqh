@@ -594,7 +594,6 @@ int      gfFixLogYmd=0;
 ulong    gfOwned[];                     // owned position tickets on this symbol
 int      gfOwnedN=0;
 double   gfOwnedVol=0;
-double   gfExposureCap=0.0;      // effective exposure cap: the input, never below one leg
 bool     gfScanOK=true;
 
 struct GfTrack
@@ -920,8 +919,6 @@ bool GfEnter(int leg,int ymd,datetime nowS,datetime windowStartUtc,datetime nowU
    MqlTick q;
    if(!GfQuoteFresh(q)) { gfNote="no fresh quote"; return false; }
    if(!GfLotsValid(Lots)) { gfNote="Lots invalid for symbol grid"; GfLog("GF_ENTRY_SKIP Lots not on the volume grid/min/max"); return false; }
-   double step=SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_STEP);
-   if(gfOwnedVol+Lots>gfExposureCap+step*0.5) { gfNote="exposure guard"; GfLog("GF_ENTRY_SKIP exposure guard"); return false; }
    int lateSec=(int)(nowUtc-windowStartUtc);
    if(MaxLateEntrySec>0 && lateSec>MaxLateEntrySec) { gfNote="late-entry cap"; return false; }
    double spreadPts=(q.ask-q.bid)/_Point;
@@ -1089,14 +1086,8 @@ int GfRuntimeInit()
    if(!AllowOtherSymbols && StringFind(_Symbol,"USDJPY")<0 && StringFind(_Symbol,"EURJPY")<0 && StringFind(_Symbol,"GBPJPY")<0)
    { Print("GF_INIT_FAIL strategy is specified for USDJPY, EURJPY, GBPJPY only (AllowOtherSymbols=false)"); return INIT_PARAMETERS_INCORRECT; }
    if(!GfLotsValid(Lots)) { Print("GF_INIT_FAIL Lots is not on this symbol's volume grid/min/max (never rounded)"); return INIT_PARAMETERS_INCORRECT; }
-   // A single leg must be allowed to open. A default cap below the configured lot size is a mis-set
-   // input, not a fatal condition: raise the cap to the leg and say so, one line, instead of refusing to
-   // start (this blocked launch on a cent account where Lots is 10.0 or 100.0).
-   if(MaxExposureLots<Lots)
-   {
-      PrintFormat("GF_CAP_RAISED MaxExposureLots %.2f raised to the leg size %.2f",MaxExposureLots,Lots);
-   }
-   gfExposureCap=MathMax(MaxExposureLots,Lots);   // an input is a constant; the effective cap is this
+   // Exposure needs no cap input: GfEntries only reaches an entry when nothing is owned, so the
+   // maximum exposure is exactly one leg of Lots. Margin availability is checked per order instead.
    if(DisasterStopPips<0 || MaxFloatingLossMoney<0 || MaxEntrySpreadPips<0 || MaxLateEntrySec<0) return INIT_PARAMETERS_INCORRECT;
    int ck=ClkInit(); if(ck!=INIT_SUCCEEDED) return ck;
    if(DisasterStopPips>0)
