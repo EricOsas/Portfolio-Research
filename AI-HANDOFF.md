@@ -51,11 +51,19 @@ Coil 0.14, Overnight Bias 0.40.
 **Docs.** `Prop-Firms/methodology.md`, `reports/strategy_suitability.md`, `analysis/README.md`,
 root `README.md`, CI workflow (`analyze_moneta_sizing.py`, `build_set_files.py Set-Files`).
 
-**Status.** Local scripts run end to end. CI had not been observed for the $25k commit when the
-account size changed, so the $10k rebuild is the run to check.
+**Status — verified in this session.** CI run `45168585423` on commit `0f3e07f` completed green;
+the bot commit is `20d2edd`. The generated Moneta README and `stage_sizing.md` in the repo match
+the local run (phase book USD 37.41, funded book USD 97.68, 97.3% first payout, 0.7% funded
+breach). The live copy at `C:/Users/Administrator/Documents/Portfolio/Set-Files` was regenerated
+after the last code change and matches `Set-Files/` in the repo. Two further fixes landed after
+the first commit: stage folders are wiped before writing (the $25k-to-$10k resize had left stale
+GotobiFix files beside the new phase book), and the `.set` header now prints the 0.01-lot 1R
+rather than the per-1.0-lot unit.
 
-**Next action.** Confirm the CI run for this commit, then ingest the Gold X9 preset exports the
-user is about to deliver into `Trades/MT5 Trades/`.
+**Next action.** Nothing blocking on Moneta or the set files. The only open item is the user's
+Gold X9 preset exports (`Phase 1/2/3` variants by `TradeFrequency`/`TieredLot`/`RiskScaling`),
+still not delivered into `Trades/MT5 Trades/`; when they land, register the preset family with
+mutual exclusion and rebuild the Moneta and The5ers phase books against the chosen preset.
 
 ## 2026-11-23 — NT8 contract sizing for Tradeify
 
