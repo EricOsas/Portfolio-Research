@@ -42,6 +42,26 @@ over that stage's trading days, so it shows the minimum-lot distortion directly.
 "Reach funded" is the probability of passing all three steps; "first payout" includes
 the funded stage; "funded breach" is conditional on reaching the funded account.
 
+## Two-sleeve pairs
+
+Pairs are the only books where the minimum-lot split is visible: the cheap sleeve
+cannot be scaled down to match the expensive one, so the split is not 50/50.
+
+| Pair | 0.01-lot risk (sleeve 1 / 2) | Total | % of $5k step | Split (1 / 2) | Reach funded | Eval breach | Payout | Funded breach | Balanced risk | Balanced payout | Balanced breach |
+|---|---|---:|---:|---|---:|---:|---:|---:|---:|---:|---:|
+| Gold X9 + Overnight Bias ORB | $20.02 / $0.08 | $20.09 | 0.40% | 100% / 0% | 63.0% | 37.0% | 59.8% | 41.5% | $40.03 | 62.8% | 40.3% |
+| GotobiFix EURJPY + Overnight Bias ORB | $1.05 / $0.08 | $1.13 | 0.02% | 93% / 7% | 0.0% | 0.0% | 0.0% | 0.0% | $2.11 | 0.0% | 0.0% |
+| GotobiFix USDJPY + Overnight Bias ORB | $1.14 / $0.08 | $1.22 | 0.02% | 94% / 6% | 0.0% | 0.0% | 0.0% | 0.0% | $2.29 | 0.0% | 0.0% |
+| Flash ORB + Overnight Bias ORB | $0.73 / $0.08 | $0.80 | 0.02% | 91% / 9% | 0.0% | 0.0% | 0.0% | 0.0% | $1.45 | 0.0% | 0.0% |
+| Gold ORB (RBE) + Gold X9 | $29.31 / $20.02 | $49.32 | 0.99% | 59% / 41% | 57.6% | 42.4% | 53.9% | 59.5% | $58.61 | 45.3% | 79.3% |
+| GotobiFix EURJPY + Tokyo Coil | $1.05 / $0.13 | $1.19 | 0.02% | 89% / 11% | 0.0% | 0.0% | 0.0% | 0.0% | $2.11 | 0.0% | 0.0% |
+
+"Balanced" sizes both sleeves to the larger one's 0.01-lot risk (a placeable
+whole-lot size for the cheap sleeve), so the book is no longer gold-dominated but
+the total risk roughly doubles. The minimum-lot column is the gold-dominated
+reality; the USD 25 equal-split model (12.50 per sleeve) is not placeable on Gold
+X9 or Gold ORB (RBE), which need more than that for one 0.01 lot.
+
 ## Reading it
 
 - Scenarios B-E all start from the same stage-1 floor, so stage 1 is nearly

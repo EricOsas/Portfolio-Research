@@ -40,6 +40,15 @@ SEED = 20261122
 EVAL_BOOK = ["Gold X9", "GotobiFix EURJPY", "GotobiFix USDJPY", "Open Drive"]
 FUNDED_BOOK = ["Flash ORB", "Gold X9", "GotobiFix EURJPY", "Tokyo Coil"]
 FUNDED_NO_X9 = ["Flash ORB", "GotobiFix EURJPY", "Tokyo Coil", "Overnight Bias ORB"]
+PAIRS = [
+    ["Gold X9", "Overnight Bias ORB"],
+    ["GotobiFix EURJPY", "Overnight Bias ORB"],
+    ["GotobiFix USDJPY", "Overnight Bias ORB"],
+    ["Flash ORB", "Overnight Bias ORB"],
+    ["Gold ORB (RBE)", "Gold X9"],
+    ["GotobiFix EURJPY", "Tokyo Coil"],
+]
+EQUAL_SPLIT_USD = 25.0
 
 # (label, evaluation pct per sleeve, funded pct per sleeve, funded book)
 SCENARIOS = [
@@ -216,7 +225,8 @@ def main():
     cut = max(1, min(len(dates) - 1, int(len(dates) * 0.60)))
     val = dates[cut:]
 
-    sleeves = sorted({s for _, _, _, book in SCENARIOS for s in book} | set(EVAL_BOOK))
+    sleeves = sorted({s for _, _, _, book in SCENARIOS for s in book}
+                     | set(EVAL_BOOK) | {s for book in PAIRS for s in book})
     floors = {s: min_lot_risk(trades, s) for s in sleeves}
     print("min-lot 1R ($, 0.01 lot):", {k: round(v, 2) for k, v in floors.items()})
 
@@ -246,6 +256,44 @@ def main():
         print(label, {k: (round(v, 4) if isinstance(v, float) else v) for k, v in res.items()})
 
     df = pd.DataFrame(rows)
+
+    pair_rows = []
+    for book in PAIRS:
+        book = list(book)
+        paths = sample_joint(np.stack([rmat.loc[val, s].values for s in book], axis=1), val, SEED + 31)
+        fl = np.array([floors[s] for s in book])
+        minlot = simulate_stages(paths, fl, paths, fl, 1e-5, 1e-5)
+        eq = np.full(len(book), EQUAL_SPLIT_USD / len(book))
+        equal = simulate_stages(paths, eq, paths, eq, 0.0, 0.0)
+        bal = np.full(len(book), float(fl.max()))
+        balanced = simulate_stages(paths, bal, paths, bal, 0.0, 0.0)
+        pair_rows.append({
+            "pair": " + ".join(book),
+            "risk_0_01lot_sleeve_1": round(float(fl[0]), 2),
+            "risk_0_01lot_sleeve_2": round(float(fl[1]), 2),
+            "minlot_total_usd": round(float(fl.sum()), 2),
+            "minlot_pct_of_5k": round(float(fl.sum()) / 5000.0 * 100, 2),
+            "minlot_pct_of_20k": round(float(fl.sum()) / 20000.0 * 100, 3),
+            "minlot_share_sleeve_1_pct": round(float(fl[0]) / float(fl.sum()) * 100, 1),
+            "minlot_share_sleeve_2_pct": round(float(fl[1]) / float(fl.sum()) * 100, 1),
+            "minlot_reach_funded": minlot["reach_funded_rate"],
+            "minlot_eval_breach": minlot["evaluation_hard_breach_rate"],
+            "minlot_payout": minlot["payout_rate_from_start"],
+            "minlot_funded_breach": minlot["funded_hard_breach_conditional"],
+            "minlot_days": minlot["median_days_to_payout"],
+            "equal25_payout": equal["payout_rate_from_start"],
+            "equal25_funded_breach": equal["funded_hard_breach_conditional"],
+            "equal25_days": equal["median_days_to_payout"],
+            "balanced_total_usd": round(float(bal.sum()), 2),
+            "balanced_pct_of_5k": round(float(bal.sum()) / 5000.0 * 100, 2),
+            "balanced_reach_funded": balanced["reach_funded_rate"],
+            "balanced_payout": balanced["payout_rate_from_start"],
+            "balanced_funded_breach": balanced["funded_hard_breach_conditional"],
+            "balanced_days": balanced["median_days_to_payout"],
+        })
+        print("pair", " + ".join(book), pair_rows[-1]["minlot_total_usd"], round(pair_rows[-1]["minlot_payout"], 3))
+    pd.DataFrame(pair_rows).to_csv(OUT / "pair_sizing.csv", index=False)
+
     OUT.mkdir(parents=True, exist_ok=True)
     df.to_csv(OUT / "stage_sizing.csv", index=False)
 
@@ -294,6 +342,31 @@ def main():
         "over that stage's trading days, so it shows the minimum-lot distortion directly.",
         "\"Reach funded\" is the probability of passing all three steps; \"first payout\" includes",
         "the funded stage; \"funded breach\" is conditional on reaching the funded account.",
+        "",
+        "## Two-sleeve pairs",
+        "",
+        "Pairs are the only books where the minimum-lot split is visible: the cheap sleeve",
+        "cannot be scaled down to match the expensive one, so the split is not 50/50.",
+        "",
+        "| Pair | 0.01-lot risk (sleeve 1 / 2) | Total | % of $5k step | Split (1 / 2) | Reach funded | Eval breach | Payout | Funded breach | Balanced risk | Balanced payout | Balanced breach |",
+        "|---|---|---:|---:|---|---:|---:|---:|---:|---:|---:|---:|",
+    ]
+    for r in pair_rows:
+        lines.append(
+            f"| {r['pair']} | ${r['risk_0_01lot_sleeve_1']:.2f} / ${r['risk_0_01lot_sleeve_2']:.2f} | "
+            f"${r['minlot_total_usd']:.2f} | {r['minlot_pct_of_5k']:.2f}% | "
+            f"{r['minlot_share_sleeve_1_pct']:.0f}% / {r['minlot_share_sleeve_2_pct']:.0f}% | "
+            f"{r['minlot_reach_funded']*100:.1f}% | {r['minlot_eval_breach']*100:.1f}% | "
+            f"{r['minlot_payout']*100:.1f}% | {r['minlot_funded_breach']*100:.1f}% | "
+            f"${r['balanced_total_usd']:.2f} | {r['balanced_payout']*100:.1f}% | "
+            f"{r['balanced_funded_breach']*100:.1f}% |")
+    lines += [
+        "",
+        "\"Balanced\" sizes both sleeves to the larger one's 0.01-lot risk (a placeable",
+        "whole-lot size for the cheap sleeve), so the book is no longer gold-dominated but",
+        "the total risk roughly doubles. The minimum-lot column is the gold-dominated",
+        "reality; the USD 25 equal-split model (12.50 per sleeve) is not placeable on Gold",
+        "X9 or Gold ORB (RBE), which need more than that for one 0.01 lot.",
         "",
         "## Reading it",
         "",

@@ -315,6 +315,8 @@ The funded-stage book is chosen for payout survival rather than speed: its condi
 | Step 3 | $15,000 | same lots, ~$22-30 | 0.15-0.18% | — |
 | Funded | $20,000 | switch book, ~$100 (0.5%) | 0.5% | 99.7% conditional payout, 0.8% breach |
 
+**Two-sleeve pairs.** A pair of cheap sleeves at 0.01 lot risks only USD 0.80-1.22 per trade (0.02% of the $5k step), which needs roughly 265R to reach the 6% target, so those pairs do not pass evaluation at minimum size at all (0.0% payout). Only gold-anchored pairs make progress, and gold then carries 99.6% of the risk: Gold X9 + Overnight Bias ORB is USD 20.09 total (USD 20.02 / USD 0.08), 63.0% reach funded, 59.8% payout, 41.5% conditional funded breach. Sizing the cheap sleeve up to match (Overnight at 2.5 lots = USD 20) doubles the book to USD 40.03 and moves it to 65.4% reach / 62.8% payout; Gold ORB (RBE) + Gold X9 is USD 49.32 at minimum lots (59% / 41% split) with 57.6% reach and 53.9% payout. The per-pair split and odds are in [stage sizing with real lot floors](../Prop-Firms/The5ers-20K-Bootcamp/reports/stage_sizing.md).
+
 At the minimum lot the evaluation hard-breach rate is about **35%**, not 7.5%, because one bad Gold X9 day at 0.01 lot can be 2-5% of a $5k step. Scaling the percentage with the balance makes it worse, not better: 0.125%/sleeve reaches funding in 65% of paths but breaches the funded account in 58%; 0.25%/sleeve gives 57% and 88%. The funded book must not carry Gold X9 and must not scale to USD 200 per trade. Full tables, lot-level evidence and the exact EA inputs are in [stage sizing with real lot floors](../Prop-Firms/The5ers-20K-Bootcamp/reports/stage_sizing.md).
 
 **Challenge book risk ladder** (USD 10 / 25 / 50 / 100):
