@@ -2,7 +2,57 @@
 
 Newest entry first. Only what was verified in this session is recorded here.
 
-## 2026-11-23 (latest) — Moneta $10k 2-Step added; plug-and-play EA set files built
+## 2026-11-23 (latest) — Gold X9 ingested as a five-preset family
+
+**Delivered.** Five X9 exports (2020.01.01-2026.11.01, XAUUSD M1 OHLC, USD 100k deposit) plus a
+preset registry: Extremely low (freq 0, strategies 1-3, 558 trades / 1,117 deals), Low (1, 1-5,
+1,871 / 3,743), Moderate (2, 1-7, 4,147 / 8,295), High (3, 1-8, 5,525 / 11,051), Very high (4, 1-9,
+13,403 / 26,807). Exports copied to `Trades/MT5 Trades/`; the registry workbook sits in
+`Trades/MT5 Presets/` so the preflight does not flag it. The legacy single `MT5 X9 Trades.xlsx`
+(left the repo; it was the Very-high run) is still in `Documents/Portfolio/Trades/MT5`.
+
+**Registry.** "Gold X9" replaced by five entries; MT5 is now 19 exports and all 19 parse.
+
+**Mutual exclusion.** `strategy_family()` in `build_equity_reports.py` (selection screen) and
+`build_live_and_prop_reports.py` (book enumeration) drops any book with two X9 presets.
+`GOLD_X9` in `analyze_the5ers_sizing.py` is the single place naming the standard preset.
+
+**Preset fact.** One EA at five `TradeFrequency` settings: R/day rises 0.31 -> 1.34 from Extremely
+low to Very high while the worst validation day falls from -9.6R to -30.1R (High). Measured 1R at
+0.01 lot: Extremely low $10.15, Low $9.90, Moderate $11.65, High $11.02, Very high $13.09.
+
+**Standard preset = `Low`**, chosen by measurement: The5ers phase book 90.0% reach / 5.6% breach /
+81.8% payout, Moneta phase book 99.7% both phases / 0.0% breach / 98.8% payout. High was rejected
+despite the best R/day (33% Moneta evaluation breach).
+
+**Rebuilt with Low.** The5ers: phase 4-sleeve USD 50 target = **USD 46.83** (gold 0.01, GotobiFix
+0.12/0.12, Open Drive 0.32), funded no-gold USD 100 = **USD 97.68**; 90.0% reach, 5.6% breach,
+81.8% payout, 91.0% conditional, 0.2% funded breach, 175 median days, USD 185 expected. Moneta
+$10k: phase X9(Low)+OBR USD 50 = **USD 44.26** (gold 0.02 = USD 19.80, OBR 0.40), funded no-gold
+USD 100 = **USD 97.68**; 99.7% both phases, 0.0% breach, 98.8% payout, 99.1% conditional, 0.4%
+funded breach, 116 median days, USD 249 expected.
+
+**Set files.** Gold X9 now writes `TradeFrequency` (0-4), `Lotsizing_Method=0`, `FixedLots`,
+`SepLotSize=false`; filenames carry the preset (`01. Gold X9 Low.set`). Repo copy and
+`Documents/Portfolio/Set-Files` both regenerated.
+
+**EA sources re-synced.** `ExecutionRuntime.mqh` updated for VaultBreak, OvernightBias,
+NQPrecision, OpeningShock, Sigma and FlashTriggerORB after the user's latest edits.
+
+**Verified.** CI run `45189645268` on `e3ed2fc` green, bot commit `b1d6bad`. Checked the published
+`book_rankings.csv`: 808 The5ers rows, **zero** books holding two X9 presets.
+
+**Follow-up fixed after that.** The training-score ranking still shortlisted `Very high` (338 of 808
+rows) because it scores raw return, not breach risk. `run_platform` now screens **only the standard
+preset** for MT5 prop candidates, so ranking and execution cannot disagree; the other four presets
+stay in the per-sleeve and normalized-live reports. This last change is pushed but **not yet**
+CI-verified.
+
+**Next action.** Confirm the CI run for the standard-preset constraint and check that every
+`book_rankings.csv` row naming a preset names `Gold X9 (Low)`. Then nothing is outstanding on X9
+until the next export.
+
+## 2026-11-23 — Moneta $10k 2-Step added; plug-and-play EA set files built
 
 **Ask.** Include the Moneta account the user is about to buy (**USD 10,000**, corrected from
 $25k mid-task), and create a folder under `Documents/Portfolio` with pre-configured EA set
