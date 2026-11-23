@@ -47,6 +47,8 @@ jobs:
         run: python analysis/inspect_mt5_headers.py
       - name: Model The5ers stage sizing with minimum-lot floors
         run: python analysis/analyze_the5ers_sizing.py
+      - name: Model Tradeify stage sizing in whole contracts
+        run: python analysis/analyze_tradeify_sizing.py
       - name: Build normalized live and prop-firm research
         timeout-minutes: 150
         run: python analysis/build_live_and_prop_reports.py

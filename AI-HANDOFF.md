@@ -2,6 +2,25 @@
 
 Newest entry first. Only what was verified in this session is recorded here.
 
+## 2026-11-23 — NT8 contract sizing for Tradeify
+
+**Why.** The The5ers sizing fix has an NT8 counterpart: a "0.5% per sleeve" rule is meaningless on a micro contract that already risks USD 127-182.
+
+**New artifact.** `analysis/analyze_tradeify_sizing.py` (also a CI step) enumerates 1-10 micros per sleeve for the challenge book, funded book and lower-risk pair, enforces the four-mini cap, and writes `Prop-Firms/Tradeify-50K-Growth-Futures/reports/stage_sizing.{md,csv}`.
+
+**Verified numbers (5,000 paths, validation bootstrap)**
+- 1R per micro: FVG Duo 168.44, Sigma ORB 182.13, Overnight Bias 139.12, Gold ORB (RBE) 134.03, Opening-Shock 129.52, Flash ORB 127.04, NQ Precision 75.36, VWAP 67.60, Vault 98.90.
+- Four-sleeve challenge book at 1 micro/sleeve: USD 511.97 per trade (1.02% of 50k), 3.91R to the 2,000 trail; pass 67.4%, payout 45.6%, funded breach 40.0%.
+- Funded book at 1 micro/sleeve: USD 475.65, 4.20R; payout 57.4%, funded breach 34.5%.
+- Lower-risk pair (Flash + Overnight) at 1 micro/sleeve: USD 237.63, 8.42R, zero clip-binding days; pass 86.4%, payout 64.1%, funded breach 19.0%. This is the only allocation the model evaluates exactly.
+- 2 micros/sleeve doubles risk to ~2% and ~2R to the trail; the simulator's USD 1,250 daily clip then binds on 3-21% of days and hides losses, so rows above one micro are scale illustrations, not odds. Flagged in the report and docs rather than silently published.
+
+**Settings recorded (NinjaScript sources in `Documents/NinjaTrader 8/bin/Custom/Strategies/`)**: `FixedContracts=1` on MNQ/MGC per sleeve for both stages; keep `UseFixedContracts=true` on Flash/FVG/OpenDrive so `RiskPercent` cannot scale the book. Only the book changes at funding (FVG Duo out, Opening-Shock in). The 4-mini cap is not binding; the USD 2,000 trail is.
+
+**Docs:** `reports/strategy_suitability.md` (new minimum-contract subsection with the allocation table), `Prop-Firms/methodology.md` (contract-floor section), generated Tradeify README now links the report and explains the micro constraint.
+
+**Next action:** let CI finish this commit, then confirm the Tradeify README links and `stage_sizing.{md,csv}` are present on main.
+
 ## 2026-11-22 (latest) — minimum-lot sizing: the published The5ers odds were optimistic
 
 **What triggered it.** The published The5ers ladder sizes the book in continuous dollars (USD 25 total = USD 6.25/sleeve). On XAUUSD the broker minimum is 0.01 lot, whose mean losing trade in the Gold X9 export is USD 20.02, so the equal split is not placeable. Every continuous-dollar number for The5ers is therefore an idealisation, and the funded-breach figures (0.14% / 0.05%) are not reachable with these EAs.

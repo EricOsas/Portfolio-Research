@@ -1825,7 +1825,13 @@ Results are conditional on historical export distributions and the assumptions i
         chart_extra = ""
         if firm=="Tradeify-50K-Growth-Futures":
             extra_links += "\n- [Intraday MAE / soft-DLL stress](reports/mae_soft_dll_stress.csv)"
+            extra_links += (chr(10) + "- [Stage sizing in whole contracts](reports/stage_sizing.md)"
+                            + chr(10) + "- [Stage sizing data](reports/stage_sizing.csv)")
             sizing_note = "Growth evaluation has no consistency rule. At least one trade per complete Monday-Friday week is required during evaluation and funded trading. Funded payouts require 35% consistency, five winning days above $150, a $53,000 balance and the microscalping test. Whole-micro sizing uses at least one micro per active sleeve and a four-mini concurrent cap; effective risk after minimum sizing is shown."
+            sizing_note += (" One micro per sleeve is already about 1% of the $50k account and roughly 4R from the "
+                              "$2,000 trail, so size is set by the broker minimum and the drawdown, not by the "
+                              "four-mini cap. [Stage sizing in whole contracts](reports/stage_sizing.md) enumerates "
+                              "the allocations.")
             daily_limit_note = "The initial $1,250 soft daily-loss limit is modeled as a closed-PnL clip; after the funded balance reaches $53,000, the model applies the official $2,000 DLL from the next session. Intraday trigger timing, overshoot and trade sequence remain unknown. The EOD trailing drawdown is modeled from daily closes; NT8 MAE is a separate diagnostic."
             pairing_note = "NT8 MAE stacks same-entry-day adverse excursions across active sleeves; it is not a synchronized intraday equity replay."
             recovery_note = "Recovery curves are balance-only. The $53,000 target does not enforce payout consistency, five $150 winning days or payout processing."

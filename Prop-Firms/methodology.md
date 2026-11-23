@@ -68,6 +68,10 @@ Risk ladder: USD 100, 250, 500 and 750 requested total book risk per trade. Over
 
 The NT8 MAE report measures one-micro-per-sleeve adverse-excursion stress. Same-entry-day MAEs are stacked conservatively; this is not a synchronized intraday replay. It is intended to flag possible daily-loss pauses, not predict exact breach timing.
 
+## Contract floors on the NT8 side
+
+NT8 sizing is whole contracts. One contract on MNQ/MGC is one micro, and a micro's mean losing trade in the exports is USD 127-182, so a single micro per sleeve is about 1% of the USD 50k account and only 3.9-4.2R from the USD 2,000 trailing drawdown. The four-mini concurrent cap is therefore not the binding constraint; the drawdown is. Whole-micro rounding is already in `tradeify_position_weights` (headroom is rounded down, never below one micro), but the requested-risk ladder hides the fact that every rung lands on the same one-micro book. [Stage sizing in whole contracts](Tradeify-50K-Growth-Futures/reports/stage_sizing.md) enumerates one to ten micros per sleeve, reports the R buffer to the trail, and flags where the simulator's USD 1,250 daily-loss clip binds (0.6% of days at one micro, 3-21% above two micros). Above one micro those rows are scale illustrations, not odds.
+
 ## Recovery scenarios
 
 Recovery simulations include no-trade controls and selected low-complexity books plus the leading challenge/funded pairs.

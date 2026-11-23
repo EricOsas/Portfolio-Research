@@ -93,6 +93,19 @@ The challenge book's edge is concentrated in Gold X9 and the GotobiFix pairs. At
 - Median time to first payout: **164 trading days**.
 - Geometric repeat estimate: **1.55 challenge accounts** and **1.34 funded accounts** per first payout.
 
+**Minimum contract reality (this is the size you actually place).** NT8 sizing is whole contracts, and one contract on MNQ or MGC is already one micro. 1R per micro in the exports is USD 127-182 depending on the sleeve (FVG Duo 168, Sigma ORB 182, Overnight Bias 139, Gold ORB RBE 134, Opening-Shock 130, Flash ORB 127), which makes the broker minimum a large position on this account:
+
+| Allocation per sleeve | Risk per book trade | % of USD 50k | R to the USD 2,000 trail | Challenge pass | Payout from challenge start | Funded breach |
+|---|---:|---:|---:|---:|---:|---:|
+| 1 micro (Flash + Overnight pair) | USD 237.63 | 0.48% | 8.4 | 86.4% | 64.1% | 19.0% |
+| 1 micro (four-sleeve challenge book) | USD 511.97 | 1.02% | 3.9 | 67.4% | 45.6% | 40.0% |
+| 2 micros (four-sleeve) | USD 1,023.94 | 2.05% | 2.0 | not reliable | not reliable | not reliable |
+| 5 micros (four-sleeve) | USD 2,559.85 | 5.12% | 0.8 | not reliable | not reliable | not reliable |
+
+Above one micro the simulator's USD 1,250 soft-DLL clip binds on 3-21% of days and hides the loss instead of breaching, so those rows are scale illustrations, not odds. At one micro the clip binds on 0.6% of challenge-book days and never on the two-sleeve pair, which is why the pair is the only allocation the model evaluates exactly.
+
+Settings, both stages: `FixedContracts = 1` on MNQ/MGC for each sleeve; on Flash ORB, FVG Duo and Open Drive keep `UseFixedContracts = true` so `RiskPercent` cannot scale the book up as the balance grows. The four-mini cap is not the binding constraint — the USD 2,000 trail is. Your 0.5%-per-sleeve rule (about USD 250, i.e. ~2 micros) is physically placeable under the cap but leaves roughly 2R to the trail. Do not scale anything at funding; only swap FVG Duo for Opening-Shock Continuation. Full table: [stage sizing in whole contracts](../Prop-Firms/Tradeify-50K-Growth-Futures/reports/stage_sizing.md).
+
 The repeat estimates assume each new account has the same probability and is independent. They exclude challenge fees and resets. The combined breach figures combine evaluation breach with funded breach conditional on passing; funded breaches can occur after a payout, so breach and payout events are not mutually exclusive.
 
 **Tradeify switch caveat:** the challenge and funded books are simulated separately. The 51.70% combined first-payout estimate multiplies the challenge book's pass rate by the funded book's conditional first-payout rate. The model does not replay a mid-account strategy switch. Each book's expected payout-cash total is a same-book scenario.
