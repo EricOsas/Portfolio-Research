@@ -1820,9 +1820,8 @@ Results are conditional on historical export distributions and the assumptions i
         d=PROP_ROOT/firm
         extra_links = "- [Book rankings](reports/book_rankings.csv)\n- [Book recommendations](reports/book_recommendations.md)\n- [Recovery-mode scenarios](reports/recovery_mode.csv)"
         if firm.startswith("The5ers"):
-            extra_links += "
-- [Stage sizing with real lot floors](reports/stage_sizing.md)
-- [Stage sizing data](reports/stage_sizing.csv)"
+            extra_links += (chr(10) + "- [Stage sizing with real lot floors](reports/stage_sizing.md)"
+                            + chr(10) + "- [Stage sizing data](reports/stage_sizing.csv)")
         chart_extra = ""
         if firm=="Tradeify-50K-Growth-Futures":
             extra_links += "\n- [Intraday MAE / soft-DLL stress](reports/mae_soft_dll_stress.csv)"
