@@ -19,7 +19,9 @@ Newest entry first. Only what was verified in this session is recorded here.
 
 **Docs:** `reports/strategy_suitability.md` (new minimum-contract subsection with the allocation table), `Prop-Firms/methodology.md` (contract-floor section), generated Tradeify README now links the report and explains the micro constraint.
 
-**Next action:** let CI finish this commit, then confirm the Tradeify README links and `stage_sizing.{md,csv}` are present on main.
+**CI verified (run 45134849886, commit b1930a0).** Success in ~20 min; the bot commit `24b9747` regenerated the Tradeify README with working `stage_sizing.md`/`stage_sizing.csv` links and re-ran both sizing steps. Committed table matches the local run: challenge book 1 micro/sleeve $512, 3.9R, 67.4% pass, 45.6% payout, 40.0% funded breach; Flash+Overnight pair $238, 8.4R, 86.4% pass, 64.1% payout, 19.0% funded breach, 0.0% clip-binding days.
+
+**Next action:** none. Both sizing reports regenerate on the next `analysis/` or `Trades/` change.
 
 ## 2026-11-22 (latest) — minimum-lot sizing: the published The5ers odds were optimistic
 
