@@ -98,15 +98,26 @@ profit reset away, so it needs 27R at a 0.37% per-trade book and only 12.5R at 0
 
 [Stage sizing with real lot floors](Moneta-2Step-10K/reports/stage_sizing.md) sizes
 each sleeve in whole 0.01 lots and models the funded-book switch. The selected plan
-is Gold X9 + Overnight Bias ORB at a USD 50 target through both phases
-(**USD 37.41** actual, 0.37% of the account; gold at 0.01 lot), then Flash ORB +
+is Gold X9 (Low) + Overnight Bias ORB at a USD 50 target through both phases
+(**USD 44.26** actual, 0.44% of the account; gold 0.02 lot), then Flash ORB +
 GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB at a USD 100 target when funded
-(**USD 97.68**, 0.98%), with no gold. That plan reaches funding in **97.4%** of
-paths, breaches evaluation in **2.5%**, and produces a first payout in **97.3%** of
-challenge starts (**99.8%** conditional on funding, **0.7%** funded breach, median
-88 trading days, expected first payout **USD 250**).
+(**USD 97.68**, 0.98%), with no gold. That plan reaches funding in **99.7%** of
+paths, breaches evaluation in **0.0%**, and produces a first payout in **98.8%** of
+challenge starts (**99.1%** conditional on funding, **0.4%** funded breach, median
+116 trading days, expected first payout **USD 249**).
 
 Pre-built EA presets: [Set-Files/Moneta-2Step-10K](../Set-Files/Moneta-2Step-10K/README.md).
+
+## Preset families
+
+Gold X9 ships one EA at five `TradeFrequency` settings (strategies 1-3, 1-5, 1-7,
+1-8, 1-9). The five exports are the same trade stream at different frequencies, so
+they are treated as one mutually exclusive family: `strategy_family()` in the
+builders keeps two presets out of the same book, and the screening applies the same
+rule. `Low` is the standard preset because the frequency ladder buys R/day with
+tail risk — the worst validation day runs from -9.6R (Extremely low) to -30.1R
+(High) — and a prop account is bought once. Every book in this repository names the
+preset it uses.
 
 ## Contract floors on the NT8 side
 

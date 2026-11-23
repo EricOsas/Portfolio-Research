@@ -32,16 +32,19 @@ import build_live_and_prop_reports as engine  # noqa: E402
 DEFAULT_OUT = Path(r"C:/Users/Administrator/Documents/Portfolio/Set-Files")
 
 # stage -> (book, target risk per book trade in USD)
+GOLD_X9 = T5.GOLD_X9
+X9_FREQUENCY = {"Extremely low": 0, "Low": 1, "Moderate": 2, "High": 3, "Very high": 4}
+
 THE5ERS = {
-    "Phase-1": (["Gold X9", "GotobiFix EURJPY", "GotobiFix USDJPY", "Open Drive"], 50.0),
-    "Phase-2": (["Gold X9", "GotobiFix EURJPY", "GotobiFix USDJPY", "Open Drive"], 50.0),
-    "Phase-3": (["Gold X9", "GotobiFix EURJPY", "GotobiFix USDJPY", "Open Drive"], 50.0),
+    "Phase-1": ([GOLD_X9, "GotobiFix EURJPY", "GotobiFix USDJPY", "Open Drive"], 50.0),
+    "Phase-2": ([GOLD_X9, "GotobiFix EURJPY", "GotobiFix USDJPY", "Open Drive"], 50.0),
+    "Phase-3": ([GOLD_X9, "GotobiFix EURJPY", "GotobiFix USDJPY", "Open Drive"], 50.0),
     "Funded": (["Flash ORB", "GotobiFix EURJPY", "Tokyo Coil", "Overnight Bias ORB"], 100.0),
 }
 
 # ea label -> (source folder, file stem, symbol hint)
 SOURCE = {
-    "Gold X9": ("1. X9", "Gold_X9"),
+    "Gold X9": ("1. X9", "Gold_X9"),  # family fallback; presets map through _source()
     "Gold ORB (RBE)": ("2. RBE", "RangeBreakout"),
     "Tokyo Coil": ("3. TokyoCoil", "TokyoCoil"),
     "Vault Break": ("4. VaultBreak", "VaultBreak"),
@@ -77,13 +80,28 @@ EA_TITLE = {
 }
 
 
+def source_for(ea):
+    if ea.startswith("Gold X9"):
+        return SOURCE["Gold X9"]
+    return SOURCE[ea]
+
+
+def title_for(ea):
+    if ea.startswith("Gold X9"):
+        return ea.replace(" (", " ").replace(")", "")
+    return EA_TITLE[ea]
+
+
 def rows(ea, lots, risk_usd, magic, comment):
     """Return the input rows a given EA needs to reproduce the sized book."""
     common = {"EnableTrading": "true"}
     if ea.startswith("Gold X9"):
+        label = ea.replace("Gold X9 (", "").rstrip(")") if "(" in ea else "Very high"
         return {
+            "TradeFrequency": str(X9_FREQUENCY.get(label, 4)),
             "Lotsizing_Method": "0",          # Manual_Lotsize = fixed lots
             "FixedLots": f"{lots:.2f}",
+            "SepLotSize": "false",            # one fixed lot for every strategy
             "RiskScaling": "1.0",
             "TieredLot": "30.0",
             "InpFixedBalance": "0.0",
@@ -150,8 +168,8 @@ def build_firm(out, firm, stages, trades, base_magic, firm_title, notes):
         for i, (ea, lots_i) in enumerate(lots.items(), start=1):
             magic = base_magic + phase_no * 100 + i
             comment = f"{firm.split('-')[0]}-{stage}-{i}"
-            src_folder, stem = SOURCE[ea]
-            title = EA_TITLE[ea]
+            src_folder, stem = source_for(ea)
+            title = title_for(ea)
             fname = f"{i:02d}. {title}.set"
             payload = rows(ea, lots_i, risk[ea], magic, comment)
             write_set(folder / fname, [
@@ -183,7 +201,7 @@ def build_firm(out, firm, stages, trades, base_magic, firm_title, notes):
                    f"{sum(risk.values()) / target * 100:.0f}% of target).", "",
                    "| # | EA | Symbol | Lots | Risk USD | Magic |", "|---|---|---|---:|---:|---:|"]
         for i, (ea, lots_i) in enumerate(lots.items(), start=1):
-            readme.append(f"| {i} | {EA_TITLE[ea]} | {symbol_for(trades, ea)} | {lots_i:.2f} | "
+            readme.append(f"| {i} | {title_for(ea)} | {symbol_for(trades, ea)} | {lots_i:.2f} | "
                           f"{risk[ea]:.2f} | {base_magic + stage_index * 100 + i} |")
         readme.append("")
     readme += notes

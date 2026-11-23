@@ -42,39 +42,43 @@ These are generic portfolio-screening categories. They are not fixed labels atta
 
 **Near-floor recovery:** The5ers is recoverable from a USD 250 cushion upward, but at the strict USD 100 cushion the best pair still carries 7.3% breach risk. Tradeify's best eligible active recovery book carries roughly a third to a half modeled breach risk. Neither firm has a recovery book that is both high-probability and low-breach at the strictest cushion.
 
+## Gold X9 preset family
+
+The five X9 exports are **one EA at five `TradeFrequency` settings**, not five strategies: `Extremely low` enables strategies 1-3, `Low` 1-5, `Moderate` 1-7, `High` 1-8, `Very high` 1-9. They are mutually exclusive — a book may hold **one** preset, never two — and the registry, the screening and the set-file builder all enforce that.
+
+| Preset | Frequency | Trades | Deals | 1R at 0.01 lot | Mean R | Win rate | Trades/day | R/day | Worst validation day |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Extremely low | 0 | 558 | 1,117 | $10.15 | 0.536 | 77.6% | 0.31 | 0.31 | -9.6R |
+| Low | 1 | 1,871 | 3,743 | $9.90 | 0.312 | 80.3% | 1.05 | 0.62 | -12.5R |
+| Moderate | 2 | 4,147 | 8,295 | $11.65 | 0.194 | 83.8% | 2.33 | 0.83 | -19.7R |
+| High | 3 | 5,525 | 11,051 | $11.02 | 0.173 | 84.6% | 3.10 | 1.04 | -30.1R |
+| Very high | 4 | 13,403 | 26,807 | $13.09 | 0.087 | 88.2% | 7.52 | 1.34 | -26.4R |
+
+All five run 2020.01.01 to 2026.11.01 on XAUUSD, M1 OHLC, USD 100k initial deposit. Higher frequency buys speed (R/day rises 4x from Extremely low to Very high) and pays for it in tail risk: the worst validation day goes from -9.6R to -30.1R. On a prop budget that spends 8% of the account on a bad day, the tail is what decides the account, so **`Low` is the standard preset** in every book below: it keeps the The5ers evaluation breach at 5.6% and the Moneta evaluation breach at 0.0% while still finishing in 116-175 days. `Moderate` is the alternative when speed matters more than breach risk; `High` and `Very high` are too tail-heavy for an account that is bought once.
+
 ## Prop-account results in plain numbers
 
 All probabilities below are 5,000-path, 252-trading-day estimates. Breach means a modeled firm loss-limit violation. Payout probability means at least one first payout within the horizon.
 
 ### The5ers $20k Bootcamp
 
-- Challenge book: Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive.
-- Funded-stage book: Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil.
-- Total requested risk: USD 25 per book trade, split equally across four sleeves.
-- Step 1 pass: **93.38%**; Step 2 conditional: **99.10%**; Step 3 conditional: **93.60%**.
-- Reach the $20k funded account: **86.62%**.
-- Evaluation hard breach (any of the three steps): **7.46%**.
-- Funded hard breach, conditional on funding: **0.05%**.
-- First-payout probability from challenge start with the challenge book: **76.34%**.
-- First-payout probability with the funded-stage book, conditional on funding: **85.7%**.
-- Approximate first-payout probability per challenge start when switching to the funded-stage book: **74.3%**.
-- Expected first payout across all paths: **USD 159.47**; median payout on successful paths: **USD 197.66**.
-- Expected total payout cash: **USD 429.62** across **2.06** payouts on average (USD 300 gross minimum per payout).
-- Median time to Step 1 pass: **22 trading days**; through all three steps: **152**; first payout: **180**.
-- Approximate 90-trading-day funded survival: **99.88%**.
-- Geometric repeat estimate: **1.35 challenge accounts** and **1.17 funded accounts** per first payout.
-
-The challenge book's edge is concentrated in Gold X9 and the GotobiFix pairs. At USD 100 risk it still reaches funding in 57.9% of paths, but evaluation breach rises to 42.1% and conditional funded breach to 66.6%; USD 25 is the only rung that keeps both sides acceptable.
+- Challenge book (Steps 1-3): **Gold X9 (Low)** + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive, sized to a **USD 50** target → **USD 46.83** actual (0.94% of the $5k Step 1; gold 0.01 lot, the two GotobiFix pairs 0.12 lot, Open Drive 0.32 lot).
+- Funded book: Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB at a **USD 100** target → **USD 97.68** (0.49% of $20k). No gold.
+- Reach the funded account: **90.0%**. Evaluation hard breach: **5.6%**.
+- First payout from a challenge start: **81.8%**; conditional on funding **91.0%**; funded hard breach **0.2%**.
+- Median time to first payout: **175 trading days**; expected first payout **USD 185**.
+- The old continuous USD 25 ladder still appears in the book-ranking tables for comparison only; on XAUUSD it is not placeable (one 0.01 lot already risks USD 9.90 at the Low preset).
+- Presets: [The5ers set files](../Set-Files/The5ers-20K-Bootcamp/README.md).
 
 ### Moneta $10k 2-Step Standard
 
 - Rules: Phase 1 **+5%** (USD 500), Phase 2 **+10%** (USD 1,000), **4% daily** (USD 400) and **8% static** (USD 800) maximum loss, **3 profitable days of at least 0.5%** (USD 50) per phase and per payout cycle, **88% split**, 14-day payout cycle, no consistency rule, own EAs allowed, news window **5 minutes either side** of high-impact releases in evaluation and funded alike.
-- Phase book: Gold X9 + Overnight Bias ORB at a **USD 50** target → **USD 37.41** actual (0.37% of the account; gold 0.01 lot = USD 12.96, OBR 0.40 lot = USD 24.46).
+- Phase book: **Gold X9 (Low)** + Overnight Bias ORB at a **USD 50** target → **USD 44.26** actual (0.44% of the account; gold 0.02 lot = USD 19.80, OBR 0.40 lot = USD 24.46).
 - Funded book: Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB at a **USD 100** target → **USD 97.68** (0.98%), no gold.
-- Reach funding: **97.4%**. Evaluation hard breach: **2.5%**.
-- First payout from a challenge start: **97.3%**; conditional on funding **99.8%**; funded hard breach **0.7%**.
-- Median time to first payout: **88 trading days**; expected first payout **USD 250**.
-- Phase 2 is the constraint: 10% against an 8% static budget. The USD 50 book needs 27R for it; a 0.79% book would need 12.5R.
+- Reach funding: **99.7%**. Evaluation hard breach: **0.0%**.
+- First payout from a challenge start: **98.8%**; conditional on funding **99.1%**; funded hard breach **0.4%**.
+- Median time to first payout: **116 trading days**; expected first payout **USD 249**.
+- Phase 2 is the constraint: 10% against an 8% static budget. The USD 44 book needs 23R for it.
 - Presets: [Moneta set files](../Set-Files/Moneta-2Step-10K/README.md).
 
 ### Tradeify $50k Growth — higher-return four-sleeve route

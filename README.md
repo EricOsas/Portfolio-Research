@@ -27,7 +27,7 @@ Research workspace for the NT8 futures and MT5 CFD strategy exports. Raw export 
 ## Export inventory
 
 - **NT8: 10/10 registered exports parsed.** Gold ORB (RBE), Vault Break, VWAP Pullback, Overnight Bias ORB, Open Drive, NQ Precision Bot, Opening-Shock Continuation, Sigma ORB, Flash ORB and FVG Duo.
-- **MT5: 15/15 registered exports parsed.** Gold X9, Gold ORB (RBE), Tokyo Coil, Vault Break, Overnight Bias ORB, Open Drive, NQ Precision Bot, Opening-Shock Continuation, Sigma ORB, Flash ORB, Noise Band Momentum, FVG Duo and GotobiFix EURJPY / GBPJPY / USDJPY.
+- **MT5: 19/19 registered exports parsed.** Gold X9 at five `TradeFrequency` presets (Extremely low / Low / Moderate / High / Very high, mutually exclusive), Gold ORB (RBE), Tokyo Coil, Vault Break, Overnight Bias ORB, Open Drive, NQ Precision Bot, Opening-Shock Continuation, Sigma ORB, Flash ORB, Noise Band Momentum, FVG Duo and GotobiFix EURJPY / GBPJPY / USDJPY.
 - VWAP Pullback is NT8-specific. Tokyo Coil, Noise Band Momentum, FVG Duo and the GotobiFix pairs are MT5-specific; FVG Duo also exists on NT8.
 
 Instruments: NT8 Gold ORB (RBE) runs on **GC DEC26**; every other NT8 export, including FVG Duo, runs on **NQ DEC26**. MT5 Gold X9 and RBE use **XAUUSD**, Tokyo Coil and the GotobiFix pairs use JPY crosses (USDJPY, EURJPY, GBPJPY), and the remaining MT5 exports use USTEC.

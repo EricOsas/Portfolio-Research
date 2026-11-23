@@ -1,33 +1,94 @@
 [
   {
-    "strategy": "Gold X9",
+    "strategy": "Gold X9 (Extremely low)",
     "status": "parsed",
-    "source_file": "MT5 X9 Trades.xlsx",
+    "source_file": "MT5 X9 Extremely low Trades.xlsx",
     "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
-    "sheet": "Sheet1",
-    "header_row_1_based": 44036,
-    "parsed_deal_events": 26872,
+    "sheet": "Trades",
+    "header_row_1_based": 1,
+    "parsed_deal_events": 1116,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-06T01:02:00",
+    "last_event": "2026-10-30T17:28:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {},
+    "balance_reconciliation": null,
+    "instruments": [
+      "XAUUSD"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
+  },
+  {
+    "strategy": "Gold X9 (Low)",
+    "status": "parsed",
+    "source_file": "MT5 X9 Low Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Trades",
+    "header_row_1_based": 1,
+    "parsed_deal_events": 3742,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T15:19:40",
+    "last_event": "2026-10-30T17:28:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {},
+    "balance_reconciliation": null,
+    "instruments": [
+      "XAUUSD"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
+  },
+  {
+    "strategy": "Gold X9 (Moderate)",
+    "status": "parsed",
+    "source_file": "MT5 X9 Moderate Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Trades",
+    "header_row_1_based": 1,
+    "parsed_deal_events": 8294,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T15:19:40",
+    "last_event": "2026-10-30T17:28:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {},
+    "balance_reconciliation": null,
+    "instruments": [
+      "XAUUSD"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
+  },
+  {
+    "strategy": "Gold X9 (High)",
+    "status": "parsed",
+    "source_file": "MT5 X9 High Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Trades",
+    "header_row_1_based": 1,
+    "parsed_deal_events": 11050,
+    "ignored_rows_after_header": 1,
+    "first_event": "2020-01-02T15:19:40",
+    "last_event": "2026-10-30T17:28:40",
+    "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
+    "settings": {},
+    "balance_reconciliation": null,
+    "instruments": [
+      "XAUUSD"
+    ],
+    "timezone": "Broker/server timestamps as exported; no timezone conversion applied."
+  },
+  {
+    "strategy": "Gold X9 (Very high)",
+    "status": "parsed",
+    "source_file": "MT5 X9 Very high Trades.xlsx",
+    "parser": "MetaTrader 5 Strategy Tester XLSX Deals table",
+    "sheet": "Trades",
+    "header_row_1_based": 1,
+    "parsed_deal_events": 26806,
     "ignored_rows_after_header": 1,
     "first_event": "2020-01-02T03:00:20",
-    "last_event": "2026-11-19T17:41:40",
+    "last_event": "2026-10-30T17:28:40",
     "profit_semantics": "Deal cash flow = Profit + Commission + Swap; entry/exit commissions remain on their deal timestamps.",
-    "settings": {
-      "report_symbol": "XAUUSD",
-      "report_period": "M1 (2020.01.01 - 2026.11.20)",
-      "report_currency": "USD",
-      "initial_deposit": 100000.0,
-      "reported_total_net_profit": 80014290.4,
-      "reported_profit_factor": 2.213425,
-      "reported_total_trades": 13436.0
-    },
-    "balance_reconciliation": {
-      "initial_deposit": 100000.0,
-      "final_balance": 80114290.4,
-      "balance_change": 80014290.4,
-      "sum_deal_cashflows": 80014290.4,
-      "difference": 0.0,
-      "matches_within_5c": true
-    },
+    "settings": {},
+    "balance_reconciliation": null,
     "instruments": [
       "XAUUSD"
     ],

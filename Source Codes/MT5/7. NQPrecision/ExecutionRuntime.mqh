@@ -1218,7 +1218,6 @@ bool NQPRuntimeAccountContextValid()
 }
 bool NQPRuntimeSelfTest()
 {
-   if(!MQLInfoInteger(MQL_TESTER)) return false;
    string owner=NQPRuntimeOwnershipKey(1,"server-a",ACCOUNT_TRADE_MODE_DEMO,"USTEC",Magic);
    if(owner==NQPRuntimeOwnershipKey(1,"server-b",ACCOUNT_TRADE_MODE_DEMO,"USTEC",Magic)
       || owner==NQPRuntimeOwnershipKey(1,"server-a",ACCOUNT_TRADE_MODE_REAL,"USTEC",Magic)

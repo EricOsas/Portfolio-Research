@@ -438,6 +438,16 @@ def plot_dashboard(strategy_events: dict[str, pd.DataFrame], title: str, output:
     fig.savefig(output, dpi=170, bbox_inches="tight")
     plt.close(fig)
 
+def strategy_family(name: str) -> str:
+    """Sleeve family used to keep mutually exclusive preset variants apart.
+
+    The five Gold X9 exports are one EA at five TradeFrequency settings, so two
+    of them must never share a book: their PnL streams are the same trades at
+    different frequencies, not independent sleeves.
+    """
+    return "Gold X9" if str(name).startswith("Gold X9") else str(name)
+
+
 def score_and_select(strategy_events: dict[str, pd.DataFrame], metrics_rows: list[dict[str, Any]]) -> tuple[list[str], pd.DataFrame, str]:
     if not metrics_rows: return [], pd.DataFrame(), "No parsed strategies."
     mdf = pd.DataFrame(metrics_rows).set_index("strategy")
@@ -465,6 +475,8 @@ def score_and_select(strategy_events: dict[str, pd.DataFrame], metrics_rows: lis
     selected = []
     for name in eligible.index.tolist():
         if len(selected) >= 4: break
+        if selected and any(strategy_family(name) == strategy_family(prior) for prior in selected):
+            continue
         if selected:
             vals = [corr.loc[name, prior] if name in corr.index and prior in corr.columns else np.nan for prior in selected]
             if any(pd.isna(v) or abs(float(v)) > .80 for v in vals): continue

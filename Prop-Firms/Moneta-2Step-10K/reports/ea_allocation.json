@@ -1,13 +1,13 @@
 {
   "account_size_usd": 10000.0,
   "phase_1": {
-    "book": "Gold X9 + Overnight Bias ORB",
+    "book": "Gold X9 (Low) + Overnight Bias ORB",
     "target_usd": 50.0,
-    "actual_risk_usd": 37.41,
+    "actual_risk_usd": 44.26,
     "sleeves": {
-      "Gold X9": {
-        "lots": 0.01,
-        "risk_usd": 12.96
+      "Gold X9 (Low)": {
+        "lots": 0.02,
+        "risk_usd": 19.8
       },
       "Overnight Bias ORB": {
         "lots": 0.4,
@@ -16,13 +16,13 @@
     }
   },
   "phase_2": {
-    "book": "Gold X9 + Overnight Bias ORB",
+    "book": "Gold X9 (Low) + Overnight Bias ORB",
     "target_usd": 50.0,
-    "actual_risk_usd": 37.41,
+    "actual_risk_usd": 44.26,
     "sleeves": {
-      "Gold X9": {
-        "lots": 0.01,
-        "risk_usd": 12.96
+      "Gold X9 (Low)": {
+        "lots": 0.02,
+        "risk_usd": 19.8
       },
       "Overnight Bias ORB": {
         "lots": 0.4,
@@ -57,7 +57,11 @@
     "FVG Duo": 0.8762,
     "Flash ORB": 0.6537,
     "Gold ORB (RBE)": 8.2338,
-    "Gold X9": 12.957,
+    "Gold X9 (Extremely low)": 10.1547,
+    "Gold X9 (High)": 11.0211,
+    "Gold X9 (Low)": 9.8996,
+    "Gold X9 (Moderate)": 11.6535,
+    "Gold X9 (Very high)": 13.09,
     "GotobiFix EURJPY": 1.0411,
     "GotobiFix GBPJPY": 1.4763,
     "GotobiFix USDJPY": 1.0261,

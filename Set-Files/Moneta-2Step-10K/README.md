@@ -5,20 +5,20 @@ enable inputs; every other strategy input keeps its shipped default.
 
 ## Phase-1
 
-Book target USD 50 per trade (actual USD 37.41, 75% of target).
+Book target USD 50 per trade (actual USD 44.26, 89% of target).
 
 | # | EA | Symbol | Lots | Risk USD | Magic |
 |---|---|---|---:|---:|---:|
-| 1 | Gold X9 | XAUUSD | 0.01 | 12.96 | 770101 |
+| 1 | Gold X9 Low | XAUUSD | 0.02 | 19.80 | 770101 |
 | 2 | Overnight Bias ORB | USTEC | 0.40 | 24.46 | 770102 |
 
 ## Phase-2
 
-Book target USD 50 per trade (actual USD 37.41, 75% of target).
+Book target USD 50 per trade (actual USD 44.26, 89% of target).
 
 | # | EA | Symbol | Lots | Risk USD | Magic |
 |---|---|---|---:|---:|---:|
-| 1 | Gold X9 | XAUUSD | 0.01 | 12.96 | 770201 |
+| 1 | Gold X9 Low | XAUUSD | 0.02 | 19.80 | 770201 |
 | 2 | Overnight Bias ORB | USTEC | 0.40 | 24.46 | 770202 |
 
 ## Funded
@@ -41,7 +41,7 @@ Book target USD 100 per trade (actual USD 97.68, 98% of target).
 
 Sizing is written as whole lots rather than percent or cash risk because the broker
 minimum (0.01 lot) is the binding constraint: on XAUUSD one 0.01 lot already risks
-USD 12.96 at the model's 1R. Any percent or cash input
+USD 0.00 at the model's 1R. Any percent or cash input
 below that floor silently becomes 0.01 lot anyway.
 
 ### Before going live

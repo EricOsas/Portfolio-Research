@@ -118,6 +118,15 @@ bot commits the regenerated reports as `chore: refresh platform equity reports`.
 
 ## Edge cases
 
+- **Preset families (one EA, several parameter sets):** register each preset as its
+  own export, but give them a shared family key. `strategy_family()` in
+  `build_equity_reports.py` and `build_live_and_prop_reports.py` returns
+  `Gold X9` for any name starting with `Gold X9`, and both the selection screen and
+  the book enumeration drop any book with two members of one family: the presets
+  are the same trades at different frequencies, so a book holding two of them would
+  double-count one stream. Pick the family's standard member in one place
+  (`GOLD_X9` in `analyze_the5ers_sizing.py`) and let the set-file builder write the
+  matching parameter (`TradeFrequency` for X9).
 - **New prop firm / account model:** firm rules live in code
   (`simulate_ftmo`, `simulate_tradeify`, `write_rule_docs`), not in the registry.
   Add a simulator, a `Prop-Firms/<Firm>-<Account>/` output path, and a README block

@@ -8,7 +8,11 @@ Sizing rule: `lots = max(0.01, floor(target / sleeves / 1R_per_lot * 100) / 100)
 
 | Sleeve | 0.01-lot 1R |
 |---|---:|
-| Gold X9 | $12.96 |
+| Gold X9 (Very high) | $13.09 |
+| Gold X9 (Moderate) | $11.65 |
+| Gold X9 (High) | $11.02 |
+| Gold X9 (Extremely low) | $10.15 |
+| Gold X9 (Low) | $9.90 |
 | Gold ORB (RBE) | $8.23 |
 | Tokyo Coil | $1.67 |
 | GotobiFix GBPJPY | $1.48 |
@@ -28,27 +32,27 @@ Sizing rule: `lots = max(0.01, floor(target / sleeves / 1R_per_lot * 100) / 100)
 
 | Book | Sleeves | Target | Lots | Actual risk | % of $10k | Phase 1 pass | Both phases | Eval breach | Payout | Funded breach | Days | Expected first payout |
 |---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 4-sleeve | Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive | $12 | Gold X9 0.01, GotobiFix EURJPY 0.03, GotobiFix USDJPY 0.03, Open Drive 0.08 | $22.19 | 0.22% | 98.2% | 96.0% | 3.7% | 94.4% | 10.4% | 96 | $338 |
-| 4-sleeve | Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive | $25 | Gold X9 0.01, GotobiFix EURJPY 0.06, GotobiFix USDJPY 0.06, Open Drive 0.16 | $31.42 | 0.31% | 98.3% | 96.5% | 3.3% | 95.5% | 11.4% | 89 | $339 |
-| 4-sleeve | Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive | $38 | Gold X9 0.01, GotobiFix EURJPY 0.09, GotobiFix USDJPY 0.09, Open Drive 0.24 | $40.65 | 0.41% | 98.2% | 96.3% | 3.6% | 95.1% | 13.7% | 84 | $332 |
-| 4-sleeve | Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive | $50 | Gold X9 0.01, GotobiFix EURJPY 0.12, GotobiFix USDJPY 0.12, Open Drive 0.32 | $49.89 | 0.50% | 98.0% | 96.1% | 3.9% | 94.9% | 13.6% | 78 | $347 |
-| 4-sleeve | Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive | $75 | Gold X9 0.01, GotobiFix EURJPY 0.18, GotobiFix USDJPY 0.18, Open Drive 0.49 | $68.73 | 0.69% | 97.2% | 95.0% | 4.9% | 93.3% | 20.7% | 69 | $365 |
-| 4-sleeve | Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive | $100 | Gold X9 0.01, GotobiFix EURJPY 0.24, GotobiFix USDJPY 0.24, Open Drive 0.65 | $87.20 | 0.87% | 92.9% | 84.8% | 15.2% | 80.0% | 54.1% | 60 | $340 |
-| 4-sleeve | Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive | $150 | Gold X9 0.02, GotobiFix EURJPY 0.36, GotobiFix USDJPY 0.36, Open Drive 0.98 | $137.46 | 1.38% | 76.5% | 53.2% | 46.8% | 42.2% | 99.7% | 33 | $316 |
-| X9 + OBR pair | Gold X9 + Overnight Bias ORB | $12 | Gold X9 0.01, Overnight Bias ORB 0.10 | $19.07 | 0.19% | 98.2% | 96.3% | 3.3% | 94.9% | 10.0% | 97 | $339 |
-| X9 + OBR pair | Gold X9 + Overnight Bias ORB | $25 | Gold X9 0.01, Overnight Bias ORB 0.20 | $25.18 | 0.25% | 98.2% | 96.4% | 3.4% | 94.9% | 10.0% | 93 | $341 |
-| X9 + OBR pair | Gold X9 + Overnight Bias ORB | $38 | Gold X9 0.01, Overnight Bias ORB 0.30 | $31.30 | 0.31% | 98.4% | 96.6% | 3.3% | 95.4% | 8.9% | 90 | $355 |
-| X9 + OBR pair | Gold X9 + Overnight Bias ORB | $50 | Gold X9 0.01, Overnight Bias ORB 0.40 | $37.41 | 0.37% | 98.6% | 96.8% | 3.1% | 95.8% | 10.4% | 85 | $354 |
-| X9 + OBR pair | Gold X9 + Overnight Bias ORB | $75 | Gold X9 0.02, Overnight Bias ORB 0.61 | $63.21 | 0.63% | 81.9% | 58.6% | 41.4% | 48.4% | 96.9% | 41 | $307 |
-| X9 + OBR pair | Gold X9 + Overnight Bias ORB | $100 | Gold X9 0.03, Overnight Bias ORB 0.81 | $88.39 | 0.88% | 70.6% | 45.5% | 54.5% | 32.4% | 100.0% | 29 | $295 |
-| X9 + OBR pair | Gold X9 + Overnight Bias ORB | $150 | Gold X9 0.05, Overnight Bias ORB 1.22 | $139.38 | 1.39% | 62.8% | 37.8% | 62.2% | 19.7% | 100.0% | 22 | $317 |
-| 3-sleeve (no index) | Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY | $12 | Gold X9 0.01, GotobiFix EURJPY 0.04, GotobiFix USDJPY 0.04 | $21.23 | 0.21% | 98.2% | 96.5% | 3.4% | 94.7% | 10.5% | 99 | $337 |
-| 3-sleeve (no index) | Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY | $25 | Gold X9 0.01, GotobiFix EURJPY 0.08, GotobiFix USDJPY 0.08 | $29.49 | 0.29% | 98.4% | 96.5% | 3.4% | 95.7% | 9.5% | 93 | $337 |
-| 3-sleeve (no index) | Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY | $38 | Gold X9 0.01, GotobiFix EURJPY 0.12, GotobiFix USDJPY 0.12 | $37.76 | 0.38% | 98.6% | 97.1% | 2.7% | 95.9% | 9.8% | 89 | $340 |
-| 3-sleeve (no index) | Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY | $50 | Gold X9 0.01, GotobiFix EURJPY 0.16, GotobiFix USDJPY 0.16 | $46.03 | 0.46% | 98.7% | 97.2% | 2.8% | 96.0% | 9.9% | 85 | $341 |
-| 3-sleeve (no index) | Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY | $75 | Gold X9 0.01, GotobiFix EURJPY 0.24, GotobiFix USDJPY 0.24 | $62.57 | 0.63% | 97.0% | 90.8% | 9.2% | 86.5% | 33.3% | 75 | $326 |
-| 3-sleeve (no index) | Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY | $100 | Gold X9 0.02, GotobiFix EURJPY 0.32, GotobiFix USDJPY 0.32 | $92.06 | 0.92% | 80.8% | 57.7% | 42.3% | 46.5% | 97.7% | 39 | $299 |
-| 3-sleeve (no index) | Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY | $150 | Gold X9 0.03, GotobiFix EURJPY 0.48, GotobiFix USDJPY 0.48 | $138.10 | 1.38% | 72.4% | 45.9% | 54.1% | 30.6% | 100.0% | 29 | $305 |
+| 4-sleeve | Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive | $12 | Gold X9 (Low) 0.01, GotobiFix EURJPY 0.03, GotobiFix USDJPY 0.03, Open Drive 0.08 | $19.13 | 0.19% | 100.0% | 78.5% | 0.0% | 42.9% | 0.0% | 215 | $155 |
+| 4-sleeve | Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive | $25 | Gold X9 (Low) 0.01, GotobiFix EURJPY 0.06, GotobiFix USDJPY 0.06, Open Drive 0.16 | $28.36 | 0.28% | 100.0% | 92.8% | 0.0% | 80.4% | 0.0% | 194 | $235 |
+| 4-sleeve | Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive | $38 | Gold X9 (Low) 0.01, GotobiFix EURJPY 0.09, GotobiFix USDJPY 0.09, Open Drive 0.24 | $37.60 | 0.38% | 100.0% | 96.3% | 0.0% | 91.3% | 0.0% | 166 | $239 |
+| 4-sleeve | Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive | $50 | Gold X9 (Low) 0.01, GotobiFix EURJPY 0.12, GotobiFix USDJPY 0.12, Open Drive 0.32 | $46.83 | 0.47% | 99.9% | 97.7% | 0.1% | 96.0% | 0.1% | 145 | $224 |
+| 4-sleeve | Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive | $75 | Gold X9 (Low) 0.01, GotobiFix EURJPY 0.18, GotobiFix USDJPY 0.18, Open Drive 0.49 | $65.67 | 0.66% | 99.4% | 97.9% | 1.0% | 96.5% | 1.9% | 116 | $259 |
+| 4-sleeve | Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive | $100 | Gold X9 (Low) 0.02, GotobiFix EURJPY 0.24, GotobiFix USDJPY 0.24, Open Drive 0.65 | $94.04 | 0.94% | 96.4% | 90.5% | 9.5% | 87.2% | 30.5% | 76 | $318 |
+| 4-sleeve | Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive | $150 | Gold X9 (Low) 0.03, GotobiFix EURJPY 0.36, GotobiFix USDJPY 0.36, Open Drive 0.98 | $141.25 | 1.41% | 87.3% | 70.7% | 29.3% | 61.9% | 83.5% | 50 | $319 |
+| X9 + OBR pair | Gold X9 (Low) + Overnight Bias ORB | $12 | Gold X9 (Low) 0.01, Overnight Bias ORB 0.10 | $16.01 | 0.16% | 100.0% | 70.3% | 0.0% | 35.3% | 0.0% | 216 | $126 |
+| X9 + OBR pair | Gold X9 (Low) + Overnight Bias ORB | $25 | Gold X9 (Low) 0.01, Overnight Bias ORB 0.20 | $22.13 | 0.22% | 100.0% | 85.4% | 0.0% | 61.1% | 0.0% | 203 | $203 |
+| X9 + OBR pair | Gold X9 (Low) + Overnight Bias ORB | $38 | Gold X9 (Low) 0.01, Overnight Bias ORB 0.30 | $28.24 | 0.28% | 100.0% | 92.0% | 0.0% | 79.2% | 0.0% | 188 | $249 |
+| X9 + OBR pair | Gold X9 (Low) + Overnight Bias ORB | $50 | Gold X9 (Low) 0.02, Overnight Bias ORB 0.40 | $44.26 | 0.44% | 100.0% | 99.6% | 0.0% | 98.7% | 0.1% | 121 | $377 |
+| X9 + OBR pair | Gold X9 (Low) + Overnight Bias ORB | $75 | Gold X9 (Low) 0.03, Overnight Bias ORB 0.61 | $66.99 | 0.67% | 99.3% | 98.1% | 1.9% | 96.9% | 8.2% | 87 | $462 |
+| X9 + OBR pair | Gold X9 (Low) + Overnight Bias ORB | $100 | Gold X9 (Low) 0.05, Overnight Bias ORB 0.81 | $99.02 | 0.99% | 91.2% | 79.4% | 20.6% | 73.4% | 62.7% | 58 | $492 |
+| X9 + OBR pair | Gold X9 (Low) + Overnight Bias ORB | $150 | Gold X9 (Low) 0.07, Overnight Bias ORB 1.22 | $143.89 | 1.44% | 82.8% | 62.8% | 37.2% | 52.2% | 95.2% | 43 | $473 |
+| 3-sleeve (no index) | Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY | $12 | Gold X9 (Low) 0.01, GotobiFix EURJPY 0.04, GotobiFix USDJPY 0.04 | $18.17 | 0.18% | 99.8% | 70.5% | 0.0% | 37.2% | 0.0% | 216 | $123 |
+| 3-sleeve (no index) | Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY | $25 | Gold X9 (Low) 0.01, GotobiFix EURJPY 0.08, GotobiFix USDJPY 0.08 | $26.44 | 0.26% | 99.9% | 85.8% | 0.0% | 66.5% | 0.0% | 203 | $191 |
+| 3-sleeve (no index) | Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY | $38 | Gold X9 (Low) 0.01, GotobiFix EURJPY 0.12, GotobiFix USDJPY 0.12 | $34.71 | 0.35% | 100.0% | 92.3% | 0.0% | 81.6% | 0.0% | 185 | $227 |
+| 3-sleeve (no index) | Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY | $50 | Gold X9 (Low) 0.01, GotobiFix EURJPY 0.16, GotobiFix USDJPY 0.16 | $42.97 | 0.43% | 99.9% | 95.4% | 0.0% | 88.9% | 0.0% | 168 | $249 |
+| 3-sleeve (no index) | Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY | $75 | Gold X9 (Low) 0.02, GotobiFix EURJPY 0.24, GotobiFix USDJPY 0.24 | $69.41 | 0.69% | 97.3% | 90.2% | 9.7% | 86.1% | 22.0% | 103 | $320 |
+| 3-sleeve (no index) | Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY | $100 | Gold X9 (Low) 0.03, GotobiFix EURJPY 0.32, GotobiFix USDJPY 0.32 | $95.85 | 0.96% | 95.5% | 88.0% | 12.0% | 82.9% | 39.2% | 75 | $394 |
+| 3-sleeve (no index) | Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY | $150 | Gold X9 (Low) 0.05, GotobiFix EURJPY 0.48, GotobiFix USDJPY 0.48 | $148.72 | 1.49% | 84.7% | 65.7% | 34.3% | 54.8% | 89.6% | 50 | $389 |
 | no gold | Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB | $12 | Flash ORB 0.04, GotobiFix EURJPY 0.03, Tokyo Coil 0.01, Overnight Bias ORB 0.05 | $10.47 | 0.10% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | nan | $0 |
 | no gold | Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB | $25 | Flash ORB 0.09, GotobiFix EURJPY 0.06, Tokyo Coil 0.03, Overnight Bias ORB 0.10 | $23.26 | 0.23% | 31.3% | 0.1% | 0.0% | 0.0% | 0.0% | nan | $0 |
 | no gold | Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB | $38 | Flash ORB 0.14, GotobiFix EURJPY 0.09, Tokyo Coil 0.05, Overnight Bias ORB 0.15 | $36.05 | 0.36% | 98.9% | 22.5% | 0.0% | 3.4% | 0.0% | 234 | $8 |
@@ -63,40 +67,40 @@ Sizing rule: `lots = max(0.01, floor(target / sleeves / 1R_per_lot * 100) / 100)
 | no gold, 3-sleeve | Flash ORB + GotobiFix EURJPY + Overnight Bias ORB | $75 | Flash ORB 0.38, GotobiFix EURJPY 0.24, Overnight Bias ORB 0.40 | $74.28 | 0.74% | 99.9% | 92.9% | 0.1% | 87.7% | 0.1% | 162 | $191 |
 | no gold, 3-sleeve | Flash ORB + GotobiFix EURJPY + Overnight Bias ORB | $100 | Flash ORB 0.50, GotobiFix EURJPY 0.32, Overnight Bias ORB 0.54 | $99.02 | 0.99% | 99.6% | 97.6% | 0.6% | 95.8% | 1.0% | 127 | $237 |
 | no gold, 3-sleeve | Flash ORB + GotobiFix EURJPY + Overnight Bias ORB | $150 | Flash ORB 0.76, GotobiFix EURJPY 0.48, Overnight Bias ORB 0.81 | $149.18 | 1.49% | 98.2% | 95.8% | 4.0% | 94.2% | 11.8% | 88 | $304 |
-| with gold | Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil | $12 | Flash ORB 0.04, Gold X9 0.01, GotobiFix EURJPY 0.03, Tokyo Coil 0.01 | $20.37 | 0.20% | 98.1% | 95.7% | 3.9% | 94.1% | 9.8% | 99 | $343 |
-| with gold | Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil | $25 | Flash ORB 0.09, Gold X9 0.01, GotobiFix EURJPY 0.06, Tokyo Coil 0.03 | $30.10 | 0.30% | 98.6% | 96.9% | 2.9% | 95.3% | 9.2% | 95 | $351 |
-| with gold | Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil | $38 | Flash ORB 0.14, Gold X9 0.01, GotobiFix EURJPY 0.09, Tokyo Coil 0.05 | $39.83 | 0.40% | 98.5% | 97.2% | 2.6% | 96.1% | 9.0% | 89 | $349 |
-| with gold | Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil | $50 | Flash ORB 0.19, Gold X9 0.01, GotobiFix EURJPY 0.12, Tokyo Coil 0.07 | $49.57 | 0.50% | 98.9% | 97.7% | 2.2% | 97.1% | 9.1% | 84 | $353 |
-| with gold | Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil | $75 | Flash ORB 0.28, Gold X9 0.01, GotobiFix EURJPY 0.18, Tokyo Coil 0.11 | $68.38 | 0.68% | 98.9% | 97.7% | 2.3% | 96.8% | 9.2% | 77 | $358 |
-| with gold | Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil | $100 | Flash ORB 0.38, Gold X9 0.01, GotobiFix EURJPY 0.24, Tokyo Coil 0.14 | $86.18 | 0.86% | 99.1% | 98.0% | 2.0% | 97.1% | 10.3% | 71 | $365 |
-| with gold | Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil | $150 | Flash ORB 0.57, Gold X9 0.02, GotobiFix EURJPY 0.36, Tokyo Coil 0.22 | $137.42 | 1.37% | 82.5% | 61.0% | 39.0% | 50.7% | 97.2% | 36 | $332 |
+| with gold | Flash ORB + Gold X9 (Low) + GotobiFix EURJPY + Tokyo Coil | $12 | Flash ORB 0.04, Gold X9 (Low) 0.01, GotobiFix EURJPY 0.03, Tokyo Coil 0.01 | $17.31 | 0.17% | 99.9% | 70.2% | 0.0% | 35.2% | 0.0% | 219 | $123 |
+| with gold | Flash ORB + Gold X9 (Low) + GotobiFix EURJPY + Tokyo Coil | $25 | Flash ORB 0.09, Gold X9 (Low) 0.01, GotobiFix EURJPY 0.06, Tokyo Coil 0.03 | $27.04 | 0.27% | 100.0% | 87.4% | 0.0% | 56.4% | 0.0% | 210 | $210 |
+| with gold | Flash ORB + Gold X9 (Low) + GotobiFix EURJPY + Tokyo Coil | $38 | Flash ORB 0.14, Gold X9 (Low) 0.01, GotobiFix EURJPY 0.09, Tokyo Coil 0.05 | $36.78 | 0.37% | 100.0% | 95.2% | 0.0% | 82.6% | 0.0% | 190 | $268 |
+| with gold | Flash ORB + Gold X9 (Low) + GotobiFix EURJPY + Tokyo Coil | $50 | Flash ORB 0.19, Gold X9 (Low) 0.01, GotobiFix EURJPY 0.12, Tokyo Coil 0.07 | $46.51 | 0.47% | 100.0% | 98.1% | 0.0% | 94.5% | 0.0% | 168 | $265 |
+| with gold | Flash ORB + Gold X9 (Low) + GotobiFix EURJPY + Tokyo Coil | $75 | Flash ORB 0.28, Gold X9 (Low) 0.01, GotobiFix EURJPY 0.18, Tokyo Coil 0.11 | $65.32 | 0.65% | 100.0% | 99.2% | 0.0% | 98.1% | 0.0% | 138 | $270 |
+| with gold | Flash ORB + Gold X9 (Low) + GotobiFix EURJPY + Tokyo Coil | $100 | Flash ORB 0.38, Gold X9 (Low) 0.02, GotobiFix EURJPY 0.24, Tokyo Coil 0.14 | $93.02 | 0.93% | 100.0% | 99.9% | 0.1% | 99.8% | 0.4% | 90 | $342 |
+| with gold | Flash ORB + Gold X9 (Low) + GotobiFix EURJPY + Tokyo Coil | $150 | Flash ORB 0.57, Gold X9 (Low) 0.03, GotobiFix EURJPY 0.36, Tokyo Coil 0.22 | $141.20 | 1.41% | 94.5% | 89.6% | 10.4% | 85.7% | 42.4% | 61 | $379 |
 
 ## End-to-end plan with the funded switch
 
 | Phase book | Phase target | Funded book | Funded target | Both phases | Eval breach | Payout | Conditional payout | Funded breach | Days |
 |---|---:|---|---:|---:|---:|---:|---:|---:|---:|
-| 4-sleeve | $25 | no gold | $100 | 96.7% | 3.2% | 96.4% | 99.8% | 0.8% | 92 |
-| 4-sleeve | $25 | no gold, 3-sleeve | $100 | 96.6% | 3.3% | 96.3% | 99.6% | 1.1% | 92 |
-| 4-sleeve | $25 | with gold | $50 | 96.4% | 3.5% | 95.4% | 98.9% | 8.4% | 90 |
-| X9 + OBR pair | $50 | no gold | $100 | 97.4% | 2.5% | 97.3% | 99.8% | 0.7% | 88 |
-| X9 + OBR pair | $50 | no gold, 3-sleeve | $100 | 97.4% | 2.6% | 97.0% | 99.7% | 1.4% | 88 |
-| X9 + OBR pair | $50 | with gold | $50 | 97.2% | 2.7% | 96.2% | 99.0% | 9.4% | 85 |
-| 3-sleeve (no index) | $50 | no gold | $100 | 97.3% | 2.6% | 97.0% | 99.7% | 0.8% | 89 |
-| 3-sleeve (no index) | $50 | no gold, 3-sleeve | $100 | 97.1% | 2.9% | 96.7% | 99.6% | 1.4% | 88 |
-| 3-sleeve (no index) | $50 | with gold | $50 | 97.0% | 2.9% | 96.0% | 99.0% | 9.3% | 84 |
+| 4-sleeve | $75 | no gold | $100 | 98.2% | 1.1% | 96.7% | 98.5% | 0.5% | 118 |
+| 4-sleeve | $75 | no gold, 3-sleeve | $100 | 97.9% | 1.1% | 96.5% | 98.6% | 0.9% | 118 |
+| 4-sleeve | $75 | with gold | $100 | 97.9% | 1.1% | 97.2% | 99.3% | 0.4% | 115 |
+| X9 + OBR pair | $50 | no gold | $100 | 99.7% | 0.0% | 98.8% | 99.1% | 0.4% | 116 |
+| X9 + OBR pair | $50 | no gold, 3-sleeve | $100 | 99.5% | 0.0% | 98.5% | 99.0% | 1.1% | 116 |
+| X9 + OBR pair | $50 | with gold | $100 | 99.6% | 0.0% | 99.1% | 99.5% | 0.4% | 114 |
+| 3-sleeve (no index) | $50 | no gold | $100 | 95.3% | 0.0% | 91.4% | 95.9% | 0.4% | 162 |
+| 3-sleeve (no index) | $50 | no gold, 3-sleeve | $100 | 95.0% | 0.0% | 90.7% | 95.5% | 0.5% | 161 |
+| 3-sleeve (no index) | $50 | with gold | $100 | 95.2% | 0.0% | 92.3% | 97.0% | 0.3% | 160 |
 
-Recommended: **X9 + OBR pair** at USD 50 through Phase 1-2, then **no gold** at USD 100 when funded (97.3% first payout, 0.7% funded breach).
+Recommended: **X9 + OBR pair** at USD 50 through Phase 1-2, then **no gold** at USD 100 when funded (98.8% first payout, 0.4% funded breach).
 
 
 ## Selected allocations
 
 | Stage | Book | Target | Lots | Actual risk | Both phases / payout | Eval breach |
 |---|---|---:|---|---:|---:|---:|
-| Phase 1-2 | 4-sleeve | $25 | Gold X9 0.01, GotobiFix EURJPY 0.06, GotobiFix USDJPY 0.06, Open Drive 0.16 | $31.42 | 96.5% / 95.5% | 3.3% |
-| Phase 1-2 | X9 + OBR pair | $50 | Gold X9 0.01, Overnight Bias ORB 0.40 | $37.41 | 96.8% / 95.8% | 3.1% |
-| Phase 1-2 | 3-sleeve (no index) | $50 | Gold X9 0.01, GotobiFix EURJPY 0.16, GotobiFix USDJPY 0.16 | $46.03 | 97.2% / 96.0% | 2.8% |
+| Phase 1-2 | 4-sleeve | $75 | Gold X9 (Low) 0.01, GotobiFix EURJPY 0.18, GotobiFix USDJPY 0.18, Open Drive 0.49 | $65.67 | 97.9% / 96.5% | 1.0% |
+| Phase 1-2 | X9 + OBR pair | $50 | Gold X9 (Low) 0.02, Overnight Bias ORB 0.40 | $44.26 | 99.6% / 98.7% | 0.0% |
+| Phase 1-2 | 3-sleeve (no index) | $50 | Gold X9 (Low) 0.01, GotobiFix EURJPY 0.16, GotobiFix USDJPY 0.16 | $42.97 | 95.4% / 88.9% | 0.0% |
 | Funded | no gold | $100 | Flash ORB 0.38, GotobiFix EURJPY 0.24, Tokyo Coil 0.14, Overnight Bias ORB 0.40 | $97.68 | 98.2% / 0.7% | – |
 | Funded | no gold, 3-sleeve | $100 | Flash ORB 0.50, GotobiFix EURJPY 0.32, Overnight Bias ORB 0.54 | $99.02 | 98.2% / 1.0% | – |
-| Funded | with gold | $50 | Flash ORB 0.19, Gold X9 0.01, GotobiFix EURJPY 0.12, Tokyo Coil 0.07 | $49.57 | 99.3% / 9.1% | – |
+| Funded | with gold | $100 | Flash ORB 0.38, Gold X9 (Low) 0.02, GotobiFix EURJPY 0.24, Tokyo Coil 0.14 | $93.02 | 100.0% / 0.4% | – |
 
 Machine-readable allocation for the EA set files: [ea_allocation.json](ea_allocation.json).

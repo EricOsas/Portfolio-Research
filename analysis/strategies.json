@@ -12,7 +12,11 @@
     "FVG Duo": "NinjaTrader FVGDuo Trades.csv"
   },
   "MT5": {
-    "Gold X9": "MT5 X9 Trades.xlsx",
+    "Gold X9 (Extremely low)": "MT5 X9 Extremely low Trades.xlsx",
+    "Gold X9 (Low)": "MT5 X9 Low Trades.xlsx",
+    "Gold X9 (Moderate)": "MT5 X9 Moderate Trades.xlsx",
+    "Gold X9 (High)": "MT5 X9 High Trades.xlsx",
+    "Gold X9 (Very high)": "MT5 X9 Very high Trades.xlsx",
     "Gold ORB (RBE)": "MT5 RBE Trades.xlsx",
     "Tokyo Coil": "MT5 TokyoCoil Trades.xlsx",
     "Vault Break": "MT5 VaultBreak Trades.xlsx",

@@ -1,5 +1,9 @@
 strategy,status,source_file,note
-Gold X9,parsed,MT5 X9 Trades.xlsx,Trade export parsed successfully.
+Gold X9 (Extremely low),parsed,MT5 X9 Extremely low Trades.xlsx,Trade export parsed successfully.
+Gold X9 (Low),parsed,MT5 X9 Low Trades.xlsx,Trade export parsed successfully.
+Gold X9 (Moderate),parsed,MT5 X9 Moderate Trades.xlsx,Trade export parsed successfully.
+Gold X9 (High),parsed,MT5 X9 High Trades.xlsx,Trade export parsed successfully.
+Gold X9 (Very high),parsed,MT5 X9 Very high Trades.xlsx,Trade export parsed successfully.
 Gold ORB (RBE),parsed,MT5 RBE Trades.xlsx,Trade export parsed successfully.
 Tokyo Coil,parsed,MT5 TokyoCoil Trades.xlsx,Trade export parsed successfully.
 Vault Break,parsed,MT5 VaultBreak Trades.xlsx,Trade export parsed successfully.

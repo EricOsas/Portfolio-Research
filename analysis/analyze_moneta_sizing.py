@@ -30,14 +30,14 @@ ACCOUNT = engine.MONETA_SIZE
 OUT = engine.PROP_ROOT / "Moneta-2Step-10K" / "reports"
 
 PHASE_BOOKS = {
-    "4-sleeve": ["Gold X9", "GotobiFix EURJPY", "GotobiFix USDJPY", "Open Drive"],
-    "X9 + OBR pair": ["Gold X9", "Overnight Bias ORB"],
-    "3-sleeve (no index)": ["Gold X9", "GotobiFix EURJPY", "GotobiFix USDJPY"],
+    "4-sleeve": [T5.GOLD_X9, "GotobiFix EURJPY", "GotobiFix USDJPY", "Open Drive"],
+    "X9 + OBR pair": [T5.GOLD_X9, "Overnight Bias ORB"],
+    "3-sleeve (no index)": [T5.GOLD_X9, "GotobiFix EURJPY", "GotobiFix USDJPY"],
 }
 FUNDED_BOOKS = {
     "no gold": ["Flash ORB", "GotobiFix EURJPY", "Tokyo Coil", "Overnight Bias ORB"],
     "no gold, 3-sleeve": ["Flash ORB", "GotobiFix EURJPY", "Overnight Bias ORB"],
-    "with gold": ["Flash ORB", "Gold X9", "GotobiFix EURJPY", "Tokyo Coil"],
+    "with gold": ["Flash ORB", T5.GOLD_X9, "GotobiFix EURJPY", "Tokyo Coil"],
 }
 TARGETS = [12.5, 25.0, 37.5, 50.0, 75.0, 100.0, 150.0]
 

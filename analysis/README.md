@@ -9,6 +9,7 @@ Source exports are stored under `Trades/NT8 Trades/` (10 CSV files) and `Trades/
 - NT8 Profit is used as exported; it is already net of Commission.
 - MT5 standard Strategy Tester reports use deal Profit + Commission + Swap.
 - NQ Precision Bot, Gold X9 and GotobiFix use custom completed-trade ledgers.
+- Gold X9 is registered at five `TradeFrequency` presets; they are one mutually exclusive family, and `GOLD_X9` in `analyze_the5ers_sizing.py` names the standard member (`Low`).
 - Gold X9 and Tokyo Coil size from account balance (compounding tester runs); the platform README flags them and the normalized layer divides cash flow by traded volume.
 
 ## 2. Normalized live and prop-firm analysis

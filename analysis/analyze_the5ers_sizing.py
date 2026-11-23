@@ -27,8 +27,11 @@ sys.path.insert(0, str(ROOT / "analysis"))
 import build_live_and_prop_reports as engine  # noqa: E402
 
 OUT = ROOT / "Prop-Firms" / "The5ers-20K-Bootcamp" / "reports"
+# The five Gold X9 exports are one EA at five TradeFrequency settings and are
+# mutually exclusive: a book may hold one preset, never two.
+GOLD_X9 = "Gold X9 (Low)"  # preset chosen by the screening; see reports/strategy_suitability.md
 INSTRUMENTS = {
-    "Gold X9": "XAUUSD", "GotobiFix EURJPY": "EURJPY", "GotobiFix USDJPY": "USDJPY",
+    GOLD_X9: "XAUUSD", "GotobiFix EURJPY": "EURJPY", "GotobiFix USDJPY": "USDJPY",
     "Open Drive": "USTEC", "Flash ORB": "USTEC", "Tokyo Coil": "USDJPY",
     "Overnight Bias ORB": "USTEC",
 }
@@ -37,23 +40,23 @@ HORIZON = 252
 BLOCK = 5
 SEED = 20261122
 
-EVAL_BOOK = ["Gold X9", "GotobiFix EURJPY", "GotobiFix USDJPY", "Open Drive"]
-FUNDED_BOOK = ["Flash ORB", "Gold X9", "GotobiFix EURJPY", "Tokyo Coil"]
+EVAL_BOOK = [GOLD_X9, "GotobiFix EURJPY", "GotobiFix USDJPY", "Open Drive"]
+FUNDED_BOOK = ["Flash ORB", GOLD_X9, "GotobiFix EURJPY", "Tokyo Coil"]
 FUNDED_NO_X9 = ["Flash ORB", "GotobiFix EURJPY", "Tokyo Coil", "Overnight Bias ORB"]
 PAIRS = [
-    ["Gold X9", "Overnight Bias ORB"],
+    [GOLD_X9, "Overnight Bias ORB"],
     ["GotobiFix EURJPY", "Overnight Bias ORB"],
     ["GotobiFix USDJPY", "Overnight Bias ORB"],
     ["Flash ORB", "Overnight Bias ORB"],
-    ["Gold ORB (RBE)", "Gold X9"],
+    ["Gold ORB (RBE)", GOLD_X9],
     ["GotobiFix EURJPY", "Tokyo Coil"],
 ]
 EQUAL_SPLIT_USD = 25.0
 
 # Three books, sized to a target risk in whole 0.01 lots.
 BOOKS = {
-    "Phase book (4 sleeves)": ["Gold X9", "GotobiFix EURJPY", "GotobiFix USDJPY", "Open Drive"],
-    "Phase book (X9 + OBR pair)": ["Gold X9", "Overnight Bias ORB"],
+    "Phase book (4 sleeves)": [GOLD_X9, "GotobiFix EURJPY", "GotobiFix USDJPY", "Open Drive"],
+    "Phase book (X9 + OBR pair)": [GOLD_X9, "Overnight Bias ORB"],
     "Funded book (no gold)": ["Flash ORB", "GotobiFix EURJPY", "Tokyo Coil", "Overnight Bias ORB"],
     "Low-risk book (Flash + OBR)": ["Flash ORB", "Overnight Bias ORB"],
 }

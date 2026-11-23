@@ -1099,7 +1099,6 @@ bool FlashRuntimeAccountContextValid()
 }
 bool FlashRuntimeSelfTest()
 {
-   if(!MQLInfoInteger(MQL_TESTER)) return false;
    string owner=FlashRuntimeOwnershipKey(1,"server-a",ACCOUNT_TRADE_MODE_DEMO,"USTEC",Magic);
    if(owner==FlashRuntimeOwnershipKey(1,"server-b",ACCOUNT_TRADE_MODE_DEMO,"USTEC",Magic)
       || owner==FlashRuntimeOwnershipKey(1,"server-a",ACCOUNT_TRADE_MODE_REAL,"USTEC",Magic)

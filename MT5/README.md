@@ -1,20 +1,20 @@
 # MT5 research pack
 
-**15 of 15 registered exports parsed.**
+**19 of 19 registered exports parsed.**
 
 ## Snapshot
 
 | Portfolio | Net PnL | Max drawdown | Daily PF | Daily Sharpe |
 |---|---:|---:|---:|---:|
-| All 15 exports | $81,944,165.86 | $4,653,710.89 | 2.63 | 2.50 |
-| Core 4 shortlist | $80,286,062.82 | $4,678,072.04 | 2.61 | 2.45 |
+| All 19 exports | $292,476,593.33 | $16,661,015.76 | 2.90 | 2.50 |
+| Core 4 shortlist | $140,670,006.82 | $6,478,016.18 | 2.96 | 2.50 |
 
 ## Core shortlist
 
-- Gold X9
+- Gold X9 (Very high)
+- Gold X9 (Low)
 - GotobiFix EURJPY
-- GotobiFix USDJPY
-- Gold ORB (RBE)
+- Gold X9 (Extremely low)
 
 ## Reports
 
@@ -39,7 +39,11 @@ These exports size from account balance rather than a fixed lot/contract. Their 
 
 | Strategy | Mean size, first year | Mean size, last year |
 |---|---:|---:|
-| Gold X9 | 0.46 | 51.47 |
+| Gold X9 (Extremely low) | 3.99 | 83.81 |
+| Gold X9 (Low) | 2.29 | 99.20 |
+| Gold X9 (Moderate) | 1.38 | 99.49 |
+| Gold X9 (High) | 1.09 | 99.74 |
+| Gold X9 (Very high) | 0.46 | 52.40 |
 | Tokyo Coil | 9.41 | 38.40 |
 
 ## Equity curves
@@ -58,7 +62,11 @@ These exports size from account balance rather than a fixed lot/contract. Their 
 
 ### Individual curves
 
-- [Gold X9](charts/individual/gold-x9.png)
+- [Gold X9 (Extremely low)](charts/individual/gold-x9-extremely-low.png)
+- [Gold X9 (Low)](charts/individual/gold-x9-low.png)
+- [Gold X9 (Moderate)](charts/individual/gold-x9-moderate.png)
+- [Gold X9 (High)](charts/individual/gold-x9-high.png)
+- [Gold X9 (Very high)](charts/individual/gold-x9-very-high.png)
 - [Gold ORB (RBE)](charts/individual/gold-orb-rbe.png)
 - [Tokyo Coil](charts/individual/tokyo-coil.png)
 - [Vault Break](charts/individual/vault-break.png)

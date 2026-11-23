@@ -1100,7 +1100,6 @@ bool OSRuntimeAccountContextValid()
 }
 bool OSRuntimeSelfTest()
 {
-   if(!MQLInfoInteger(MQL_TESTER)) return false;
    string owner=OSRuntimeOwnershipKey(1,"server-a",ACCOUNT_TRADE_MODE_DEMO,"USTEC",Magic);
    if(owner==OSRuntimeOwnershipKey(1,"server-b",ACCOUNT_TRADE_MODE_DEMO,"USTEC",Magic)
       || owner==OSRuntimeOwnershipKey(1,"server-a",ACCOUNT_TRADE_MODE_REAL,"USTEC",Magic)

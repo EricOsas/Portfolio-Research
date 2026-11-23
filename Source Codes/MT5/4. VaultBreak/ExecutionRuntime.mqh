@@ -1097,7 +1097,6 @@ bool VBRuntimeAccountContextValid()
 }
 bool VBRuntimeSelfTest()
 {
-   if(!MQLInfoInteger(MQL_TESTER)) return false;
    string owner=VBRuntimeOwnershipKey(1,"server-a",ACCOUNT_TRADE_MODE_DEMO,"USTEC",Magic);
    if(owner==VBRuntimeOwnershipKey(1,"server-b",ACCOUNT_TRADE_MODE_DEMO,"USTEC",Magic)
       || owner==VBRuntimeOwnershipKey(1,"server-a",ACCOUNT_TRADE_MODE_REAL,"USTEC",Magic)

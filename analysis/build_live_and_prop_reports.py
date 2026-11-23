@@ -27,6 +27,15 @@ MONETA_SIZE = 10000.0
 MONETA_RISKS = [12.5, 25.0, 50.0, 75.0, 100.0]
 TRADEIFY_RISKS = [100.0, 250.0, 500.0, 750.0]
 
+def strategy_family(name):
+    """Gold X9 presets are one EA at five TradeFrequency settings.
+
+    Two presets in one book would be the same trade stream counted twice, so a
+    book may hold at most one member of the family.
+    """
+    return "Gold X9" if str(name).startswith("Gold X9") else str(name)
+
+
 def slug(s):
     return re.sub(r"[^a-z0-9]+", "-", str(s).lower()).strip("-")
 
@@ -308,6 +317,8 @@ def build_books(rmat, active):
     rows = []
     for k in range(1, min(4, len(names))+1):
         for combo in itertools.combinations(names, k):
+            if len({strategy_family(x) for x in combo}) < len(combo):
+                continue
             tr, _, _ = book_metrics(rmat, active, combo, train_idx)
             va, _, _ = book_metrics(rmat, active, combo, val_idx)
             rows.append({
