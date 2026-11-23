@@ -50,6 +50,15 @@ PAIRS = [
 ]
 EQUAL_SPLIT_USD = 25.0
 
+# Three books, sized to a target risk in whole 0.01 lots.
+BOOKS = {
+    "Phase book (4 sleeves)": ["Gold X9", "GotobiFix EURJPY", "GotobiFix USDJPY", "Open Drive"],
+    "Phase book (X9 + OBR pair)": ["Gold X9", "Overnight Bias ORB"],
+    "Funded book (no gold)": ["Flash ORB", "GotobiFix EURJPY", "Tokyo Coil", "Overnight Bias ORB"],
+    "Low-risk book (Flash + OBR)": ["Flash ORB", "Overnight Bias ORB"],
+}
+TARGETS = [25.0, 50.0, 100.0]
+
 # (label, evaluation pct per sleeve, funded pct per sleeve, funded book)
 SCENARIOS = [
     ("A. Physical minimum, no scaling", 0.00001, 0.00001, FUNDED_BOOK),
@@ -63,10 +72,16 @@ SCENARIOS = [
 
 
 def min_lot_risk(trades: pd.DataFrame, strategy: str) -> float:
-    """1R in dollars at the broker minimum (0.01 lot), from the export itself."""
+    """1R in dollars at the broker minimum (0.01 lot).
+
+    Uses the same frozen training-sample risk_unit the R-multiples are built
+    from, so the dollar floor and the simulated R paths share one calibration.
+    """
+    unit = trades.loc[trades["strategy"] == strategy, "risk_unit"]
+    if len(unit) and np.isfinite(float(unit.iloc[0])) and float(unit.iloc[0]) > 0:
+        return float(unit.iloc[0]) * 0.01
     x = trades[(trades["strategy"] == strategy) & (trades["native_pnl"] < 0)]
-    per_001 = x["native_pnl"].abs() / (x["quantity"] * 100.0)
-    return float(per_001.mean())
+    return float((x["native_pnl"].abs() / (x["quantity"] * 100.0)).mean() * 0.01)
 
 
 def sample_joint(matrix: np.ndarray, date_index, seed: int):
@@ -294,6 +309,36 @@ def main():
         print("pair", " + ".join(book), pair_rows[-1]["minlot_total_usd"], round(pair_rows[-1]["minlot_payout"], 3))
     pd.DataFrame(pair_rows).to_csv(OUT / "pair_sizing.csv", index=False)
 
+    # Whole-lot sizing to a target risk: the answer to "why pin them at 0.01 lot".
+    import math as _math
+    unit = {s: float(trades.loc[trades["strategy"] == s, "risk_unit"].iloc[0])
+            for s in rmat.columns}
+    book_rows = []
+    for name, book in BOOKS.items():
+        paths = sample_joint(np.stack([rmat.loc[val, s].values for s in book], axis=1),
+                             val, SEED + 47 + len(book))
+        for target in TARGETS:
+            per = target / len(book)
+            lots = {s: max(0.01, _math.floor(per / unit[s] * 100.0 + 1e-9) / 100.0) for s in book}
+            risk = {s: lots[s] * unit[s] for s in book}
+            fl = np.array([risk[s] for s in book])
+            res = simulate_stages(paths, fl, paths, fl, 0.0, 0.0)
+            book_rows.append({
+                "book": name, "target_usd": target,
+                "lots": ", ".join(f"{s} {lots[s]:.2f}" for s in book),
+                "actual_risk_usd": round(float(fl.sum()), 2),
+                "pct_of_5k": round(float(fl.sum()) / 5000.0 * 100, 2),
+                "pct_of_20k": round(float(fl.sum()) / 20000.0 * 100, 2),
+                "reach_funded": res["reach_funded_rate"],
+                "eval_breach": res["evaluation_hard_breach_rate"],
+                "payout": res["payout_rate_from_start"],
+                "funded_breach": res["funded_hard_breach_conditional"],
+                "days": res["median_days_to_payout"],
+            })
+            print("book", name, target, book_rows[-1]["actual_risk_usd"],
+                  round(book_rows[-1]["payout"], 3))
+    pd.DataFrame(book_rows).to_csv(OUT / "book_sizing.csv", index=False)
+
     OUT.mkdir(parents=True, exist_ok=True)
     df.to_csv(OUT / "stage_sizing.csv", index=False)
 
@@ -377,6 +422,28 @@ def main():
         "- The fix is to drop Gold X9 from the funded book (F-G): the remaining sleeves",
         "  are cheap at 0.01 lot, so the same percentage is a much smaller book and the",
         "  funded breach collapses.",
+        "",
+        "## Books sized to a target risk, in whole 0.01 lots",
+        "",
+        "0.01 lot is not a strategy choice, it is the broker floor. This table sizes each",
+        "book to a target risk instead, rounds down to 0.01 lots, and never goes below the",
+        "floor, so gold still overshoots its share.",
+        "",
+        "| Book | Target | Lots | Actual risk | % of $5k | % of $20k | Reach funded | Eval breach | Payout | Funded breach | Median days |",
+        "|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|",
+    ]
+    for r in book_rows:
+        lines.append(
+            f"| {r['book']} | ${r['target_usd']:.0f} | {r['lots']} | ${r['actual_risk_usd']:.2f} | "
+            f"{r['pct_of_5k']:.2f}% | {r['pct_of_20k']:.2f}% | {r['reach_funded']*100:.1f}% | "
+            f"{r['eval_breach']*100:.1f}% | {r['payout']*100:.1f}% | {r['funded_breach']*100:.1f}% | "
+            f"{r['days']:.0f} |")
+    lines += [
+        "",
+        "Reading: the cheap books only work once they are sized up, and their limit is",
+        "time, not risk. At USD 25 total the cheap pairs pass Step 1 in 96-99% of paths but",
+        "cannot finish three steps inside 252 days; at USD 50 they complete. Gold still",
+        "cannot be sized below 0.01 lot, so any gold book overshoots its target share.",
         "",
         "## Recommended settings (verified against the EA sources)",
         "",
