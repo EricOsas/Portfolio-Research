@@ -68,18 +68,18 @@ Risk ladder: USD 100, 250, 500 and 750 requested total book risk per trade. Over
 
 The NT8 MAE report measures one-micro-per-sleeve adverse-excursion stress. Same-entry-day MAEs are stacked conservatively; this is not a synchronized intraday replay. It is intended to flag possible daily-loss pauses, not predict exact breach timing.
 
-## Moneta Funded — USD 25,000 2-Step Standard
+## Moneta Funded — USD 10,000 2-Step Standard
 
 Rules are taken from the Moneta Funded support clarification of 2026-11-21 and the
 published programme rules, which the firm names as authoritative (website, client
 dashboard, Help Center/FAQ, Terms & Conditions).
 
-- Phase 1 target: **5%** (USD 1,250). Phase 2 target: **10%** (USD 2,500).
-- Daily loss: **4%** (USD 1,000), or 5% with the wider drawdown option. A breach
+- Phase 1 target: **5%** (USD 500). Phase 2 target: **10%** (USD 1,000).
+- Daily loss: **4%** (USD 400), or 5% with the wider drawdown option. A breach
   fails the account; Moneta does not treat the daily limit as a pause.
-- Maximum loss: **8% static** (USD 2,000), or 10% with the wider option, measured
+- Maximum loss: **8% static** (USD 800), or 10% with the wider option, measured
   from the starting balance. Not trailing.
-- **Three profitable days of at least 0.5% net** (USD 125) in each phase and in
+- **Three profitable days of at least 0.5% net** (USD 50) in each phase and in
   each funded payout cycle. No consistency rule anywhere.
 - Funded split **88%**, payout cycle **14 calendar days** (modeled as 10 trading
   days), balance resets to the account size after each withdrawal. No minimum
@@ -92,22 +92,21 @@ dashboard, Help Center/FAQ, Terms & Conditions).
   permitted (the earlier blanket prohibition was withdrawn).
 - Overnight and weekend holding allowed. No consistency rule, no time limit.
 
-The model runs the 4%/8% variant, so every result is the conservative case. The
-binding constraint is Phase 2: 10% of profit against an 8% static budget, with
-all profits from Phase 1 already reset away, so the phase needs 25R at a 0.4%
-per-trade risk and only 12.5R once the book risks 0.8% per trade.
+The model runs the 4%/8% variant, so every result is the conservative case. Phase 2
+is the binding constraint: 10% of profit against an 8% static budget, with Phase 1
+profit reset away, so it needs 27R at a 0.37% per-trade book and only 12.5R at 0.8%.
 
-[Stage sizing with real lot floors](Moneta-2Step-25K/reports/stage_sizing.md)
-sizes each sleeve in whole 0.01 lots and models the funded-book switch. The
-selected plan is Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY at a USD 100
-target through both phases (**USD 92.06** actual, 0.37% of the account), then
-Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB at a USD 200
-target when funded (**USD 197.63**, 0.79%). That plan reaches funding in
-**98.4%** of paths, breaches evaluation in **1.3%**, and produces a first payout
-in **97.8%** of challenge starts (**99.4%** conditional on funding, **0.06%**
-funded breach, median 109 trading days, expected first payout **USD 577**).
+[Stage sizing with real lot floors](Moneta-2Step-10K/reports/stage_sizing.md) sizes
+each sleeve in whole 0.01 lots and models the funded-book switch. The selected plan
+is Gold X9 + Overnight Bias ORB at a USD 50 target through both phases
+(**USD 37.41** actual, 0.37% of the account; gold at 0.01 lot), then Flash ORB +
+GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB at a USD 100 target when funded
+(**USD 97.68**, 0.98%), with no gold. That plan reaches funding in **97.4%** of
+paths, breaches evaluation in **2.5%**, and produces a first payout in **97.3%** of
+challenge starts (**99.8%** conditional on funding, **0.7%** funded breach, median
+88 trading days, expected first payout **USD 250**).
 
-Pre-built EA presets: [Set-Files/Moneta-2Step-25K](../Set-Files/Moneta-2Step-25K/README.md).
+Pre-built EA presets: [Set-Files/Moneta-2Step-10K](../Set-Files/Moneta-2Step-10K/README.md).
 
 ## Contract floors on the NT8 side
 

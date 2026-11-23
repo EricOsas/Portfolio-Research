@@ -2,54 +2,60 @@
 
 Newest entry first. Only what was verified in this session is recorded here.
 
-## 2026-11-23 (latest) — Moneta 2-Step added; plug-and-play EA set files built
+## 2026-11-23 (latest) — Moneta $10k 2-Step added; plug-and-play EA set files built
 
-**Ask.** Include the Moneta account the user is about to buy, and create a folder under
-`Documents/Portfolio` with pre-configured EA set files per firm per stage.
+**Ask.** Include the Moneta account the user is about to buy (**USD 10,000**, corrected from
+$25k mid-task), and create a folder under `Documents/Portfolio` with pre-configured EA set
+files per firm per stage.
 
-**Moneta rules recorded** (from the Moneta Funded support clarification of 2026-11-21; the
-firm says the website/dashboard/FAQ/Terms are authoritative): Phase 1 +5%, Phase 2 +10%,
-4% daily loss and 8% static maximum loss (5%/10% with the wider drawdown option), three
-profitable days of at least 0.5% net in each phase and each payout cycle, **no consistency
-rule**, 88% split, 14-calendar-day payout cycle, own EAs allowed, incidental opposing
-positions from independent EAs on one account allowed, cross-account hedging prohibited,
-news restricted 5 minutes either side of high-impact releases **in evaluation too**, IP/VPS
-switching not blanket-approved.
+**Moneta rules recorded** (support clarification 2026-11-21; the firm says website/dashboard/
+FAQ/Terms are authoritative): Phase 1 +5% (USD 500), Phase 2 +10% (USD 1,000), 4% daily loss
+(USD 400) and 8% static max loss (USD 800) — 5%/10% with the wider option — three profitable
+days of at least 0.5% (USD 50) per phase and per payout cycle, **no consistency rule**, 88%
+split, 14-calendar-day payout cycle, own EAs allowed, incidental opposing positions from
+independent EAs on one account allowed, cross-account hedging prohibited, news restricted 5
+minutes either side of high-impact releases **in evaluation too**, IP/VPS switching not
+blanket-approved.
 
-**Engine.** `simulate_moneta()` added to `build_live_and_prop_reports.py` (2 phases + funded,
-`MONETA_RISKS = [25,50,100,200]`, base `$100`, `funded_paths`/`funded_risk` let the book
-switch at funding). Moneta rows, a Moneta recovery block (8% floor = USD 2,000, 4% daily =
-USD 1,000), `account_rules.json`, a generated README and the Prop-Firms index link are wired
-in. Two bugs were fixed during the build: Phase-1 pass was entering the funded state, and
-`reached_funded` was reading the Phase-1 marker.
+**Engine.** `simulate_moneta()` in `build_live_and_prop_reports.py` (2 phases + funded,
+`MONETA_SIZE = 10000`, `MONETA_RISKS = [12.5, 25, 50, 75, 100]`, base `$50`,
+`funded_paths`/`funded_risk` switch the book at funding). Moneta Monte Carlo rows, a recovery
+block (8% floor = USD 800, 4% daily = USD 400), `account_rules.json`, generated README and the
+Prop-Firms index link are wired in. Two bugs found and fixed: Phase 1 passing jumped straight
+to the funded state, and `reached_funded` read the Phase-1 marker.
 
 **Sizing (`analysis/analyze_moneta_sizing.py`, new CI step).** Whole-lot sizing plus an
-end-to-end plan with the funded switch → `Prop-Firms/Moneta-2Step-25K/reports/`
+end-to-end plan with the funded switch → `Prop-Firms/Moneta-2Step-10K/reports/`
 `stage_sizing.{md,csv}`, `plan_switch.csv`, `ea_allocation.json`.
-Selected plan: phase book **Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY** at a USD 100
-target = **USD 92.06** (0.37% of 25k); funded book **Flash ORB + GotobiFix EURJPY + Tokyo
-Coil + Overnight Bias ORB** at USD 200 = **USD 197.63** (0.79%). Verified locally:
-**98.4%** reach funding, **1.3%** evaluation breach, **97.8%** first payout (**99.4%**
-conditional, **0.06%** funded breach), median **109** trading days, expected first payout
-**USD 577**. Phase 2 is the binding constraint (10% target against an 8% static budget).
+
+Verified locally on the $10k account: phase book **Gold X9 + Overnight Bias ORB** at a USD 50
+target = **USD 37.41** (0.37%; gold 0.01 lot = USD 12.96, OBR 0.40 lot = USD 24.46); funded
+book **Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB** at USD 100 =
+**USD 97.68** (0.98%), no gold. Plan: **97.4%** reach funding, **2.5%** evaluation breach,
+**97.3%** first payout (**99.8%** conditional, **0.7%** funded breach), median **88** trading
+days, expected first payout **USD 250**. Phase 2 is the binding constraint (10% target against
+an 8% static budget, Phase 1 profit reset away).
 
 **Set files (`analysis/build_set_files.py`, new CI step).** Writes `Set-Files/<firm>/<stage>/`
-with one MT5 `.set` per sleeve, a per-stage `manifest.csv` (EA, symbol, lots, USD risk,
-magic) and per-firm READMEs, plus a Tradeify NT8 settings README. Sizing is whole lots with
-explicit magic numbers (The5ers base 760000, Moneta 770000). Generated locally into
-`C:/Users/Administrator/Documents/Portfolio/Set-Files` and committed under `Set-Files/` in
-the repo. Input names were read from the terminal-tree sources, including
-`Lotsizing_Method=0` (`Manual_Lotsize`) for Gold X9 and `InpSizingMode=0` for FVG Duo.
+with one MT5 `.set` per sleeve, a per-stage `manifest.csv` (EA, symbol, lots, USD risk, magic)
+and per-firm READMEs, plus a Tradeify NT8 settings README. Whole-lot sizing with explicit magic
+numbers (The5ers base 760000, Moneta 770000). Generated locally into
+`C:/Users/Administrator/Documents/Portfolio/Set-Files` and committed under `Set-Files/`.
+Input names read from the terminal-tree sources, including `Lotsizing_Method=0`
+(`Manual_Lotsize`) for Gold X9 and `InpSizingMode=0` for FVG Duo.
 
-**Docs.** `Prop-Firms/methodology.md` (Moneta rules section), `reports/strategy_suitability.md`
-(Moneta odds section + summary bullet), `analysis/README.md`, root `README.md`, and the CI
-workflow (`analyze_moneta_sizing.py`, `build_set_files.py Set-Files`).
+**Moneta presets:** Phase 1 `770101` Gold X9 0.01 / `770102` Overnight Bias 0.40; Phase 2 the
+same sizes with `770201/770202`; Funded `770301-04` Flash 0.38, GotobiFix EURJPY 0.24, Tokyo
+Coil 0.14, Overnight Bias 0.40.
 
-**Status.** Local scripts run end to end; CI not yet observed for this commit — the next
-session should confirm the run and the bot commit before quoting these numbers.
+**Docs.** `Prop-Firms/methodology.md`, `reports/strategy_suitability.md`, `analysis/README.md`,
+root `README.md`, CI workflow (`analyze_moneta_sizing.py`, `build_set_files.py Set-Files`).
 
-**Next action.** Confirm the CI run for this commit, then ingest the Gold X9 preset exports
-the user is about to deliver into `Trades/MT5 Trades/`.
+**Status.** Local scripts run end to end. CI had not been observed for the $25k commit when the
+account size changed, so the $10k rebuild is the run to check.
+
+**Next action.** Confirm the CI run for this commit, then ingest the Gold X9 preset exports the
+user is about to deliver into `Trades/MT5 Trades/`.
 
 ## 2026-11-23 — NT8 contract sizing for Tradeify
 

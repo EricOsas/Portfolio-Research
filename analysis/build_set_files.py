@@ -220,7 +220,7 @@ def main():
                    "  in the earlier model.",
                ])
 
-    moneta_alloc = engine.PROP_ROOT / "Moneta-2Step-25K" / "reports" / "ea_allocation.json"
+    moneta_alloc = engine.PROP_ROOT / "Moneta-2Step-10K" / "reports" / "ea_allocation.json"
     if moneta_alloc.exists():
         a = json.loads(moneta_alloc.read_text(encoding="utf-8"))
         stages = {}
@@ -228,8 +228,8 @@ def main():
         for key, label in labels.items():
             s = a[key]
             stages[label] = ([k for k in s["sleeves"]], float(s["target_usd"]))
-        build_firm(out, "Moneta-2Step-25K", stages, trades, 770000,
-                   "Moneta Funded $25,000 2-Step Standard", common_notes + [
+        build_firm(out, "Moneta-2Step-10K", stages, trades, 770000,
+                   "Moneta Funded $10,000 2-Step Standard", common_notes + [
                        "", "### Stage notes", "",
                        "- Phase 1 (target 5%) and Phase 2 (target 10%) run the same book and the same lots; the",
                        "  binding constraint is Phase 2, which needs twice the R in the same 8% static budget.",
@@ -280,7 +280,7 @@ of each EA's inputs stay at their shipped defaults.
 
 | Firm | Account | Stages | Files |
 |---|---|---|---|
-| [Moneta](Moneta-2Step-25K/README.md) | USD 25,000 2-Step Standard | Phase 1, Phase 2, Funded | MT5 `.set` |
+| [Moneta](Moneta-2Step-10K/README.md) | USD 10,000 2-Step Standard | Phase 1, Phase 2, Funded | MT5 `.set` |
 | [The5ers](The5ers-20K-Bootcamp/README.md) | USD 20,000 Bootcamp | Phase 1, Phase 2, Phase 3, Funded | MT5 `.set` |
 | [Tradeify](Tradeify-50K-Growth/README.md) | USD 50,000 Growth futures | Challenge, Funded | NinjaTrader settings |
 

@@ -27,7 +27,7 @@ import analyze_the5ers_sizing as T5
 import build_live_and_prop_reports as engine
 
 ACCOUNT = engine.MONETA_SIZE
-OUT = engine.PROP_ROOT / "Moneta-2Step-25K" / "reports"
+OUT = engine.PROP_ROOT / "Moneta-2Step-10K" / "reports"
 
 PHASE_BOOKS = {
     "4-sleeve": ["Gold X9", "GotobiFix EURJPY", "GotobiFix USDJPY", "Open Drive"],
@@ -39,7 +39,7 @@ FUNDED_BOOKS = {
     "no gold, 3-sleeve": ["Flash ORB", "GotobiFix EURJPY", "Overnight Bias ORB"],
     "with gold": ["Flash ORB", "Gold X9", "GotobiFix EURJPY", "Tokyo Coil"],
 }
-TARGETS = [50.0, 100.0, 150.0, 200.0, 300.0, 500.0]
+TARGETS = [12.5, 25.0, 37.5, 50.0, 75.0, 100.0, 150.0]
 
 
 def loads(trades, book, target):
@@ -80,7 +80,7 @@ def main():
                 "target_usd": target,
                 "lots": ", ".join(f"{s} {lots[s]:.2f}" for s in book),
                 "actual_risk_usd": round(sum(risk.values()), 2),
-                "pct_of_25k": round(sum(risk.values()) / ACCOUNT * 100, 3),
+                "pct_of_account": round(sum(risk.values()) / ACCOUNT * 100, 3),
                 "phase1_pass": res["pass_phase1_rate"],
                 "both_phases_pass": res["pass_both_phases_rate"],
                 "eval_breach": res["evaluation_hard_breach_rate"],
@@ -98,7 +98,7 @@ def main():
     df.to_csv(OUT / "stage_sizing.csv", index=False)
 
     # Selection: highest payout with the evaluation hard-breach rate kept at or
-    # below 3%. A $25k 2-step is bought once, so the breach tail matters more
+    # below 3%. A $10k 2-step is bought once, so the breach tail matters more
     # than shaving 30 days off the median.
     def pick(book_name, breach_cap=0.03):
         d = df[df["book"] == book_name]
@@ -180,13 +180,13 @@ def main():
         "",
         "## Books at each target",
         "",
-        "| Book | Sleeves | Target | Lots | Actual risk | % of $25k | Phase 1 pass | Both phases | Eval breach | Payout | Funded breach | Days | Expected first payout |",
+        "| Book | Sleeves | Target | Lots | Actual risk | % of $10k | Phase 1 pass | Both phases | Eval breach | Payout | Funded breach | Days | Expected first payout |",
         "|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for r in df.itertuples():
         lines.append(
             f"| {r.book} | {r.sleeves} | ${r.target_usd:.0f} | {r.lots} | ${r.actual_risk_usd:.2f} | "
-            f"{r.pct_of_25k:.2f}% | {r.phase1_pass*100:.1f}% | {r.both_phases_pass*100:.1f}% | "
+            f"{r.pct_of_account:.2f}% | {r.phase1_pass*100:.1f}% | {r.both_phases_pass*100:.1f}% | "
             f"{r.eval_breach*100:.1f}% | {r.payout*100:.1f}% | {r.funded_breach*100:.1f}% | "
             f"{r.days_to_first_payout:.0f} | ${r.expected_first_payout_usd:.0f} |")
     lines += [

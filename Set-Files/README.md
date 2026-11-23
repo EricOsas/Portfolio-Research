@@ -6,7 +6,7 @@ of each EA's inputs stay at their shipped defaults.
 
 | Firm | Account | Stages | Files |
 |---|---|---|---|
-| [Moneta](Moneta-2Step-25K/README.md) | USD 25,000 2-Step Standard | Phase 1, Phase 2, Funded | MT5 `.set` |
+| [Moneta](Moneta-2Step-10K/README.md) | USD 10,000 2-Step Standard | Phase 1, Phase 2, Funded | MT5 `.set` |
 | [The5ers](The5ers-20K-Bootcamp/README.md) | USD 20,000 Bootcamp | Phase 1, Phase 2, Phase 3, Funded | MT5 `.set` |
 | [Tradeify](Tradeify-50K-Growth/README.md) | USD 50,000 Growth futures | Challenge, Funded | NinjaTrader settings |
 

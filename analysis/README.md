@@ -18,7 +18,7 @@ Source exports are stored under `Trades/NT8 Trades/` (10 CSV files) and `Trades/
 - `Normalized-Live/NT8`: one exported contract equivalent per strategy, no starting balance.
 - `Normalized-Live/MT5`: fixed USD 100 risk proxy per completed trade on per-lot PnL (cash flow divided by traded volume), no starting balance.
 - `Prop-Firms/The5ers-20K-Bootcamp`: The5ers $20k Bootcamp 3-step evaluation and $20k funded account simulation.
-- `Prop-Firms/Moneta-2Step-25K`: Moneta Funded $25k 2-Step Standard (5% / 10% targets, 4% daily, 8% static, 88% split).
+- `Prop-Firms/Moneta-2Step-10K`: Moneta Funded $10k 2-Step Standard (5% / 10% targets, 4% daily, 8% static, 88% split).
 - `Prop-Firms/Tradeify-50K-Growth-Futures`: Tradeify $50k Growth futures account simulation.
 
 Methodology:

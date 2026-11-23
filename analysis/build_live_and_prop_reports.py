@@ -23,8 +23,8 @@ HORIZON = 252
 BLOCK = 5
 SEED = 20261101
 THE5ERS_RISKS = [10.0, 25.0, 50.0, 100.0]
-MONETA_SIZE = 25000.0
-MONETA_RISKS = [25.0, 50.0, 100.0, 200.0]
+MONETA_SIZE = 10000.0
+MONETA_RISKS = [12.5, 25.0, 50.0, 75.0, 100.0]
 TRADEIFY_RISKS = [100.0, 250.0, 500.0, 750.0]
 
 def slug(s):
@@ -575,7 +575,7 @@ def simulate_moneta(paths, active, risk, size=MONETA_SIZE, daily_pct=0.04, max_p
                     split=0.88, cycle_trading_days=10, min_profit_days=3,
                     min_profit_day_pct=0.005, cycle_min_profit_usd=0.0,
                     funded_paths=None, funded_risk=None):
-    """Moneta Funded 2-Step Standard (USD 25,000 by default).
+    """Moneta Funded 2-Step Standard (USD 10,000 by default).
 
     Rules per the Moneta Funded support clarification of 2026-11-21 and the
     published programme rules: Phase 1 target 5%, Phase 2 target 10%; daily loss
@@ -1619,7 +1619,7 @@ def run_platform(platform):
     the5ers_rows=[]; tradeify_rows=[]; moneta_rows=[]; recovery_rows=[]
     the5ers_dir=PROP_ROOT/"The5ers-20K-Bootcamp"
     tradeify_dir=PROP_ROOT/"Tradeify-50K-Growth-Futures"
-    moneta_dir=PROP_ROOT/"Moneta-2Step-25K"
+    moneta_dir=PROP_ROOT/"Moneta-2Step-10K"
     for _ci,(cname,combo) in enumerate(prop_candidates.items(),1):
         if _ci % 100 == 0:
             print(f"[{platform}] {_ci}/{len(prop_candidates)} candidates", flush=True)
@@ -1638,7 +1638,7 @@ def run_platform(platform):
             for risk in MONETA_RISKS:
                 res=simulate_moneta(paths,actpaths,risk)
                 monthly = monthly_path_summary(paths, risk) if (
-                    tuple(combo) in monthly_focus_combos and risk == 100.0
+                    tuple(combo) in monthly_focus_combos and risk == 50.0
                 ) else {}
                 moneta_rows.append({"book":cname,"strategies":" + ".join(combo),"risk_per_book_trade_usd":risk,
                                     **score_meta,**res,**monthly})
@@ -1725,7 +1725,7 @@ def run_platform(platform):
                 "state":"no-trade control","floor_equity":-800.0,"starting_cushion_usd":cushion,
                 "target_equity":0.0,"recovery_probability":0.0,"ruin_probability":0.0,
                 "median_days_to_target":np.nan,"mean_terminal_equity":-800.0+cushion})
-        # Moneta funded recovery: 8% static floor on $25k = USD 2,000, 4% daily = USD 1,000.
+        # Moneta funded recovery: 8% static floor on $10k = USD 800, 4% daily = USD 400.
         for combo in recovery_books:
             weights={s:1.0/len(combo) for s in combo}
             recovery_daily=weighted_daily_pnl(rmat,validation_idx,combo,weights)
@@ -1733,18 +1733,18 @@ def run_platform(platform):
                 activemat.loc[validation_idx,list(combo)].any(axis=1).values,
                 n_sims=N_SIMS,horizon=HORIZON,seed=SEED+1999+len(moneta_recovery_rows),
                 date_index=validation_idx)
-            for risk in [25.0,50.0,100.0,200.0]:
-                for cushion in [300.0,600.0,1000.0,1500.0]:
-                    res=simulate_recovery(rec_paths,risk,-2000.0,cushion,0.0,daily_limit=1000.0,daily_limit_mode="hard")
+            for risk in [12.5,25.0,50.0,100.0]:
+                for cushion in [150.0,300.0,500.0,750.0]:
+                    res=simulate_recovery(rec_paths,risk,-800.0,cushion,0.0,daily_limit=400.0,daily_limit_mode="hard")
                     moneta_recovery_rows.append({"firm":"Moneta","book":" + ".join(combo),
                         "risk_usd_per_book_trade":risk,
-                        "state":"static-floor recovery to funded initial balance","floor_equity":-2000.0,
+                        "state":"static-floor recovery to funded initial balance","floor_equity":-800.0,
                         "starting_cushion_usd":cushion,"target_equity":0.0,**res})
-        for cushion in [300.0,600.0,1000.0,1500.0]:
+        for cushion in [150.0,300.0,500.0,750.0]:
             moneta_recovery_rows.append({"firm":"Moneta","book":"No trade","risk_usd_per_book_trade":0.0,
-                "state":"no-trade control","floor_equity":-2000.0,"starting_cushion_usd":cushion,
+                "state":"no-trade control","floor_equity":-800.0,"starting_cushion_usd":cushion,
                 "target_equity":0.0,"recovery_probability":0.0,"ruin_probability":0.0,
-                "median_days_to_target":np.nan,"mean_terminal_equity":-2000.0+cushion})
+                "median_days_to_target":np.nan,"mean_terminal_equity":-800.0+cushion})
     else:
         for combo in recovery_books:
             weights={s:0.1*float(trades.loc[trades["strategy"]==s,"risk_unit"].iloc[0]) for s in combo}
@@ -1798,9 +1798,9 @@ def run_platform(platform):
         moneta_df.to_csv(moneta_dir/"reports"/"monte_carlo_challenge_payout.csv",index=False)
         moneta_recovery_df.to_csv(moneta_dir/"reports"/"recovery_mode.csv",index=False)
         build_prop_outputs(moneta_dir,moneta_df,moneta_recovery_df,
-            "risk_per_book_trade_usd",100.0,"pass_both_phases_rate",
+            "risk_per_book_trade_usd",50.0,"pass_both_phases_rate",
             "challenge_to_first_payout_rate","funded_hard_breach_rate_conditional",
-            "Moneta Funded $25k 2-Step Standard",
+            "Moneta Funded $10k 2-Step Standard",
             funded_pool=10)
     else:
         (tradeify_dir/"reports").mkdir(parents=True,exist_ok=True)
@@ -1954,18 +1954,18 @@ def write_rule_docs():
                             "EOD drawdown updates modeled; real-time floating breaches not fully reconstructable"]
     }
     moneta_rules={
-        "account":"Moneta Funded $25,000 2-Step Standard Evaluation",
-        "account_size_usd":25000,
-        "phase_1_profit_target_pct":0.05,"phase_1_profit_target_usd":1250,
-        "phase_2_profit_target_pct":0.10,"phase_2_profit_target_usd":2500,
-        "daily_loss_pct":0.04,"daily_loss_usd":1000,
-        "daily_loss_pct_wider_option":0.05,"daily_loss_usd_wider_option":1250,
-        "max_loss_pct_static":0.08,"max_loss_usd":2000,
-        "max_loss_pct_static_wider_option":0.10,"max_loss_usd_wider_option":2500,
+        "account":"Moneta Funded $10,000 2-Step Standard Evaluation",
+        "account_size_usd":10000,
+        "phase_1_profit_target_pct":0.05,"phase_1_profit_target_usd":500,
+        "phase_2_profit_target_pct":0.10,"phase_2_profit_target_usd":1000,
+        "daily_loss_pct":0.04,"daily_loss_usd":400,
+        "daily_loss_pct_wider_option":0.05,"daily_loss_usd_wider_option":500,
+        "max_loss_pct_static":0.08,"max_loss_usd":800,
+        "max_loss_pct_static_wider_option":0.10,"max_loss_usd_wider_option":1000,
         "max_loss_measurement":"Static, measured from the account starting balance; not trailing",
         "daily_loss_measurement":"Balance/equity loss within one trading day; a breach fails the account (not a pause)",
         "min_profitable_days":"3 per phase and 3 per payout cycle",
-        "profit_day_minimum_pct":0.005,"profit_day_minimum_usd":125,
+        "profit_day_minimum_pct":0.005,"profit_day_minimum_usd":50,
         "consistency_rule":"None (Phase 1, Phase 2 and funded payouts)",
         "profit_split":0.88,
         "payout_cycle_calendar_days":14,"payout_cycle_model_trading_days":10,
@@ -1978,7 +1978,7 @@ def write_rule_docs():
         "time_limit":"None listed",
         "official_sources":["Moneta Funded support clarification to the account holder, 2026-11-21","Moneta Funded website, Client Dashboard, Help Center/FAQ and Terms & Conditions (authoritative)"],
         "rules_checked_date":"2026-11-23",
-        "model_assumptions":["USD 25/$50/$100/$200 total book risk per trade sensitivity; base comparison USD 100",
+        "model_assumptions":["USD 12.50/$25/$50/$75/$100 total book risk per trade sensitivity; base comparison USD 50",
                             "Each book divides risk equally across sleeves",
                             "Phase 1 and Phase 2 each start at the full account balance; phase profits are not carried",
                             "4% daily loss and 8% static maximum loss modeled (the wider 5%/10% option is larger, so results are the conservative case)",
@@ -1990,7 +1990,7 @@ def write_rule_docs():
                             "Account fees are excluded from the payout estimates"]
     }
     write_json(PROP_ROOT/"The5ers-20K-Bootcamp"/"reports"/"account_rules.json",the5ers_rules)
-    write_json(PROP_ROOT/"Moneta-2Step-25K"/"reports"/"account_rules.json",moneta_rules)
+    write_json(PROP_ROOT/"Moneta-2Step-10K"/"reports"/"account_rules.json",moneta_rules)
     write_json(PROP_ROOT/"Tradeify-50K-Growth-Futures"/"reports"/"account_rules.json",tradeify_rules)
 
 def write_readmes(summaries):
@@ -2021,7 +2021,7 @@ See the platform READMEs for the equity curves at the end of each report.
 Separate account-rule simulations using normalized strategy R-multiples and block-bootstrap Monte Carlo.
 
 - [The5ers $20,000 Bootcamp](The5ers-20K-Bootcamp/README.md)
-- [Moneta Funded $25,000 2-Step Standard](Moneta-2Step-25K/README.md)
+- [Moneta Funded $25,000 2-Step Standard](Moneta-2Step-10K/README.md)
 - [Tradeify $50,000 Growth futures](Tradeify-50K-Growth-Futures/README.md)
 
 Results are conditional on historical export distributions and the assumptions in each account folder. They are not guarantees of passing, funding, payout or survival.
@@ -2062,7 +2062,7 @@ Results are conditional on historical export distributions and the assumptions i
 
     for firm, title, file in [
         ("The5ers-20K-Bootcamp","The5ers $20,000 Bootcamp","monte_carlo_challenge_payout.csv"),
-        ("Moneta-2Step-25K","Moneta Funded $25,000 2-Step Standard","monte_carlo_challenge_payout.csv"),
+        ("Moneta-2Step-10K","Moneta Funded $25,000 2-Step Standard","monte_carlo_challenge_payout.csv"),
         ("Tradeify-50K-Growth-Futures","Tradeify $50,000 Growth futures","monte_carlo_evaluation_funded_payout.csv"),
     ]:
         d=PROP_ROOT/firm
@@ -2073,7 +2073,7 @@ Results are conditional on historical export distributions and the assumptions i
         if firm.startswith("Moneta"):
             extra_links += (chr(10) + "- [Stage sizing with real lot floors](reports/stage_sizing.md)"
                             + chr(10) + "- [Stage sizing data](reports/stage_sizing.csv)"
-                            + chr(10) + "- [Pre-configured EA set files](../../Set-Files/Moneta-2Step-25K/README.md)")
+                            + chr(10) + "- [Pre-configured EA set files](../../Set-Files/Moneta-2Step-10K/README.md)")
         chart_extra = ""
         if firm=="Tradeify-50K-Growth-Futures":
             extra_links += "\n- [Intraday MAE / soft-DLL stress](reports/mae_soft_dll_stress.csv)"
@@ -2089,7 +2089,7 @@ Results are conditional on historical export distributions and the assumptions i
             recovery_note = "Recovery curves are balance-only. The $53,000 target does not enforce payout consistency, five $150 winning days or payout processing."
             chart_extra = "\n![Evaluation drawdown breach probability](charts/evaluation_breach_probability.png)\n![Intraday MAE / soft-DLL stress](charts/mae_soft_dll_stress.png)\n![Recovery to $53,000 balance (payout eligibility not enforced)](charts/recovery_payout_threshold_probability.png)\n"
         elif firm.startswith("Moneta"):
-            sizing_note = ("Risk ladder is USD 25–200 total book risk per trade, allocated equally across sleeves. "
+            sizing_note = ("Risk ladder is USD 12.50–100 total book risk per trade, allocated equally across sleeves. "
                 "Phase 1 needs +5% and Phase 2 needs +10%, so the ladder is a continuous-sizing idealization; "
                 "[stage sizing with real lot floors](reports/stage_sizing.md) resizes every sleeve to a dollar "
                 "target in whole 0.01 lots and models the funded switch. Phase 2 is the binding constraint: the "
@@ -2097,7 +2097,7 @@ Results are conditional on historical export distributions and the assumptions i
                 "evaluation.")
             daily_limit_note = "The 4% daily limit is modeled as a hard breach (Moneta fails the account rather than pausing), with an 8% static maximum loss measured from the starting balance. The wider 5%/10% drawdown option is strictly larger, so these results are the conservative case. Intraday trigger timing, floating-loss breaches and the 5-minute news window around high-impact releases are not visible in the exports."
             pairing_note = "MT5 RBE entry/exit legs use exact-volume matching where possible and FIFO fallback because the Deals export has no position IDs."
-            recovery_note = "Recovery curves are balance-only; Moneta recovery measures return to the $25,000 funded initial balance above the static 8% floor (USD 2,000), not payout eligibility."
+            recovery_note = "Recovery curves are balance-only; Moneta recovery measures return to the $10,000 funded initial balance above the static 8% floor (USD 800), not payout eligibility."
         else:
             sizing_note = ("Risk ladder is USD 10–100 total book risk per trade, allocated equally across sleeves. "
                 "That ladder is a continuous-sizing idealization: it does not enforce broker minimum lots. "

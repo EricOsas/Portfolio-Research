@@ -1,0 +1,73 @@
+{
+  "account_size_usd": 10000.0,
+  "phase_1": {
+    "book": "Gold X9 + Overnight Bias ORB",
+    "target_usd": 50.0,
+    "actual_risk_usd": 37.41,
+    "sleeves": {
+      "Gold X9": {
+        "lots": 0.01,
+        "risk_usd": 12.96
+      },
+      "Overnight Bias ORB": {
+        "lots": 0.4,
+        "risk_usd": 24.46
+      }
+    }
+  },
+  "phase_2": {
+    "book": "Gold X9 + Overnight Bias ORB",
+    "target_usd": 50.0,
+    "actual_risk_usd": 37.41,
+    "sleeves": {
+      "Gold X9": {
+        "lots": 0.01,
+        "risk_usd": 12.96
+      },
+      "Overnight Bias ORB": {
+        "lots": 0.4,
+        "risk_usd": 24.46
+      }
+    }
+  },
+  "funded": {
+    "book": "Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB",
+    "target_usd": 100.0,
+    "actual_risk_usd": 97.68,
+    "sleeves": {
+      "Flash ORB": {
+        "lots": 0.38,
+        "risk_usd": 24.84
+      },
+      "GotobiFix EURJPY": {
+        "lots": 0.24,
+        "risk_usd": 24.99
+      },
+      "Tokyo Coil": {
+        "lots": 0.14,
+        "risk_usd": 23.39
+      },
+      "Overnight Bias ORB": {
+        "lots": 0.4,
+        "risk_usd": 24.46
+      }
+    }
+  },
+  "floor_1R": {
+    "FVG Duo": 0.8762,
+    "Flash ORB": 0.6537,
+    "Gold ORB (RBE)": 8.2338,
+    "Gold X9": 12.957,
+    "GotobiFix EURJPY": 1.0411,
+    "GotobiFix GBPJPY": 1.4763,
+    "GotobiFix USDJPY": 1.0261,
+    "NQ Precision Bot": 0.2623,
+    "Noise Band Momentum": 0.6689,
+    "Open Drive": 0.3789,
+    "Opening-Shock Continuation": 0.5406,
+    "Overnight Bias ORB": 0.6114,
+    "Sigma ORB": 0.8332,
+    "Tokyo Coil": 1.6709,
+    "Vault Break": 0.4744
+  }
+}

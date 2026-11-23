@@ -1,38 +1,36 @@
-# Moneta Funded $25,000 2-Step Standard — EA set files
+# Moneta Funded $10,000 2-Step Standard — EA set files
 
 Load one file per chart. The `.set` files only override the sizing, magic and
 enable inputs; every other strategy input keeps its shipped default.
 
 ## Phase-1
 
-Book target USD 100 per trade (actual USD 92.06, 92% of target).
+Book target USD 50 per trade (actual USD 37.41, 75% of target).
 
 | # | EA | Symbol | Lots | Risk USD | Magic |
 |---|---|---|---:|---:|---:|
-| 1 | Gold X9 | XAUUSD | 0.02 | 25.91 | 770101 |
-| 2 | GotobiFix EURJPY | EURJPY | 0.32 | 33.32 | 770102 |
-| 3 | GotobiFix USDJPY | USDJPY | 0.32 | 32.83 | 770103 |
+| 1 | Gold X9 | XAUUSD | 0.01 | 12.96 | 770101 |
+| 2 | Overnight Bias ORB | USTEC | 0.40 | 24.46 | 770102 |
 
 ## Phase-2
 
-Book target USD 100 per trade (actual USD 92.06, 92% of target).
+Book target USD 50 per trade (actual USD 37.41, 75% of target).
 
 | # | EA | Symbol | Lots | Risk USD | Magic |
 |---|---|---|---:|---:|---:|
-| 1 | Gold X9 | XAUUSD | 0.02 | 25.91 | 770201 |
-| 2 | GotobiFix EURJPY | EURJPY | 0.32 | 33.32 | 770202 |
-| 3 | GotobiFix USDJPY | USDJPY | 0.32 | 32.83 | 770203 |
+| 1 | Gold X9 | XAUUSD | 0.01 | 12.96 | 770201 |
+| 2 | Overnight Bias ORB | USTEC | 0.40 | 24.46 | 770202 |
 
 ## Funded
 
-Book target USD 200 per trade (actual USD 197.63, 99% of target).
+Book target USD 100 per trade (actual USD 97.68, 98% of target).
 
 | # | EA | Symbol | Lots | Risk USD | Magic |
 |---|---|---|---:|---:|---:|
-| 1 | Flash ORB | USTEC | 0.76 | 49.68 | 770301 |
-| 2 | GotobiFix EURJPY | EURJPY | 0.48 | 49.97 | 770302 |
-| 3 | Tokyo Coil | USDJPY | 0.29 | 48.46 | 770303 |
-| 4 | Overnight Bias ORB | USTEC | 0.81 | 49.52 | 770304 |
+| 1 | Flash ORB | USTEC | 0.38 | 24.84 | 770301 |
+| 2 | GotobiFix EURJPY | EURJPY | 0.24 | 24.99 | 770302 |
+| 3 | Tokyo Coil | USDJPY | 0.14 | 23.39 | 770303 |
+| 4 | Overnight Bias ORB | USTEC | 0.40 | 24.46 | 770304 |
 
 ## How to load a stage
 
