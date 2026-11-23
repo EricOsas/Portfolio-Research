@@ -7,14 +7,14 @@
 | Portfolio | Net PnL | Max drawdown | Daily PF | Daily Sharpe |
 |---|---:|---:|---:|---:|
 | All 19 exports | $292,476,593.33 | $16,661,015.76 | 2.90 | 2.50 |
-| Core 4 shortlist | $140,670,006.82 | $6,478,016.18 | 2.96 | 2.50 |
+| Core 4 shortlist | $85,381,229.66 | $5,194,033.52 | 2.64 | 2.48 |
 
 ## Core shortlist
 
 - Gold X9 (Very high)
-- Gold X9 (Low)
 - GotobiFix EURJPY
-- Gold X9 (Extremely low)
+- GotobiFix USDJPY
+- Gold ORB (RBE)
 
 ## Reports
 

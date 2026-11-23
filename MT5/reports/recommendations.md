@@ -5,9 +5,9 @@ Screening is a transparent evidence filter, not parameter optimization. Eligible
 ## Selected strategies
 
 - **Gold X9 (Very high)** — included in the provisional portfolio.
-- **Gold X9 (Low)** — included in the provisional portfolio.
 - **GotobiFix EURJPY** — included in the provisional portfolio.
-- **Gold X9 (Extremely low)** — included in the provisional portfolio.
+- **GotobiFix USDJPY** — included in the provisional portfolio.
+- **Gold ORB (RBE)** — included in the provisional portfolio.
 
 ## Eligible candidates (ranked)
 

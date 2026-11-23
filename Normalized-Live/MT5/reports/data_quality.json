@@ -1,11 +1,15 @@
 {
   "platform": "MT5",
-  "trade_count": 29462,
+  "trade_count": 41530,
   "strategies": [
     "FVG Duo",
     "Flash ORB",
     "Gold ORB (RBE)",
-    "Gold X9",
+    "Gold X9 (Extremely low)",
+    "Gold X9 (High)",
+    "Gold X9 (Low)",
+    "Gold X9 (Moderate)",
+    "Gold X9 (Very high)",
     "GotobiFix EURJPY",
     "GotobiFix GBPJPY",
     "GotobiFix USDJPY",
@@ -22,7 +26,43 @@
   "mt5_pairing_quality": [
     {
       "platform": "MT5",
-      "strategy": "Gold X9",
+      "strategy": "Gold X9 (Extremely low)",
+      "pairing_method": "FIFO by symbol and opposite deal side; no position ID in source export",
+      "max_simultaneous_open_positions_seen": 11,
+      "unmatched_exit_legs": 0,
+      "unclosed_entry_legs": 0,
+      "entry_exit_volume_mismatches": 0
+    },
+    {
+      "platform": "MT5",
+      "strategy": "Gold X9 (Low)",
+      "pairing_method": "FIFO by symbol and opposite deal side; no position ID in source export",
+      "max_simultaneous_open_positions_seen": 15,
+      "unmatched_exit_legs": 0,
+      "unclosed_entry_legs": 0,
+      "entry_exit_volume_mismatches": 0
+    },
+    {
+      "platform": "MT5",
+      "strategy": "Gold X9 (Moderate)",
+      "pairing_method": "FIFO by symbol and opposite deal side; no position ID in source export",
+      "max_simultaneous_open_positions_seen": 25,
+      "unmatched_exit_legs": 0,
+      "unclosed_entry_legs": 0,
+      "entry_exit_volume_mismatches": 0
+    },
+    {
+      "platform": "MT5",
+      "strategy": "Gold X9 (High)",
+      "pairing_method": "FIFO by symbol and opposite deal side; no position ID in source export",
+      "max_simultaneous_open_positions_seen": 32,
+      "unmatched_exit_legs": 0,
+      "unclosed_entry_legs": 0,
+      "entry_exit_volume_mismatches": 0
+    },
+    {
+      "platform": "MT5",
+      "strategy": "Gold X9 (Very high)",
       "pairing_method": "FIFO by symbol and opposite deal side; no position ID in source export",
       "max_simultaneous_open_positions_seen": 43,
       "unmatched_exit_legs": 0,

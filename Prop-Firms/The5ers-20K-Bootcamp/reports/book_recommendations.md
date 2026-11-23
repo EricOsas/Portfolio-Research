@@ -6,69 +6,69 @@ Book selection uses training-only challenge/funded scores. All one-to-four-sleev
 The funded-stage book is the highest training-funded-score book among the ten best training challenge books, so it is a book that can realistically reach funding.
 
 ## Challenge candidate
-- **challenge_book_1** (Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive)
-  - Challenge-to-payout: 76.3%
-  - Reach funded: 86.6%
-  - Evaluation hard-breach rate: 7.5%
+- **challenge_book_1** (Flash ORB + Gold X9 (Very high) + GotobiFix USDJPY + Tokyo Coil)
+  - Challenge-to-payout: 71.0%
+  - Reach funded: 85.3%
+  - Evaluation hard-breach rate: 5.7%
   - Funded hard-breach rate (conditional on funding): 0.0%
-  - Median trading days to Step 1 pass: 22.0
-  - Median trading days through all evaluation steps: 152.0
-  - Median trading days to first The5ers payout: 180.0
-  - Expected first The5ers payout across all paths: USD 159.47
-  - Median The5ers payout on successful paths: USD 197.66
+  - Median trading days to Step 1 pass: 25.0
+  - Median trading days through all evaluation steps: 166.0
+  - Median trading days to first The5ers payout: 192.0
+  - Expected first The5ers payout across all paths: USD 145.31
+  - Median The5ers payout on successful paths: USD 194.22
 
 ## RBE-excluded challenge sensitivity
-- **challenge_book_1** (Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive)
-  - Challenge-to-first-reward: 76.3%
-  - Reach funded: 86.6%
-  - Evaluation hard-breach rate: 7.5%
+- **challenge_book_1** (Flash ORB + Gold X9 (Very high) + GotobiFix USDJPY + Tokyo Coil)
+  - Challenge-to-first-reward: 71.0%
+  - Reach funded: 85.3%
+  - Evaluation hard-breach rate: 5.7%
   - Funded hard-breach rate (conditional on funding): 0.0%
 
 ## Holdout validation leader (diagnostic only)
-- **FVG Duo + Gold ORB (RBE) + Gold X9 + GotobiFix EURJPY** (FVG Duo + Gold ORB (RBE) + Gold X9 + GotobiFix EURJPY)
-  - Challenge-to-payout: 88.2%
-  - Reach funded: 91.9%
-  - Evaluation hard-breach rate: 6.7%
+- **Gold ORB (RBE) + Gold X9 (Very high) + GotobiFix EURJPY + Overnight Bias ORB** (Gold ORB (RBE) + Gold X9 (Very high) + GotobiFix EURJPY + Overnight Bias ORB)
+  - Challenge-to-payout: 89.1%
+  - Reach funded: 92.8%
+  - Evaluation hard-breach rate: 5.6%
 
 ## Funded candidate
-- **Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil** (Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil)
-  - Conditional first-payout rate: 85.7%
+- **Gold X9 (Very high) + GotobiFix EURJPY + GotobiFix USDJPY + Sigma ORB** (Gold X9 (Very high) + GotobiFix EURJPY + GotobiFix USDJPY + Sigma ORB)
+  - Conditional first-payout rate: 85.5%
   - Funded hard-breach rate (conditional on funding): 0.0%
   - Approximate 90-trading-day funded survival: 100.0%
-  - Mean payout count over the horizon: 1.78
-  - Median trading days to first The5ers payout: 189.5
+  - Mean payout count over the horizon: 1.76
+  - Median trading days to first The5ers payout: 190.0
 
 ### Challenge candidate risk ladder
 Monthly PnL uses 21-trading-day blocks. P10 is the 10th-percentile month; P90 monthly DD is the 90th-percentile within-month peak-to-trough drawdown. The 252-day DD is the 95th-percentile full-path drawdown.
 | Requested risk | Effective risk | Pass | Evaluation breach | Challenge-to-payout | Funded breach | 90-day survival | Median payout days | Expected first payout | Mean monthly PnL | P10 monthly PnL | P90 monthly DD | P95 252d max DD |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| $10 | $10 | 1.5% | 0.3% | 0.0% | 0.0% | nan% | 238 | $0.07 | — | — | — | — |
-| $25 | $25 | 86.6% | 7.5% | 76.3% | 0.0% | 100.0% | 180 | $159.47 | $238 | $-40 | $236 | $615 |
-| $50 | $50 | 78.0% | 21.9% | 76.9% | 11.4% | 94.1% | 96 | $208.36 | — | — | — | — |
-| $100 | $100 | 57.9% | 42.1% | 53.7% | 66.6% | 63.5% | 48 | $226.76 | — | — | — | — |
+| $10 | $10 | 0.5% | 0.2% | 0.0% | 0.0% | nan% | 251 | $0.03 | — | — | — | — |
+| $25 | $25 | 85.3% | 5.7% | 71.0% | 0.0% | 100.0% | 192 | $145.31 | $220 | $-32 | $224 | $555 |
+| $50 | $50 | 79.3% | 20.6% | 78.1% | 6.4% | 96.6% | 104 | $203.99 | — | — | — | — |
+| $100 | $100 | 60.8% | 39.2% | 57.5% | 60.2% | 67.9% | 52 | $229.93 | — | — | — | — |
 
 ### Funded candidate risk ladder
 Monthly PnL uses 21-trading-day blocks. P10 is the 10th-percentile month; P90 monthly DD is the 90th-percentile within-month peak-to-trough drawdown. The 252-day DD is the 95th-percentile full-path drawdown.
 | Requested risk | Effective risk | Pass | Evaluation breach | Challenge-to-payout | Funded breach | 90-day survival | Median payout days | Expected first payout | Mean monthly PnL | P10 monthly PnL | P90 monthly DD | P95 252d max DD |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | $10 | $10 | 0.4% | 0.1% | 0.0% | 0.0% | nan% | — | $0.00 | — | — | — | — |
-| $25 | $25 | 87.2% | 5.2% | 74.7% | 0.0% | 100.0% | 190 | $151.86 | — | — | — | — |
-| $50 | $50 | 80.5% | 19.5% | 79.4% | 6.1% | 96.8% | 102 | $208.08 | — | — | — | — |
-| $100 | $100 | 61.3% | 38.7% | 57.7% | 56.2% | 71.0% | 52 | $227.56 | — | — | — | — |
+| $25 | $25 | 87.3% | 5.5% | 74.6% | 0.0% | 100.0% | 190 | $152.44 | — | — | — | — |
+| $50 | $50 | 80.2% | 19.8% | 79.1% | 7.2% | 96.2% | 102 | $205.95 | — | — | — | — |
+| $100 | $100 | 59.8% | 40.2% | 56.0% | 58.5% | 70.2% | 51 | $221.35 | — | — | — | — |
 
 ## Expected account attempts before first payout
-- Challenge pass probability: 86.6%.
-- First-payout probability after funding with the selected funded book: 85.7%.
-- Approximate payout probability per challenge start when switching to the selected funded book: 74.3%.
-- Expected challenge accounts started per first payout: 1.35.
-- Expected failed evaluation accounts before first payout: 0.18.
+- Challenge pass probability: 85.3%.
+- First-payout probability after funding with the selected funded book: 85.5%.
+- Approximate payout probability per challenge start when switching to the selected funded book: 72.9%.
+- Expected challenge accounts started per first payout: 1.37.
+- Expected failed evaluation accounts before first payout: 0.20.
 - Expected funded accounts entered per first payout: 1.17.
 - Expected failed funded accounts before first payout: 0.17.
-- Approximate combined hard-breach probability per challenge start: 7.5%.
+- Approximate combined hard-breach probability per challenge start: 5.7%.
 These are geometric-repeat estimates. They assume each new account repeats the same probabilities; they are not a guarantee and do not include account fees.
 
 ## Near-floor recovery
-No active candidate achieves both at least 50% recovery probability and at most 5% modeled breach probability at the $100 cushion. No-trade preserves the account but cannot recover it to initial balance. Best recovery chance: Gold ORB (RBE) + Gold X9 at USD 5.00 risk (89.0% recovery; 7.3% breach). Lowest-breach active choice: GotobiFix USDJPY + Overnight Bias ORB at USD 5.00 risk (0.0% recovery; 0.0% breach). Lowest-exposure active choice: GotobiFix USDJPY + Overnight Bias ORB at USD 5.00 risk (0.0% recovery; 0.0% breach). Best RBE-excluded alternative: GotobiFix EURJPY + Overnight Bias ORB at USD 25.00 risk (84.1% recovery; 5.3% breach).
+Gold X9 (Low) + GotobiFix EURJPY at USD 12.50 risk per book trade: recovery probability 95.3%, breach probability 1.5%.
 
 The5ers recovery is balance-only and targets return to the funded $20,000 initial balance above the static 4% loss floor; the 3% daily pause is modeled as a closed-PnL clip, and payout eligibility is not modeled in recovery paths.
 

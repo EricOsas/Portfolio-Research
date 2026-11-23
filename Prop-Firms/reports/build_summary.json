@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-11-23T12:19:21.993842+00:00",
+  "generated_utc": "2026-11-23T14:49:32.079158+00:00",
   "monte_carlo_simulations_per_candidate": 5000,
   "horizon_trading_days": 252,
   "block_length_days": 5,
@@ -35,32 +35,32 @@
     },
     {
       "platform": "MT5",
-      "strategies": 15,
-      "trades": 29462,
+      "strategies": 19,
+      "trades": 41530,
       "selected_books": {
         "live": [
-          "Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Tokyo Coil",
-          "Flash ORB + Gold ORB (RBE) + GotobiFix EURJPY + GotobiFix USDJPY",
-          "Gold X9 + GotobiFix GBPJPY + GotobiFix USDJPY + Overnight Bias ORB"
+          "Gold ORB (RBE) + Gold X9 (Low) + GotobiFix USDJPY + Tokyo Coil",
+          "Gold X9 (Low) + GotobiFix USDJPY + Overnight Bias ORB + Tokyo Coil",
+          "Flash ORB + Gold X9 (Low) + GotobiFix USDJPY + Tokyo Coil"
         ],
         "challenge": [
-          "Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive",
-          "Flash ORB + Gold X9 + GotobiFix USDJPY + Tokyo Coil",
-          "Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Sigma ORB"
+          "Flash ORB + Gold X9 (Very high) + GotobiFix USDJPY + Tokyo Coil",
+          "Flash ORB + Gold X9 (Very high) + GotobiFix EURJPY + Tokyo Coil",
+          "Gold X9 (Very high) + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive"
         ],
         "funded": [
-          "Flash ORB + Gold ORB (RBE) + GotobiFix USDJPY + Tokyo Coil",
-          "Flash ORB + GotobiFix USDJPY + Opening-Shock Continuation + Overnight Bias ORB",
-          "Flash ORB + GotobiFix USDJPY + Overnight Bias ORB + Tokyo Coil"
+          "Flash ORB + Gold X9 (Low) + GotobiFix USDJPY + Tokyo Coil",
+          "Flash ORB + Gold X9 (Low) + GotobiFix USDJPY + Overnight Bias ORB",
+          "Gold X9 (Low) + GotobiFix USDJPY + Tokyo Coil + Vault Break"
         ],
         "recovery": [
-          "Gold ORB (RBE) + GotobiFix EURJPY + Tokyo Coil + Vault Break",
-          "Flash ORB + Gold ORB (RBE) + GotobiFix EURJPY + Tokyo Coil",
-          "Gold ORB (RBE) + GotobiFix USDJPY + Tokyo Coil + Vault Break"
+          "Gold ORB (RBE) + Gold X9 (Low) + GotobiFix USDJPY + Tokyo Coil",
+          "Gold ORB (RBE) + Gold X9 (Low) + GotobiFix USDJPY + Vault Break",
+          "Gold ORB (RBE) + Gold X9 (Low) + GotobiFix USDJPY + Opening-Shock Continuation"
         ]
       },
       "validation_start": "2024-02-19",
-      "validation_end": "2026-11-19"
+      "validation_end": "2026-11-18"
     }
   ],
   "global_limitations": [
