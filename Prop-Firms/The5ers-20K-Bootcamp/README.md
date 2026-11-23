@@ -6,8 +6,10 @@
 - [Book rankings](reports/book_rankings.csv)
 - [Book recommendations](reports/book_recommendations.md)
 - [Recovery-mode scenarios](reports/recovery_mode.csv)
+- [Stage sizing with real lot floors](reports/stage_sizing.md)
+- [Stage sizing data](reports/stage_sizing.csv)
 
-The model uses normalized daily R-multiples and a 5-trading-day block bootstrap aligned to complete Monday-Friday weeks. Each simulation uses 5,000 paths over 252 trading days. Risk ladder is USD 10–100 total book risk per trade, allocated equally across sleeves. Sizing is continuous; instrument-specific minimum lots are not enforced. MT5 cash flows are divided by traded volume before the R unit is calibrated, so balance-compounding exports (Gold X9, Tokyo Coil) enter at per-lot risk.
+The model uses normalized daily R-multiples and a 5-trading-day block bootstrap aligned to complete Monday-Friday weeks. Each simulation uses 5,000 paths over 252 trading days. Risk ladder is USD 10–100 total book risk per trade, allocated equally across sleeves. That ladder is a continuous-sizing idealization: it does not enforce broker minimum lots. At 0.01 lot Gold X9 already risks about USD 20 per trade (0.4% of the $5k Step 1), so the real stage risk is set by that floor, not by the ladder. [Stage sizing with real lot floors](reports/stage_sizing.md) models the book with minimum-lot floors, the mid-account switch to the funded book, and per-sleeve percent sizing; [underlying CSV](reports/stage_sizing.csv). MT5 cash flows are divided by traded volume before the R unit is calibrated, so balance-compounding exports (Gold X9, Tokyo Coil) enter at per-lot risk.
 
 ## Important limits
 
