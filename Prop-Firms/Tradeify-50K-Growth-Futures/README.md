@@ -7,8 +7,10 @@
 - [Book recommendations](reports/book_recommendations.md)
 - [Recovery-mode scenarios](reports/recovery_mode.csv)
 - [Intraday MAE / soft-DLL stress](reports/mae_soft_dll_stress.csv)
+- [Stage sizing in whole contracts](reports/stage_sizing.md)
+- [Stage sizing data](reports/stage_sizing.csv)
 
-The model uses normalized daily R-multiples and a 5-trading-day block bootstrap aligned to complete Monday-Friday weeks. Each simulation uses 5,000 paths over 252 trading days. Growth evaluation has no consistency rule. At least one trade per complete Monday-Friday week is required during evaluation and funded trading. Funded payouts require 35% consistency, five winning days above $150, a $53,000 balance and the microscalping test. Whole-micro sizing uses at least one micro per active sleeve and a four-mini concurrent cap; effective risk after minimum sizing is shown.
+The model uses normalized daily R-multiples and a 5-trading-day block bootstrap aligned to complete Monday-Friday weeks. Each simulation uses 5,000 paths over 252 trading days. Growth evaluation has no consistency rule. At least one trade per complete Monday-Friday week is required during evaluation and funded trading. Funded payouts require 35% consistency, five winning days above $150, a $53,000 balance and the microscalping test. Whole-micro sizing uses at least one micro per active sleeve and a four-mini concurrent cap; effective risk after minimum sizing is shown. One micro per sleeve is already about 1% of the $50k account and roughly 4R from the $2,000 trail, so size is set by the broker minimum and the drawdown, not by the four-mini cap. [Stage sizing in whole contracts](reports/stage_sizing.md) enumerates the allocations.
 
 ## Important limits
 
