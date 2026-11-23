@@ -143,6 +143,10 @@ def build_firm(out, firm, stages, trades, base_magic, firm_title, notes):
         lots, risk = alloc(trades, book, target)
         folder = out / firm / stage
         folder.mkdir(parents=True, exist_ok=True)
+        for stale in folder.glob("*.set"):
+            stale.unlink()
+        if (folder / "manifest.csv").exists():
+            (folder / "manifest.csv").unlink()
         for i, (ea, lots_i) in enumerate(lots.items(), start=1):
             magic = base_magic + phase_no * 100 + i
             comment = f"{firm.split('-')[0]}-{stage}-{i}"
