@@ -5,7 +5,8 @@ whole lots, and 0.01 lot is the smallest position the broker allows, so each
 sleeve has a dollar risk floor. On a $5k step the floor, not the percentage,
 decides the risk. This report models `risk_i = max(pct x balance, 0.01-lot 1R_i)`
 per sleeve, with the evaluation book through Steps 1-3 and the funded book
-after funding (the real switch, not a product of two independent runs).
+after funding (the real switch, not a product of two independent runs). A payout
+requires at least USD 300 gross (USD 150 net at the 50% split).
 
 ## 0.01-lot 1R per sleeve (mean losing trade at 0.01 lot, from the export)
 
@@ -28,13 +29,13 @@ the book is gold-heavy at minimum size no matter what percentage you set.
 
 | Scenario | Stage 1 risk | Step 2 | Step 3 | Funded | Reach funded | Eval breach | First payout | Funded breach | Median payout days | Expected first payout |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| A. Physical minimum, no scaling | 0.44% | 0.22% | 0.15% | 0.11% | 63.4% | 36.6% | 60.8% | 44.6% | 69 | $130 |
-| B. 0.05%/sleeve, scaled | 0.55% | 0.35% | 0.28% | 0.25% | 65.0% | 35.0% | 62.8% | 42.7% | 65 | $139 |
-| C. 0.125%/sleeve, scaled | 0.77% | 0.57% | 0.51% | 0.50% | 65.2% | 34.8% | 61.9% | 57.7% | 58 | $187 |
-| D. 0.25%/sleeve, scaled | 1.15% | 1.00% | 1.00% | 1.00% | 57.3% | 42.7% | 51.5% | 88.3% | 39 | $320 |
-| E. 0.5%/sleeve, scaled | 2.00% | 2.00% | 2.00% | 2.00% | 44.5% | 55.5% | 37.9% | 96.3% | 25 | $508 |
-| F. Min eval, funded without X9 at 0.125%/sleeve | 0.55% | 0.35% | 0.28% | 0.50% | 65.0% | 35.0% | 64.9% | 1.0% | 67 | $67 |
-| G. Min eval, funded without X9 at 0.25%/sleeve | 0.55% | 0.35% | 0.28% | 1.00% | 65.0% | 35.0% | 63.3% | 26.1% | 66 | $132 |
+| A. Physical minimum, no scaling | 0.44% | 0.22% | 0.15% | 0.11% | 63.4% | 36.6% | 59.9% | 40.7% | 75 | $189 |
+| B. 0.05%/sleeve, scaled | 0.55% | 0.35% | 0.28% | 0.25% | 65.0% | 35.0% | 61.9% | 39.1% | 70 | $198 |
+| C. 0.125%/sleeve, scaled | 0.77% | 0.57% | 0.51% | 0.50% | 65.2% | 34.8% | 61.1% | 55.3% | 62 | $243 |
+| D. 0.25%/sleeve, scaled | 1.15% | 1.00% | 1.00% | 1.00% | 57.3% | 42.7% | 51.0% | 87.5% | 40 | $357 |
+| E. 0.5%/sleeve, scaled | 2.00% | 2.00% | 2.00% | 2.00% | 44.5% | 55.5% | 37.8% | 96.1% | 25 | $529 |
+| F. Min eval, funded without X9 at 0.125%/sleeve | 0.55% | 0.35% | 0.28% | 0.50% | 65.0% | 35.0% | 64.8% | 0.8% | 83 | $148 |
+| G. Min eval, funded without X9 at 0.25%/sleeve | 0.55% | 0.35% | 0.28% | 1.00% | 65.0% | 35.0% | 63.0% | 23.5% | 73 | $200 |
 
 Realized risk is the average of (sum of sleeve dollar risk / start-of-day balance)
 over that stage's trading days, so it shows the minimum-lot distortion directly.

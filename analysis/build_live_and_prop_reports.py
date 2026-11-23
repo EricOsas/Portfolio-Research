@@ -433,7 +433,8 @@ def simulate_the5ers(paths, active, risk):
     static max loss and has no daily loss limit. The funded $20,000 account has
     a 4% static max loss ($800 floor), a 3% daily pause (trading stops for the
     rest of the day, the triggering loss stands) and payouts every 14 calendar
-    days (approximated as 10 trading days) at a 50% split. No consistency rule,
+    days (approximated as 10 trading days) at a 50% split, with a USD 300 gross
+    minimum per payout (USD 150 to the trader); smaller gains carry forward. No consistency rule,
     no time limit. Scaling after each 5% funded gain is not modeled.
     """
     n, h = paths.shape
@@ -500,7 +501,9 @@ def simulate_the5ers(paths, active, risk):
             fail_max |= bad
             step[bad] = 5
 
-            due = funded & (step == 4) & (funded_age > 0) & (funded_age % 10 == 0) & (bal > funded_balance + 1e-9)
+            # The5ers pays only when the profit reaches USD 300 gross (USD 150 net at
+            # the 50% split); a smaller gain carries forward to the next cycle.
+            due = funded & (step == 4) & (funded_age > 0) & (funded_age % 10 == 0) & (bal - funded_balance >= 300.0 - 1e-9)
             if due.any():
                 amount = np.zeros(n)
                 amount[due] = (bal[due] - funded_balance) * 0.50
@@ -558,7 +561,8 @@ def simulate_the5ers(paths, active, risk):
             "Daily closed-PnL model. Bootcamp evaluation: three steps on $5k/$10k/$15k, 6% target and "
             "5% static max loss each, no daily limit. Funded: $20k, 4% static max loss ($800), 3% daily "
             "pause modeled as a closed-PnL clip, 50% split, payouts every 14 calendar days approximated "
-            "as 10 trading days. No consistency rule. 5% funded scale-up ladder not modeled. "
+            "as 10 trading days, USD 300 gross minimum per payout (USD 150 net). No consistency rule. "
+            "5% funded scale-up ladder not modeled. "
             "Floating-loss breaches and intraday pause timing are not visible in exports."
         ),
     }
@@ -1691,6 +1695,7 @@ def write_rule_docs():
         "consistency_rule":"None for Bootcamp",
         "profit_split_start":0.50,"profit_split_max":1.00,
         "payout_cycle_calendar_days":14,"payout_cycle_model_trading_days":10,
+        "payout_minimum_gross_usd":300,"payout_minimum_net_usd":150,
         "first_payout":"14 calendar days after the funded account is issued; model uses 10 trading days",
         "leverage":"1:30 FX; 1:25 metals and indices (Bootcamp page)",
         "news":"Allowed, except bracketing around releases",
@@ -1703,6 +1708,7 @@ def write_rule_docs():
                             "5% static max loss per step from that step's starting balance; 4% static funded floor at $19,200",
                             "No daily loss limit during evaluation; funded 3% daily pause modeled as a closed-PnL clip",
                             "Payout every 14 calendar days approximated as 10 trading days; 50% split; balance resets to $20,000 after withdrawal",
+                            "A payout is only made when the profit reaches the USD 300 gross minimum (USD 150 to the trader); smaller gains carry forward",
                             "Funded 5% scale-up ladder (balance, max loss and split step-ups) is not modeled",
                             "Floating PnL is absent from the MT5 exports; the close-only model is optimistic for intraday breaches",
                             "Account fees are excluded from the payout estimates"]

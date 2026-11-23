@@ -152,7 +152,8 @@ def simulate_stages(eval_r: np.ndarray, eval_floors: np.ndarray,
             f_breach_day[bad] = d
             fail_max |= bad
             step[bad] = 5
-            due = funded & (step == 4) & (f_age > 0) & (f_age % 10 == 0) & (bal > funded_balance + 1e-9)
+            # USD 300 gross minimum payout (USD 150 net); smaller gains carry forward.
+            due = funded & (step == 4) & (f_age > 0) & (f_age % 10 == 0) & (bal - funded_balance >= 300.0 - 1e-9)
             if due.any():
                 amt = np.zeros(n)
                 amt[due] = (bal[due] - funded_balance) * 0.50
@@ -256,7 +257,8 @@ def main():
         "sleeve has a dollar risk floor. On a $5k step the floor, not the percentage,",
         "decides the risk. This report models `risk_i = max(pct x balance, 0.01-lot 1R_i)`",
         "per sleeve, with the evaluation book through Steps 1-3 and the funded book",
-        "after funding (the real switch, not a product of two independent runs).",
+        "after funding (the real switch, not a product of two independent runs). A payout",
+        "requires at least USD 300 gross (USD 150 net at the 50% split).",
         "",
         "## 0.01-lot 1R per sleeve (mean losing trade at 0.01 lot, from the export)",
         "",
