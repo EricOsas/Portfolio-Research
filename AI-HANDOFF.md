@@ -19,7 +19,9 @@ Newest entry first. Only what was verified in this session is recorded here.
 
 **Docs updated:** `reports/strategy_suitability.md` (executive bullet, configuration bullet, new minimum-lot subsection), `Prop-Firms/methodology.md` (lot-floor subsection), generated The5ers README now links the sizing report, workflow runs the sizing script.
 
-**Next action:** let the CI run for this commit finish, then spot-check that `stage_sizing.md/csv` are committed and the The5ers README links resolve.
+**CI outcome (run 45130586210, commit 78d95d8).** The first attempt failed in 0s: the The5ers extra-links patch had written a raw newline into `build_live_and_prop_reports.py` (SyntaxError at import), which also meant the committed tree held a broken build script. Fixed in `78d95d8` by building the separator with `chr(10)`; `py_compile` passes for both scripts. The rerun succeeded in ~20 min and its commit `48aa30c` regenerated the The5ers README with working `stage_sizing.md`/`stage_sizing.csv` links and re-ran the sizing step. The committed numbers match the local run (A: 63.4% reach funded, 36.6% eval breach; F: 65.0% / 1.0% funded breach).
+
+**Next action:** none outstanding. The sizing report regenerates automatically on the next `analysis/` or `Trades/` change.
 
 ## 2026-11-22 (later) — instrument correction and The5ers replaces FTMO
 
