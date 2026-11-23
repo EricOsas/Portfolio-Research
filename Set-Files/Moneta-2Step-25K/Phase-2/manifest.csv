@@ -1,0 +1,4 @@
+stage,file,ea,source,symbol,lots,risk_usd,magic,trade_comment
+Phase-2,Phase-2/01. Gold X9.set,Gold X9,Source Codes\MT5\1. X9\Gold_X9,XAUUSD,0.02,25.91,770201,Moneta-Phase-2-1
+Phase-2,Phase-2/02. GotobiFix EURJPY.set,GotobiFix EURJPY,Source Codes\MT5\13. GotobiFix\GotobiFix,EURJPY,0.32,33.32,770202,Moneta-Phase-2-2
+Phase-2,Phase-2/03. GotobiFix USDJPY.set,GotobiFix USDJPY,Source Codes\MT5\13. GotobiFix\GotobiFix,USDJPY,0.32,32.83,770203,Moneta-Phase-2-3

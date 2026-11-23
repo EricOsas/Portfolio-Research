@@ -18,6 +18,7 @@ Source exports are stored under `Trades/NT8 Trades/` (10 CSV files) and `Trades/
 - `Normalized-Live/NT8`: one exported contract equivalent per strategy, no starting balance.
 - `Normalized-Live/MT5`: fixed USD 100 risk proxy per completed trade on per-lot PnL (cash flow divided by traded volume), no starting balance.
 - `Prop-Firms/The5ers-20K-Bootcamp`: The5ers $20k Bootcamp 3-step evaluation and $20k funded account simulation.
+- `Prop-Firms/Moneta-2Step-25K`: Moneta Funded $25k 2-Step Standard (5% / 10% targets, 4% daily, 8% static, 88% split).
 - `Prop-Firms/Tradeify-50K-Growth-Futures`: Tradeify $50k Growth futures account simulation.
 
 Methodology:
@@ -30,6 +31,15 @@ Methodology:
 - Tradeify's funded DLL rises from $1,250 to $2,000 after the $53,000 balance threshold; the model clips closed daily PnL at the applicable limit. The separate NT8 MAE / soft-DLL stress report is not an intraday equity replay.
 - The5ers evaluation has no daily limit; the funded 3% daily pause is modeled as a closed-PnL clip, and the 5% funded scale-up ladder is not modeled.
 - Recovery scenarios include no-trade controls and model the probability of reaching a buffer or payout target before breaching the account floor.
+
+## Size-specific steps
+
+`analyze_the5ers_sizing.py`, `analyze_moneta_sizing.py` and `analyze_tradeify_sizing.py`
+re-run the same validation bootstrap with broker minimum sizing (0.01 lot / one micro)
+and write each firm's `stage_sizing.{md,csv}` plus `ea_allocation.json` for Moneta.
+`build_set_files.py` turns those allocations into plug-and-play MT5 `.set` files and
+commits a copy under `Set-Files/` (the working copy for the live machine is written to
+`Documents/Portfolio/Set-Files`).
 
 ## Scope controls
 

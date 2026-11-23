@@ -49,14 +49,18 @@ jobs:
         run: python analysis/analyze_the5ers_sizing.py
       - name: Model Tradeify stage sizing in whole contracts
         run: python analysis/analyze_tradeify_sizing.py
+      - name: Model Moneta stage sizing with minimum-lot floors
+        run: python analysis/analyze_moneta_sizing.py
       - name: Build normalized live and prop-firm research
         timeout-minutes: 150
         run: python analysis/build_live_and_prop_reports.py
+      - name: Build EA set files
+        run: python analysis/build_set_files.py Set-Files
       - name: Commit generated reports
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add NT8 MT5 Normalized-Live Prop-Firms reports
+          git add NT8 MT5 Normalized-Live Prop-Firms reports Set-Files
           if ! git diff --cached --quiet; then
             git commit -m "chore: refresh platform equity reports [skip ci]"
             for attempt in 1 2 3 4 5; do

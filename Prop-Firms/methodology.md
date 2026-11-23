@@ -68,6 +68,47 @@ Risk ladder: USD 100, 250, 500 and 750 requested total book risk per trade. Over
 
 The NT8 MAE report measures one-micro-per-sleeve adverse-excursion stress. Same-entry-day MAEs are stacked conservatively; this is not a synchronized intraday replay. It is intended to flag possible daily-loss pauses, not predict exact breach timing.
 
+## Moneta Funded — USD 25,000 2-Step Standard
+
+Rules are taken from the Moneta Funded support clarification of 2026-11-21 and the
+published programme rules, which the firm names as authoritative (website, client
+dashboard, Help Center/FAQ, Terms & Conditions).
+
+- Phase 1 target: **5%** (USD 1,250). Phase 2 target: **10%** (USD 2,500).
+- Daily loss: **4%** (USD 1,000), or 5% with the wider drawdown option. A breach
+  fails the account; Moneta does not treat the daily limit as a pause.
+- Maximum loss: **8% static** (USD 2,000), or 10% with the wider option, measured
+  from the starting balance. Not trailing.
+- **Three profitable days of at least 0.5% net** (USD 125) in each phase and in
+  each funded payout cycle. No consistency rule anywhere.
+- Funded split **88%**, payout cycle **14 calendar days** (modeled as 10 trading
+  days), balance resets to the account size after each withdrawal. No minimum
+  payout amount is published.
+- News: no new or held exposure from **5 minutes before to 5 minutes after**
+  high-impact releases, in evaluation and funded. A position opened at least two
+  hours before the event may be closed inside the window.
+- Own self-developed EAs are allowed. Cross-account hedging is prohibited;
+  incidental opposing positions from independent EAs on the same account are
+  permitted (the earlier blanket prohibition was withdrawn).
+- Overnight and weekend holding allowed. No consistency rule, no time limit.
+
+The model runs the 4%/8% variant, so every result is the conservative case. The
+binding constraint is Phase 2: 10% of profit against an 8% static budget, with
+all profits from Phase 1 already reset away, so the phase needs 25R at a 0.4%
+per-trade risk and only 12.5R once the book risks 0.8% per trade.
+
+[Stage sizing with real lot floors](Moneta-2Step-25K/reports/stage_sizing.md)
+sizes each sleeve in whole 0.01 lots and models the funded-book switch. The
+selected plan is Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY at a USD 100
+target through both phases (**USD 92.06** actual, 0.37% of the account), then
+Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB at a USD 200
+target when funded (**USD 197.63**, 0.79%). That plan reaches funding in
+**98.4%** of paths, breaches evaluation in **1.3%**, and produces a first payout
+in **97.8%** of challenge starts (**99.4%** conditional on funding, **0.06%**
+funded breach, median 109 trading days, expected first payout **USD 577**).
+
+Pre-built EA presets: [Set-Files/Moneta-2Step-25K](../Set-Files/Moneta-2Step-25K/README.md).
+
 ## Contract floors on the NT8 side
 
 NT8 sizing is whole contracts. One contract on MNQ/MGC is one micro, and a micro's mean losing trade in the exports is USD 127-182, so a single micro per sleeve is about 1% of the USD 50k account and only 3.9-4.2R from the USD 2,000 trailing drawdown. The four-mini concurrent cap is therefore not the binding constraint; the drawdown is. Whole-micro rounding is already in `tradeify_position_weights` (headroom is rounded down, never below one micro), but the requested-risk ladder hides the fact that every rung lands on the same one-micro book. [Stage sizing in whole contracts](Tradeify-50K-Growth-Futures/reports/stage_sizing.md) enumerates one to ten micros per sleeve, reports the R buffer to the trail, and flags where the simulator's USD 1,250 daily-loss clip binds (0.6% of days at one micro, 3-21% above two micros). Above one micro those rows are scale illustrations, not odds.

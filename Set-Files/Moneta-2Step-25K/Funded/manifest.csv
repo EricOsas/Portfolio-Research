@@ -1,0 +1,5 @@
+stage,file,ea,source,symbol,lots,risk_usd,magic,trade_comment
+Funded,Funded/01. Flash ORB.set,Flash ORB,Source Codes\MT5\10. FlashTriggerORB\FlashTriggerORB,USTEC,0.76,49.68,770301,Moneta-Funded-1
+Funded,Funded/02. GotobiFix EURJPY.set,GotobiFix EURJPY,Source Codes\MT5\13. GotobiFix\GotobiFix,EURJPY,0.48,49.97,770302,Moneta-Funded-2
+Funded,Funded/03. Tokyo Coil.set,Tokyo Coil,Source Codes\MT5\3. TokyoCoil\TokyoCoil,USDJPY,0.29,48.46,770303,Moneta-Funded-3
+Funded,Funded/04. Overnight Bias ORB.set,Overnight Bias ORB,Source Codes\MT5\5. OvernightBiasRangeBreakout\OvernightBiasRangeBreakout,USTEC,0.81,49.52,770304,Moneta-Funded-4

@@ -25,6 +25,7 @@ These are the actual strategy combinations selected by the research. A plus sign
 - **Tradeify $50k Growth:** challenge book FVG Duo + Flash ORB + Gold ORB (RBE) + Sigma ORB; funded book Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB. Minimum-micro sizing raises the modeled effective risks to roughly USD 512 and USD 476 against a USD 100 request.
 - **Tradeify lower-risk alternative:** Flash ORB + Overnight Bias ORB for both stages. It is slower, but has materially better modeled survival and payout probability than the four-sleeve leader.
 
+- **Moneta $25k 2-Step:** Phase 1 +5%, Phase 2 +10%, 4% daily and 8% static loss, three 0.5% days per phase and cycle, 88% split. Runs a three-sleeve gold-anchored phase book and a gold-free funded book.
 ## Executive decision summary
 
 | Use case | NT8 / futures research book | MT5 / CFD research book |
@@ -64,6 +65,17 @@ All probabilities below are 5,000-path, 252-trading-day estimates. Breach means 
 - Geometric repeat estimate: **1.35 challenge accounts** and **1.17 funded accounts** per first payout.
 
 The challenge book's edge is concentrated in Gold X9 and the GotobiFix pairs. At USD 100 risk it still reaches funding in 57.9% of paths, but evaluation breach rises to 42.1% and conditional funded breach to 66.6%; USD 25 is the only rung that keeps both sides acceptable.
+
+### Moneta $25k 2-Step Standard
+
+- Rules: Phase 1 **+5%**, Phase 2 **+10%**, **4% daily** / **8% static** maximum loss (5%/10% with the wider option), **3 profitable days of at least 0.5%** per phase and per payout cycle, **88% split**, 14-day payout cycle, no consistency rule, own EAs allowed, news window **5 minutes either side** of high-impact releases.
+- Phase book (both phases): Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY at a **USD 100** target → **USD 92.06** actual (0.37% of the account; gold 0.02 lot).
+- Funded book: Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB at a **USD 200** target → **USD 197.63** (0.79%), no gold.
+- Reach funding: **98.4%**. Evaluation hard breach: **1.3%**.
+- First payout from a challenge start: **97.8%**; conditional on funding **99.4%**; funded hard breach **0.06%**.
+- Median time to first payout: **109 trading days**; expected first payout **USD 577**.
+- Phase 2 is the constraint, not Phase 1: 10% of profit against an 8% static budget. At 0.8% per trade that is 12.5R; at 0.37% it is 27R.
+- Presets: [Moneta set files](../Set-Files/Moneta-2Step-25K/README.md).
 
 ### Tradeify $50k Growth — higher-return four-sleeve route
 
