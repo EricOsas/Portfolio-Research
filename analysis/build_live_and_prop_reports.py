@@ -1819,6 +1819,10 @@ Results are conditional on historical export distributions and the assumptions i
     ]:
         d=PROP_ROOT/firm
         extra_links = "- [Book rankings](reports/book_rankings.csv)\n- [Book recommendations](reports/book_recommendations.md)\n- [Recovery-mode scenarios](reports/recovery_mode.csv)"
+        if firm.startswith("The5ers"):
+            extra_links += "
+- [Stage sizing with real lot floors](reports/stage_sizing.md)
+- [Stage sizing data](reports/stage_sizing.csv)"
         chart_extra = ""
         if firm=="Tradeify-50K-Growth-Futures":
             extra_links += "\n- [Intraday MAE / soft-DLL stress](reports/mae_soft_dll_stress.csv)"
@@ -1828,7 +1832,14 @@ Results are conditional on historical export distributions and the assumptions i
             recovery_note = "Recovery curves are balance-only. The $53,000 target does not enforce payout consistency, five $150 winning days or payout processing."
             chart_extra = "\n![Evaluation drawdown breach probability](charts/evaluation_breach_probability.png)\n![Intraday MAE / soft-DLL stress](charts/mae_soft_dll_stress.png)\n![Recovery to $53,000 balance (payout eligibility not enforced)](charts/recovery_payout_threshold_probability.png)\n"
         else:
-            sizing_note = "Risk ladder is USD 10–100 total book risk per trade, allocated equally across sleeves. Sizing is continuous; instrument-specific minimum lots are not enforced. MT5 cash flows are divided by traded volume before the R unit is calibrated, so balance-compounding exports (Gold X9, Tokyo Coil) enter at per-lot risk."
+            sizing_note = ("Risk ladder is USD 10–100 total book risk per trade, allocated equally across sleeves. "
+                "That ladder is a continuous-sizing idealization: it does not enforce broker minimum lots. "
+                "At 0.01 lot Gold X9 already risks about USD 20 per trade (0.4% of the $5k Step 1), so the real "
+                "stage risk is set by that floor, not by the ladder. [Stage sizing with real lot floors]"
+                "(reports/stage_sizing.md) models the book with minimum-lot floors, the mid-account switch to the "
+                "funded book, and per-sleeve percent sizing; [underlying CSV](reports/stage_sizing.csv). "
+                "MT5 cash flows are divided by traded volume before the R unit is calibrated, so balance-compounding "
+                "exports (Gold X9, Tokyo Coil) enter at per-lot risk.")
             daily_limit_note = "Evaluation has no daily loss limit, so only the 5% static per-step maximum loss can fail a step. The funded account adds a 3% daily pause, modeled as a closed-PnL clip: intraday trigger timing and overshoot are not visible in the exports, and the 5% funded scale-up ladder is not modeled."
             pairing_note = "MT5 RBE entry/exit legs use exact-volume matching where possible and FIFO fallback because the Deals export has no position IDs."
             recovery_note = "Recovery curves are balance-only; The5ers recovery measures return to the funded $20,000 initial balance above the static 4% floor, not payout eligibility."

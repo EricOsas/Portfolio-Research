@@ -21,7 +21,7 @@ These are the actual strategy combinations selected by the research. A plus sign
 - **Recovery score:** Gold ORB (RBE) + GotobiFix EURJPY + Tokyo Coil + Vault Break. This is not a near-floor recovery recommendation.
 
 **The two prop-account configurations**
-- **The5ers $20k Bootcamp:** challenge book Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive; funded-stage book Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil. The model's base case is USD 25 total risk per book trade across a 3-step evaluation ($5k/$10k/$15k) and a $20k funded account.
+- **The5ers $20k Bootcamp:** challenge book Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive; funded-stage book Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil in the continuous-sizing model, and Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB at the real minimum-lot size. The model's base case is USD 25 total risk per book trade across a 3-step evaluation ($5k/$10k/$15k) and a $20k funded account; the minimum-lot stage-sizing report supersedes it for execution decisions.
 - **Tradeify $50k Growth:** challenge book FVG Duo + Flash ORB + Gold ORB (RBE) + Sigma ORB; funded book Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB. Minimum-micro sizing raises the modeled effective risks to roughly USD 512 and USD 476 against a USD 100 request.
 - **Tradeify lower-risk alternative:** Flash ORB + Overnight Bias ORB for both stages. It is slower, but has materially better modeled survival and payout probability than the four-sleeve leader.
 
@@ -36,7 +36,7 @@ These are the actual strategy combinations selected by the research. A plus sign
 
 These are generic portfolio-screening categories. They are not fixed labels attached to a strategy. The firm-specific simulations produce separate recommendations:
 
-- **The5ers $20k Bootcamp:** training-selected challenge book Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive at USD 25 total risk reaches the funded account in 86.62% of paths and a first payout in 83.96%. The funded-stage book Flash ORB + Gold X9 + GotobiFix EURJPY + Tokyo Coil has a 96.3% conditional first-payout rate and a 0.05% conditional funded breach rate at USD 25 risk.
+- **The5ers $20k Bootcamp:** training-selected challenge book Gold X9 + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive at USD 25 total risk reaches the funded account in 86.62% of paths and a first payout in 83.96% in the continuous-sizing model. That model ignores broker minimum lots; at the real 0.01-lot floor the same book reaches funding in about 63-65% of paths and the funded book breaches in about 45% of paths if Gold X9 stays in it. Dropping Gold X9 from the funded book and running Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB at 0.125%/sleeve gives a 99.8% conditional first payout with a 1.0% funded breach.
 - **Tradeify $50k Growth:** the overall training-score challenge leader is FVG Duo + Flash ORB + Gold ORB (RBE) + Sigma ORB; the funded leader is Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB. Their USD 100 requests require about USD 511.97 and USD 475.65 effective risk after minimum-micro sizing. A lower-risk, two-sleeve alternative is Flash ORB + Overnight Bias ORB at USD 237.63 effective risk; it is slower but has stronger validation survival.
 
 **Near-floor recovery:** The5ers is recoverable from a USD 250 cushion upward, but at the strict USD 100 cushion the best pair still carries 7.3% breach risk. Tradeify's best eligible active recovery book carries roughly a third to a half modeled breach risk. Neither firm has a recovery book that is both high-probability and low-breach at the strictest cushion.
@@ -292,6 +292,17 @@ Modeled account structure (The5ers Bootcamp, checked 2026-11-22): three sequenti
 | 90-trading-day funded survival | 99.88% | 99.96% |
 
 The funded-stage book is chosen for payout survival rather than speed: its conditional first-payout rate after funding is 96.3%, and its funded-breach rate is 0.05%. The 83.4% combined estimate multiplies the challenge book's 86.62% reach-funded rate by that 96.3%, and does not replay a mid-account switch.
+
+**Minimum-lot reality (this supersedes the risk ladder for execution).** The ladder above allocates USD 25 equally, which is USD 6.25 per sleeve. On XAUUSD the smallest position is 0.01 lot, whose mean losing trade is about **USD 20**, so Gold X9 cannot be sized down to its share. The book is therefore gold-heavy at minimum size and the stage percentages are not chosen, they are forced:
+
+| Stage | Balance | Real book risk at minimum lots | % of stage | Reach-funded odds |
+|---|---:|---:|---:|---:|
+| Step 1 | $5,000 | ~$22-30 per trade | 0.44-0.55% | 63-65% over all three steps |
+| Step 2 | $10,000 | same lots, ~$22-30 | 0.22-0.28% | — |
+| Step 3 | $15,000 | same lots, ~$22-30 | 0.15-0.18% | — |
+| Funded | $20,000 | switch book, ~$100 (0.5%) | 0.5% | 99.8% conditional payout, 1.0% breach |
+
+At the minimum lot the evaluation hard-breach rate is about **35%**, not 7.5%, because one bad Gold X9 day at 0.01 lot can be 2-5% of a $5k step. Scaling the percentage with the balance makes it worse, not better: 0.125%/sleeve reaches funding in 65% of paths but breaches the funded account in 58%; 0.25%/sleeve gives 57% and 88%. The funded book must not carry Gold X9 and must not scale to USD 200 per trade. Full tables, lot-level evidence and the exact EA inputs are in [stage sizing with real lot floors](../Prop-Firms/The5ers-20K-Bootcamp/reports/stage_sizing.md).
 
 **Challenge book risk ladder** (USD 10 / 25 / 50 / 100):
 

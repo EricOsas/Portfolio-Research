@@ -2,6 +2,25 @@
 
 Newest entry first. Only what was verified in this session is recorded here.
 
+## 2026-11-22 (latest) — minimum-lot sizing: the published The5ers odds were optimistic
+
+**What triggered it.** The published The5ers ladder sizes the book in continuous dollars (USD 25 total = USD 6.25/sleeve). On XAUUSD the broker minimum is 0.01 lot, whose mean losing trade in the Gold X9 export is USD 20.02, so the equal split is not placeable. Every continuous-dollar number for The5ers is therefore an idealisation, and the funded-breach figures (0.14% / 0.05%) are not reachable with these EAs.
+
+**New artifact.** `analysis/analyze_the5ers_sizing.py` (wired into CI). It models `risk_i = max(pct x balance, 0.01-lot 1R_i)` per sleeve, the real mid-account switch from the evaluation book to the funded book, and writes `Prop-Firms/The5ers-20K-Bootcamp/reports/stage_sizing.{md,csv}`.
+
+**Verified numbers (5,000 paths, validation block bootstrap)**
+- 0.01-lot 1R: Gold X9 USD 20.02; GotobiFix EURJPY 1.05; GotobiFix USDJPY 1.14; Open Drive 0.04; Flash ORB 0.73; Tokyo Coil 0.13; Overnight Bias 0.08.
+- Physical minimum, no scaling (A): stage risk 0.44% / 0.22% / 0.15% of $5k / $10k / $15k, funded 0.11%; reach funded 63.4%, evaluation breach 36.6%, first payout 60.8%, funded breach 44.6% (because the funded book still held Gold X9).
+- 0.125%/sleeve scaling both stages (C): 65.2% reach funded, 57.7% funded breach. 0.25%/sleeve (D): 57.3% / 88.3%. 0.5%/sleeve (E): 44.5% / 96.3%. So scaling with the balance is worse, not better.
+- Minimum-lot evaluation + funded book without Gold X9 at 0.125%/sleeve (F): 65.0% reach funded, 35.0% evaluation breach, 64.9% first payout, **1.0% funded breach**, 99.8% conditional payout. At 0.25%/sleeve (G): 26.1% funded breach.
+- 1%/sleeve is impossible: 4% of the step per trade against a 5% static limit is a 1.25R buffer.
+
+**EA settings verified in the terminal tree** (`.../MQL5/Experts/`): Gold X9 uses tiered sizing whose budget at $5k is ~USD 1.50 per strategy, below the 0.01-lot floor, so it min-lots regardless; GotobiFix is fixed-lot only; Flash ORB / Overnight Bias / Vault / Sigma are `RiskMoney` (fixed cash); only Open Drive (`RiskPercent`) and Tokyo Coil (`RiskPct`) support percentage risk. Recommended: challenge = X9 manual 0.01, GotobiFix 0.05 per pair, Open Drive RiskMoney 8 (held unchanged through all three steps); funded = Flash 25, GotobiFix EURJPY 0.24, Tokyo Coil 25, Overnight Bias 25, and no Gold X9.
+
+**Docs updated:** `reports/strategy_suitability.md` (executive bullet, configuration bullet, new minimum-lot subsection), `Prop-Firms/methodology.md` (lot-floor subsection), generated The5ers README now links the sizing report, workflow runs the sizing script.
+
+**Next action:** let the CI run for this commit finish, then spot-check that `stage_sizing.md/csv` are committed and the The5ers README links resolve.
+
 ## 2026-11-22 (later) — instrument correction and The5ers replaces FTMO
 
 **Corrections to the entry below**
