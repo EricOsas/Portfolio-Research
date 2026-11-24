@@ -381,11 +381,11 @@ def main():
     }
     pd.DataFrame([plan]).to_csv(OUT / "plan_switch.csv", index=False)
     plan_row = (
-        f"| {plan['phase_lots']} | " "$" f"{plan['phase_risk_usd']:.2f} | {plan['funded_lots']} | "
-        "$" f"{plan['funded_risk_usd']:.2f} | "
+        f"| {plan['phase_lots']} | ${plan['phase_risk_usd']:.2f} | {plan['funded_lots']} | "
+        f"${plan['funded_risk_usd']:.2f} | "
         f"{plan['reach_funded_rate']*100:.1f}% | {plan['evaluation_hard_breach_rate']*100:.1f}% | "
         f"{plan['payout_rate_from_start']*100:.1f}% | {plan['funded_hard_breach_conditional']*100:.1f}% | "
-        f"{plan['median_days_to_payout']:.0f} | " "$" f"{plan['expected_first_payout_usd']:.0f} |"
+        f"{plan['median_days_to_payout']:.0f} | ${plan['expected_first_payout_usd']:.0f} |"
     )
     print("plan switch", plan["reach_funded_rate"], plan["payout_rate_from_start"])
 
@@ -412,10 +412,9 @@ def main():
         lines.append(f"| {sleeve} | {INSTRUMENTS.get(sleeve, '')} | ${floors[sleeve]:.2f} |")
     lines += [
         "",
-        "Gold X9 is the binding floor: 0.01 lot is already " "$"
-        f"{floors[GOLD_X9]:.2f} of mean risk, which is "
-        f"{floors[GOLD_X9] / 5000.0 * 100:.2f}% of a $5k step by itself. The FX and index sleeves "
-        "cost " "$" f"{min(cheap):.2f}-" "$" f"{max(cheap):.2f} at the same minimum, so they cannot be "
+        f"Gold X9 is the binding floor: 0.01 lot is already ${floors[GOLD_X9]:.2f} of mean risk, "
+        f"which is {floors[GOLD_X9] / 5000.0 * 100:.2f}% of a $5k step by itself. The FX and index "
+        f"sleeves cost ${min(cheap):.2f}-${max(cheap):.2f} at the same minimum, so they cannot be "
         "scaled down to match a percentage either: the book is gold-heavy at minimum size.",
         "",
         "## Scenarios",
