@@ -55,7 +55,9 @@ reports, and the "real switch" the report describes was never simulated on one p
 and the no-gold funded book to USD 100, and writes `plan_switch.csv` plus a report section:
 **89.6%** reach, **5.9%** evaluation breach, **80.9%** first payout, **90.4%** conditional,
 **0.5%** funded breach, **174** days, **$183** expected. `reports/strategy_suitability.md`,
-`Prop-Firms/methodology.md` and `analysis/README.md` quote those numbers.
+`Prop-Firms/methodology.md` and `analysis/README.md` quote those numbers. CI run
+`45407716850` (commit `8f2a51b`, bot `1804a23`) reproduced every figure exactly and was green in
+21m48s; repo and live `.set` files still match (manifests differ only in path separators).
 
 ## 2026-11-23 — Moneta $10k 2-Step added; plug-and-play EA set files built
 
