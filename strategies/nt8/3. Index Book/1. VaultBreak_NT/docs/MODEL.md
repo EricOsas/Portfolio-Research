@@ -6,7 +6,7 @@ Recovery lifecycle correction 2026-10-16: never add a replacement leg to an exis
 
 Recovery update 2026-10-16: temporary Account.CreateOrder IDs are replaced with provider IDs from the exact registered order callback before reconciliation. Legacy temporary-GUID protective bracket IDs may bind only to one matching acknowledged broker order, with exact account/contract/owner/OCO, direction, type, quantity, prices and fill bounds. The original journal is backed up as .before_provider_id_<UTC ticks>; success logs RECOVERY_PROVIDER_ID_BOUND. Binding sends no broker orders. Assigned-ID conflicts remain blocked. Source fixtures and native compilation do not establish VPS runtime acceptance.
 
-Current runtime recovery (2026-10-15): [RECOVERY.md](RECOVERY.md) specifies automatic mismatch detection, retry on delayed owned broker evidence, and the case-specific external-close confirmation fallback. This supersedes older restart/ownership limitations below. Trading model parameters are unchanged.
+Current runtime recovery (2026-10-15): automatic mismatch detection, retry on delayed owned broker evidence, and the case-specific external-close confirmation fallback supersede the older restart/ownership limitations below. Trading model parameters are unchanged.
 
 ## Implemented specification — 2026-10-13
 
@@ -58,11 +58,11 @@ Independent standalone NT8 port of the current MT5 VaultBreak model. One VaultBr
 
 Supported native instrument names: NQ, MNQ and NNQ. On NNQ, both NNQ and same-expiry NQ ETH M1 histories are requested over the selected chart/Analyzer range, without a fixed bar-count cap. NNQ is preferred when loaded history meets the original ATR warmup and exact-minute session requirements; NQ supplies fallback signals/visuals otherwise. Source selection is pinned for the loaded run and reassessed on reload, keeping active-position calculations consistent. All orders use NNQ M1 and its native contract specifications. The panel identifies signal and order contracts. NQ/MNQ behaviour is retained. Native historical trade history is retained explicitly. The panel displays `Trades 0/3` and NUB with three decimal places. Native loading and NNQ result parity remain separate gates.
 
-**Block opposing index exposure** is a user option, default **On**. When enabled, entry rejects opposing Equity Index positions/pending orders across visible NT8 accounts and coordinates pending direction with Overnight. Turning it off bypasses that product-direction guard. Exact-instrument ownership isolation remains active either way; foreign positions are never flattened. Other PCs, hidden accounts and external order races are outside its scope. See [current validation status](validation/README.md).
+**Block opposing index exposure** is a user option, default **On**. When enabled, entry rejects opposing Equity Index positions/pending orders across visible NT8 accounts and coordinates pending direction with Overnight. Turning it off bypasses that product-direction guard. Exact-instrument ownership isolation remains active either way; foreign positions are never flattened. Other PCs, hidden accounts and external order races are outside its scope.
 
 ## Frozen rules
 
-M1 loading and recovery use an explicit ETH source, completed native-index catchup and provider repair for missing required live intervals. Recovered bars cannot submit old signals; owned exposure and attempts remain isolated. See [current validation status](validation/README.md). The one-second timer also reads available completed source bars when callbacks are queued. Use an ETH primary chart for the supported full-session live configuration; unavailable underlying/provider bars remain blocked. Native chart/reconnect observation remains required.
+M1 loading and recovery use an explicit ETH source, completed native-index catchup and provider repair for missing required live intervals. Recovered bars cannot submit old signals; owned exposure and attempts remain isolated. The one-second timer also reads available completed source bars when callbacks are queued. Use an ETH primary chart for the supported full-session live configuration; unavailable underlying/provider bars remain blocked. Native chart/reconnect observation remains required.
 
 Central midnight Session Opening Price (SOP). Noise Up Barrier (NUB) = SOP + 30% of the mean of the last 15 completed daily ATR(15) values. Each daily ATR uses a **simple rolling average of true range**, matching MT5 iATR instead of NinjaTrader's Wilder ATR.
 

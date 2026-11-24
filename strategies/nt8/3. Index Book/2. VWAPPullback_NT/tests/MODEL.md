@@ -6,7 +6,7 @@ Recovery lifecycle correction 2026-10-16: never add a replacement leg to an exis
 
 Recovery update 2026-10-16: temporary Account.CreateOrder IDs are replaced with provider IDs from the exact registered order callback before reconciliation. Legacy temporary-GUID protective bracket IDs may bind only to one matching acknowledged broker order, with exact account/contract/owner/OCO, direction, type, quantity, prices and fill bounds. The original journal is backed up as .before_provider_id_<UTC ticks>; success logs RECOVERY_PROVIDER_ID_BOUND. Binding sends no broker orders. Assigned-ID conflicts remain blocked. Source fixtures and native compilation do not establish VPS runtime acceptance.
 
-Current runtime recovery (2026-10-15): [RECOVERY.md](RECOVERY.md) specifies automatic mismatch detection, retry on delayed owned broker evidence, and the case-specific external-close confirmation fallback. This supersedes older restart/ownership limitations below. Trading model parameters are unchanged.
+Current runtime recovery (2026-10-15): automatic mismatch detection, retry on delayed owned broker evidence, and the case-specific external-close confirmation fallback supersede the older restart/ownership limitations below. Trading model parameters are unchanged.
 
 This is the user's chosen model, not a reconstruction of Matteo's transcript.
 

@@ -30,11 +30,11 @@ Recovery persists both books, initial/current stops, consumed sides, owned inten
 
 KeepRunning handles a surviving executor's connection outage; order errors retain StopCancelClose. Broker-accepted hard stops can survive an outage, subject to provider policies. Client trailing, news actions and timed exits need a connected, running strategy. Chart removal and NT8 global order-cancellation policies must be tested before relying on recovery.
 
-The frozen parity comparison and remaining source-data gaps are preserved in [VALIDATION_CHECKPOINT.md](validation/VALIDATION_CHECKPOINT.md). No parameter optimization was performed during these repairs.
+The frozen parity comparison and remaining source-data gaps were recorded in a validation checkpoint that is no longer in the tree. No parameter optimization was performed during these repairs.
 
 ## Recovery
 
-See [dynamic recovery and native limitations](validation/DYNAMIC_RECOVERY_2026-10-15.md) and the [mandatory coding contract](../CODING_RECOVERY.md).
+The dynamic-recovery notes and the coding contract referenced by earlier revisions are no longer in the tree; the paragraphs below state the current contract.
 
 When a journal contains an active book or unsettled order, recovery subscribes to account events before reading the broker snapshot and retries missing/Unknown evidence once per second. It does not stage historical entry seeds, submit copies of protection, or rely on native GetRealtimeOrder adoption. Every recovered order must match the saved account, contract, owner/name, broker ID, type, quantity, prices and accounted fills. Sell/SellShort and Buy/BuyToCover are accepted as provider aliases for the same transaction direction; opposite directions remain invalid.
 

@@ -1110,7 +1110,12 @@ def build_prop_outputs(firm_dir, df, recovery_df, risk_col, base_risk,
     if not recovery_df.empty:
         target_col="target_label" if "target_label" in recovery_df.columns else "state"
         rec=recovery_df.copy()
-        near_cushion=100.0 if "The5ers" in title else 200.0
+        # Firms publish different cushion grids (The5ers 100, Moneta 150/300/500/750,
+        # Tradeify 200), so pick the grid point closest to the preferred cushion
+        # instead of dropping the recovery chart when the exact value is absent.
+        preferred_cushion=100.0 if "The5ers" in title else 200.0
+        near_cushion=min(sorted(rec["starting_cushion_usd"].astype(float).unique()),
+                         key=lambda v:(abs(v-preferred_cushion),v))
         near=rec[rec["starting_cushion_usd"].astype(float).eq(near_cushion)]
         if target_col=="target_label":
             near=near[near[target_col].astype(str).str.contains("buffer",case=False,regex=True)]
@@ -2094,6 +2099,9 @@ Results are conditional on historical export distributions and the assumptions i
         ("Tradeify-50K-Growth-Futures","Tradeify $50,000 Growth futures","monte_carlo_evaluation_funded_payout.csv"),
     ]:
         d=PROP_ROOT/firm
+        # Only advertise the recovery chart when the simulation produced one.
+        recovery_chart = ("![Recovery probability](charts/recovery_probability.png)\n\n"
+                          if (d/"charts"/"recovery_probability.png").exists() else "")
         extra_links = "- [Book rankings](reports/book_rankings.csv)\n- [Book recommendations](reports/book_recommendations.md)\n- [Recovery-mode scenarios](reports/recovery_mode.csv)"
         if firm.startswith("The5ers"):
             extra_links += (chr(10) + "- [Stage sizing with real lot floors](reports/stage_sizing.md)"
@@ -2163,9 +2171,7 @@ The model uses normalized daily R-multiples and a 5-trading-day block bootstrap 
 
 ![Drawdown breach probability](charts/drawdown_breach_probability.png)
 
-![Recovery probability](charts/recovery_probability.png)
-
-{chart_extra}
+{recovery_chart}{chart_extra}
 """,encoding="utf-8")
 
 def main():
