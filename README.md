@@ -5,7 +5,7 @@ Research workspace for the NT8 futures and MT5 CFD strategy exports. Raw export 
 ## Source export layout
 
 - NT8 source exports: `Trades/NT8 Trades/` (10 CSV files).
-- MT5 source exports: `Trades/MT5 Trades/` (15 XLSX files).
+- MT5 source exports: `Trades/MT5 Trades/` (19 XLSX files).
 - `analysis/strategies.json` is the single registry both engines read. The build fails before publishing if a registered export is missing, fails parsing, or if an export sits in `Trades/` without a registry entry.
 - To add a system, follow [Adding a new strategy](analysis/ADDING-A-STRATEGY.md).
 
@@ -47,8 +47,8 @@ These are first-pass export-screening candidates, not live-deployment approval. 
 |---|---|---:|---:|---:|---:|
 | NT8 | All 10 exports | $2,105,121.32 | $63,391.92 | 1.71 | 2.61 |
 | NT8 | Core 4 shortlist | $1,133,746.16 | $37,855.28 | 1.69 | 2.71 |
-| MT5 | All 15 exports | $81,944,165.86 | $4,653,710.89 | 2.63 | 2.50 |
-| MT5 | Core 4 shortlist | $80,286,062.82 | $4,678,072.04 | 2.61 | 2.45 |
+| MT5 | All 19 exports | $292,476,593.33 | $16,661,015.76 | 2.90 | 2.50 |
+| MT5 | Core 4 shortlist | $85,381,229.66 | $5,194,033.52 | 2.64 | 2.48 |
 
 Daily PF and daily Sharpe use daily aggregated net PnL, not individual-trade PF/Sharpe. Max drawdown is measured from the cumulative exported PnL curve. The MT5 totals are dominated by Gold X9's balance-compounding run; read [MT5/README.md](MT5/README.md) and the normalized-live reports before comparing platforms.
 

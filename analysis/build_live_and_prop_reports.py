@@ -1626,6 +1626,10 @@ def run_platform(platform):
             "train_funded_score":float(rr["funded_score"]),
             "train_recovery_score":float(rr["recovery_score"]),
         }
+    # Only screened books have cached scores. The standard-preset rule removes
+    # the four non-standard X9 presets from combo_df, so their lone entries must
+    # leave the prop ladder as well instead of raising a missing-score KeyError.
+    prop_candidates={k:v for k,v in prop_candidates.items() if tuple(v) in train_score_map}
     validation_idx=val_idx if len(val_idx)>=60 else dates
     monthly_focus_combos = {
         tuple(combo)
@@ -2045,7 +2049,7 @@ See the platform READMEs for the equity curves at the end of each report.
 Separate account-rule simulations using normalized strategy R-multiples and block-bootstrap Monte Carlo.
 
 - [The5ers $20,000 Bootcamp](The5ers-20K-Bootcamp/README.md)
-- [Moneta Funded $25,000 2-Step Standard](Moneta-2Step-10K/README.md)
+- [Moneta Funded $10,000 2-Step Standard](Moneta-2Step-10K/README.md)
 - [Tradeify $50,000 Growth futures](Tradeify-50K-Growth-Futures/README.md)
 
 Results are conditional on historical export distributions and the assumptions in each account folder. They are not guarantees of passing, funding, payout or survival.
@@ -2086,7 +2090,7 @@ Results are conditional on historical export distributions and the assumptions i
 
     for firm, title, file in [
         ("The5ers-20K-Bootcamp","The5ers $20,000 Bootcamp","monte_carlo_challenge_payout.csv"),
-        ("Moneta-2Step-10K","Moneta Funded $25,000 2-Step Standard","monte_carlo_challenge_payout.csv"),
+        ("Moneta-2Step-10K","Moneta Funded $10,000 2-Step Standard","monte_carlo_challenge_payout.csv"),
         ("Tradeify-50K-Growth-Futures","Tradeify $50,000 Growth futures","monte_carlo_evaluation_funded_payout.csv"),
     ]:
         d=PROP_ROOT/firm
