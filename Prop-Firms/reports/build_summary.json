@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-11-23T14:49:32.079158+00:00",
+  "generated_utc": "2026-11-24T10:05:13.111835+00:00",
   "monte_carlo_simulations_per_candidate": 5000,
   "horizon_trading_days": 252,
   "block_length_days": 5,
@@ -43,11 +43,7 @@
           "Gold X9 (Low) + GotobiFix USDJPY + Overnight Bias ORB + Tokyo Coil",
           "Flash ORB + Gold X9 (Low) + GotobiFix USDJPY + Tokyo Coil"
         ],
-        "challenge": [
-          "Flash ORB + Gold X9 (Very high) + GotobiFix USDJPY + Tokyo Coil",
-          "Flash ORB + Gold X9 (Very high) + GotobiFix EURJPY + Tokyo Coil",
-          "Gold X9 (Very high) + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive"
-        ],
+        "challenge": [],
         "funded": [
           "Flash ORB + Gold X9 (Low) + GotobiFix USDJPY + Tokyo Coil",
           "Flash ORB + Gold X9 (Low) + GotobiFix USDJPY + Overnight Bias ORB",
@@ -65,7 +61,7 @@
   ],
   "global_limitations": [
     "No tick-level replay was run.",
-    "All 10 NT8 and 15 MT5 exports are included; MT5 cash flows are normalized to per-lot PnL before risk-unit calibration.",
+    "All 10 NT8 and 19 MT5 exports are included (Gold X9 is registered at five mutually exclusive TradeFrequency presets); MT5 cash flows are normalized to per-lot PnL before risk-unit calibration.",
     "Risk units use mean realized loss, not necessarily the initial stop risk.",
     "Prop firm rule boundaries are approximated from exported timestamps."
   ]

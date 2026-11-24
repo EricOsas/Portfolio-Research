@@ -1,4 +1,4 @@
-# Moneta Funded $25,000 2-Step Standard
+# Moneta Funded $10,000 2-Step Standard
 
 - [Account rules and assumptions](reports/account_rules.json)
 - [Monte Carlo results](reports/monte_carlo_challenge_payout.csv)
