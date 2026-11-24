@@ -140,7 +140,9 @@ Diagnostic run only. **The author never published a combined portfolio report; g
 
 ## 7. Project Files & Directory Layout
 
-- Primary EA Source: [`Gold_X9_Part3.mq5`](file:///c:/Users/Administrator/AppData/Roaming/MetaQuotes/Terminal/D0E8209F77C8CF37AD8BF550E51FF075/MQL5/Experts/1.%20X9/Part%203/Gold_X9_Part3.mq5)
-- Compiled Binary: [`Gold_X9_Part3.ex5`](file:///c:/Users/Administrator/AppData/Roaming/MetaQuotes/Terminal/D0E8209F77C8CF37AD8BF550E51FF075/MQL5/Experts/1.%20X9/Part%203/Gold_X9_Part3.ex5)
-- Parity Blueprint & Gate Criteria: [`project/parity.md`](file:///c:/Users/Administrator/AppData/Roaming/MetaQuotes/Terminal/D0E8209F77C8CF37AD8BF550E51FF075/MQL5/Experts/1.%20X9/Part%203/project/parity.md)
-- Tester Ingestion Scripts: [`scratch/run_tester.py`](file:///c:/Users/Administrator/.gemini/antigravity/brain/7543b94e-9bd4-4bd4-b035-cbac42bd0c60/scratch/run_tester.py)
+- Primary EA Source: [`Gold_X9_v6_3.mq5`](../Gold_X9_v6_3.mq5)
+- Runtime modules: [`StrategyEngine.mqh`](../StrategyEngine.mqh), [`ExecutionRuntime.mqh`](../ExecutionRuntime.mqh), [`ChartVisuals.mqh`](../ChartVisuals.mqh)
+- Presets: [`sets/`](sets/)
+
+The original `Part 3` build (the reconstruction experiment this EA was derived from) is not part of
+the repository; this manual documents the shipped `Gold_X9_v6_3` implementation.

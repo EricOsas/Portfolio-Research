@@ -37,6 +37,8 @@ hand-curated copies:
   `.superpowers`, and the `obj/` build artifacts.
 
 The old flat MT5 folders (`6. OpenDrive` … `13. GotobiFix`) and flat NT8 folders are gone.
+`1. X9/Part 3` was removed at the user's request (an experiment, never deployed); `EA_STRUCTURE.md`,
+`AGENTS.md` and the X9 manual now describe only the fifteen shipped MT5 EAs.
 `SOURCE` in `build_set_files.py` now points at the new nesting, so the manifest `source` column
 reads e.g. `strategies/mt5/4. Index Book/7. FlashTriggerORB/FlashTriggerORB`.
 

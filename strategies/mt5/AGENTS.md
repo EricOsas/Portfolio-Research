@@ -297,7 +297,6 @@ One contiguous block per EA. A collision means two EAs adopt each other's positi
 | EA | Base | Range | Status |
 |---|---:|---|---|
 | `1. X9` (Gold_X9_v6_3) | 647900 | 647901–647909 (base+N = strategy N) | in use; order comment `X9S<N>` |
-| `1. X9/Part 3` (Gold_X9_Part3) | 647873 | 647873–647893 | a build, not a complete EA; left untouched. X9 moved to 647900, so the two no longer collide |
 | `5. Gotobi/GotobiFix` | 26111701 | 26111701 | in use (single magic, no slot range) |
 | others | — | — | not yet audited; record on first migration |
 
