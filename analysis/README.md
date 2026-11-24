@@ -4,7 +4,7 @@
 
 `build_equity_reports.py` reads NT8 and MT5 source exports, normalizes realized PnL events, writes platform-separated metrics and charts, and produces a transparent export-level screening shortlist.
 
-Source exports are stored under `Trades/NT8 Trades/` (10 CSV files) and `Trades/MT5 Trades/` (15 XLSX files). `analysis/strategies.json` is the single registry: both engines read it, and the build preflights every registered file, then refuses to publish partial results or to ignore an export that is present but unregistered. To add a system, see [ADDING-A-STRATEGY.md](ADDING-A-STRATEGY.md).
+Source exports are stored under `trades/nt8/` (10 CSV files) and `trades/mt5/` (19 XLSX files). `analysis/strategies.json` is the single registry: both engines read it, and the build preflights every registered file, then refuses to publish partial results or to ignore an export that is present but unregistered. To add a system, see [ADDING-A-STRATEGY.md](ADDING-A-STRATEGY.md).
 
 - NT8 Profit is used as exported; it is already net of Commission.
 - MT5 standard Strategy Tester reports use deal Profit + Commission + Swap.
@@ -16,11 +16,11 @@ Source exports are stored under `Trades/NT8 Trades/` (10 CSV files) and `Trades/
 
 `build_live_and_prop_reports.py` creates:
 
-- `Normalized-Live/NT8`: one exported contract equivalent per strategy, no starting balance.
-- `Normalized-Live/MT5`: fixed USD 100 risk proxy per completed trade on per-lot PnL (cash flow divided by traded volume), no starting balance.
-- `Prop-Firms/The5ers-20K-Bootcamp`: The5ers $20k Bootcamp 3-step evaluation and $20k funded account simulation.
-- `Prop-Firms/Moneta-2Step-10K`: Moneta Funded $10k 2-Step Standard (5% / 10% targets, 4% daily, 8% static, 88% split).
-- `Prop-Firms/Tradeify-50K-Growth-Futures`: Tradeify $50k Growth futures account simulation.
+- `reports/normalized-live/NT8`: one exported contract equivalent per strategy, no starting balance.
+- `reports/normalized-live/MT5`: fixed USD 100 risk proxy per completed trade on per-lot PnL (cash flow divided by traded volume), no starting balance.
+- `reports/prop-firms/The5ers-20K-Bootcamp`: The5ers $20k Bootcamp 3-step evaluation and $20k funded account simulation.
+- `reports/prop-firms/Moneta-2Step-10K`: Moneta Funded $10k 2-Step Standard (5% / 10% targets, 4% daily, 8% static, 88% split).
+- `reports/prop-firms/Tradeify-50K-Growth-Futures`: Tradeify $50k Growth futures account simulation.
 
 Methodology:
 - Chronological 60/40 train/validation split. Each sleeve's realized-loss R unit is calibrated on training data and held fixed in validation; book selection uses training data and Monte Carlo uses validation data.
@@ -40,7 +40,7 @@ re-run the same validation bootstrap with broker minimum sizing (0.01 lot / one 
 and write each firm's `stage_sizing.{md,csv}`; The5ers and Moneta also write the simulated
 funded-stage switch (`plan_switch.csv`), and Moneta writes `ea_allocation.json`.
 `build_set_files.py` turns those allocations into plug-and-play MT5 `.set` files and
-commits a copy under `Set-Files/` (the working copy for the live machine is written to
+commits a copy under `set-files/` (the working copy for the live machine is written to
 `Documents/Portfolio/Set-Files`).
 
 ## Scope controls

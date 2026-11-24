@@ -8,7 +8,7 @@ enumerates whole-contract allocations per sleeve, enforces the four-mini
 concurrent cap, and reports the evaluation/funded odds at each.
 
 Run: python analysis/analyze_tradeify_sizing.py
-Writes Prop-Firms/Tradeify-50K-Growth-Futures/reports/stage_sizing.{csv,md}.
+Writes reports/prop-firms/Tradeify-50K-Growth-Futures/reports/stage_sizing.{csv,md}.
 """
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "analysis"))
 import build_live_and_prop_reports as engine  # noqa: E402
 
-OUT = ROOT / "Prop-Firms" / "Tradeify-50K-Growth-Futures" / "reports"
+OUT = ROOT / "reports" / "prop-firms" / "Tradeify-50K-Growth-Futures" / "reports"
 N_SIMS = 5000
 HORIZON = 252
 SEED = 20261123

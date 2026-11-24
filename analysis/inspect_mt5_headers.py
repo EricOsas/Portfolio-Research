@@ -7,7 +7,7 @@ from pathlib import Path
 from openpyxl import load_workbook
 
 ROOT = Path(__file__).resolve().parents[1]
-INPUT = ROOT / "Trades" / "MT5 Trades"
+INPUT = ROOT / "trades" / "mt5"
 OUTPUT = ROOT / "reports" / "source_schemas" / "mt5_export_schemas.json"
 
 def norm(value):

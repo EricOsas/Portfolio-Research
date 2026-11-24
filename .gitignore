@@ -4,3 +4,9 @@ __pycache__/
 *.pyc
 *.tmp
 .tmp_*
+
+# Compiled strategy artefacts (sources only, see analysis/ADDING-A-STRATEGY.md)
+*.ex5
+*.ex4
+obj/
+bin/

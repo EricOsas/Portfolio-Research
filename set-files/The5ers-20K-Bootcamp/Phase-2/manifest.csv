@@ -1,0 +1,5 @@
+stage,file,ea,source,symbol,lots,risk_usd,magic,trade_comment
+Phase-2,Phase-2/01. Gold X9 Low.set,Gold X9 (Low),strategies/mt5/1. X9/Gold_X9_v6_3,XAUUSD,0.01,9.90,760201,The5ers-Phase-2-1
+Phase-2,Phase-2/02. GotobiFix EURJPY.set,GotobiFix EURJPY,strategies/mt5/5. GotobiFix/GotobiFix,EURJPY,0.12,12.49,760202,The5ers-Phase-2-2
+Phase-2,Phase-2/03. GotobiFix USDJPY.set,GotobiFix USDJPY,strategies/mt5/5. GotobiFix/GotobiFix,USDJPY,0.12,12.31,760203,The5ers-Phase-2-3
+Phase-2,Phase-2/04. Open Drive.set,Open Drive,strategies/mt5/4. Index Book/3. OpenDrive/OpenDrive,USTEC,0.32,12.12,760204,The5ers-Phase-2-4

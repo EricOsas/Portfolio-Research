@@ -5,10 +5,7 @@ on:
     branches: [main]
     paths:
       # Current source layout. Broad parent pattern also catches future subfolders.
-      - "Trades/**"
-      # Legacy paths retained so older branches still trigger a rebuild.
-      - "NT8 Trades/**"
-      - "MT5 Trades/**"
+      - "trades/**"
       - "analysis/**"
       - ".github/workflows/**"
   workflow_dispatch:
@@ -55,12 +52,12 @@ jobs:
         timeout-minutes: 150
         run: python analysis/build_live_and_prop_reports.py
       - name: Build EA set files
-        run: python analysis/build_set_files.py Set-Files
+        run: python analysis/build_set_files.py set-files
       - name: Commit generated reports
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add NT8 MT5 Normalized-Live Prop-Firms reports Set-Files
+          git add reports set-files
           if ! git diff --cached --quiet; then
             git commit -m "chore: refresh platform equity reports [skip ci]"
             for attempt in 1 2 3 4 5; do

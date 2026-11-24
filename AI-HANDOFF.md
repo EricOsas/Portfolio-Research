@@ -2,7 +2,45 @@
 
 Newest entry first. Only what was verified in this session is recorded here.
 
-## 2026-11-23 (latest) — Gold X9 ingested as a five-preset family
+## 2026-11-24 (latest) — Repository layout flattened; EA runtime re-uploaded
+
+**Layout.** The root now holds seven directories: `analysis/`, `data/`, `reports/`, `set-files/`,
+`strategies/`, `trades/` (and `.github/`). Previous names map as follows:
+
+| Was | Now |
+|---|---|
+| `Source Codes/MT5` | `strategies/mt5` |
+| `Source Codes/NT8` | `strategies/nt8` |
+| `Trades/MT5 Trades` | `trades/mt5` |
+| `Trades/NT8 Trades` | `trades/nt8` |
+| `Trades/MT5 Presets` | `trades/presets` |
+| `MT5` | `reports/mt5` |
+| `NT8` | `reports/nt8` |
+| `Normalized-Live` | `reports/normalized-live` |
+| `Prop-Firms` | `reports/prop-firms` |
+| `Set-Files` | `set-files` |
+
+The engines, the workflow path filter/commit step and every hand-maintained link use the new paths;
+`.tmp_moneta10k.py` and `analysis/__pycache__` were removed. The live trading copy is still written
+to `Documents/Portfolio/Set-Files`, and `set-files/` remains its committed mirror.
+
+**EA re-upload.** `strategies/` is now a straight mirror of the machine, replacing the previous
+hand-curated copies:
+
+- MT5: `MQL5/Experts` folders `1. X9`, `2. RBE`, `3. TokyoCoil`, `4. Index Book` (all eleven
+  sub-strategies) and `5. GotobiFix`, plus the root `AGENTS.md`, `AI-HANDOFF.md`,
+  `EA_STRUCTURE.md`. Omitted: `Other Bots`, `.claude`, `mt5_mcp_config.txt`, compiled `.ex5`,
+  the spreadsheets/PDF/DOCX in the folders. The thirteen `ExecutionRuntime.mqh` files include one
+  change since the last upload (server-clock reference anchoring, +19 lines each).
+- NT8: `bin/Custom/Strategies` folders `1. RBE_NT`, `2. TokyoCoil_NT` and `3. Index Book`
+  (ten `_NT` strategies). Omitted: `Others`, `validation`, `.git`/`.claude`/`.remember`/
+  `.superpowers`, and the `obj/` build artifacts.
+
+The old flat MT5 folders (`6. OpenDrive` … `13. GotobiFix`) and flat NT8 folders are gone.
+`SOURCE` in `build_set_files.py` now points at the new nesting, so the manifest `source` column
+reads e.g. `strategies/mt5/4. Index Book/7. FlashTriggerORB/FlashTriggerORB`.
+
+## 2026-11-23 — Gold X9 ingested as a five-preset family
 
 **Delivered.** Five X9 exports (2020.01.01-2026.11.01, XAUUSD M1 OHLC, USD 100k deposit) plus a
 preset registry: Extremely low (freq 0, strategies 1-3, 558 trades / 1,117 deals), Low (1, 1-5,

@@ -728,18 +728,18 @@ def validate_source_exports(nt8_input: Path, mt5_input: Path) -> None:
     if problems:
         raise FileNotFoundError(
             "Source export preflight failed. Reports were not rebuilt. "
-            "Check the Trades/NT8 Trades and Trades/MT5 Trades directories.\\n"
+            "Check the trades/nt8 and trades/mt5 directories.\\n"
             + "\\n".join(problems)
         )
 
 
 def main() -> int:
-    nt8_input = ROOT / "Trades" / "NT8 Trades"
-    mt5_input = ROOT / "Trades" / "MT5 Trades"
+    nt8_input = ROOT / "trades" / "nt8"
+    mt5_input = ROOT / "trades" / "mt5"
     validate_source_exports(nt8_input, mt5_input)
 
-    nt8 = write_platform("NT8", NT8_FILES, nt8_input, ROOT / "NT8")
-    mt5 = write_platform("MT5", MT5_FILES, mt5_input, ROOT / "MT5")
+    nt8 = write_platform("NT8", NT8_FILES, nt8_input, ROOT / "reports" / "nt8")
+    mt5 = write_platform("MT5", MT5_FILES, mt5_input, ROOT / "reports" / "mt5")
 
     expected_nt8 = len(NT8_FILES)
     expected_mt5 = sum(1 for filename in MT5_FILES.values() if filename is not None)

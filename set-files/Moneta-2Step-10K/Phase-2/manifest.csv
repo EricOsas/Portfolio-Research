@@ -1,0 +1,3 @@
+stage,file,ea,source,symbol,lots,risk_usd,magic,trade_comment
+Phase-2,Phase-2/01. Gold X9 Low.set,Gold X9 (Low),strategies/mt5/1. X9/Gold_X9_v6_3,XAUUSD,0.02,19.80,770201,Moneta-Phase-2-1
+Phase-2,Phase-2/02. Overnight Bias ORB.set,Overnight Bias ORB,strategies/mt5/4. Index Book/2. OvernightBiasRangeBreakout/OvernightBiasRangeBreakout,USTEC,0.40,24.46,770202,Moneta-Phase-2-2

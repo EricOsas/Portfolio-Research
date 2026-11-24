@@ -16,8 +16,8 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-LIVE_ROOT = ROOT / "Normalized-Live"
-PROP_ROOT = ROOT / "Prop-Firms"
+LIVE_ROOT = ROOT / "reports" / "normalized-live"
+PROP_ROOT = ROOT / "reports" / "prop-firms"
 N_SIMS = 5000
 HORIZON = 252
 BLOCK = 5
@@ -51,7 +51,7 @@ def finite(x, default=0.0):
         return default
 
 def load_platform_trades(platform):
-    path = ROOT / platform / "reports" / "normalized_event_ledger.csv"
+    path = ROOT / "reports" / platform.lower() / "reports" / "normalized_event_ledger.csv"
     if not path.exists():
         raise FileNotFoundError(path)
     raw = pd.read_csv(path, low_memory=False)
@@ -2101,7 +2101,7 @@ Results are conditional on historical export distributions and the assumptions i
         if firm.startswith("Moneta"):
             extra_links += (chr(10) + "- [Stage sizing with real lot floors](reports/stage_sizing.md)"
                             + chr(10) + "- [Stage sizing data](reports/stage_sizing.csv)"
-                            + chr(10) + "- [Pre-configured EA set files](../../Set-Files/Moneta-2Step-10K/README.md)")
+                            + chr(10) + "- [Pre-configured EA set files](../../../set-files/Moneta-2Step-10K/README.md)")
         chart_extra = ""
         if firm=="Tradeify-50K-Growth-Futures":
             extra_links += "\n- [Intraday MAE / soft-DLL stress](reports/mae_soft_dll_stress.csv)"

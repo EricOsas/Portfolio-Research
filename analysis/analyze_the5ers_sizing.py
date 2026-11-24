@@ -10,7 +10,7 @@ for each sleeve i, with the evaluation book used through Steps 1-3 and the
 funded book used after funding (the real mid-account switch, not a
 multiplication of two independent runs).
 
-It writes Prop-Firms/The5ers-20K-Bootcamp/reports/stage_sizing.csv,
+It writes reports/prop-firms/The5ers-20K-Bootcamp/reports/stage_sizing.csv,
 stage_sizing.md, book_sizing.csv, pair_sizing.csv and plan_switch.csv. Run:
 python analysis/analyze_the5ers_sizing.py
 """
@@ -27,7 +27,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "analysis"))
 import build_live_and_prop_reports as engine  # noqa: E402
 
-OUT = ROOT / "Prop-Firms" / "The5ers-20K-Bootcamp" / "reports"
+OUT = ROOT / "reports" / "prop-firms" / "The5ers-20K-Bootcamp" / "reports"
 # The five Gold X9 exports are one EA at five TradeFrequency settings and are
 # mutually exclusive: a book may hold one preset, never two.
 GOLD_X9 = "Gold X9 (Low)"  # preset chosen by the screening; see reports/strategy_suitability.md

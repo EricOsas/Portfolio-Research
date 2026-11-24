@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>8.0</LangVersion>
+    <OutputPath>obj\scoped\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="TuesdayTurnaroundStrategy.cs" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="NinjaTrader.Core"><HintPath>C:\Program Files\NinjaTrader 8\bin\NinjaTrader.Core.dll</HintPath></Reference>
+    <Reference Include="NinjaTrader.Gui"><HintPath>C:\Program Files\NinjaTrader 8\bin\NinjaTrader.Gui.dll</HintPath></Reference>
+    <Reference Include="NinjaTrader.Custom"><HintPath>C:\Users\Administrator\Documents\NinjaTrader 8\bin\Custom\NinjaTrader.Custom.dll</HintPath></Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="SharpDX"><HintPath>C:\Program Files\NinjaTrader 8\bin\SharpDX.dll</HintPath></Reference>
+    <Reference Include="SharpDX.Direct2D1"><HintPath>C:\Program Files\NinjaTrader 8\bin\SharpDX.Direct2D1.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

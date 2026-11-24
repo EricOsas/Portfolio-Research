@@ -68,7 +68,7 @@ All probabilities below are 5,000-path, 252-trading-day estimates. Breach means 
 - First payout from a challenge start: **80.9%**; conditional on funding **90.4%**; funded hard breach **0.5%**.
 - Median time to first payout: **174 trading days**; expected first payout **USD 183**.
 - The old continuous USD 25 ladder still appears in the book-ranking tables for comparison only; on XAUUSD it is not placeable (one 0.01 lot already risks USD 9.90 at the Low preset).
-- Presets: [The5ers set files](../Set-Files/The5ers-20K-Bootcamp/README.md).
+- Presets: [The5ers set files](../set-files/The5ers-20K-Bootcamp/README.md).
 
 ### Moneta $10k 2-Step Standard
 
@@ -79,7 +79,7 @@ All probabilities below are 5,000-path, 252-trading-day estimates. Breach means 
 - First payout from a challenge start: **98.8%**; conditional on funding **99.1%**; funded hard breach **0.4%**.
 - Median time to first payout: **116 trading days**; expected first payout **USD 249**.
 - Phase 2 is the constraint: 10% against an 8% static budget. The USD 44 book needs 23R for it.
-- Presets: [Moneta set files](../Set-Files/Moneta-2Step-10K/README.md).
+- Presets: [Moneta set files](../set-files/Moneta-2Step-10K/README.md).
 
 ### Tradeify $50k Growth — higher-return four-sleeve route
 
@@ -120,7 +120,7 @@ All probabilities below are 5,000-path, 252-trading-day estimates. Breach means 
 
 Above one micro the simulator's USD 1,250 soft-DLL clip binds on 3-21% of days and hides the loss instead of breaching, so those rows are scale illustrations, not odds. At one micro the clip binds on 0.6% of challenge-book days and never on the two-sleeve pair, which is why the pair is the only allocation the model evaluates exactly.
 
-Settings, both stages: `FixedContracts = 1` on MNQ/MGC for each sleeve; on Flash ORB, FVG Duo and Open Drive keep `UseFixedContracts = true` so `RiskPercent` cannot scale the book up as the balance grows. The four-mini cap is not the binding constraint — the USD 2,000 trail is. Your 0.5%-per-sleeve rule (about USD 250, i.e. ~2 micros) is physically placeable under the cap but leaves roughly 2R to the trail. Do not scale anything at funding; only swap FVG Duo for Opening-Shock Continuation. Full table: [stage sizing in whole contracts](../Prop-Firms/Tradeify-50K-Growth-Futures/reports/stage_sizing.md).
+Settings, both stages: `FixedContracts = 1` on MNQ/MGC for each sleeve; on Flash ORB, FVG Duo and Open Drive keep `UseFixedContracts = true` so `RiskPercent` cannot scale the book up as the balance grows. The four-mini cap is not the binding constraint — the USD 2,000 trail is. Your 0.5%-per-sleeve rule (about USD 250, i.e. ~2 micros) is physically placeable under the cap but leaves roughly 2R to the trail. Do not scale anything at funding; only swap FVG Duo for Opening-Shock Continuation. Full table: [stage sizing in whole contracts](prop-firms/Tradeify-50K-Growth-Futures/reports/stage_sizing.md).
 
 The repeat estimates assume each new account has the same probability and is independent. They exclude challenge fees and resets. The combined breach figures combine evaluation breach with funded breach conditional on passing; funded breaches can occur after a payout, so breach and payout events are not mutually exclusive.
 
@@ -315,7 +315,7 @@ Modeled account structure (The5ers Bootcamp, checked 2026-11-22): three sequenti
 - Reach the funded account: **89.6%**. Evaluation hard breach: **5.9%**.
 - First payout from a challenge start: **80.9%**; conditional on funding **90.4%**; funded hard breach **0.5%**.
 - Median time to first payout: **174 trading days**; expected first payout **USD 183**.
-- Presets: [The5ers set files](../Set-Files/The5ers-20K-Bootcamp/README.md).
+- Presets: [The5ers set files](../set-files/The5ers-20K-Bootcamp/README.md).
 
 **Why there is no single headline "pass rate" any more.** The old USD 25-equal-split ladder was built on the legacy single X9 export — the Very-high frequency run — and on continuous sizing that cannot be placed on XAUUSD. It is kept in the generated CSVs for comparison with earlier work, but it describes neither the current export set nor an executable book. The lot-floor plan above is the execution estimate; the training-score book rankings are a shortlist, not odds.
 
@@ -350,7 +350,7 @@ No weekly-eligible active candidate meets the 5% near-floor breach-risk threshol
 
 ## How to use the results
 
-1. Use the **Normalized-Live** category books as starting points for standard accounts, not as prop-firm recommendations.
+1. Use the **normalized-live** category books as starting points for standard accounts, not as prop-firm recommendations.
 2. Use the **The5ers Bootcamp** and **Tradeify** Monte Carlo reports for account-specific challenge/funded decisions. Do not transfer a risk setting from one firm to the other.
 3. For Tradeify, compare requested risk with effective risk after minimum micro sizing. The minimum contract rule can make actual risk more than twice the requested USD 100 budget.
 4. Treat recovery as a separate account state. Near the floor, do not assume a positive-expectancy strategy is a safe recovery book.
@@ -374,15 +374,15 @@ No weekly-eligible active candidate meets the 5% near-floor breach-risk threshol
 
 ## Detailed files
 
-- [NT8 normalized strategy metrics](../Normalized-Live/NT8/reports/strategy_metrics.csv)
-- [MT5 normalized strategy metrics](../Normalized-Live/MT5/reports/strategy_metrics.csv)
-- [NT8 all book combinations](../Normalized-Live/NT8/reports/all_book_combinations.csv)
-- [MT5 all book combinations](../Normalized-Live/MT5/reports/all_book_combinations.csv)
-- [NT8 live bootstrap drawdown risk](../Normalized-Live/NT8/reports/live_bootstrap_risk_of_ruin.csv)
-- [MT5 live bootstrap drawdown risk](../Normalized-Live/MT5/reports/live_bootstrap_risk_of_ruin.csv)
-- [The5ers Monte Carlo results](../Prop-Firms/The5ers-20K-Bootcamp/reports/monte_carlo_challenge_payout.csv)
-- [Tradeify Monte Carlo results](../Prop-Firms/Tradeify-50K-Growth-Futures/reports/monte_carlo_evaluation_funded_payout.csv)
-- [The5ers recovery scenarios](../Prop-Firms/The5ers-20K-Bootcamp/reports/recovery_mode.csv)
-- [Tradeify recovery scenarios](../Prop-Firms/Tradeify-50K-Growth-Futures/reports/recovery_mode.csv)
+- [NT8 normalized strategy metrics](normalized-live/NT8/reports/strategy_metrics.csv)
+- [MT5 normalized strategy metrics](normalized-live/MT5/reports/strategy_metrics.csv)
+- [NT8 all book combinations](normalized-live/NT8/reports/all_book_combinations.csv)
+- [MT5 all book combinations](normalized-live/MT5/reports/all_book_combinations.csv)
+- [NT8 live bootstrap drawdown risk](normalized-live/NT8/reports/live_bootstrap_risk_of_ruin.csv)
+- [MT5 live bootstrap drawdown risk](normalized-live/MT5/reports/live_bootstrap_risk_of_ruin.csv)
+- [The5ers Monte Carlo results](prop-firms/The5ers-20K-Bootcamp/reports/monte_carlo_challenge_payout.csv)
+- [Tradeify Monte Carlo results](prop-firms/Tradeify-50K-Growth-Futures/reports/monte_carlo_evaluation_funded_payout.csv)
+- [The5ers recovery scenarios](prop-firms/The5ers-20K-Bootcamp/reports/recovery_mode.csv)
+- [Tradeify recovery scenarios](prop-firms/Tradeify-50K-Growth-Futures/reports/recovery_mode.csv)
 - [NQ minute archive data audit](nq_minute_data_audit.md)
-- [Prop-firm methodology and official rule sources](../Prop-Firms/methodology.md)
+- [Prop-firm methodology and official rule sources](prop-firms/methodology.md)

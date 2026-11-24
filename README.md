@@ -4,17 +4,18 @@ Research workspace for the NT8 futures and MT5 CFD strategy exports. Raw export 
 
 ## Source export layout
 
-- NT8 source exports: `Trades/NT8 Trades/` (10 CSV files).
-- MT5 source exports: `Trades/MT5 Trades/` (19 XLSX files).
-- `analysis/strategies.json` is the single registry both engines read. The build fails before publishing if a registered export is missing, fails parsing, or if an export sits in `Trades/` without a registry entry.
+- NT8 source exports: `trades/nt8/` (10 CSV files).
+- MT5 source exports: `trades/mt5/` (19 XLSX files).
+- `analysis/strategies.json` is the single registry both engines read. The build fails before publishing if a registered export is missing, fails parsing, or if an export sits in `trades/` without a registry entry.
 - To add a system, follow [Adding a new strategy](analysis/ADDING-A-STRATEGY.md).
 
 ## Deliverables
 
-- [Raw NT8 research pack](NT8/README.md)
-- [Raw MT5 research pack](MT5/README.md)
-- [Normalized live-account research](Normalized-Live/README.md) ([methodology](Normalized-Live/methodology.md))
-- [Prop-firm research](Prop-Firms/README.md) ([methodology](Prop-Firms/methodology.md))
+- [Raw NT8 research pack](reports/nt8/README.md)
+- [Raw MT5 research pack](reports/mt5/README.md)
+- [Normalized live-account research](reports/normalized-live/README.md) ([methodology](reports/normalized-live/methodology.md))
+- [Prop-firm research](reports/prop-firms/README.md) ([methodology](reports/prop-firms/methodology.md))
+- [EA source and model notes](strategies/),
 - [Strategy, per-sleeve roles and book suitability](reports/strategy_suitability.md)
 - [Adding a new strategy to the repository](analysis/ADDING-A-STRATEGY.md)
 - [NQ minute archive data audit](reports/nq_minute_data_audit.md)
@@ -50,11 +51,11 @@ These are first-pass export-screening candidates, not live-deployment approval. 
 | MT5 | All 19 exports | $292,476,593.33 | $16,661,015.76 | 2.90 | 2.50 |
 | MT5 | Core 4 shortlist | $85,381,229.66 | $5,194,033.52 | 2.64 | 2.48 |
 
-Daily PF and daily Sharpe use daily aggregated net PnL, not individual-trade PF/Sharpe. Max drawdown is measured from the cumulative exported PnL curve. The MT5 totals are dominated by Gold X9's balance-compounding run; read [MT5/README.md](MT5/README.md) and the normalized-live reports before comparing platforms.
+Daily PF and daily Sharpe use daily aggregated net PnL, not individual-trade PF/Sharpe. Max drawdown is measured from the cumulative exported PnL curve. The MT5 totals are dominated by Gold X9's balance-compounding run; read [reports/mt5/README.md](reports/mt5/README.md) and the normalized-live reports before comparing platforms.
 
 ## Normalized live-account research
 
-[Open Normalized-Live](Normalized-Live/README.md)
+[Open Normalized-Live](reports/normalized-live/README.md)
 
 - NT8: one exported contract equivalent per strategy, equity starts at USD 0.
 - MT5: fixed USD 100 risk proxy per completed trade, computed on **per-lot** PnL so balance-compounding exports are comparable, equity starts at USD 0.
@@ -65,14 +66,14 @@ One GC contract and one NQ contract are not equal-risk exposures. MT5's USD 100 
 
 ## Prop-firm research
 
-[Open Prop-Firms](Prop-Firms/README.md)
+[Open Prop-Firms](reports/prop-firms/README.md)
 
-- [The5ers $20,000 Bootcamp](Prop-Firms/The5ers-20K-Bootcamp/README.md)
-- [Moneta Funded $10,000 2-Step Standard](Prop-Firms/Moneta-2Step-10K/README.md)
-- [Tradeify $50,000 Growth futures](Prop-Firms/Tradeify-50K-Growth-Futures/README.md)
+- [The5ers $20,000 Bootcamp](reports/prop-firms/The5ers-20K-Bootcamp/README.md)
+- [Moneta Funded $10,000 2-Step Standard](reports/prop-firms/Moneta-2Step-10K/README.md)
+- [Tradeify $50,000 Growth futures](reports/prop-firms/Tradeify-50K-Growth-Futures/README.md)
 
 Pre-configured EA presets for each firm and stage, ready to load:
-[Set-Files](Set-Files/README.md) (the working copy for the trading machine lives in
+[set-files](set-files/README.md) (the working copy for the trading machine lives in
 `Documents/Portfolio/Set-Files`).
 
 The prop simulations use 5,000 Monte Carlo paths for every one-to-four-sleeve combination across the full firm-specific risk ladders, with five-day blocks aligned to complete Monday-Friday weeks and a 252-trading-day horizon. Primary books are selected on training-only scores; validation-best rows are diagnostic only. Near-floor recovery separately screens positive-training single sleeves and pairs. Tradeify evaluation pass rates require weekly activity and position-limit compliance. Microscalping is an additional funded payout-eligibility check. The5ers Bootcamp uses a USD 10–$100 total book-risk ladder across a 3-step evaluation ($5k/$10k/$15k, 6% target and 5% static max loss per step) and a $20k funded account (4% static max loss, 3% daily pause, 50% split, 14-day payout cycle). Moneta uses a USD 12.50–100 ladder across a $10k 2-Step Standard (Phase 1 +5%, Phase 2 +10%, 4% daily and 8% static max loss, three profitable 0.5% days per phase and payout cycle, 88% split, 14-day cycle) and is also re-sized in whole 0.01 lots. Tradeify uses $100–$750 requested total book risk, whole-micro sizing, at least one micro per active sleeve, and a four-mini concurrent exposure cap. Actual risk can exceed the requested amount because of the minimum micro size.
@@ -117,16 +118,16 @@ GitHub Actions rebuilds the reports when source exports or analysis code change.
 
 ### NT8 raw exports
 
-![NT8 individual strategy dashboard](NT8/charts/individual/strategy_dashboard.png)
+![NT8 individual strategy dashboard](reports/nt8/charts/individual/strategy_dashboard.png)
 
-- [All 10 NT8 strategies combined](NT8/charts/portfolios/all_strategies.png)
-- [NT8 core 4 shortlist](NT8/charts/portfolios/recommended_strategies.png)
-- [All individual NT8 curves](NT8/charts/individual/)
+- [All 10 NT8 strategies combined](reports/nt8/charts/portfolios/all_strategies.png)
+- [NT8 core 4 shortlist](reports/nt8/charts/portfolios/recommended_strategies.png)
+- [All individual NT8 curves](reports/nt8/charts/individual/)
 
 ### MT5 raw exports
 
-![MT5 individual strategy dashboard](MT5/charts/individual/strategy_dashboard.png)
+![MT5 individual strategy dashboard](reports/mt5/charts/individual/strategy_dashboard.png)
 
-- [All 19 MT5 strategies combined](MT5/charts/portfolios/all_strategies.png)
-- [MT5 core 4 shortlist](MT5/charts/portfolios/recommended_strategies.png)
-- [All individual MT5 curves](MT5/charts/individual/)
+- [All 19 MT5 exports combined](reports/mt5/charts/portfolios/all_strategies.png)
+- [MT5 core 4 shortlist](reports/mt5/charts/portfolios/recommended_strategies.png)
+- [All individual MT5 curves](reports/mt5/charts/individual/)

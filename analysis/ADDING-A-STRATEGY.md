@@ -2,7 +2,7 @@
 
 This repository has one entry point for every analysed system: **`analysis/strategies.json`**.
 Both Python engines read it, and the build refuses to publish if an export exists in
-`Trades/` that the registry does not mention. Follow these steps and no report or
+`trades/` that the registry does not mention. Follow these steps and no report or
 document needs hand editing.
 
 ## What actually drives the build
@@ -10,12 +10,12 @@ document needs hand editing.
 | File | Role |
 |---|---|
 | `analysis/strategies.json` | Single source of truth: display name → export filename, per platform. |
-| `Trades/NT8 Trades/` | NT8 Strategy Analyzer CSV exports. |
-| `Trades/MT5 Trades/` | MT5 Strategy Tester XLSX exports (or custom completed-trade ledgers). |
-| `Source Codes/NT8|MT5/<n>. <Name>/` | Implementation and model notes for the system. |
-| `analysis/build_equity_reports.py` | Parses exports, writes `NT8/`, `MT5/`, `reports/run_summary.json`, and the platform `README.md` files. |
-| `analysis/build_live_and_prop_reports.py` | Builds `Normalized-Live/` and `Prop-Firms/` from the normalized ledgers. |
-| `.github/workflows/build-equity-reports.yml` | Runs both engines on any change under `Trades/**` or `analysis/**` and commits the output. |
+| `trades/nt8/` | NT8 Strategy Analyzer CSV exports. |
+| `trades/mt5/` | MT5 Strategy Tester XLSX exports (or custom completed-trade ledgers). |
+| `strategies/mt5|nt8/` | Mirror of the live terminal source trees (`MQL5/Experts`, `bin/Custom/Strategies`). |
+| `analysis/build_equity_reports.py` | Parses exports, writes `reports/nt8/`, `reports/mt5/`, `reports/run_summary.json`, and the platform `README.md` files. |
+| `analysis/build_live_and_prop_reports.py` | Builds `reports/normalized-live/` and `reports/prop-firms/` from the normalized ledgers. |
+| `.github/workflows/build-equity-reports.yml` | Runs both engines on any change under `trades/**` or `analysis/**` and commits the output. |
 
 ## Step 1 — Export the trades
 
@@ -27,7 +27,7 @@ document needs hand editing.
   (like NQ Precision Bot, X9 or GotobiFix), export that ledger with its net-PnL
   column instead; the parser detects a `completed_trade` event type.
 - Name the file `<Platform> <Strategy> Trades.<ext>` and drop it into the matching
-  `Trades/… Trades/` folder. Never leave a stray export in the folder without
+  `trades/<platform>/` folder. Never leave a stray export in the folder without
   registering it — the build fails with an explicit "absent from
   analysis/strategies.json" error.
 
@@ -50,15 +50,16 @@ Add one line to the platform block in `analysis/strategies.json`:
 
 ## Step 3 — Add the source/model notes
 
-Create `Source Codes/<PLATFORM>/<next number>. <Name>/` and include:
+`strategies/mt5/` and `strategies/nt8/` mirror the live terminal trees — MT5
+`MQL5/Experts` and NT8 `bin/Custom/Strategies` — so a new system goes into the same
+numbering the machine uses (`4. Index Book/<n>. <Name>`, `3. Index Book/<n>. <Name>_NT`).
+Each folder carries its source (also keep the matching `.mqh`/`.cs` files) and a
+`README.md` or `MODEL.md` with platform, instrument set, entry/exit logic, risk unit,
+runtime ownership/recovery assumptions and known validation gaps.
 
-- the compiled source files (`.mq5`/`.mqh` for MT5, `.cs` for NT8),
-- a `README.md` or `MODEL.md` stating platform, instrument set, entry/exit logic,
-  risk unit, runtime ownership/recovery assumptions, and known validation gaps.
-
-`Source Codes/` is documentation and reference only: the analysis engines never
-read it. Keep it free of broker credentials, journal files and build artifacts
-(no `.ex5`, no `.set` secrets, no account numbers).
+`strategies/` is documentation and reference only: the analysis engines never read it.
+Keep it free of broker credentials, journal files and build artifacts (`obj/`,
+`.ex5`/`.dll`, compiled binaries, spreadsheets, account numbers).
 
 ## Step 4 — Build and verify
 
@@ -71,30 +72,30 @@ python analysis/build_live_and_prop_reports.py
 
 The equity build prints parsed/expected counts per platform. It fails instead of
 publishing when a registered export is missing, unparsable, or when an
-unregistered file sits in a `Trades/` folder. `build_live_and_prop_reports.py`
+unregistered file sits in a `trades/` folder. `build_live_and_prop_reports.py`
 needs the normalized ledgers from the first build and is much slower (5,000
 Monte Carlo paths per candidate book).
 
 Then check:
 
 - `reports/run_summary.json` — `parsed_strategies` equals `expected_strategies`.
-- `NT8/reports/data_quality.json`, `MT5/reports/data_quality.json` — new entry is
+- `reports/nt8/reports/data_quality.json`, `reports/mt5/reports/data_quality.json` — new entry is
   `"status": "parsed"` with sensible instruments and event counts.
-- `NT8/reports/recommendations.md`, `MT5/reports/recommendations.md` — the
+- `reports/nt8/reports/recommendations.md`, `reports/mt5/reports/recommendations.md` — the
   shortlist may change when a new system is added; that is expected.
-- `Normalized-Live/<platform>/reports/book_rankings.csv` — the new sleeve appears
+- `reports/normalized-live/<platform>/reports/book_rankings.csv` — the new sleeve appears
   in one-to-four-sleeve combinations.
-- `Prop-Firms/*/reports/*` — only changes if the new system is eligible for that
+- `reports/prop-firms/*/reports/*` — only changes if the new system is eligible for that
   platform's account simulation.
 
 ## Step 5 — Update the narrative documents
 
 Generated by the build (do not edit by hand):
 
-- `NT8/README.md`, `MT5/README.md`
-- `Normalized-Live/NT8|MT5/README.md`, `Normalized-Live/README.md`
-- `Prop-Firms/README.md`, `Prop-Firms/<firm>/README.md`
-- every `reports/*.csv|json|md` under `NT8/`, `MT5/`, `Normalized-Live/`, `Prop-Firms/`
+- `reports/nt8/README.md`, `reports/mt5/README.md`
+- `reports/normalized-live/NT8|MT5/README.md`, `reports/normalized-live/README.md`
+- `reports/prop-firms/README.md`, `reports/prop-firms/<firm>/README.md`
+- every `reports/*.csv|json|md` under `reports/nt8/`, `reports/mt5/`, `reports/normalized-live/`, `reports/prop-firms/`
 
 Still maintained by hand, so update them when counts, shortlists or system roles
 change:
@@ -102,13 +103,13 @@ change:
 - `README.md` (export inventory, shortlist, portfolio table)
 - `analysis/README.md`
 - `reports/strategy_suitability.md` (per-sleeve role and book suitability)
-- `Prop-Firms/methodology.md` and `Normalized-Live/methodology.md` if the method
+- `reports/prop-firms/methodology.md` and `reports/normalized-live/methodology.md` if the method
   changed rather than just the data
 
 ## Step 6 — Commit
 
 ```bash
-git add Trades analysis "Source Codes" NT8 MT5 Normalized-Live Prop-Firms reports README.md
+git add trades analysis strategies reports set-files README.md
 git commit -m "Add <strategy>: export, registry entry, source notes, rebuilt reports"
 git push
 ```
@@ -129,9 +130,9 @@ bot commits the regenerated reports as `chore: refresh platform equity reports`.
   matching parameter (`TradeFrequency` for X9).
 - **New prop firm / account model:** firm rules live in code
   (`simulate_the5ers`, `simulate_moneta`, `simulate_tradeify`, `write_rule_docs`), not in the registry.
-  Add a simulator, a `Prop-Firms/<Firm>-<Account>/` output path, and a README block
+  Add a simulator, a `reports/prop-firms/<Firm>-<Account>/` output path, and a README block
   in `write_readmes()`; then rerun the prop build.
-- **New platform:** add a top-level `Trades/<Platform> Trades/` folder, a registry
+- **New platform:** add a `trades/<platform>/` folder, a registry
   block, a parser branch in `build_equity_reports.py`, and update the workflow path
   filter.
 - **MT5 exports without position IDs** (RBE, and any Deals-only export): legs are

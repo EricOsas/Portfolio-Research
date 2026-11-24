@@ -1,0 +1,5 @@
+stage,file,ea,source,symbol,lots,risk_usd,magic,trade_comment
+Funded,Funded/01. Flash ORB.set,Flash ORB,strategies/mt5/4. Index Book/7. FlashTriggerORB/FlashTriggerORB,USTEC,0.38,24.84,770301,Moneta-Funded-1
+Funded,Funded/02. GotobiFix EURJPY.set,GotobiFix EURJPY,strategies/mt5/5. GotobiFix/GotobiFix,EURJPY,0.24,24.99,770302,Moneta-Funded-2
+Funded,Funded/03. Tokyo Coil.set,Tokyo Coil,strategies/mt5/3. TokyoCoil/TokyoCoil,USDJPY,0.14,23.39,770303,Moneta-Funded-3
+Funded,Funded/04. Overnight Bias ORB.set,Overnight Bias ORB,strategies/mt5/4. Index Book/2. OvernightBiasRangeBreakout/OvernightBiasRangeBreakout,USTEC,0.40,24.46,770304,Moneta-Funded-4

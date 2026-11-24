@@ -44,21 +44,21 @@ THE5ERS = {
 
 # ea label -> (source folder, file stem, symbol hint)
 SOURCE = {
-    "Gold X9": ("1. X9", "Gold_X9"),  # family fallback; presets map through _source()
+    "Gold X9": ("1. X9", "Gold_X9_v6_3"),  # family fallback; presets map through _source()
     "Gold ORB (RBE)": ("2. RBE", "RangeBreakout"),
     "Tokyo Coil": ("3. TokyoCoil", "TokyoCoil"),
-    "Vault Break": ("4. VaultBreak", "VaultBreak"),
-    "Overnight Bias ORB": ("5. OvernightBiasRangeBreakout", "OvernightBiasRangeBreakout"),
-    "Open Drive": ("6. OpenDrive", "OpenDrive"),
-    "NQ Precision": ("7. NQPrecision", "NQPrecisionBot"),
-    "Opening-Shock": ("8. OpeningShockContinuation", "OpeningShock"),
-    "Sigma ORB": ("9. SigmaBreakout", "SigmaBreakout"),
-    "Flash ORB": ("10. FlashTriggerORB", "FlashTriggerORB"),
-    "Noise Band Momentum": ("11. NoiseBandMomentum", "NoiseBandMomentum"),
-    "FVG Duo": ("12. FVGDuo", "FVG_Duo"),
-    "GotobiFix EURJPY": ("13. GotobiFix", "GotobiFix"),
-    "GotobiFix USDJPY": ("13. GotobiFix", "GotobiFix"),
-    "GotobiFix GBPJPY": ("13. GotobiFix", "GotobiFix"),
+    "Vault Break": ("4. Index Book/1. VaultBreak", "VaultBreak"),
+    "Overnight Bias ORB": ("4. Index Book/2. OvernightBiasRangeBreakout", "OvernightBiasRangeBreakout"),
+    "Open Drive": ("4. Index Book/3. OpenDrive", "OpenDrive"),
+    "NQ Precision": ("4. Index Book/4. NQPrecisionBot", "NQ Precision Bot"),
+    "Opening-Shock": ("4. Index Book/5. OpeningShockContinuation", "OpeningShock"),
+    "Sigma ORB": ("4. Index Book/6. SigmaBreakout", "SigmaBreakout"),
+    "Flash ORB": ("4. Index Book/7. FlashTriggerORB", "FlashTriggerORB"),
+    "Noise Band Momentum": ("4. Index Book/8. NoiseBandMomentum", "NoiseBandMomentum"),
+    "FVG Duo": ("4. Index Book/9. FVG_Duo", "FVG_Duo"),
+    "GotobiFix EURJPY": ("5. GotobiFix", "GotobiFix"),
+    "GotobiFix USDJPY": ("5. GotobiFix", "GotobiFix"),
+    "GotobiFix GBPJPY": ("5. GotobiFix", "GotobiFix"),
 }
 
 EA_TITLE = {
@@ -180,7 +180,7 @@ def build_firm(out, firm, stages, trades, base_magic, firm_title, notes):
             ], payload)
             phase_rows.append({
                 "stage": stage, "file": f"{stage}/{fname}", "ea": ea,
-                "source": str(Path("Source Codes") / "MT5" / src_folder / stem),
+                "source": (Path("strategies") / "mt5" / src_folder / stem).as_posix(),
                 "symbol": symbol_for(trades, ea), "lots": f"{lots_i:.2f}",
                 "risk_usd": f"{risk[ea]:.2f}", "magic": magic,
                 "trade_comment": comment,
@@ -290,7 +290,7 @@ Required parameter changes:
   USD 1,250 daily-loss clip starts hiding losses.
 
 One micro per sleeve is already about 1% of the $50k account. See
-`Prop-Firms/Tradeify-50K-Growth-Futures/reports/stage_sizing.md` in the research
+`reports/prop-firms/Tradeify-50K-Growth-Futures/reports/stage_sizing.md` in the research
 repository for the per-sleeve 1R values and pass/payout odds.
 """, encoding="utf-8")
 
