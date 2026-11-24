@@ -247,6 +247,10 @@ def main():
     sleeves = sorted({s for _, _, _, book in SCENARIOS for s in book}
                      | set(EVAL_BOOK) | {s for book in PAIRS for s in book})
     floors = {s: min_lot_risk(trades, s) for s in sleeves}
+    # Non-gold sleeves quoted in the report's floor prose. Kept explicit so the
+    # sentence cannot drift from the table above it.
+    cheap = [floors[s] for s in ("GotobiFix EURJPY", "GotobiFix USDJPY", "Open Drive",
+                                 "Flash ORB", "Tokyo Coil", "Overnight Bias ORB")]
     print("min-lot 1R ($, 0.01 lot):", {k: round(v, 2) for k, v in floors.items()})
 
     eval_r = np.stack([rmat.loc[val, s].values for s in EVAL_BOOK], axis=1)
@@ -408,10 +412,11 @@ def main():
         lines.append(f"| {sleeve} | {INSTRUMENTS.get(sleeve, '')} | ${floors[sleeve]:.2f} |")
     lines += [
         "",
-        "Gold X9 is the binding floor: 0.01 lot is already ~$20 of mean risk, which is",
-        "0.4% of a $5k step by itself. The FX and index sleeves cost $0.04-$1.15 at the",
-        "same minimum, so they cannot be scaled down to match a percentage either —",
-        "the book is gold-heavy at minimum size no matter what percentage you set.",
+        "Gold X9 is the binding floor: 0.01 lot is already " "$"
+        f"{floors[GOLD_X9]:.2f} of mean risk, which is "
+        f"{floors[GOLD_X9] / 5000.0 * 100:.2f}% of a $5k step by itself. The FX and index sleeves "
+        "cost " "$" f"{min(cheap):.2f}-" "$" f"{max(cheap):.2f} at the same minimum, so they cannot be "
+        "scaled down to match a percentage either: the book is gold-heavy at minimum size.",
         "",
         "## Scenarios",
         "",

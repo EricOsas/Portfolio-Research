@@ -20,10 +20,7 @@ requires at least USD 300 gross (USD 150 net at the 50% split).
 | Tokyo Coil | USDJPY | $1.67 |
 | Overnight Bias ORB | USTEC | $0.61 |
 
-Gold X9 is the binding floor: 0.01 lot is already ~$20 of mean risk, which is
-0.4% of a $5k step by itself. The FX and index sleeves cost $0.04-$1.15 at the
-same minimum, so they cannot be scaled down to match a percentage either —
-the book is gold-heavy at minimum size no matter what percentage you set.
+Gold X9 is the binding floor: 0.01 lot is already $9.90 of mean risk, which is 0.20% of a $5k step by itself. The FX and index sleeves cost $0.38-$1.67 at the same minimum, so they cannot be scaled down to match a percentage either: the book is gold-heavy at minimum size.
 
 ## Scenarios
 
