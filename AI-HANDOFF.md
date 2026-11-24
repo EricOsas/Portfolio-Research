@@ -21,13 +21,13 @@ preset registry: Extremely low (freq 0, strategies 1-3, 558 trades / 1,117 deals
 low to Very high while the worst validation day falls from -9.6R to -30.1R (High). Measured 1R at
 0.01 lot: Extremely low $10.15, Low $9.90, Moderate $11.65, High $11.02, Very high $13.09.
 
-**Standard preset = `Low`**, chosen by measurement: The5ers phase book 90.0% reach / 5.6% breach /
-81.8% payout, Moneta phase book 99.7% both phases / 0.0% breach / 98.8% payout. High was rejected
+**Standard preset = `Low`**, chosen by measurement: The5ers phase book 89.6% reach / 5.9% breach /
+80.9% payout, Moneta phase book 99.7% both phases / 0.0% breach / 98.8% payout. High was rejected
 despite the best R/day (33% Moneta evaluation breach).
 
 **Rebuilt with Low.** The5ers: phase 4-sleeve USD 50 target = **USD 46.83** (gold 0.01, GotobiFix
-0.12/0.12, Open Drive 0.32), funded no-gold USD 100 = **USD 97.68**; 90.0% reach, 5.6% breach,
-81.8% payout, 91.0% conditional, 0.2% funded breach, 175 median days, USD 185 expected. Moneta
+0.12/0.12, Open Drive 0.32), funded no-gold USD 100 = **USD 97.68**; 89.6% reach, 5.9% breach,
+80.9% payout, 90.4% conditional, 0.5% funded breach, 174 median days, USD 183 expected. Moneta
 $10k: phase X9(Low)+OBR USD 50 = **USD 44.26** (gold 0.02 = USD 19.80, OBR 0.40), funded no-gold
 USD 100 = **USD 97.68**; 99.7% both phases, 0.0% breach, 98.8% payout, 99.1% conditional, 0.4%
 funded breach, 116 median days, USD 249 expected.
@@ -42,15 +42,20 @@ NQPrecision, OpeningShock, Sigma and FlashTriggerORB after the user's latest edi
 **Verified.** CI run `45189645268` on `e3ed2fc` green, bot commit `b1d6bad`. Checked the published
 `book_rankings.csv`: 808 The5ers rows, **zero** books holding two X9 presets.
 
-**Follow-up fixed after that.** The training-score ranking still shortlisted `Very high` (338 of 808
+**Follow-up fixed and verified.** The training-score ranking shortlisted `Very high` (338 of 808
 rows) because it scores raw return, not breach risk. `run_platform` now screens **only the standard
 preset** for MT5 prop candidates, so ranking and execution cannot disagree; the other four presets
-stay in the per-sleeve and normalized-live reports. This last change is pushed but **not yet**
-CI-verified.
+stay in the per-sleeve and normalized-live reports. CI run `45367919124` (commit `fe08768`, bot
+`985a783`) was green in 21m40s: both `book_rankings.csv` are 1,940 rows and name only
+`Gold X9 (Low)` (470 each, no book holds two presets), and the generated Moneta README says $10,000.
 
-**Next action.** Confirm the CI run for the standard-preset constraint and check that every
-`book_rankings.csv` row naming a preset names `Gold X9 (Low)`. Then nothing is outstanding on X9
-until the next export.
+**Plan-switch fix.** The hand-written The5ers figures were not reproducible from the generated
+reports, and the "real switch" the report describes was never simulated on one path set.
+`analyze_the5ers_sizing.py` now draws a single joint matrix, sizes the 4-sleeve phase book to USD 50
+and the no-gold funded book to USD 100, and writes `plan_switch.csv` plus a report section:
+**89.6%** reach, **5.9%** evaluation breach, **80.9%** first payout, **90.4%** conditional,
+**0.5%** funded breach, **174** days, **$183** expected. `reports/strategy_suitability.md`,
+`Prop-Firms/methodology.md` and `analysis/README.md` quote those numbers.
 
 ## 2026-11-23 — Moneta $10k 2-Step added; plug-and-play EA set files built
 

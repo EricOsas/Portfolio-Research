@@ -37,7 +37,7 @@ These are the actual strategy combinations selected by the research. A plus sign
 
 These are generic portfolio-screening categories. They are not fixed labels attached to a strategy. The firm-specific simulations produce separate recommendations:
 
-- **The5ers $20k Bootcamp:** challenge book Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive at a USD 50 target (**USD 46.83**) reaches the funded account in **90.0%** of paths with a **5.6%** evaluation breach. Switching to Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB at a USD 100 target when funded gives **91.0%** conditional first payout, a **0.2%** funded breach and **81.8%** first payout from challenge start (175 median trading days, USD 185 expected).
+- **The5ers $20k Bootcamp:** challenge book Gold X9 (Low) + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive at a USD 50 target (**USD 46.83**) reaches the funded account in **89.6%** of paths with a **5.9%** evaluation breach. Switching to Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB at a USD 100 target when funded gives **90.4%** conditional first payout, a **0.5%** funded breach and **80.9%** first payout from challenge start (174 median trading days, USD 183 expected).
 - **Tradeify $50k Growth:** the overall training-score challenge leader is FVG Duo + Flash ORB + Gold ORB (RBE) + Sigma ORB; the funded leader is Flash ORB + Gold ORB (RBE) + Opening-Shock Continuation + Sigma ORB. Their USD 100 requests require about USD 511.97 and USD 475.65 effective risk after minimum-micro sizing. A lower-risk, two-sleeve alternative is Flash ORB + Overnight Bias ORB at USD 237.63 effective risk; it is slower but has stronger validation survival.
 
 **Near-floor recovery:** The5ers is recoverable from a USD 250 cushion upward, but at the strict USD 100 cushion the best pair still carries 7.3% breach risk. Tradeify's best eligible active recovery book carries roughly a third to a half modeled breach risk. Neither firm has a recovery book that is both high-probability and low-breach at the strictest cushion.
@@ -54,7 +54,7 @@ The five X9 exports are **one EA at five `TradeFrequency` settings**, not five s
 | High | 3 | 5,525 | 11,051 | $11.02 | 0.173 | 84.6% | 3.10 | 1.04 | -30.1R |
 | Very high | 4 | 13,403 | 26,807 | $13.09 | 0.087 | 88.2% | 7.52 | 1.34 | -26.4R |
 
-All five run 2020.01.01 to 2026.11.01 on XAUUSD, M1 OHLC, USD 100k initial deposit. Higher frequency buys speed (R/day rises 4x from Extremely low to Very high) and pays for it in tail risk: the worst validation day goes from -9.6R to -30.1R. On a prop budget that spends 8% of the account on a bad day, the tail is what decides the account, so **`Low` is the standard preset** in every book below: it keeps the The5ers evaluation breach at 5.6% and the Moneta evaluation breach at 0.0% while still finishing in 116-175 days. `Moderate` is the alternative when speed matters more than breach risk; `High` and `Very high` are too tail-heavy for an account that is bought once. The prop-firm ladder therefore screens **only the standard preset**, so the raw-score book ranking cannot shortlist a preset the lot-floor study rejects; all five presets stay in the per-sleeve metrics and the normalized-live reports.
+All five run 2020.01.01 to 2026.11.01 on XAUUSD, M1 OHLC, USD 100k initial deposit. Higher frequency buys speed (R/day rises 4x from Extremely low to Very high) and pays for it in tail risk: the worst validation day goes from -9.6R to -30.1R. On a prop budget that spends 8% of the account on a bad day, the tail is what decides the account, so **`Low` is the standard preset** in every book below: it keeps the The5ers evaluation breach at 5.9% and the Moneta evaluation breach at 0.0% while still finishing in 116-174 days. `Moderate` is the alternative when speed matters more than breach risk; `High` and `Very high` are too tail-heavy for an account that is bought once. The prop-firm ladder therefore screens **only the standard preset**, so the raw-score book ranking cannot shortlist a preset the lot-floor study rejects; all five presets stay in the per-sleeve metrics and the normalized-live reports.
 
 ## Prop-account results in plain numbers
 
@@ -64,9 +64,9 @@ All probabilities below are 5,000-path, 252-trading-day estimates. Breach means 
 
 - Challenge book (Steps 1-3): **Gold X9 (Low)** + GotobiFix EURJPY + GotobiFix USDJPY + Open Drive, sized to a **USD 50** target → **USD 46.83** actual (0.94% of the $5k Step 1; gold 0.01 lot, the two GotobiFix pairs 0.12 lot, Open Drive 0.32 lot).
 - Funded book: Flash ORB + GotobiFix EURJPY + Tokyo Coil + Overnight Bias ORB at a **USD 100** target → **USD 97.68** (0.49% of $20k). No gold.
-- Reach the funded account: **90.0%**. Evaluation hard breach: **5.6%**.
-- First payout from a challenge start: **81.8%**; conditional on funding **91.0%**; funded hard breach **0.2%**.
-- Median time to first payout: **175 trading days**; expected first payout **USD 185**.
+- Reach the funded account: **89.6%**. Evaluation hard breach: **5.9%**.
+- First payout from a challenge start: **80.9%**; conditional on funding **90.4%**; funded hard breach **0.5%**.
+- Median time to first payout: **174 trading days**; expected first payout **USD 183**.
 - The old continuous USD 25 ladder still appears in the book-ranking tables for comparison only; on XAUUSD it is not placeable (one 0.01 lot already risks USD 9.90 at the Low preset).
 - Presets: [The5ers set files](../Set-Files/The5ers-20K-Bootcamp/README.md).
 
@@ -155,7 +155,7 @@ A strategy can be suitable in one category and unsuitable in another. The catego
 ## Dataset and normalization
 
 - **NT8:** 10 strategies, 10,599 completed trades.
-- **MT5:** 15 strategies, 29,462 completed trades, including the three GotobiFix pairs, FVG Duo and Gold X9.
+- **MT5:** 19 registered exports — 15 distinct EAs, with Gold X9 at five mutually exclusive `TradeFrequency` presets — including the three GotobiFix pairs and FVG Duo.
 - The refreshed Gold ORB (RBE) exports are included: **1,216 NT8 trades** on **GC DEC26** (full-size GC, not MGC) and **1,164 MT5 trades** on **XAUUSD**.
 - Export history runs through **2026-10-30** on NT8 and **2026-11-19** on MT5. The normalized portfolio split is chronological: first 60% for training, later 40% for validation. Validation starts **2023-09-13** on NT8 and **2024-02-19** on MT5.
 - All 385 NT8 and 1,940 MT5 one-to-four-sleeve combinations are screened on the normalized daily-R series and receive firm-specific 5,000-path Monte Carlo across the full risk ladder. Primary challenge/funded books are selected on training-only scores; validation MC is the holdout estimate, while the validation-best row is shown only as a diagnostic.
@@ -312,12 +312,12 @@ Modeled account structure (The5ers Bootcamp, checked 2026-11-22): three sequenti
 | Steps 1-3 | Gold X9 (Low) / GotobiFix EURJPY / GotobiFix USDJPY / Open Drive | 0.01 / 0.12 / 0.12 / 0.32 | $46.83 | 0.94% of $5k |
 | Funded | Flash ORB / GotobiFix EURJPY / Tokyo Coil / Overnight Bias ORB | 0.38 / 0.24 / 0.14 / 0.40 | $97.68 | 0.49% of $20k |
 
-- Reach the funded account: **90.0%**. Evaluation hard breach: **5.6%**.
-- First payout from a challenge start: **81.8%**; conditional on funding **91.0%**; funded hard breach **0.2%**.
-- Median time to first payout: **175 trading days**; expected first payout **USD 185**.
+- Reach the funded account: **89.6%**. Evaluation hard breach: **5.9%**.
+- First payout from a challenge start: **80.9%**; conditional on funding **90.4%**; funded hard breach **0.5%**.
+- Median time to first payout: **174 trading days**; expected first payout **USD 183**.
 - Presets: [The5ers set files](../Set-Files/The5ers-20K-Bootcamp/README.md).
 
-**Why there is no single headline "pass rate" any more.** The old USD 25-equal-split ladder (86.62% reach, 7.46% breach, 76.34% first payout) was built on the legacy single X9 export — the Very-high frequency run — and on continuous sizing that cannot be placed on XAUUSD. It is kept in the generated CSVs for comparison with earlier work, but it describes neither the current export set nor an executable book. The lot-floor plan above is the execution estimate; the training-score book rankings are a shortlist, not odds.
+**Why there is no single headline "pass rate" any more.** The old USD 25-equal-split ladder was built on the legacy single X9 export — the Very-high frequency run — and on continuous sizing that cannot be placed on XAUUSD. It is kept in the generated CSVs for comparison with earlier work, but it describes neither the current export set nor an executable book. The lot-floor plan above is the execution estimate; the training-score book rankings are a shortlist, not odds.
 
 
 ## Near-floor recovery

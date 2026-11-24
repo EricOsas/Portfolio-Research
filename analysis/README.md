@@ -37,7 +37,8 @@ Methodology:
 
 `analyze_the5ers_sizing.py`, `analyze_moneta_sizing.py` and `analyze_tradeify_sizing.py`
 re-run the same validation bootstrap with broker minimum sizing (0.01 lot / one micro)
-and write each firm's `stage_sizing.{md,csv}` plus `ea_allocation.json` for Moneta.
+and write each firm's `stage_sizing.{md,csv}`; The5ers and Moneta also write the simulated
+funded-stage switch (`plan_switch.csv`), and Moneta writes `ea_allocation.json`.
 `build_set_files.py` turns those allocations into plug-and-play MT5 `.set` files and
 commits a copy under `Set-Files/` (the working copy for the live machine is written to
 `Documents/Portfolio/Set-Files`).

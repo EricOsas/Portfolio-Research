@@ -98,6 +98,18 @@ time, not risk. At USD 25 total the cheap pairs pass Step 1 in 96-99% of paths b
 cannot finish three steps inside 252 days; at USD 50 they complete. Gold still
 cannot be sized below 0.01 lot, so any gold book overshoots its target share.
 
+## Execution plan with the funded switch
+
+The plan places the four-sleeve evaluation book at a USD 50 target through
+Steps 1-3, then switches to the no-gold funded book at USD 100. Both stages
+share one path matrix, so the switch is simulated, not multiplied.
+
+| Phase lots (USD 50) | Phase risk | Funded lots (USD 100) | Funded risk | Reach funded | Eval breach | First payout | Funded breach | Median payout days | Expected first payout |
+|---|---:|---|---:|---:|---:|---:|---:|---:|---:|
+| Gold X9 (Low) 0.01, GotobiFix EURJPY 0.12, GotobiFix USDJPY 0.12, Open Drive 0.32 | $46.83 | Flash ORB 0.38, GotobiFix EURJPY 0.24, Tokyo Coil 0.14, Overnight Bias ORB 0.40 | $97.68 | 89.6% | 5.9% | 80.9% | 0.5% | 174 | $183 |
+
+Conditional first payout after funding is 90.4%; median payout on successful paths is $210.
+
 ## Recommended settings (verified against the EA sources)
 
 Sleeves and inputs are in the MetaQuotes terminal tree, not in this repo.

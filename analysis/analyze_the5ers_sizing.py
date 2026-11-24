@@ -10,8 +10,9 @@ for each sleeve i, with the evaluation book used through Steps 1-3 and the
 funded book used after funding (the real mid-account switch, not a
 multiplication of two independent runs).
 
-It writes Prop-Firms/The5ers-20K-Bootcamp/reports/stage_sizing.csv and
-stage_sizing.md. Run: python analysis/analyze_the5ers_sizing.py
+It writes Prop-Firms/The5ers-20K-Bootcamp/reports/stage_sizing.csv,
+stage_sizing.md, book_sizing.csv, pair_sizing.csv and plan_switch.csv. Run:
+python analysis/analyze_the5ers_sizing.py
 """
 from __future__ import annotations
 
@@ -342,6 +343,48 @@ def main():
                   round(book_rows[-1]["payout"], 3))
     pd.DataFrame(book_rows).to_csv(OUT / "book_sizing.csv", index=False)
 
+    def lots_for(target: float, book: list[str]) -> tuple[dict[str, float], float]:
+        per = target / len(book)
+        lots = {s: max(0.01, _math.floor(per / unit[s] * 100.0 + 1e-9) / 100.0) for s in book}
+        return lots, float(sum(lots[s] * unit[s] for s in book))
+
+    # The execution plan: the four-sleeve book sized to USD 50 through Steps
+    # 1-3, then the funded switch to the no-gold book at USD 100. Both stages
+    # are indexed from one joint matrix so the switch keeps same-day sleeve
+    # correlation instead of multiplying two independent runs.
+    plan_sleeves = list(dict.fromkeys(EVAL_BOOK + FUNDED_NO_X9))
+    plan_paths = sample_joint(
+        np.stack([rmat.loc[val, s].values for s in plan_sleeves], axis=1), val, SEED + 73)
+    column = {s: i for i, s in enumerate(plan_sleeves)}
+    phase_lots, phase_risk = lots_for(50.0, EVAL_BOOK)
+    funded_lots, funded_risk = lots_for(100.0, FUNDED_NO_X9)
+    plan_res = simulate_stages(
+        plan_paths[:, :, [column[s] for s in EVAL_BOOK]],
+        np.array([phase_lots[s] * unit[s] for s in EVAL_BOOK]),
+        plan_paths[:, :, [column[s] for s in FUNDED_NO_X9]],
+        np.array([funded_lots[s] * unit[s] for s in FUNDED_NO_X9]),
+        0.0, 0.0)
+    plan = {
+        "phase_book": " + ".join(EVAL_BOOK),
+        "phase_target_usd": 50.0,
+        "phase_lots": ", ".join(f"{s} {phase_lots[s]:.2f}" for s in EVAL_BOOK),
+        "phase_risk_usd": round(phase_risk, 2),
+        "funded_book": " + ".join(FUNDED_NO_X9),
+        "funded_target_usd": 100.0,
+        "funded_lots": ", ".join(f"{s} {funded_lots[s]:.2f}" for s in FUNDED_NO_X9),
+        "funded_risk_usd": round(funded_risk, 2),
+        **plan_res,
+    }
+    pd.DataFrame([plan]).to_csv(OUT / "plan_switch.csv", index=False)
+    plan_row = (
+        f"| {plan['phase_lots']} | " "$" f"{plan['phase_risk_usd']:.2f} | {plan['funded_lots']} | "
+        "$" f"{plan['funded_risk_usd']:.2f} | "
+        f"{plan['reach_funded_rate']*100:.1f}% | {plan['evaluation_hard_breach_rate']*100:.1f}% | "
+        f"{plan['payout_rate_from_start']*100:.1f}% | {plan['funded_hard_breach_conditional']*100:.1f}% | "
+        f"{plan['median_days_to_payout']:.0f} | " "$" f"{plan['expected_first_payout_usd']:.0f} |"
+    )
+    print("plan switch", plan["reach_funded_rate"], plan["payout_rate_from_start"])
+
     OUT.mkdir(parents=True, exist_ok=True)
     df.to_csv(OUT / "stage_sizing.csv", index=False)
 
@@ -447,6 +490,20 @@ def main():
         "time, not risk. At USD 25 total the cheap pairs pass Step 1 in 96-99% of paths but",
         "cannot finish three steps inside 252 days; at USD 50 they complete. Gold still",
         "cannot be sized below 0.01 lot, so any gold book overshoots its target share.",
+        "",
+        "## Execution plan with the funded switch",
+        "",
+        "The plan places the four-sleeve evaluation book at a USD 50 target through",
+        "Steps 1-3, then switches to the no-gold funded book at USD 100. Both stages",
+        "share one path matrix, so the switch is simulated, not multiplied.",
+        "",
+        "| Phase lots (USD 50) | Phase risk | Funded lots (USD 100) | Funded risk | Reach funded | Eval breach | First payout | Funded breach | Median payout days | Expected first payout |",
+        "|---|---:|---|---:|---:|---:|---:|---:|---:|---:|",
+        plan_row,
+        "",
+        "Conditional first payout after funding is "
+        f"{plan['funded_first_payout_conditional']*100:.1f}%; median payout on successful paths is "
+        f"$" f"{plan['median_payout_conditional_usd']:.0f}.",
         "",
         "## Recommended settings (verified against the EA sources)",
         "",
