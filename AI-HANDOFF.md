@@ -37,6 +37,12 @@ hand-curated copies:
   `.superpowers`, and the `obj/` build artifacts.
 
 The old flat MT5 folders (`6. OpenDrive` … `13. GotobiFix`) and flat NT8 folders are gone.
+The MT5 tree was re-uploaded from the cleaned terminal `MQL5/Experts` (91 files) after the user's
+own tidy-up: `docs/validation` SOP exports now ship, the obsolete `.set` copies and
+`docs/tests/test_exposure_bound.py` are gone, and the EA sources are the newer revisions
+(X9 clock adapter 1.12). Compiled `.ex5` and `mt5_mcp_config.txt` are excluded — the latter holds
+a live bearer token and is now gitignored.
+
 The NT8 side was re-synced once more after the machine moved several notes into `docs/` and
 `tests/`: the repo now matches `bin/Custom/Strategies` file for file (25 files), with the stale
 root-level `README.md`/`MODEL.md`/`VALIDATION.md` copies and the Python test scripts removed.

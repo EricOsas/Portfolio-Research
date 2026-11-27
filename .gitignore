@@ -10,3 +10,6 @@ __pycache__/
 *.ex4
 obj/
 bin/
+
+# Terminal-local MCP bridge config (contains a bearer token)
+mt5_mcp_config.txt

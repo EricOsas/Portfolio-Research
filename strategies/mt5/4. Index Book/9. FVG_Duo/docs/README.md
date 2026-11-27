@@ -8,7 +8,7 @@ Autonomous institutional implementation of the FVG Duo (Opening Drive FVG + Tren
 - **Integrated Arbitration Engine:** Flawlessly resolves position conflicts between Opening Drive and Trend FVG (Merge, Flip, Post-stopout resumption).
 - **Self-Contained Indicators:** Independent native calculation of EMA and ATR (SMA/RMA) on completed bars without external file or chart indicator dependencies.
 - **Institutional On-Chart HUD:** Clean dark obsidian dashboard tracking current NY wall-clock time, model phase, active position status, and live session PnL.
-- **Flexible Position Sizing:** Supports fixed lots/contracts (1 fixed contract for futures/CFDs), percentage of live equity risk, or fixed cash risk USD.
+- **Flexible Position Sizing:** Supports fixed lots/contracts (1 fixed contract for futures/CFDs), percentage of live equity risk, or fixed cash risk in account currency.
 
 ## Compilation
 

@@ -73,3 +73,6 @@ Empirical scan across rolling windows revealed the exact 10-year dataset window 
 - `InpFixedLots`: Default 1.0 (for NQ / MNQ / USTEC).
 - `InpMagic`: 909150.
 - `ShowDashboard`: Displays institutional dark-theme performance HUD on chart.
+
+The startup audit prints `Sizing=`, `RiskPct=`, `FixedBalance=`, `Equity=`, and `RiskBudget=` with the budget's
+share of live equity, so the cash risk the sizer will actually use is visible before the first trade.

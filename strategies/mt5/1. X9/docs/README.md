@@ -1,4 +1,4 @@
-# Gold X9 v6.3 — Multi-Strategy Architecture & Reference Manual
+# Gold X9 v6.3 — Multi-Strategy (Part 3) Architecture & Reference Manual
 
 Welcome to the central reference manual for the **Gold X9 v6.3 (9-Strategy Portfolio Engine)** Expert Advisor. This document covers the system architecture, 9-strategy preset table, order lifecycle management, dynamic portfolio lot sizing, and 100% parity verification results against the creator's published reports.
 
@@ -64,7 +64,7 @@ All 9 sub-strategies are compiled directly into the EA inside `struct StrategyPr
 
 ## 4. Multi-Strategy Portfolio Lot Sizing
 
-### Sizing Formula
+### Sizing Formula (Part 3)
 
 **2026-11-23 sizing correction:** the formula below has a legacy100-cash-per-price-unit-per-lot anchor. Final raw lots divide by `(SYMBOL_TRADE_TICK_VALUE / SYMBOL_TRADE_TICK_SIZE) / 100.0` for the actual traded symbol, not by account denomination alone. This preserves standard USD100-unit gold while supporting small-contract cent symbols. `InpFixedBalance` is in ACCOUNT CURRENCY (USC means cents);0 uses actual balance. `StaticDDBalance` controls DD reference only, never lot sizing. Tick metadata failure blocks new sizing. Broker minimum/cap/grid still apply, so legitimately subminimum budgets can produce the same minimum lots. Journal `RawLots` is now pre-floor and `ImpliedRisk` is account-currency cash risk.
 
@@ -140,9 +140,7 @@ Diagnostic run only. **The author never published a combined portfolio report; g
 
 ## 7. Project Files & Directory Layout
 
-- Primary EA Source: [`Gold_X9_v6_3.mq5`](../Gold_X9_v6_3.mq5)
-- Runtime modules: [`StrategyEngine.mqh`](../StrategyEngine.mqh), [`ExecutionRuntime.mqh`](../ExecutionRuntime.mqh), [`ChartVisuals.mqh`](../ChartVisuals.mqh)
-- Presets: [`sets/`](sets/)
-
-This manual documents the shipped `Gold_X9_v6_3` implementation; the throwaway reconstruction build
-it was derived from is not part of the repository.
+- Primary EA Source: [`Gold_X9_Part3.mq5`](file:///c:/Users/Administrator/AppData/Roaming/MetaQuotes/Terminal/D0E8209F77C8CF37AD8BF550E51FF075/MQL5/Experts/1.%20X9/Part%203/Gold_X9_Part3.mq5)
+- Compiled Binary: [`Gold_X9_Part3.ex5`](file:///c:/Users/Administrator/AppData/Roaming/MetaQuotes/Terminal/D0E8209F77C8CF37AD8BF550E51FF075/MQL5/Experts/1.%20X9/Part%203/Gold_X9_Part3.ex5)
+- Parity Blueprint & Gate Criteria: [`project/parity.md`](file:///c:/Users/Administrator/AppData/Roaming/MetaQuotes/Terminal/D0E8209F77C8CF37AD8BF550E51FF075/MQL5/Experts/1.%20X9/Part%203/project/parity.md)
+- Tester Ingestion Scripts: [`scratch/run_tester.py`](file:///c:/Users/Administrator/.gemini/antigravity/brain/7543b94e-9bd4-4bd4-b035-cbac42bd0c60/scratch/run_tester.py)

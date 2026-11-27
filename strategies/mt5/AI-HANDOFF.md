@@ -1,3 +1,337 @@
+## Thirty-fifth pass - 2026-11-25: NBM trades its chart only; Flash entry gate unblocked; brake label
+
+User instruction: remove the NBM selection feature so it trades whatever it is attached to; resolve the
+TokyoCoil "brake closed" line and the Flash HISTORY_WAIT red flag instead of reporting them again.
+
+1. NoiseBandMomentum 1.11 (was 1.10): InpSymbols and the "Markets" input group are gone. NBMInit builds a
+   single entry from _Symbol (one ATR handle, no SymbolSelect call). Signal rule, sizing, session and clock
+   code untouched; MODEL.md updated. No EA in this folder now calls SymbolSelect(sym,true); the only
+   remaining SymbolSelect is the adapter own guarded release SymbolSelect(sym,false).
+2. FlashTriggerORB: the entry gate required BarsCalculated(adxHandle)>=ADXPeriod+2, but this build assigns
+   adxHandle nowhere - it is the INVALID_HANDLE stub in StrategyEngine.mqh - so BarsCalculated returned -1
+   forever, runtimeHistoryReady stayed false, and StrategyEngine returned before every entry. That was a
+   permanent block, not a slow load: HISTORY_WAIT could never be followed by HISTORY_READY. Flash has no ADX
+   in its signal path (ADXPeriod and bias are stubs; ADX is drawn by ChartVisuals from its own gtPane
+   handle). The ADX criteria are removed from readiness: source>0 && M1 session bars>0 && M1 synchronised.
+   ChartVisuals now binds adxHandle=gtPane, so the panel ADX value is real instead of the dead stub. Before
+   the session the EA prints FLASH PRE_SESSION with the timestamp at which session data starts (session open
+   minus one hour); the old HISTORY_WAIT text appears only for a genuine mid-session load.
+   This unblocks live entries that could not fire since the gate was introduced. Treat the next live session
+   as a fresh start of the entry path.
+3. TokyoCoil: TC_BRAKE_RESTORED printed closed=<n>, which reads as a state. It is the size of the rolling
+   window. It now prints trades=<n>/<BrakeN>. No brake state was persisted or tripped; there was nothing to
+   reset. The brake itself (BrakeRF -> TcBrakeFraction) is unchanged.
+
+Verified: clk_splice + clk_verify PASS 15/15 (adapter 1.12, byte-identical); test_live_refs 56/56;
+clk_vectors 28 bad=0; news_verify PASS; self-test environment reads 0 (Flash, NBM, TokyoCoil); MetaEditor
+15/15 Result: 0 errors, 0 warnings; .ex5 fresh 15/15. ea_lint findings unchanged - pre-existing identity
+and prefix leads, none introduced by this pass.
+
+Deployment is manual on the VPS: copy the three changed .ex5 (NoiseBandMomentum, FlashTriggerORB, TokyoCoil)
+or all 15, then re-attach. NBM: InpSymbols no longer exists; attach it to the symbol it should trade, one
+chart per instance. Flash: expect PRE_SESSION before 08:30 NY and HISTORY_READY after it.
+## Thirty-fourth pass - 2026-11-25: reject invisible/internal symbols; clock references are open-chart-only
+
+User reported USDCHF, USDCAD and AUDUSD added to Moneta Market Watch after 1.11; Exness stayed clean.
+A concrete eligibility gap was found: SymbolsTotal(true) / SymbolName(i,true) enumerate SYMBOL_SELECT,
+which includes automatically selected, invisible conversion feeds, not just user-visible Market Watch.
+1.11 admitted those feeds as references. Its fixture model conflated selection and visibility.
+Reference: https://www.mql5.com/en/book/automation/symbols/symbols_state
+
+The exact native call that made the VPS entries visible was not observed. This pass closes the proven
+eligibility gap rather than claiming the lack of SymbolSelect(true) had already prevented all additions.
+
+CLK_ADAPTER 1.12:
+- Removed the Market Watch/catalogue fallback entirely. References come only from actual open charts
+  (up to six unique symbols), or the existing validated same-server proof. No Watch-only references,
+  even if visible; no internally selected/invisible conversion pairs. Unused FX-classification helper removed.
+- Recheck open-chart membership and selection immediately before a foreign history request. A chart
+  closed after candidate construction cannot leave its still-selected symbol eligible for CopyTime.
+- Own-chart tester evidence, pure clock/DST math, tester resolution, shared-proof/profile schema and
+  risk/order/preset/visual logic were not changed. The earlier tester-profile input caveat still applies.
+- No normal reference notifications were restored. Legacy selection cleanup remains ownership-scoped.
+
+Regression evidence: fixture now models SYMBOL_SELECT and SYMBOL_VISIBLE independently. Seven new cases
+failed against 1.11 and pass against 1.12: exact three hidden/internal pairs excluded and not read;
+internal selection is not read permission; visible Watch-only pair rejected; unopened valid-history
+pair cannot establish proof; closed-but-selected chart rejected at both candidate and read boundaries.
+Full suite: 56 cases, 0 failures. All five in-memory fault injections were caught through test failures.
+These are extracted-function code-path checks, NOT native VPS visibility acceptance.
+
+Verified this session: final 15/15 MetaEditor compiles, Result: 0 errors, 0 warnings; canonical byte match
+and clk_verify PASS x15; 28 clock vectors, 0 bad; self-test environment reads=0; news_verify PASS.
+Source/preset fingerprints prove only the 15 adapter blocks changed in EAs. Identity lint is at the
+captured baseline, not CLEAN. CLOCK_STANDARD.md reflects the stricter open-chart-only policy.
+
+Deployment: copy all 15 rebuilt .ex5 and re-attach; confirm adapter=1.12. Hide unwanted extra symbols
+once in the VPS terminal rather than automatically deleting selections without proven ownership.
+If uncharted pairs still visibly appear, their producer must be traced in the native terminal; do
+not infer full success from silent logs. Other old EA instances and intentional multi-symbol baskets
+can still select symbols independently of this clock. Tester/VPS parity remains unclaimed.
+
+## Thirty-third pass - 2026-11-25: loaded-only clock references, validated same-server sharing, quiet housekeeping
+
+User approved replacing hidden reference selection with existing loaded symbols or a genuinely verified
+clock result from another instance on the same server. Merely copying Moneta's several provisional
+results would not prove its DST rule. No sizing, order, recovery, preset or visual changes were authorized.
+
+CLK_ADAPTER 1.11 is now spliced into all 15 EAs:
+- Own-series LIVE proof still has priority. Otherwise try a fresh verified same-server proof, then up to
+  six unique already-open chart symbols / already-selected FX references. Open charts, including gold
+  or an index, are candidates only: history must pass inference and the existing live/open-17-or-18-NY guard.
+- No SymbolSelect(true), new selection claims or hidden catalogue walk remains in the adapter. Selection
+  is rechecked before copying foreign history. Known crypto feeds are excluded. Legacy stale claims can
+  be cleaned up, but never remove an open chart's symbol; a failed cleanup retains its claim and warns.
+- SHARED-LIVE accepts only LIVE / LIVE-REF profiles for the exact server, at most 24 h old, with valid
+  numeric fields, rule/base/grid, completed open/close evidence, 85% hits / 3-observation margin and current
+  offset agreement. Provisional/consumer/legacy/other-server/stale/future/malformed records are rejected.
+  Consumers do not refresh evidence timestamps. Newly proven loaded history is labelled LIVE-REF.
+- Existing clock_profile_<hash>.txt gains closeWeeks as field 10. Nine-field records remain usable by the
+  tester but cannot establish shared live proof; a qualifying new live run writes the complete record.
+- The 12 h negative memo is versioned and scoped to the actual sorted loaded candidate set. Inventory
+  changes invalidate it; expiry permits failed series to be tried again. Old catalogue-wide memos are ignored.
+- CLK_REF_RELEASED / CLK_REF_DEAD / successful CLK_REF_STALE / exhaustion-bookkeeping banners are gone.
+  CLK_EA keeps the actual source and adds adapter=1.11. A provisional-to-proven promotion emits one
+  CLK_CONFIRMED via the existing journal slot. Genuine clock, cleanup, execution and risk warnings remain.
+
+Verified this pass:
+- Final 15/15 MetaEditor builds: Result: 0 errors, 0 warnings. Adapter copies byte-identical to canonical.
+- tests/test_live_refs.py: 49 cases, 0 failures. Initial pre-change suite: 33 cases, 14 expected failures.
+  Five in-memory mutations (provisional trust, server identity, visibility guard, own-first priority,
+  memo expiry) each failed through executed tests; unmodified production subsequently passed.
+- clk_verify PASS x15; clock vectors checked=28 bad=0; self-test environment reads=0 across all EA sources;
+  news_verify PASS; Python engine suite 13/13 PASS. Identity-lint findings unchanged, NOT a CLEAN claim.
+- Source fingerprints: only the 15 adapter blocks changed in EAs. All non-clock code/inputs/presets untouched.
+- CLOCK_STANDARD.md documents the new policy. Permanent regression suite is outside Experts.
+
+Limitations: extracted MQL policy functions execute as C# with deterministic terminal boundaries; this is
+code-path evidence, NOT broker/VPS acceptance. Native tester remains unavailable in the separate portable
+copy (no account specified). Live terminal was not launched or reconfigured. Independent delegated review
+could not start: provider HTTP 503 / no available model channel. Local diff and fault-injection review used.
+
+Deployment: manually copy all 15 rebuilt .ex5 and re-attach. Look for adapter=1.11 and LIVE, LIVE-REF or
+SHARED-LIVE as applicable. If Moneta has no genuine proof from any loaded feed or another instance, it
+must remain LIVE_PROVISIONAL; this update does not invent a DST rule. No extra Market Watch symbols
+should be selected by the clock, and routine reference notifications should not return.
+
+## Thirty-second pass - 2026-11-25: Moneta exhaustion counter corrected (CLK_ADAPTER 1.10)
+
+The 08:49 Moneta logs disproved pass 31's claim that its reference walk was remembered.
+ClkAnchorBase counted _Symbol in live, but ClkRefMarkDead deliberately never marks _Symbol dead.
+Thus live could never reach zero and ClkRefsGiveUp never wrote the 12-hour server memo.
+A traded FX symbol can also occur in the reference list, making that same mistake twice.
+
+Fix: exclude empty entries AND _Symbol before incrementing cands/live. Standard version 1.9 -> 1.10;
+spliced through clk_splice.py into all 15 ExecutionRuntime.mqh copies. No other EA code changed.
+A pending foreign reference still prevents exhaustion. Once all foreign references are exhausted,
+the existing memo path is reached; subsequent starts can skip the walk for 12 h. The initial walk
+and walks already in flight on concurrent charts may still borrow references and print CLK_REF_DEAD.
+Exhaustion does NOT prove the DST rule: Moneta remains LIVE_PROVISIONAL. Exness reference borrowing,
+ADX display, risk sizing, order/recovery logic, inputs and presets remain unchanged.
+
+Regression: tools/clk_verify.py now rejects an exhaustion count that fails to exclude _Symbol.
+It failed on the old GotobiFix block with exactly that error; all 15 corrected copies pass.
+The production counting tail was also executed unchanged as C# with isolated terminal boundaries:
+6 cases, old code 4 failures, corrected code 0 failures. Cases cover all-dead references, a later
+chart skipping the walk, _Symbol duplicated in the FX list, a pending reference, no foreign
+references, and one exhausted foreign reference. These are code-path fixtures, NOT broker acceptance.
+
+Verified this session:
+- 15/15 MetaEditor compiles: Result: 0 errors, 0 warnings; all binaries newer than their EA sources.
+- clk_verify PASS x15; clock vectors checked=28 bad=0; self-test environment reads=0 (all EA sources supplied).
+- news_verify PASS; Python/tests/test_engine.py: 13 tests, PASS (0 failure(s)).
+- Source fingerprints: only the 15 adapter blocks changed; shells, engines, visuals and presets unchanged.
+- ea_lint findings unchanged from the captured per-EA baseline; this is NOT a CLEAN/pass claim.
+
+Not verified: native Strategy Tester conformance and VPS restart/file-I/O acceptance. A fixture compiled
+0/0 in C:/MT5Portable, but its tester refused: "tester not started because the account is not specified".
+No live terminal was launched or reconfigured. Temporary fixture files removed after verification.
+Deploy manually: copy the 15 rebuilt .ex5 from MQL5/Experts and re-attach. After the first completed
+exhaustion, look for CLK_REFS_EXHAUSTED and later starts reporting the earlier exhaustion, not another
+full reference walk. Actual VPS logs are still the acceptance evidence.
+
+## Thirty-first pass - 2026-11-25: Market Watch stays clean, the ADX pane is confirmed, three false alarms removed
+
+**Follow-up to the 08:05 / 08:19 logs (Exness-MT5Real21, MonetaFunded-Live). The loans work: every
+CLK_REF_RELEASED line is a symbol handed back, and no asset stayed in Market Watch. What the logs still
+carried was noise: six cannot-prove lines per chart start, twenty not-confirmed lines per removal, one
+error number that belonged to nothing, and one reminder that contradicted the line printed under it.**
+
+**1. The ADX pane is confirmed, not missing.**
+FLASH_DISPLAY_ADX window=1 ... adx=26.59 name=FlashTriggerORB ADX 91008071 at 08:19:15.087: the pane sat in
+subwindow 1 with a live ADX value, so attach, placement and data all worked. The reported err=4807
+(ERR_INDICATOR_WRONG_HANDLE) was not the placement's error - ChartIndicatorAdd() had succeeded (the window was
+empty before it and held the pane after it, and nothing else can add a pane under that name). 4807 is what the
+terminal last left in GetLastError() while queueing the resource indicator, and a successful call does not
+clear it. The line now prints ok=<1|0> and reports an error only when the add actually fails, so the next
+attach reads window=1 ok=1 err=0. A real failure still shows as ok=0 with a real code.
+
+**2. Moneta: six CLK_REF_DEAD lines per chart, at every start.**
+The verdict is right - that feed's weekly opens match no calendar in the rule set, so every reference is read
+in full, dismissed, and the clock falls back to the live offset. What was wrong is paying for the same
+discovery on every chart: six full histories per attach and six lines saying the same thing. ClkRefsGiveUp()
+now records the exhaustion in clock_refs_<server hash>.txt; for the next 12 h ClkAnchorBase() returns at once
+with the note that no reference series can prove this rule (walked to exhaustion earlier today) and no
+walk, and one CLK_REFS_EXHAUSTED line is printed per half-day by whichever chart finds it first. The clock
+itself is unchanged: LIVE_PROVISIONAL, derived from TimeTradeServer - TimeGMT.
+
+**3. X9: twenty [X9_ACTION] Pending cancel ... 10027 lines on removal.**
+OnDeinit() called CancelAllX9PendingOrders() after the terminal had already stopped the program and cut
+trading off for it, so every request came back 10027 auto trading disabled by client, each preceded by its own
+CTrade::OrderDelete: MQL5 program is stopped line. The function now returns at once when IsStopped() is true or
+trading is not allowed for the program. Nothing is lost: the pendings are still there and the next start adopts
+or cancels them, and an EA removed by hand no longer writes forty error lines.
+
+**4. OpenDrive: a WebRequest reminder printed above a successful fetch.**
+The line 'Please ensure <url> is added to MT5 Allowed WebRequest URLs' was printed unconditionally at init,
+and the next line said the calendar had parsed two events - the URL was already allowed. The reminder is gone;
+the fetch failure path still prints the instruction, once, when the URL is actually refused.
+
+**5. Left alone on purpose.**
+- [X9_MAGIC] 20 ticket(s) still carry the old magic base 647873 (now 647900): real and operational. Those
+  orders belong to no running build. Delete them in the terminal (or flatten) before trusting what the EA
+  reports; the new base will not manage them.
+- FVG_RISK_HIGH one trade risks 15.00% of equity: a warning about the configured InpRiskPercent, printed once
+  at init, with no behaviour attached. Kept because sizing stays the chart's decision.
+- TC_PENDING_CONSUMED ... reason=replay consumed or uncertain: informational.
+- The single flash of EURUSDc on an Exness chart start is the one loan still taken: the reference proves the
+  clock, the loan is returned inside the same second, and no borrow exists while the clock is proved from
+  another series. Moneta no longer shows even that, because its walk is remembered.
+
+**6. State after this pass.**
+15/15 compile 0 errors 0 warnings; clk_verify PASS x15; 28 clock vectors 0 bad; news_verify PASS;
+selftest_verify 0 environment reads; ea_lint at its existing baseline (prefix/brand leads in this file).
+Deployment is by hand: copy the 15 .ex5, re-attach.
+
+## Thirtieth pass - 2026-11-24: a reference loan now lasts one read; ADX pane reports where it landed
+
+**Follow-up to the 21:53 logs (`Exness-MT5Real21`, `MonetaFunded-Live`). Pass 29 stopped the clock from
+*choosing* crypto; it did not stop a reference from holding a Market Watch slot while it was being probed,
+and it wrote a reference off as soon as 40 weeks of history failed the proof test.**
+
+**1. Why Moneta put everything in Market Watch.**
+`ClkInferRule()` returns 0 - meaning "history read, could not prove" - as soon as a series holds
+`CLK_MIN_WEEKS` (40) of weekly opens that miss the 85 % / 3-week margin test. `ClkAnchorBase()` treated 0 as
+"full history, useless" and put the symbol in `clkDeadRefs[]` for the session, while a partial read (-1)
+*kept* its loan. On Moneta every major lands on 0 - its weekly opens match none of the three DST calendars,
+exactly as `rule not yet proven (84 weeks, status 0)` says for XAUUSD itself - so the six-reference walk
+held each symbol in Market Watch for its whole 30 s probe interval before moving on, five EAs at once.
+
+**2. What changed (`CLK_ADAPTER.mqh`, spliced byte-identical into all 15; `clk_verify` PASS, 28 vectors PASS).**
+- A loan lasts one read. `ClkAnchorBase()` hands the symbol back as soon as the read ends, unless that read
+  brought more weeks than the one before it (the download is still moving). This supersedes pass 29's
+  "a partial download keeps its loan".
+- `CLK_PROOF_WEEKS 60`: a reference is written off only when it holds proof-sized history and still cannot
+  prove the clock. Thin history waits instead of being condemned at 40 weeks.
+- `CLK_REF_MAX_READS 200`: a feed that never grows past that is given up on with its own message
+  (`never reached 60 weeks of history`), so a short-history broker cannot cause endless re-reads either.
+- Ownership: each selection the clock makes is stamped in the terminal global `CLK_OWN_<symbol>` (value =
+  loan time). At startup a stamp older than 300 s belongs to a session that died mid-read, so
+  `ClkDropStaleLoans()` removes the symbol and logs `CLK_REF_STALE`; a stamped symbol that is still selected
+  is adopted so this session can return it. An unstamped selection is never touched - that is the user's.
+- Every return is logged: `CLK_REF_RELEASED <symbol> is out of Market Watch again`. Stalled reads are
+  released quietly so a slow broker cannot flood the log.
+
+**3. Moneta's `fixed +120m [LIVE_PROVISIONAL]` is not a defect.**
+The provisional clock is derived from the live `TimeTradeServer - TimeGMT` offset and refreshes itself, so it
+is correct today; it is simply unproven because that feed's weekly opens match no calendar in the rule set.
+The walk no longer costs Market Watch slots, which was the cost of trying.
+
+**4. Exness `EURUSDc` that survives a restart.**
+The 21:53 log proves the anchor worked: `CLK_ANCHOR_REF EURUSDc proves rule=0 base=+0m` at 21:53:47.285, and
+the old build released borrowed symbols on that path. A symbol that still sits there was already selected
+before the loan was taken, and no bookkeeping can tell "the user's" from "a previous session's" - that was
+deliberate. The new build closes the gap from both sides: a leftover from a session that died mid-read now
+carries a stamp and is removed at the next start, and every release is logged, so the next log says which
+case it was. Clear a remaining one once; it will not be re-selected by the clock.
+
+**5. ADX pane on FlashTriggerORB / SigmaBreakout: instrumented, and a real trap closed.**
+One line per attach, `FLASH_DISPLAY_ADX window=<w> err=<e> adx=<v> name=<n>` (and `SIGMA_...`): w is the
+subwindow the pane actually landed in (-1 = nowhere), e is `GetLastError()` of the placement, v is an ADX
+value copied back through the same handle. That single line separates "no pane", "pane with no data" and
+"pane in the price window".
+The trap: `ChartIndicatorAdd(chart, CHART_WINDOWS_TOTAL, handle)` targets window 0 if the chart reports 0
+windows (possible during early `OnInit`), and a separate-window plot placed on the price scale draws a flat
+line at zero - present, invisible, no error. Placement is now `max(1, WINDOWS_TOTAL)`, and a pane found in
+window 0 is deleted and placed again. `FlashVisualSuspend(false)` no longer re-adds the pane on every draw
+(that call used an out-of-range index once the pane existed), and the pane is only deleted when visuals are
+switched off, not on a transient fault.
+
+**After deploying:** copy the 15 rebuilt `.ex5` and re-attach. Look for `CLK_REF_RELEASED` / `CLK_REF_STALE`
+for Market Watch, and for the one `*_DISPLAY_ADX` line per Flash/Sigma chart.
+
+## Twenty-ninth pass - 2026-11-24: live log triaged; Market Watch leak closed; FVG risk reporting fixed
+
+**Three real defects in the 21:06-21:07 `Exness-MT5Real21` log, all fixed in source and recompiled. The rest
+of that log is normal behaviour.**
+
+**1. The clock now proves itself on a fixed-UTC server (pass 28's prediction confirmed).**
+`CLK_ANCHOR_REF EURGBPc proves rule=0 base=+0m for USTECc on Exness-MT5Real21` is the reference rung
+working live, and OpenDrive/Flash/FVG then printed `[ANCHORED-REF]` instead of `[LIVE_PROVISIONAL]`.
+`Flash_CLOCK_READY serverAheadOfNYMinutes=300` is correct for a fixed-UTC server in EST. No action needed.
+
+**2. Market Watch repopulation - root cause found, and it was ours.**
+Only two `SymbolSelect` call sites exist in the tree (`CLK_ADAPTER.mqh` and NoiseBandMomentum's
+basket); no EA mentions BTC or ETH. The clock adapter did it: `ClkEvidenceFor()` called
+`SymbolSelect(sym,true)` and never released. Why crypto and not the majors: `ClkBuildEvidenceRefs()`
+filtered on `SYMBOL_TRADE_CALC_MODE == SYMBOL_CALC_MODE_FOREX` and, for pass 0, on `SYMBOL_PATH`
+containing "Major". Exness files its crypto pairs under FOREX, and its FX paths are not `...\Major`, so pass 0
+produced nothing and pass 1 took the first six FOREX symbols in tree order - and the Crypto group is enumerated
+before Forex. The five extras in your screenshot (BTCUSDc, ETHUSDc, AUDCADc, EURCHFc, EURGBPc) are exactly the
+references that walk borrowed before EURGBPc proved the clock. A selected symbol also persists into the next
+terminal launch, which is why they came back after every restart.
+Local corroboration from this machine's own saved selections:
+`bases\Exness-MT5Real21\...\selected-161809005.dat` (11/20) holds XAUUSDc/USTECc/USDJPYc/EURJPYc/GBPJPYc,
+and the Trial9 profile (login 477819872, 11/23) held `BTCUSDm` + `EURUSDm` - the same leak on the other
+account.
+**Fix (`CLK_ADAPTER.mqh`, spliced into all 15):**
+- `ClkIsClockRef()`: a reference must have `SYMBOL_TRADE_CONTRACT_SIZE>0`, a non-empty path, and
+  either a "forex" path or FOREX calc mode with no crypto/metal/gold/silver/energy/index/stock/commodity marker.
+  This also closes the older hole where a failed `SymbolInfoInteger` returned 0, which *is*
+  `SYMBOL_CALC_MODE_FOREX`.
+- Majors first, by pair name (`EURUSD,USDJPY,GBPUSD,USDCHF,USDCAD,AUDUSD,NZDUSD`), so the walk normally
+  proves on its first reference instead of borrowing six.
+- Selection is a loan: `ClkBorrowRef()` selects only symbols that were not already selected,
+  `ClkReleaseRefs()` returns every borrowed symbol the moment the clock is settled,
+  `ClkReleaseRef()` returns one that turns out useless, and `clkDeadRefs[]` stops a session from
+  re-probing a series that had a full history and still could not prove the clock (the "processing power" half
+  of the complaint).
+- A partial download keeps its loan so the sync can finish; only a settled clock releases.
+**After deploying:** clear the extras from Market Watch once. They will not return, because the EAs no longer
+select them. A symbol that reappears on the new build is coming from a chart or the tester, not the clock.
+
+**3. `FVG_DUO Sizing=Risk % of live equity RiskPct=25.00` was a live quarter-account trade.**
+That is `SIZING_PERCENT`, so the real budget was 25% of live equity; the `RiskCash=344.12` printed
+beside it was `FixedBalance 1376.48 x 25%` - the wrong base for that mode. On this account (about 20 000
+USC) one stop risked about 5 000 USC (about 50 USD).
+**Fix:** the startup audit now prints
+`Sizing=... Equity=<live> <CCY> RiskBudget=<actual> (<pct>% of equity)` straight from `TargetRiskCash()`,
+so the number that will actually be risked is in the journal before the first trade, and `FVG_RISK_HIGH`
+warns above 5%. Sizing behaviour is untouched: the EA risks exactly what the chart asks for.
+A hard `InpMaxRiskPercent` ceiling was added in this pass and **removed the same evening at the user's
+request** - it was not asked for, and an EA must not quietly change its own exposure. The chart input stays the
+single authority: set `InpRiskPercent=1.0` for the documented behaviour.
+
+**4. `cannot load custom indicator '::ADXPane.ex5' (USTECc) [4802]` in Flash and Sigma.**
+`ChartVisuals.mqh` calls `iCustom(..., "::ADXPane.ex5", ...)`, which only resolves a
+`#resource`-embedded indicator, and Flash and Sigma were the two EAs whose `StrategyEngine.mqh` never
+declared it (Overnight and VWAP already did). The pane is cosmetic - Flash's `ADXPeriod` is a stub commented
+"no ADX in Flash" - so only the journal line was lost. `#resource "ADXPane.ex5"` added to both; 4802 should
+be gone on the next attach.
+
+**Not defects:** the news counts (1-2 USD red-folder events in a holiday week) are consistent across EAs; the
+nine X9 `[LOT_AUDIT]` lines sum to about 4 607 USC of implied risk on 20 000 USC (about 23% if every stop
+filled at once), which is the documented formula at `Tiered=50` with `Div=6`, not a unit error - but it
+is a portfolio-level number to watch (the documented presets use 30); `serverAheadOfNYMinutes=300` is right.
+
+**Verification:** `clk_splice.py` 15 ok / 0 failed, `clk_verify.py` **15/15 PASS**,
+`clk_vectors.py verify` **checked=28 bad=0**, `selftest_verify.py` **0** environment reads in
+self-tests, `news_verify.py` **15/15 PASS**, all 15 EAs compile **0 errors, 0 warnings**.
+
+**Deployment:** this machine had no `terminal64.exe` running and no `20261124.log` under any local data
+folder, so the pasted log is the VPS's. Copy the 15 rebuilt `.ex5` files (or the sources, and recompile
+there), re-attach the EAs, and clear the five extra Market Watch symbols once.
+
 ## Twenty-eighth pass - 2026-11-23: Exness clock proved by reference, self-test gates land
 
 **Root cause of `status 0` on Exness, from your own log.** At 09:14 on this broker:

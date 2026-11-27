@@ -2,6 +2,7 @@
 #property tester_no_cache
 #property version "1.00"
 #property description "Flash Trigger ORB. M15 14:30 UTC target candle. Long only. M1 HIGH trail."
+#resource "ADXPane.ex5"        // embed the pane: iCustom("::ADXPane.ex5") only resolves a resource
 #include <Trade/Trade.mqh>
 #ifndef FLASH_STRATEGY_CORE
 #define FLASH_STRATEGY_CORE

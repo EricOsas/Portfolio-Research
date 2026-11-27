@@ -2,6 +2,7 @@
 #property tester_no_cache
 #property version "1.00"
 #property description "Sigma N3/1.7 M30 band breakout. RTH 09:30-16:00 ET. Same-side retry. M1 R-step trail."
+#resource "ADXPane.ex5"        // embed the pane: iCustom("::ADXPane.ex5") only resolves a resource
 #include <Trade/Trade.mqh>
 #ifndef SIGMA_STRATEGY_CORE
 #define SIGMA_STRATEGY_CORE

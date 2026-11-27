@@ -700,7 +700,7 @@ int OnInit()
          PrintFormat("OpenDrive: News Guard ACTIVE [Impact: %d | Window: %d min | BE: %s | Flatten: %s | BlockMod: %s]",
                      News_Impact, News_Window, News_Cost_Covered_BE ? "ON" : "OFF",
                      News_Flatten_Before ? "ON" : "OFF", News_Block_Modification ? "ON" : "OFF");
-         PrintFormat("OpenDrive: Please ensure '%s' is added to MT5 Allowed WebRequest URLs (Tools -> Options -> Expert Advisors).", NF_URL);
+         // No reminder here: a refused URL is reported by the fetch itself, and a working one needs no warning.
          ODNewsRefresh(TimeCurrent());
       }
       else

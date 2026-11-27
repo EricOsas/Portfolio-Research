@@ -6,9 +6,9 @@
 | Modules | `StrategyEngine.mqh` (session, signal, sizing), `ExecutionRuntime.mqh` (orders, exits, trailing) |
 | Magic | `260601` |
 | Timeframe | M30 fixed (`#define TF PERIOD_M30`), independent of the chart timeframe |
-| Instruments | any US index CFD the broker names in `InpSymbols` (default `NAS100,SP500`) |
+| Instruments | the chart symbol the EA is attached to; it selects nothing in Market Watch |
 | Direction | long and short, symmetric |
-| Positions | at most one per symbol per EA instance, no pyramiding, no averaging |
+| Positions | at most one per EA instance, no pyramiding, no averaging |
 | Take profit | none — exits are time-based and trailing |
 | News filter | none |
 | Visuals | none (this EA draws nothing, so it has no `ChartVisuals.mqh`) |
@@ -149,7 +149,6 @@ partial-close handling: this EA opens one position and closes it as a whole.
 
 | Input | Default | Meaning |
 |---|---|---|
-| `InpSymbols` | `NAS100,SP500` | Comma-separated list; each symbol is selected in Market Watch, gets its own ATR handle and its own position. The chart symbol is irrelevant — attach the EA anywhere. |
 | `InpOpenNYMinute` | `570` | Session open in **minutes after New York midnight** (570 = 09:30 NY) — a New York wall time, not a server hour. |
 | `InpCheckpoints` | `11` | Number of half-hour checkpoints; 11 = evaluation until +5.5 h. |
 | `InpCloseNYMinute` | `960` | New York minute from which positions are closed (960 = 16:00 NY, flat into the close). A New York date change closes them too. |

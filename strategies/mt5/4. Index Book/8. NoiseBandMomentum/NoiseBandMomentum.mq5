@@ -16,8 +16,8 @@
 //|   4. Stop 2 ATR, trailing stop 2 ATR once the trade is +1 R.     |
 //|   5. Close everything at 23:00 server time - nothing overnight.  |
 //|                                                                  |
-//|  One EA trades all symbols in InpSymbols, one position each.     |
-//|  Attach it to any chart; the chart symbol does not matter.       |
+//|  Trades the chart it is attached to, one position.                |
+//|  It selects nothing, so Market Watch stays exactly as you set it. |
 //|                                                                  |
 //|  Shell only: properties, inputs, event handlers. The rule lives   |
 //|  in StrategyEngine.mqh, the order path in ExecutionRuntime.mqh.   |
@@ -26,11 +26,8 @@
 //|  it with real money. No guarantee of future results.             |
 //+------------------------------------------------------------------+
 #property copyright "Noise Band Momentum - free release"
-#property version   "1.10"
+#property version   "1.11"
 #property strict
-
-input group "=== Markets ==="
-input string InpSymbols      = "NAS100,SP500"; // Symbols, comma separated (use your broker's names)
 
 input group "=== Session (New York clock) ==="
 input int    InpOpenNYMinute = 570;   // Session open, minutes after New York midnight (570 = 09:30 NY)

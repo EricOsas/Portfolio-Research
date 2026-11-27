@@ -396,7 +396,7 @@ int ClkScheduleFromEvidence(datetime &opens[],int nOpen,datetime &closes[],int n
 }
 // ===== CLK-CORE 1.2 END =====================================================================================
 
-// Per-symbol state. One entry per tradable symbol in InpSymbols.
+// Per-symbol state. One entry: the chart symbol this EA is attached to.
 string   g_sym[];        // symbols actually traded
 int      g_atr[];        // ATR handle per symbol
 datetime g_lastBar[];    // last 30-minute candle that was evaluated
@@ -635,51 +635,30 @@ int NBMInit()
       return(clockInit);
    NBMConfigureTrade(InpMagic, InpSlippage);
 
-   string parts[];
-   int n = StringSplit(InpSymbols, ',', parts);
-   int used = 0;
-   for(int i = 0; i < n; i++)
+   // One instrument: the chart this EA is attached to. No SymbolSelect call, so attaching the
+   // EA can never add a symbol to Market Watch.
+   int h = iATR(_Symbol, TF, InpAtrPeriod);
+   if(h == INVALID_HANDLE)
    {
-      string s = parts[i];
-      StringTrimLeft(s);
-      StringTrimRight(s);
-      if(s == "")
-         continue;
-      if(!SymbolSelect(s, true))
-      {
-         PrintFormat("Symbol %s not found at this broker - skipped. Check the exact name in Market Watch.", s);
-         continue;
-      }
-      int h = iATR(s, TF, InpAtrPeriod);
-      if(h == INVALID_HANDLE)
-      {
-         PrintFormat("No ATR for %s - skipped.", s);
-         continue;
-      }
-      used++;
-      ArrayResize(g_sym, used);
-      ArrayResize(g_atr, used);
-      ArrayResize(g_lastBar, used);
-      ArrayResize(g_entryTime, used);
-      ArrayResize(g_stopDist, used);
-      ArrayResize(g_best, used);
-      ArrayResize(g_lastTrail, used);
-      int k = used - 1;
-      g_sym[k] = s;
-      g_atr[k] = h;
-      g_lastBar[k] = 0;
-      g_entryTime[k] = 0;
-      g_stopDist[k] = 0.0;
-      g_best[k] = 0.0;
-      g_lastTrail[k] = 0;
-   }
-   if(used == 0)
-   {
-      Print("No tradable symbol in InpSymbols. Example: NAS100,SP500 or US100.cash,US500.cash");
+      PrintFormat("No ATR for %s - cannot trade this chart.", _Symbol);
       return(INIT_PARAMETERS_INCORRECT);
    }
-   PrintFormat("Noise Band Momentum: %d symbol(s), k = %.2f, session %02d:%02d-%02d:%02d New York.",
-               used, InpBandK, InpOpenNYMinute / 60, InpOpenNYMinute % 60,
+   ArrayResize(g_sym, 1);
+   ArrayResize(g_atr, 1);
+   ArrayResize(g_lastBar, 1);
+   ArrayResize(g_entryTime, 1);
+   ArrayResize(g_stopDist, 1);
+   ArrayResize(g_best, 1);
+   ArrayResize(g_lastTrail, 1);
+   g_sym[0] = _Symbol;
+   g_atr[0] = h;
+   g_lastBar[0] = 0;
+   g_entryTime[0] = 0;
+   g_stopDist[0] = 0.0;
+   g_best[0] = 0.0;
+   g_lastTrail[0] = 0;
+   PrintFormat("Noise Band Momentum: %s only, k = %.2f, session %02d:%02d-%02d:%02d New York.",
+               _Symbol, InpBandK, InpOpenNYMinute / 60, InpOpenNYMinute % 60,
                InpCloseNYMinute / 60, InpCloseNYMinute % 60);
    return(INIT_SUCCEEDED);
 }

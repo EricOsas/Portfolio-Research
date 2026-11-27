@@ -1056,9 +1056,17 @@ int OnInit()
    PrintFormat("[FVG_DUO] Initialized on %s. Model=Optimal_B3a Mult=%.2f FastEMA=%d SlowEMA=%d ODStop=%.4f Sessions=%d",
                _Symbol, actTrendAtrMult, actTrendEmaFast,
                actTrendEmaSlow, actODStopPct, ArraySize(g_sessionKeys));
-   PrintFormat("[FVG_DUO] Sizing=%s RiskPct=%.2f FixedBalance=%.2f RiskCash=%.2f",
-               g_dashSizingText, InpRiskPercent, g_fixedBalanceBase,
-               g_fixedBalanceBase * InpRiskPercent / 100.0);
+   double riskBudget = TargetRiskCash();
+   double equityNow  = AccountInfoDouble(ACCOUNT_EQUITY);
+   // Print the budget the sizer will actually use. The old line multiplied the FIXED balance by the percentage
+   // even in live-equity mode, so a 25% setting audited as a harmless 344 while risking a quarter of the account.
+   PrintFormat("[FVG_DUO] Sizing=%s RiskPct=%.2f FixedBalance=%.2f Equity=%.2f %s RiskBudget=%.2f (%.2f%% of equity)",
+               g_dashSizingText, InpRiskPercent, g_fixedBalanceBase, equityNow,
+               AccountInfoString(ACCOUNT_CURRENCY), riskBudget,
+               equityNow > 0.0 ? 100.0 * riskBudget / equityNow : 0.0);
+   if(equityNow > 0.0 && riskBudget > equityNow * 0.05)
+      PrintFormat("[FVG_DUO] FVG_RISK_HIGH one trade risks %.2f%% of equity (%.2f %s); review InpRiskPercent and InpSizingMode",
+                  100.0 * riskBudget / equityNow, riskBudget, AccountInfoString(ACCOUNT_CURRENCY));
    if(VisualsAllowed() || DashboardAllowed())
    {
       ConfigurePanelLayering();

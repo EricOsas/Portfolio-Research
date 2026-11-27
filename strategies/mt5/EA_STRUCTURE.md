@@ -26,8 +26,8 @@ and documentation stay in the same folder: an EA must rebuild from its own root.
 
 ## 2. Scope
 
-In scope: `1. X9`, `2. RBE`, `3. TokyoCoil`, `4. Index Book` (11 strategies),
-`5. Gotobi` (`GotobiFix`), 15 deployable EAs in total. Out of scope by instruction:
+In scope: `1. X9` (including `Part 3`), `2. RBE`, `3. TokyoCoil`, `4. Index Book` (11 strategies),
+`5. Gotobi` (`GotobiFix`), 16 deployable EAs in total. Out of scope by instruction:
 `Other Bots`, `ResearchArchive`, `Position Sizer`, `Shared`.
 
 ## 3. Structure conformance (measured)
@@ -48,6 +48,7 @@ fixed here rather than repeated:
 | EA | Modules | Single-file? | Calendar source | Clock | Sizing unit | Notes |
 |---|---|---|---|---|---|---|
 | 1. X9 | shell + 3 | no | NEWS-FEED 1.0 | legacy `NYUTCOffsetSec` | derived | magic base 647900, strategy N = base+N |
+| 1. X9/Part 3 | single | **yes, by design** | none | per-EA | fixed factor | a build, not a complete EA; left untouched |
 | 2. RBE | shell + 3 | no | NEWS-FEED 1.0 | legacy `NYUTCOffsetSec` | account cash | |
 | 3. TokyoCoil | shell + 3 | no | NEWS-FEED 1.0 | legacy + broker whitelist | account cash | |
 | 4. Index Book / 1. VaultBreak | shell + 3 | no | none | **CLK-CORE 1.2 rule** (adapter pending) | account cash | parity-proven, 236/236 trades identical |
@@ -82,7 +83,7 @@ Defects fixed in this pass:
 4. **X9 magic numbering.** Strategy N now owns `InpMagic + N` with `InpMagic = 647900`, so the last
    digit is the strategy number (647901…647909). The order comment is `X9S<N>` (was
    `Gold X9 by You_FoundEric_XAUUSD_N`). Tickets in the old 647873…647893 range are reported at init
-   and never adopted.
+   and never adopted. Part 3 keeps 647873: X9 moved out of that range, so the two no longer collide.
 5. **Minimum lot.** `InpAllowMinLotOverride` now defaults to **true** on X9 and FVG_Duo: the EA takes
    the broker minimum when the budget is below it, and still logs the real risk.
 
@@ -226,6 +227,56 @@ scans: clock generation, money derivation, `WebRequest`/`FILE_COMMON` counts and
 **Order path**: `OrderDelete(`@1150, `OrderDelete(`@1592, `OrderDelete(`@1739, `OrderDelete(`@1776, `OrderDelete(`@2111, `OrderDelete(`@2142, `OrderDelete(`@2172, `trade.OrderOpen(`@2695
 
 **Flags**: clock: per-EA engine (not migrated) · money: tick-value derivation · WebRequest=1 · FILE_COMMON=1 · inputs=51 · shell: `Gold_X9_v6_3.mq5`
+
+### 1. X9 / Part 3
+
+| File | Lines | Role |
+|---|---:|---|
+| `Gold_X9_Part3.mq5` | 1640 | shell: inputs, globals, event handlers |
+| **total** | **1640** | |
+
+**Inputs** (34):
+
+| Group | Type | Name | Default | Comment |
+|---|---|---|---|---|
+| TRADE SETUP | `enum_TradeFrequency` | `TradeFrequency` | `Very_High` | Trading Frequency |
+| TRADE SETUP | `int` | `InpMagic` | `647873` | EA Magic Number |
+| TRADE SETUP | `string` | `TradeComment` | `"Gold X9 by MrCapFree"` | Comment for trades |
+| MONEY MANAGEMENT / Lotsize Calculations | `enum_lotsizing` | `Lotsizing_Method` | `Tiered_Lotsizing` | Lotsize Calculation method |
+| MONEY MANAGEMENT / Lotsize Calculations | `double` | `TieredLot` | `30` | Tiered Lot Sizing Risk Meter (1 - 100 Max) |
+| MONEY MANAGEMENT / Lotsize Calculations | `double` | `FixedLots` | `0.01` | Fixed Lots |
+| MONEY MANAGEMENT / Lotsize Calculations | `double` | `RiskScaling` | `1` | Risk Scaling Factor (%) |
+| MONEY MANAGEMENT / Lotsize Calculations | `double` | `InpFixedBalance` | `0.0` | Fixed Balance for Sizing (0 = Live Account Balance) |
+| Define Separate Lotsize for Individual Strategies | `bool` | `SepLotSize` | `false` | Use separate lotsize per strategy (Fixed Lots mode only) |
+| Define Separate Lotsize for Individual Strategies | `double` | `Strat1Lots` | `0.01` | Strategy 1 Lotsize |
+| Define Separate Lotsize for Individual Strategies | `double` | `Strat2Lots` | `0.01` | Strategy 2 Lotsize |
+| Define Separate Lotsize for Individual Strategies | `double` | `Strat3Lots` | `0.01` | Strategy 3 Lotsize |
+| Define Separate Lotsize for Individual Strategies | `double` | `Strat4Lots` | `0.01` | Strategy 4 Lotsize |
+| Define Separate Lotsize for Individual Strategies | `double` | `Strat5Lots` | `0.01` | Strategy 5 Lotsize |
+| Define Separate Lotsize for Individual Strategies | `double` | `Strat6Lots` | `0.01` | Strategy 6 Lotsize |
+| Define Separate Lotsize for Individual Strategies | `double` | `Strat7Lots` | `0.01` | Strategy 7 Lotsize |
+| Define Separate Lotsize for Individual Strategies | `double` | `Strat8Lots` | `0.01` | Strategy 8 Lotsize |
+| Define Separate Lotsize for Individual Strategies | `double` | `Strat9Lots` | `0.01` | Strategy 9 Lotsize |
+| PROP AND ENTRY ADJUSTMENTS | `double` | `AdjustEntry` | `0` | Adjust Entry (in points) |
+| PROP AND ENTRY ADJUSTMENTS | `double` | `AdjustSL` | `0` | Adjust SL (in points) |
+| PROP AND ENTRY ADJUSTMENTS | `double` | `AdjustTP` | `0` | Adjust TP (in points) |
+| PROP AND ENTRY ADJUSTMENTS | `double` | `AdjustTrailSL` | `0` | Adjust Trail SL (in points) |
+| PROP AND ENTRY ADJUSTMENTS | `double` | `AdjustSalvageExit` | `0` | Adjust Salvage Exit (in points) |
+| PROP AND ENTRY ADJUSTMENTS | `double` | `AdjustBreakEven` | `0` | Adjust Breakeven (in points) |
+| Manual Strategy Selection | `bool` | `RunStrat1` | `true` | Run Strategy 1 |
+| Manual Strategy Selection | `bool` | `RunStrat2` | `true` | Run Strategy 2 |
+| Manual Strategy Selection | `bool` | `RunStrat3` | `true` | Run Strategy 3 |
+| Manual Strategy Selection | `bool` | `RunStrat4` | `true` | Run Strategy 4 |
+| Manual Strategy Selection | `bool` | `RunStrat5` | `true` | Run Strategy 5 |
+| Manual Strategy Selection | `bool` | `RunStrat6` | `true` | Run Strategy 6 |
+| Manual Strategy Selection | `bool` | `RunStrat7` | `true` | Run Strategy 7 |
+| Manual Strategy Selection | `bool` | `RunStrat8` | `true` | Run Strategy 8 |
+| Manual Strategy Selection | `bool` | `RunStrat9` | `true` | Run Strategy 9 |
+| DIAGNOSTICS & AUDIT LOGGING | `bool` | `InpEnableAuditLog` | `true` | Enable Reason-Coded Audit Logging |
+
+**Order path**: `OrderDelete(`@729, `OrderDelete(`@766, `OrderDelete(`@1029, `OrderDelete(`@1059, `OrderDelete(`@1088, `trade.OrderOpen(`@1607
+
+**Flags**: clock: per-EA engine (not migrated) · money: fixed factor · WebRequest=0 · FILE_COMMON=2 · inputs=34 · shell: `Gold_X9_Part3.mq5`
 
 ### 2. RBE
 
@@ -575,11 +626,10 @@ scans: clock generation, money derivation, `WebRequest`/`FILE_COMMON` counts and
 | `NoiseBandMomentum.mq5` | 335 | shell: inputs, globals, event handlers |
 | **total** | **335** | |
 
-**Inputs** (15):
+**Inputs** (14):
 
 | Group | Type | Name | Default | Comment |
 |---|---|---|---|---|
-| Markets | `string` | `InpSymbols` | `"NAS100,SP500"` | Symbols, comma separated (use your broker's names) |
 | Session (broker server time) | `int` | `InpOpenHour` | `16` | New York open: hour (16 on brokers at New York + 7 h) |
 | Session (broker server time) | `int` | `InpOpenMinute` | `30` | New York open: minute |
 | Session (broker server time) | `int` | `InpCheckpoints` | `11` | Number of half-hour checkpoints after the open (11 = until +5.5 h) |

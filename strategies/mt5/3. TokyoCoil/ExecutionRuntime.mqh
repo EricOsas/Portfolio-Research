@@ -43,7 +43,11 @@
 // the verdict (agree / DISAGREE / n/a) in the log and in the learned profile's 9th field. `tools/clk_audit_report.py`
 // summarises the profiles: any DISAGREE broker needs a clock_profiles.csv line, because its tester runs would be
 // shifted. That turns "assumed" into "audited on N brokers" without asking anyone for anything.
-#define CLK_ADAPTER_VERSION "1.9"
+//   SHARED-LIVE live only: a fresh, fully recorded LIVE/LIVE-REF proof from another instance on this server,
+//             accepted only when its predicted current offset agrees with the observed live offset.
+//   LIVE-REF  live only: another already-open/selected series proves the rule, with the base measured live.
+//             No reference symbol is added to Market Watch; provisional results are never shared as proof.
+#define CLK_ADAPTER_VERSION "1.12"
 
 // ---- configuration, in code, not in the UI -------------------------------------------------------------
 // Optional: #define CLK_FORCE_RULE CLK_RULE_US and CLK_FORCE_BASE_MINUTES 120 before this block to pin a
@@ -85,6 +89,7 @@ datetime clkLastUtc=0;
 datetime clkLogAt=0;
 string   clkLogLast="";
 int      clkEvWeeks=0;
+int      clkEvCloses=0;                         // completed-week observations recorded with a shared live proof
 int      clkEvHits=0;
 int      clkEvMargin=0;
 long     clkFoldFirstCount=0;
@@ -130,7 +135,8 @@ int ClkInit()
    clkIgnoreProfile=true;                 // TEST BUILDS ONLY: isolate a rung that a learned profile would shadow
 #endif
    clkSource="none"; clkNote="not resolved"; clkAnchorAudit=""; clkRetry=0; clkLastUtc=0; clkCandN=0;
-   clkEvWeeks=0; clkEvHits=0; clkEvMargin=0; clkFoldFirstCount=0; clkGapCount=0; clkSegN=0;
+   clkEvWeeks=0; clkEvCloses=0; clkEvHits=0; clkEvMargin=0; clkFoldFirstCount=0; clkGapCount=0; clkSegN=0;
+   ArrayResize(clkEvidenceRefs,0); clkEvidenceRefsBuilt=false; clkRefPos=0;
    return INIT_SUCCEEDED;
 }
 string clkAnchorAudit="";                       // "agree" | "DISAGREE" | "n/a" | "" (not a live resolution)
@@ -183,51 +189,60 @@ bool ClkTrySchedule(datetime &opens[],datetime &closes[])
 // ---- evidence ---------------------------------------------------------------------------------------------------
 string clkEvSymbol="";                              // the series that proved the clock ("" = chart symbol)
 string ClkEvidenceSymbolName() { return clkEvSymbol!="" ? clkEvSymbol : _Symbol; }
-// Candidate evidence series, in order: the traded symbol first, then standard-hours feeds on the same server.
-// The broker's offset is a property of the server, so a standard FX/US-hours series proves it for every symbol.
-// Candidate evidence series, chosen by INSTRUMENT CLASS so no broker's symbol naming can break it
-// ("EURUSDm", "EURUSD.r", "USTEC" vs "NAS100" all resolve to the same classes). The broker's offset is a
-// property of the server, so any standard-hours feed on this server proves it for every instrument.
+// References come only from open charts, never from the terminal's selected-symbol catalogue.
+// SYMBOL_SELECT alone includes invisible conversion pairs; it is not evidence that the user loaded a symbol.
+bool ClkIsOpenChart(string sym)
+{
+   for(long chart=ChartFirst();chart>=0;chart=ChartNext(chart))
+      if(ChartSymbol(chart)==sym) return true;
+   return false;
+}
+bool ClkIsLoadedRef(string sym)
+{
+   if(sym=="" || !ClkIsOpenChart(sym) || SymbolInfoInteger(sym,SYMBOL_SELECT)==0 ||
+      SymbolInfoDouble(sym,SYMBOL_TRADE_CONTRACT_SIZE)<=0.0) return false;
+   string path=SymbolInfoString(sym,SYMBOL_PATH); StringToLower(path);
+   return path!="" && StringFind(path,"crypto")<0;
+}
+void ClkAddEvidenceRef(string sym,string &refs[])
+{
+   if(sym==_Symbol || ArraySize(refs)>=6 || !ClkIsLoadedRef(sym)) return;
+   for(int i=0;i<ArraySize(refs);i++) if(refs[i]==sym) return;
+   int n=ArraySize(refs); ArrayResize(refs,n+1); refs[n]=sym;
+}
 void ClkBuildEvidenceRefs(string &out[])
 {
-   int total=SymbolsTotal(false);
-   int n=0;
    ArrayResize(out,0);
-   for(int pass=0;pass<2 && n<6;pass++)                 // pass 0: FX majors, pass 1: any FX pair
-      for(int i=0;i<total && n<6;i++)
-      {
-         string sym=SymbolName(i,false);
-         if(SymbolInfoInteger(sym,SYMBOL_TRADE_CALC_MODE)!=SYMBOL_CALC_MODE_FOREX) continue;
-         string path=SymbolInfoString(sym,SYMBOL_PATH);
-         if(pass==0 && StringFind(path,"Major")<0) continue;
-         bool dup=false;
-         for(int k=0;k<n;k++) if(out[k]==sym) { dup=true; break; }
-         if(dup) continue;
-         ArrayResize(out,n+1); out[n++]=sym;
-      }
+   for(long chart=ChartFirst();chart>=0 && ArraySize(out)<6;chart=ChartNext(chart))
+      ClkAddEvidenceRef(ChartSymbol(chart),out);
 }
+string clkEvidenceRefs[];
+bool clkEvidenceRefsBuilt=false;
 string ClkEvidenceSymbolAt(int attempt)
 {
    if(attempt==0) return _Symbol;
-   static string refs[];
-   static bool built=false;
-   if(!built) { ClkBuildEvidenceRefs(refs); built=true; }
-   return (attempt-1<ArraySize(refs)) ? refs[attempt-1] : "";
+   if(!clkEvidenceRefsBuilt) { ClkBuildEvidenceRefs(clkEvidenceRefs); clkEvidenceRefsBuilt=true; }
+   int i=attempt-1;
+   if(i<0 || i>=ArraySize(clkEvidenceRefs)) return "";
+   string sym=clkEvidenceRefs[i];
+   return ClkIsLoadedRef(sym) ? sym : "";                    // respect a symbol the user hid after the snapshot
 }
 int ClkEvidenceFor(string sym,int &rule,int &modeOpen,int &modeClose,datetime &opensOut[],datetime &closesOut[])
 {
    datetime bars[];
    datetime opens[];
    datetime closes[];
-   clkEvWeeks=0; clkEvHits=0; clkEvMargin=0; rule=-1; modeOpen=0; modeClose=0;
+   clkEvWeeks=0; clkEvCloses=0; clkEvHits=0; clkEvMargin=0; rule=-1; modeOpen=0; modeClose=0;
    ArrayResize(opensOut,0); ArrayResize(closesOut,0);
-   if(sym!=_Symbol) SymbolSelect(sym,true);
+   // The user owns these selections. Never borrow, stamp or re-select a reference behind their back.
+   if(sym!=_Symbol && (!ClkIsOpenChart(sym) || SymbolInfoInteger(sym,SYMBOL_SELECT)==0)) return -1;
    datetime touch[];
    CopyTime(sym,PERIOD_M15,0,1,touch);                       // queues the sync; the copy below may still be short
    int got=CopyTime(sym,PERIOD_M15,0,CLK_BARS_LOOKBACK,bars);
-   if(got<4000) return -1;
+   if(got<4000) return -1;                                   // still downloading: try again on the next pass
    clkEvWeeks=ClkWeekOpens(bars,got,opens);
    int nClose=ClkWeekCloses(bars,got,closes);
+   clkEvCloses=nClose;
    ArrayCopy(opensOut,opens);
    ArrayCopy(closesOut,closes);
    return ClkInferRule(opens,clkEvWeeks,closes,nClose,rule,clkEvHits,clkEvMargin,modeOpen,modeClose);
@@ -238,35 +253,160 @@ int ClkEvidence(int &rule,int &modeOpen,int &modeClose,datetime &opensOut[],date
 }
 int ClkEvidence(int &rule,int &modeOpen,int &modeClose) { datetime eo[],ec[]; return ClkEvidence(rule,modeOpen,modeClose,eo,ec); }
 
-// Tester anchor, with the server treated as the thing being proved rather than the symbol:
-// own series first (unchanged behaviour for every feed that can prove itself), then a standard-hours
-// reference, then nothing. Returns the base, the implied open hour and the series that proved it.
-int clkRefPos=0;            // round-robin cursor over the candidate series
-bool clkRefPending=false;   // true: some candidate had no history yet, so waiting is right, giving up is not
-
+// Live fallback over already-loaded series. The chart's own history was tested by ClkResolve first.
+int clkRefPos=0;
+bool clkRefPending=false;
+string clkDeadRefs[];       // failed during this walk; a scoped, expiring memo avoids needless repeat walks
+string clkRefSym[];         // per reference: the series name
+int    clkRefTried[];       // per reference: reads since it last showed progress
+int    clkRefWeeks[];       // per reference: weeks of weekly opens seen on the last read
+string clkRefsNote="";      // the walk was skipped or given up: the reason, said once in the EA's own note
+#define CLK_PROOF_WEEKS   60    // a reference is judged useless only once it holds this many weeks of opens
+#define CLK_REF_MAX_READS 200   // ...but a feed that never reaches them is given up on instead of read forever
+#define CLK_CLAIM         "CLK_OWN_"   // "this selection is ours": survives a terminal closed mid-read
+int ClkRefBook(const string sym)
+{
+   for(int i=0;i<ArraySize(clkRefSym);i++) if(clkRefSym[i]==sym) return i;
+   int n=ArraySize(clkRefSym);
+   ArrayResize(clkRefSym,n+1); ArrayResize(clkRefTried,n+1); ArrayResize(clkRefWeeks,n+1);
+   clkRefSym[n]=sym; clkRefTried[n]=0; clkRefWeeks[n]=-1;
+   return n;
+}
+// One read of a reference. More weeks than last time means the download is alive, so the read counter restarts.
+int ClkRefNoteRead(const string sym)
+{
+   int i=ClkRefBook(sym);
+   if(clkEvWeeks>clkRefWeeks[i]) { clkRefWeeks[i]=clkEvWeeks; clkRefTried[i]=0; }
+   return ++clkRefTried[i];
+}
+// Retire stale selections left by OLD builds only. New builds never create selection claims.
+// An open chart takes ownership of its symbol: clear the old claim without touching that selection.
+void ClkDropStaleLoans()
+{
+   for(int i=SymbolsTotal(true)-1;i>=0;i--)
+   {
+      string sym=SymbolName(i,true);
+      if(sym=="") continue;
+      string claim=CLK_CLAIM+sym;
+      if(!GlobalVariableCheck(claim)) continue;
+      if(TimeLocal()-(datetime)GlobalVariableGet(claim)<300) continue;
+      if(ClkIsOpenChart(sym)) { GlobalVariableDel(claim); continue; }
+      ResetLastError();
+      if(!SymbolSelect(sym,false))
+      {
+         ClkLog(StringFormat("CLK_REF_CLEANUP_FAILED %s remains selected; terminal error=%d",sym,GetLastError()));
+         continue;                                         // failed cleanup keeps its claim for a later retry
+      }
+      GlobalVariableDel(claim);                             // successful housekeeping is silent
+   }
+}
+bool ClkRefIsDead(string sym)
+{
+   for(int i=0;i<ArraySize(clkDeadRefs);i++) if(clkDeadRefs[i]==sym) return true;
+   return false;
+}
+void ClkRefMarkDead(string sym)
+{
+   if(sym==_Symbol || ClkRefIsDead(sym)) return;
+   int n=ArraySize(clkDeadRefs); ArrayResize(clkDeadRefs,n+1); clkDeadRefs[n]=sym;
+}
+// ---- expiring negative memo, scoped to the exact loaded candidate set -----------------------------------
+#define CLK_NOPROOF_HOURS 12
+string ClkRefsFile() { return "clock_refs_"+IntegerToString(ClkHash(AccountInfoString(ACCOUNT_SERVER)))+".txt"; }
+bool ClkProofInteger(string text,long &value)
+{
+   StringTrimLeft(text); StringTrimRight(text);
+   if(text=="" || StringLen(text)>20) return false;
+   value=StringToInteger(text);
+   return IntegerToString(value)==text;                    // no partial parse, leading junk or silent zero
+}
+string ClkRefsKey()
+{
+   string refs[]; ArrayCopy(refs,clkEvidenceRefs);
+   for(int i=0;i<ArraySize(refs);i++)
+      for(int j=i+1;j<ArraySize(refs);j++)
+         if(StringCompare(refs[i],refs[j])>0) { string tmp=refs[i]; refs[i]=refs[j]; refs[j]=tmp; }
+   string key="";
+   for(int i=0;i<ArraySize(refs);i++)
+      if(ClkIsLoadedRef(refs[i])) key+=IntegerToString(StringLen(refs[i]))+":"+refs[i]+"|";
+   return key;
+}
+bool ClkRefsGivenUp()
+{
+   string key=ClkRefsKey();
+   if(key=="") return false;
+   int h=FileOpen(ClkRefsFile(),FILE_READ|FILE_TXT|FILE_ANSI|FILE_COMMON);
+   if(h==INVALID_HANDLE) return false;
+   string version="",server="",stamp="",savedKey="";
+   if(!FileIsEnding(h)) version=FileReadString(h);
+   if(!FileIsEnding(h)) server=FileReadString(h);
+   if(!FileIsEnding(h)) stamp=FileReadString(h);
+   if(!FileIsEnding(h)) savedKey=FileReadString(h);
+   FileClose(h);
+   long written=0;
+   if(version!="loaded-1" || server!=AccountInfoString(ACCOUNT_SERVER) || savedKey!=key ||
+      !ClkProofInteger(stamp,written)) return false;         // old catalogue-wide memos are not applicable
+   return written>0 && TimeGMT()>=written && TimeGMT()-written<CLK_NOPROOF_HOURS*3600;
+}
+void ClkRefsGiveUp()
+{
+   string key=ClkRefsKey();
+   if(key=="") return;
+   int h=FileOpen(ClkRefsFile(),FILE_WRITE|FILE_TXT|FILE_ANSI|FILE_COMMON);
+   if(h==INVALID_HANDLE) return;
+   FileWriteString(h,"loaded-1\r\n"+AccountInfoString(ACCOUNT_SERVER)+"\r\n"+
+                     IntegerToString((long)TimeGMT())+"\r\n"+key+"\r\n");
+   FileClose(h);
+}
 int ClkAnchorBase(int &rule,int &modeOpen,int &modeClose,int &openNY,string &usedSym)
 {
-   openNY=0; usedSym=""; clkRefPending=false;
-   // In the Strategy Tester, touching another symbol makes the agent try to synchronise it; when that fails
-   // the whole test ends ("symbol EURUSD synchronization error ... unexpected end of testing"). So the tester
-   // proves the clock from the traded feed only, or from a profile / clock_profiles.csv / a source pin.
-   if(MQLInfoInteger(MQL_TESTER)) return CLK_BASE_INVALID;
-   bool anyHistory=false;
+   openNY=0; usedSym=""; clkRefPending=false; clkRefsNote="";
+   if(MQLInfoInteger(MQL_TESTER)) return CLK_BASE_INVALID;   // tester never synchronises foreign symbols
+   int observed=0;
+   if(!ClkLiveOffset(observed)) return CLK_BASE_INVALID;
+   datetime utc=TimeGMT();
+   ClkBuildEvidenceRefs(clkEvidenceRefs); clkEvidenceRefsBuilt=true;
+   if(ClkRefsGivenUp())
+   { clkRefsNote="DST rule unproven from loaded history; current live offset is used"; return CLK_BASE_INVALID; }
+   ArrayResize(clkDeadRefs,0);                               // changed inventory or expired memo permits new evidence
+   bool anyHistory=false, triedAny=false;
    for(int tried=0;tried<8;tried++)
    {
       string sym=ClkEvidenceSymbolAt(clkRefPos);
       clkRefPos=(clkRefPos+1)%8;
-      if(sym=="") continue;
+      if(sym=="" || sym==_Symbol || ClkRefIsDead(sym)) continue;
+      triedAny=true;
       datetime eo[],ec[];
       int st=ClkEvidenceFor(sym,rule,modeOpen,modeClose,eo,ec);
-      if(st<0) { clkRefPending=true; continue; }              // history still arriving on this terminal
+      int reads=ClkRefNoteRead(sym);
+      if(st<0) { clkRefPending=true; continue; }
       anyHistory=true;
-      int b=ClkBaseFromCloseAnchor(modeOpen,modeClose,openNY);
-      if(st!=1 || b==CLK_BASE_INVALID) continue;              // has history, cannot prove it: next candidate
-      usedSym=sym; clkRefPending=false;
-      return b;
+      int b=st==1 ? ClkBaseFromLive(observed,rule,utc) : CLK_BASE_INVALID;
+      int b17=ClkBaseFromAnchor(modeOpen,17), b18=ClkBaseFromAnchor(modeOpen,18);
+      if(st==1 && b!=CLK_BASE_INVALID && (b==b17 || b==b18))
+      {
+         openNY=b==b17 ? 17 : 18;
+         usedSym=sym; clkRefPending=false;
+         return b;                                         // identical live/open-anchor guard to the own-series rung
+      }
+      if(clkEvWeeks<CLK_PROOF_WEEKS && reads<=CLK_REF_MAX_READS)
+      { clkRefPending=true; continue; }
+      ClkRefMarkDead(sym);
    }
-   if(!anyHistory) clkRefPending=true;                        // nothing read yet: try again on the next tick
+   if(!anyHistory && triedAny) clkRefPending=true;
+   int cands=0,live=0;
+   for(int i=0;i<8;i++)
+   {
+      string c=ClkEvidenceSymbolAt(i);
+      if(c=="" || c==_Symbol) continue;
+      cands++;
+      if(!ClkRefIsDead(c)) live++;
+   }
+   if(cands>0 && live==0)
+   {
+      clkRefsNote="DST rule unproven from loaded history; current live offset is used";
+      ClkRefsGiveUp();
+   }
    return CLK_BASE_INVALID;
 }
 bool ClkLiveOffset(int &obsSec)                    // server-minus-UTC on the 15-minute grid, with a PC-clock sanity bound
@@ -357,7 +497,8 @@ void ClkLearnedWrite()                              // live: hand the verified c
 #endif
    int h=FileOpen(ClkProfileFile(),FILE_WRITE|FILE_TXT|FILE_ANSI|FILE_COMMON);
    if(h==INVALID_HANDLE) return;
-   FileWriteString(h,StringFormat("%s,%d,%d,%s,%I64d,%d,%d,%d,%s\r\n",ClkServerKey(),clkRule,clkBase,clkSource,(long)TimeGMT(),clkEvWeeks,clkEvHits,clkEvMargin,clkAnchorAudit));
+   FileWriteString(h,StringFormat("%s,%d,%d,%s,%I64d,%d,%d,%d,%s,%d\r\n",ClkServerKey(),clkRule,clkBase,
+                                clkSource,(long)TimeGMT(),clkEvWeeks,clkEvHits,clkEvMargin,clkAnchorAudit,clkEvCloses));
    FileClose(h);
 }
 bool ClkLearnedRead(int &rule,int &base)
@@ -380,6 +521,63 @@ bool ClkLearnedRead(int &rule,int &base)
    }
    FileClose(h);
    return ok;
+}
+// Shared LIVE proofs expire independently of tester profiles. Readers never refresh their evidence timestamp.
+#define CLK_SHARED_PROOF_SECONDS 86400
+bool ClkVerifiedLiveProof(string line,int observedSec,datetime utc,int &rule,int &base)
+{
+   string f[];
+   if(StringSplit(line,',',f)!=10 || f[0]!=ClkServerKey() ||
+      (f[3]!="LIVE" && f[3]!="LIVE-REF")) return false;
+   long r=0,b=0,written=0,weeks=0,hits=0,margin=0,closes=0;
+   if(!ClkProofInteger(f[1],r) || !ClkProofInteger(f[2],b) || !ClkProofInteger(f[4],written) ||
+      !ClkProofInteger(f[5],weeks) || !ClkProofInteger(f[6],hits) || !ClkProofInteger(f[7],margin) ||
+      !ClkProofInteger(f[9],closes)) return false;
+   if(r<0 || r>2 || b<-720 || b>840 || b%15!=0 || written<=0 || utc<written ||
+      utc-written>CLK_SHARED_PROOF_SECONDS) return false;
+   if(weeks<CLK_MIN_WEEKS || weeks>CLK_MAX_WEEKS || closes<CLK_MIN_WEEKS-1 || closes>CLK_MAX_WEEKS ||
+      MathAbs(weeks-closes)>1 || hits<0 || hits>weeks+closes || margin<CLK_MIN_MARGIN || margin>hits ||
+      hits*100<(weeks+closes)*85) return false;
+   if(f[8]!="agree" && f[8]!="DISAGREE" && f[8]!="n/a") return false;
+   long expected=(long)ClkUtcToServer(utc,(int)r,(int)b)-(long)utc;
+   if(MathAbs(expected-observedSec)>CLK_TOL_SEC) return false;
+   rule=(int)r; base=(int)b;
+   return true;
+}
+bool ClkReadLiveProof(int observedSec,datetime utc,int &rule,int &base)
+{
+   int h=FileOpen(ClkProfileFile(),FILE_READ|FILE_TXT|FILE_ANSI|FILE_COMMON);
+   if(h==INVALID_HANDLE) return false;
+   string line="";
+   bool read=ClkReadLine(h,line);
+   FileClose(h);
+   return read && ClkVerifiedLiveProof(line,observedSec,utc,rule,base);
+}
+bool ClkTryLiveFallback()
+{
+   if(MQLInfoInteger(MQL_TESTER)) return false;
+   int observed=0;
+   if(!ClkLiveOffset(observed)) return false;
+   datetime utc=TimeGMT();
+   bool confirming=clkResolved && clkProvisional;
+   int rule=-1,base=CLK_BASE_INVALID;
+   if(!clkIgnoreProfile && ClkReadLiveProof(observed,utc,rule,base))
+   {
+      ClkSetSingle(rule,base,"SHARED-LIVE");
+      clkNote="fresh verified live proof from another instance on this server";
+      if(confirming) ClkJournal("CLK_CONFIRMED "+ClkText()+" from verified same-server evidence");
+      return true;                                         // no history requests or evidence refresh/write
+   }
+   int mo=0,mc=0,on=0; string used="";
+   base=ClkAnchorBase(rule,mo,mc,on,used);
+   if(base==CLK_BASE_INVALID || used=="") return false;
+   ClkSetSingle(rule,base,"LIVE-REF");
+   clkNote=StringFormat("clock verified from already-loaded history (%d weekly opens)",clkEvWeeks);
+   int anchorOpen=0,anchorBase=ClkBaseFromCloseAnchor(mo,mc,anchorOpen);
+   clkAnchorAudit=anchorBase==CLK_BASE_INVALID ? "n/a" : (anchorBase==base ? "agree" : "DISAGREE");
+   ClkLearnedWrite();                                       // only newly proven history can publish a shared proof
+   if(confirming) ClkJournal("CLK_CONFIRMED "+ClkText()+" from already-loaded history");
+   return true;
 }
 // ---- resolution ---------------------------------------------------------------------------------------------------
 void ClkResolve(datetime nowSrv)
@@ -432,38 +630,23 @@ void ClkResolve(datetime nowSrv)
          if(ab==CLK_BASE_INVALID)
          {
             clkNote="tester clock anchor failed (see Experts log)"; clkGaveUp=true;
-            ClkLog(StringFormat("CLK_GIVE_UP the weekly open/close history is not consistent with a 17:00 NY close (implied base %+dm from the close, %+dm from the open at 18:00 NY). Tried the traded feed and up to eight standard-hours FX references on this server, chosen by instrument class. Nothing to configure: either history is thin, or a clock_profiles.csv line / one live run on this server will pin it. Pinning in source is possible but is a code decision, not a setting.",ClkBaseFromAnchor(mc,17),ClkBaseFromAnchor(mo,18)));
+            ClkLog(StringFormat("CLK_GIVE_UP tester history does not fit the accepted weekly shape "
+                                "(close base %+dm, open base %+dm). Only the traded feed is used; "
+                                "a same-server profile from a verified live run can supply the mapping.",
+                                ClkBaseFromAnchor(mc,17),ClkBaseFromAnchor(mo,18)));
             return;
          }
          ClkSetSingle(rule,ab,src);
          clkNote=(used==_Symbol)
             ? StringFormat("ASSUMPTION: weekly close 17:00 NY, feed opens %d:00 NY; confirm with a live profile",on)
             : StringFormat("ASSUMPTION: proved on %s (standard hours on this server), traded feed cannot prove it",used);
-         if(used!=_Symbol && used!="")
-            ClkJournal(StringFormat("CLK_REFERENCE %s proved the %s clock (traded feed %s has no usable weekly shape)",used,AccountInfoString(ACCOUNT_SERVER),_Symbol));
          ClkJournal(StringFormat("CLK_ASSUMPTION %s base %+dm; a live/registry profile outranks this",ClkText(),ab));
          return;
       }
    }
-   // The traded feed may be structurally unable to prove the rule: an index tracks its own exchange calendar,
-   // so on a fixed server its week open still moves with US DST and the shape reads as "DST-shaped with base 0",
-   // which is not a clock any ladder can confirm. A standard-hours FX series on the same server can prove it -
-   // it opens at a fixed New York hour every week, so its shape reads the server offset directly. Ask a reference
-   // before settling for a provisional guess (Exness: EURJPY proved fixed +0 while USTEC could not).
-   if(st!=1)
-   {
-      int rref=rule, moRef=0, mcRef=0, onRef=0; string usedRef="";
-      int bref=ClkAnchorBase(rref,moRef,mcRef,onRef,usedRef);
-      if(bref!=CLK_BASE_INVALID && usedRef!="")
-      {
-         ClkSetSingle(rref,bref,"ANCHORED-REF");
-         clkNote=StringFormat("traded feed %s cannot prove the clock; reference %s proved rule %d base %+dm",
-                              _Symbol,usedRef,rref,bref);
-         ClkJournal(StringFormat("CLK_ANCHOR_REF %s proves rule=%d base=%+dm for %s on %s",
-                                 usedRef,rref,bref,_Symbol,AccountInfoString(ACCOUNT_SERVER)));
-         return;
-      }
-   }
+   // Own-series inference has priority. Otherwise reuse verified same-server evidence or test loaded series.
+   // Merely copying another provisional offset would not establish a DST rule.
+   if(st!=1 && ClkTryLiveFallback()) return;
    int obs=0;
    if(!ClkLiveOffset(obs)) { if(clkNote=="" || clkNote=="not resolved") clkNote="live server offset not observable yet"; return; }
    datetime gmt=TimeGMT();
@@ -495,6 +678,7 @@ void ClkResolve(datetime nowSrv)
    ClkSetCandidates(3,rs,bs);
    clkSource="LIVE_PROVISIONAL"; clkProvisional=true; clkOkFlag=true; clkSkew=false;
    clkNote=StringFormat("rule not yet proven (%d weeks, status %d): live offset narrows candidates",clkEvWeeks,st);
+   if(clkRefsNote!="") clkNote=clkRefsNote;                   // the walk was skipped or gave up: say which, once
    ClkLog("CLK "+clkNote);
 }
 // Call first on every pass. Resolves, then (live) cross-checks the model against the observed server-minus-UTC offset.
@@ -505,13 +689,16 @@ void ClkResolve(datetime nowSrv)
 bool clkAnnounced=false;
 void ClkRefresh(datetime nowSrv)
 {
+   static bool swept=false;
+   if(!swept && !MQLInfoInteger(MQL_TESTER)) { ClkDropStaleLoans(); swept=true; }
    ClkResolve(nowSrv);
    if(!clkResolved) { clkOkFlag=false; clkSkew=false; return; }
    if(!clkAnnounced)                     // one line per EA process: an EA's own log can always prove its clock
    {
       clkAnnounced=true;
-      PrintFormat("CLK_EA %s symbol=%s clock=%s source=%s server=%s",
-                  MQLInfoString(MQL_PROGRAM_NAME),_Symbol,ClkText(),clkSource,AccountInfoString(ACCOUNT_SERVER));
+      PrintFormat("CLK_EA %s symbol=%s clock=%s source=%s server=%s adapter=%s",
+                  MQLInfoString(MQL_PROGRAM_NAME),_Symbol,ClkText(),clkSource,
+                  AccountInfoString(ACCOUNT_SERVER),CLK_ADAPTER_VERSION);
    }
    if(MQLInfoInteger(MQL_TESTER) || !TerminalInfoInteger(TERMINAL_CONNECTED)) return;       // tester: nothing to observe; offline: keep verdict
    datetime ts=TimeTradeServer(), gmt=TimeGMT();
@@ -548,7 +735,8 @@ void ClkRefresh(datetime nowSrv)
    clkOkFlag=false; clkSkew=false;
    clkNote=StringFormat("live offset %+dm matches no candidate clock (%s)",(int)(observed/60),ClkText());
    ClkLog("CLK_MISMATCH "+clkNote);
-   if(clkSource=="LIVE" || clkProvisional) { clkResolved=false; clkProvisional=false; clkRetry=nowSrv+30; }
+   if(clkSource=="LIVE" || clkSource=="LIVE-REF" || clkSource=="SHARED-LIVE" || clkProvisional)
+   { clkResolved=false; clkProvisional=false; clkRetry=nowSrv+30; }
    else if(clkSource=="PROFILE") { clkResolved=false; clkIgnoreProfile=true; clkRetry=nowSrv+30; ClkLog("CLK_PROFILE_OVERRIDDEN registry entry contradicts the live offset; re-deriving from live evidence"); }
 }
 // ---- conversions ---------------------------------------------------------------------------------------------------
@@ -652,7 +840,8 @@ bool TcRestoreBrakeHistory(Sleeve &s)
          datetime t=s.closedExit[k];s.closedExit[k]=s.closedExit[k-1];s.closedExit[k-1]=t;
          double r=s.closedR[k];s.closedR[k]=s.closedR[k-1];s.closedR[k-1]=r;
       }
-   PrintFormat("TC_BRAKE_RESTORED closed=%d threshold=%.2fR",ArraySize(s.closedR),BrakeFloorR);
+   // "trades" is the size of the rolling window, not a state; BrakeRF() decides whether to halve.
+   PrintFormat("TC_BRAKE_RESTORED trades=%d/%d threshold=%.2fR",MathMin(ArraySize(s.closedR),BrakeN),BrakeN,BrakeFloorR);
    return true;
 }
 

@@ -3,6 +3,13 @@
 long gtVisualChart=0;
 int gtPane=INVALID_HANDLE;
 string gtPaneName="";
+int FlashPaneWindow()   // subwindow holding our ADX pane, or -1: the pane is placed once, not re-added per draw
+{
+   for(int w=(int)ChartGetInteger(gtVisualChart,CHART_WINDOWS_TOTAL)-1;w>=0;w--)
+      for(int i=ChartIndicatorsTotal(gtVisualChart,w)-1;i>=0;i--)
+         if(ChartIndicatorName(gtVisualChart,w,i)==gtPaneName) return w;
+   return -1;
+}
 double gtLastEntry=0,gtLastStop=0,gtLastTarget=0;
 datetime gtLastBracketTime=0;
 void FlashRememberBracket(double entry,double stop,double target){gtLastEntry=entry;gtLastStop=stop;gtLastTarget=target;gtLastBracketTime=ownedEntryTime>0 ? ownedEntryTime : TimeCurrent();}
@@ -65,7 +72,7 @@ void FlashVisualSuspend(bool blocked)
          for(int window=(int)ChartGetInteger(gtVisualChart,CHART_WINDOWS_TOTAL)-1;window>=1;window--)
             ChartIndicatorDelete(gtVisualChart,window,gtPaneName);
       }
-      else if(gtPane!=INVALID_HANDLE)
+      else if(gtPane!=INVALID_HANDLE && FlashPaneWindow()<0)
          ChartIndicatorAdd(gtVisualChart,(int)ChartGetInteger(gtVisualChart,CHART_WINDOWS_TOTAL),gtPane);
    }
    ChartRedraw(gtVisualChart);
@@ -105,12 +112,40 @@ void FlashInitVisual()
    if(Model==FlashTriggerORB)
    {
       gtPaneName=FlashOutputFamily+" ADX "+IntegerToString((long)Magic);
-      for(int window=(int)ChartGetInteger(gtVisualChart,CHART_WINDOWS_TOTAL)-1;window>=1;window--)
-         for(int index=ChartIndicatorsTotal(gtVisualChart,window)-1;index>=0;index--)
-            if(ChartIndicatorName(gtVisualChart,window,index)==gtPaneName) ChartIndicatorDelete(gtVisualChart,window,gtPaneName);
       gtPane=iCustom(_Symbol,(ENUM_TIMEFRAMES)Period(),"::ADXPane.ex5",ADXPeriod,gtPaneName);
-      if(gtPane!=INVALID_HANDLE && !ChartIndicatorAdd(gtVisualChart,(int)ChartGetInteger(gtVisualChart,CHART_WINDOWS_TOTAL),gtPane))
-         PrintFormat("FLASH_DISPLAY_ADX_ADD_FAILED error=%d",GetLastError());
+      if(gtPane!=INVALID_HANDLE) adxHandle=gtPane;   // one handle for the pane and the panel read
+      int err=0,at=-1,added=0;
+      if(gtPane==INVALID_HANDLE) err=GetLastError();
+      else
+      {
+         at=FlashPaneWindow();
+         if(at<0)
+         {
+            // A window of its own, never the price chart: a separate-window plot on window 0 is drawn on the
+            // price scale, where an ADX near 30 is a flat line at zero - present, and invisible.
+            int target=(int)MathMax(1,(int)ChartGetInteger(gtVisualChart,CHART_WINDOWS_TOTAL));
+            ResetLastError(); added=(ChartIndicatorAdd(gtVisualChart,target,gtPane)?1:0); if(!added) err=GetLastError();
+            at=FlashPaneWindow();
+            if(at<=0 && !added)
+            {
+               // A copy of the pane survived from an earlier attach (same name): drop it and take the window again.
+               for(int window=(int)ChartGetInteger(gtVisualChart,CHART_WINDOWS_TOTAL)-1;window>=0;window--)
+                  for(int index=ChartIndicatorsTotal(gtVisualChart,window)-1;index>=0;index--)
+                     if(ChartIndicatorName(gtVisualChart,window,index)==gtPaneName) ChartIndicatorDelete(gtVisualChart,window,gtPaneName);
+               ChartRedraw(gtVisualChart);
+               target=(int)MathMax(1,(int)ChartGetInteger(gtVisualChart,CHART_WINDOWS_TOTAL));
+               ResetLastError(); added=(ChartIndicatorAdd(gtVisualChart,target,gtPane)?1:0); if(!added) err=GetLastError(); at=FlashPaneWindow();
+            }
+         }
+      }
+      double probe[]; ArraySetAsSeries(probe,true);
+      int got=-1;
+      for(int attempt=0;attempt<3 && gtPane!=INVALID_HANDLE && got<=0;attempt++)
+      {
+         if(attempt>0) Sleep(120);
+         got=CopyBuffer(gtPane,0,0,3,probe);
+      }
+      PrintFormat("FLASH_DISPLAY_ADX window=%d ok=%d err=%d adx=%s name=%s",at,added,err,got>0?DoubleToString(probe[0],2):"n/a",gtPaneName);
    }
 }
 
